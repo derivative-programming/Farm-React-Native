@@ -1,0 +1,27 @@
+{
+    "ignore":[
+        "dist",
+        ".git",
+        "node_modules",
+        "build",
+        ".DS_Store",
+        "TODO.md"
+    ],
+    "templateSet":
+    {
+        "name": "React v18 Bootstrap v5 UI",
+        "internalName" : "ui_r18_bs5",
+        "versionNumber" : {
+            "major": "1",
+            "minor": "0",
+            "build": "0",
+            "revision": "*"
+        }
+    },
+    "modelFile" : "gen-model.json",
+    "SupressTemplateLanguageSubstitution": [
+        "package*.json",
+        "*.svg",
+        "*.ico"
+    ]
+}

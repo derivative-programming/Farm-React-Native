@@ -1,0 +1,16 @@
+{
+    "templateType":"report", 
+    "dimension" :{
+        "name":"TacFarmDashboard",
+        "calculatedIsPage":"true"
+    },
+    "ignoreDimensionPropertyList": [ 
+        "reportColumn.isButtonCallToAction",
+        "reportColumn.isVisible",
+        "reportColumn.isEnabled",
+        "reportColumn.calculatedIsConditionalSqlLogicAvailable",
+        "reportButton.calculatedIsDestinationContextObjectTheOwnerObject", 
+        "reportButton.calculatedIsDestinationContextObjectNameSet", 
+        "reportColumn.calculatedIsSourceObjectAvailable"
+    ]
+}

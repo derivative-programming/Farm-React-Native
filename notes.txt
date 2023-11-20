@@ -1,0 +1,57 @@
+View is a html div
+
+no buttons. use TouchableOpacity
+
+ActivityIndicator is a loading ActivityIndicator
+
+FlatList shows a scrollable list. for large lists
+
+ScrollView is for smaller list or group of controls
+
+SafeAreaView - not covered by the devices home indicator, status bar, etc
+ensures that the app is shown in the visible SafeAreaView
+
+react native bootstrap exists
+
+component notes...
+xxx.jsx and xxx.style files
+----------
+typical component...
+import { react, UseState } from 'react'
+import { Vice,Text,ScrollView,SafeAreaView} from 'react-native'
+
+import styles from './xxx.style'
+
+const Xxx = () => {
+    return (
+
+    )
+}
+
+export defualt Xxx
+--------
+
+pass parent style down to child control style
+
+put in /constants...
+icons,
+sizes,
+colors
+
+need a splashscreen
+
+no breadcrumbs
+
+router seems to give a place for a page title and a back button
+
+expo has a router, but may not be bbest to use it
+
+
+
+
+npm install -g expo-cli
+expo init YourProjectName
+
+npm install @react-navigation/native
+???expo install react-native-screens react-native-safe-area-context
+npm install @react-navigation/stack
