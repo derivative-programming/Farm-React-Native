@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik';
 import {FormInputErrorDisplay } from './InputErrorDisplay';
 import { FormControl, TextArea, WarningOutlineIcon } from "native-base";

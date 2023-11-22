@@ -1,8 +1,9 @@
 import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 var connection: any = null;
 export const startConnection = () => { 
-    const connectionId = localStorage.getItem("customerCode");
+    const connectionId = AsyncStorage.getItem("customerCode");
     if (connectionId) {
         const url = new URL('https://dp-farm-pageapi.azurewebsites.net/analytics-hub');
         connection = new HubConnectionBuilder()

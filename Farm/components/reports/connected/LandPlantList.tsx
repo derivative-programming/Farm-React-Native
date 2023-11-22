@@ -7,7 +7,7 @@ import React, {
   useRef,
 } from "react";
 import { Button, Card, Breadcrumb, Container, View, Text } from "native-base";
-import "../../../App.scss";
+
 import { useNavigation } from '@react-navigation/native';
 import ReportFilterLandPlantList from "../filters/LandPlantList";
 import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
@@ -22,6 +22,7 @@ import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
  
@@ -105,7 +106,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
   const onPageSizeChange = (pageSize: number) => {
     logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
-    localStorage.setItem("pageSize",pageSize.toString());
+    AsyncStorage.setItem("pageSize",pageSize.toString());
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
@@ -171,7 +172,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
   useEffect(() => {
     if (JSON.stringify(initialValues) !== JSON.stringify(query)) { 
-      let pageSize = localStorage.getItem("pageSize");
+      let pageSize = AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
       { 
         initialValues.ItemCountPerPage = parseInt(pageSize);

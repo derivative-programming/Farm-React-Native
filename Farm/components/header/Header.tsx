@@ -7,6 +7,7 @@ import * as AnalyticsService from "../services/analyticsService";
 import { StackNavigationProp } from "@react-navigation/stack"; 
 import RootStackParamList from "../../screens/rootStackParamList";
 import * as RouteNames from '../../constants/routeNames';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -21,9 +22,9 @@ const Header: FC = (): ReactElement => {
     AnalyticsService.stop();
     authContext.setToken("");
     authContext.setRoles("");
-    localStorage.setItem("@token", "");
-    localStorage.setItem("customerCode","");
-    localStorage.setItem("email", "");
+    AsyncStorage.setItem("@token", "");
+    AsyncStorage.setItem("customerCode","");
+    AsyncStorage.setItem("email", "");
   };
 
   const onLogin = () => {

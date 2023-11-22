@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik'; 
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Button, FormControl, VStack, Text } from "native-base";

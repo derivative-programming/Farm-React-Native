@@ -1,4 +1,4 @@
-import { View } from "native-base";
+import { VStack, View } from "native-base";
 import React, { FC, ReactElement, useContext } from "react";   
 import { StyleSheet } from 'react-native';
 import { Box, IconButton, HStack, Text } from 'native-base';
@@ -11,10 +11,10 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
 }): ReactElement => { 
 
   const title = "DemoApp"
-   
-  return (  
+    
+  return (   
     <Box backgroundColor="primary.500">
-      <HStack bg="blue.500" px="1" py="3" alignItems="center" justifyContent="center">
+      <HStack bg="primary.500" px="1" py="3" alignItems="center" justifyContent="center">
         <IconButton
           icon={<Icon name="menu" size={25} color="white" />}
           onPress={() => console.log('Menu Clicked')}
@@ -24,8 +24,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
           {title}
         </Text> 
       </HStack>
-    </Box>
- 
+    </Box> 
   );
 }; 
  

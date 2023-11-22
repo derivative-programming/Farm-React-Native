@@ -1,10 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
 import { apiInstance } from "../apiConfig";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem("@token"));
+  const [token, setToken] = useState(AsyncStorage.getItem("@token"));
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {

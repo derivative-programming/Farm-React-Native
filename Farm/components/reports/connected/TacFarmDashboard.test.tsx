@@ -11,11 +11,12 @@ import {
 import ReportConnectedTacFarmDashboard from "./TacFarmDashboard";
 import * as ReportService from "../services/TacFarmDashboard";
 import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
  
-window.localStorage.setItem("@token", "sampleToken");
+window.AsyncStorage.setItem("@token", "sampleToken");
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();

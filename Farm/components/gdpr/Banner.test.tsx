@@ -2,10 +2,11 @@ import { render, fireEvent, screen } from "@testing-library/react-native";
 import GDPRBanner from "./Banner";
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 describe("GDPRBanner", () => {
   beforeEach(() => {
-    localStorage.clear();
+    AsyncStorage.clear();
   });
 
   it("should show the banner initially", () => {
@@ -21,14 +22,14 @@ describe("GDPRBanner", () => {
 
     fireEvent.click(acceptButton);
 
-    expect(localStorage.getItem("gdpr_accepted")).toBe("true");
+    expect(AsyncStorage.getItem("gdpr_accepted")).toBe("true");
     expect(
       screen.queryByText(/This website uses cookies/)
     ).not.toBeInTheDocument();
   });
 
   it("should hide the banner if already accepted", () => {
-    localStorage.setItem("gdpr_accepted", "true");
+    AsyncStorage.setItem("gdpr_accepted", "true");
 
     render(<GDPRBanner />);
 

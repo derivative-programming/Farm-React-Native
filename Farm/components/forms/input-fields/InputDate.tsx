@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik';
 import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker';

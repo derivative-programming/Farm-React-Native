@@ -13,8 +13,9 @@ import * as flavorCodeService from "../../lookups/services/Flavor"
 import * as ReportService from "../services/LandPlantList";  
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
  
-window.localStorage.setItem("@token", "sampleToken");
+window.AsyncStorage.setItem("@token", "sampleToken");
  
 const mockFlavorCodeService =  jest.spyOn(flavorCodeService, "submitRequest");
  

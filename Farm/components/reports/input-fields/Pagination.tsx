@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react";
 import { Pagination, View, Text, Select } from "native-base";
-import "../../../App.scss"; 
+ 
    
 export interface ReportPaginationProps {
   name:string

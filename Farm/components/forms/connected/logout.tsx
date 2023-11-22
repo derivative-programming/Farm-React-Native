@@ -29,9 +29,9 @@ export const Logout: FC<FormProps> = ({
   // AnalyticsService.stop();
   // authContext.setToken("");
   // authContext.setRoles("");
-  // localStorage.setItem("@token", "");
-  // localStorage.setItem("customerCode","");
-  // localStorage.setItem("email", "");
+  // AsyncStorage.setItem("@token", "");
+  // AsyncStorage.setItem("customerCode","");
+  // AsyncStorage.setItem("email", "");
 
   // navigate("/tac-login");
   

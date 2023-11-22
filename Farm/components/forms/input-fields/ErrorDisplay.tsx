@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss"; 
+ 
 import { View } from "native-base";
    
 export interface ErrorDisplayProps {

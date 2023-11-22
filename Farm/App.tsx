@@ -5,16 +5,16 @@ import { StyleSheet } from 'react-native';
 import * as RouteNames from './constants/routeNames';
 import * as Screens from './screens'; 
 import RootStackParamList from './screens/rootStackParamList';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, extendTheme } from 'native-base';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = (): React.ReactElement => {
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={customTheme}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName={RouteNames.TAC_LOGIN}> 
-          
+            
         {/*//GENLOOPObjectStart*/}
         {/*//GENTrainingBlock[c2]Start*/}
         {/*//GENLearn[modelType=object,name=Land]Start*/}
@@ -67,5 +67,19 @@ const App: React.FC = (): React.ReactElement => {
     </NativeBaseProvider>
   );
 }
+
+const bootstrapColors = {
+  primary: "#007bff",
+  secondary: "#6c757d",
+  success: "#28a745",
+  danger: "#dc3545",
+  warning: "#ffc107",
+  info: "#17a2b8",
+  light: "#f8f9fa",
+  dark: "#343a40", 
+};
+
+const customTheme = extendTheme({ 
+});
  
 export default App

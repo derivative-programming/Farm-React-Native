@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik';
 import {ErrorDisplay } from './ErrorDisplay';
 import { View } from "native-base";

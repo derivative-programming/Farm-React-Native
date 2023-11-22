@@ -6,20 +6,20 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, Card, Spinner, View } from "native-base"; 
+import { Box, Button, Card, Spinner, VStack, View, Text, FormControl } from "native-base"; 
 import { useNavigation } from '@react-navigation/native';
-import { Formik, FormikHelpers } from "formik"; 
-
+import { Formik, FormikHelpers } from "formik";  
 import * as FormService from "../services/TacLogin";
 import * as FormValidation from "../validation/TacLogin";
 import * as InitFormService from "../services/init/TacLoginInitObjWF";
-import { AuthContext } from "../../../context/authContext";
-import * as FormInput from "../input-fields"; 
+import { AuthContext } from "../../../context/authContext"; 
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../../services/analyticsService";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import * as RouteNames from '../../../constants/routeNames';
+import * as InputFields from "../input-fields";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export interface FormProps {
@@ -118,9 +118,9 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       {/*//GENLearn[isLoginPage=true]Start*/}
       authContext.setToken(response.apiKey);
       authContext.setRoles(response.roleNameCSVList);
-      localStorage.setItem("@token", response.apiKey);
-      localStorage.setItem("customerCode", response.customerCode);
-      localStorage.setItem("email", response.email);
+      AsyncStorage.setItem("@token", response.apiKey);
+      AsyncStorage.setItem("customerCode", response.customerCode);
+      AsyncStorage.setItem("email", response.email);
       AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
@@ -150,8 +150,56 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   }, []);
 
   return (
-    <View> 
-    </View>
+    <Box flex={1} py="5" alignItems="center">
+    <VStack space={4} width="90%">
+        <Text fontSize="xl" testID="page-title-text">Log In</Text>
+        <Text fontSize="md" testID="page-intro-text">Please enter your email and password.</Text>
+         
+      <Formik
+          enableReinitialize={true}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitButtonPress}
+        >
+          {({ handleSubmit, handleReset, isSubmitting }) => (
+            <FormControl>
+              {initForm && showProcessingAnimationOnInit ?
+                <Spinner size="lg" />
+                :
+                <VStack space={4}>
+                  <InputFields.ErrorDisplay
+                      name="headerErrors"
+                      errorArray={headerErrors}
+                    />
+                    <InputFields.FormInputEmail name="email"
+                      label="Email"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputPassword name="password"
+                      label="Password"
+                      isVisible={true}
+                    />
+                </VStack>
+              }
+              <Button
+                // onPress={handleSubmit}
+                mt="3" isLoading={isSubmitting} testID="submit-button">
+                OK Button Text
+              </Button>
+              <InputFields.FormInputButton name="other-button"
+                buttonText="Register"
+                onPress={() => {
+                  logClick("FormConnectedTacLogin","otherButton","");
+                  registerButtonPress();
+                }}
+                isButtonCallToAction={false}
+                isVisible={true} 
+              />
+            </FormControl>
+          )}
+        </Formik>
+    </VStack>
+    </Box>
   );
 };
 

@@ -14,8 +14,9 @@ import * as FormService from "../services/TacRegister";
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
  
-window.localStorage.setItem("@token", "sampleToken");
+window.AsyncStorage.setItem("@token", "sampleToken");
 
 const mockedUsedNavigate = jest.fn();
 

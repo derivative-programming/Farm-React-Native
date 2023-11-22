@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik'; 
 import { Checkbox, FormControl, VStack, Text } from "native-base";
    

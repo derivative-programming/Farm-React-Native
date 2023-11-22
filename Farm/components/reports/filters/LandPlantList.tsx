@@ -12,6 +12,7 @@ import { AuthContext } from "../../../context/authContext";
 import * as ReportInput from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface ReportFilterLandPlantListProps {
   name: string;
@@ -39,7 +40,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 
   const validationSchema = ReportService.buildValidationSchema();
  
-  const isFiltersVisibleDefault = localStorage.getItem("isFiltersVisible");
+  const isFiltersVisibleDefault = AsyncStorage.getItem("isFiltersVisible");
   const defaultAccordianKey = (isFiltersVisibleDefault === "true" ? "0" : "-1");
 
   const authContext = useContext(AuthContext);
@@ -68,18 +69,18 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 
   const onAccordianHeaderClick = () => { 
     logClick("ReportFilterLandPlantList","accordianClick","");
-    const isFiltersVisible = localStorage.getItem("isFiltersVisible");
+    const isFiltersVisible = AsyncStorage.getItem("isFiltersVisible");
     if(isFiltersVisible === null)
     {
-      localStorage.setItem("isFiltersVisible","true")
+      AsyncStorage.setItem("isFiltersVisible","true")
     }
     if(isFiltersVisible === "true")
     {
-      localStorage.setItem("isFiltersVisible","false")
+      AsyncStorage.setItem("isFiltersVisible","false")
     }
     if(isFiltersVisible === "false")
     {
-      localStorage.setItem("isFiltersVisible","true")
+      AsyncStorage.setItem("isFiltersVisible","true")
     }
   }
  
@@ -232,7 +233,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
                           className="ms-2 mt-3"
                           type="reset"
                           onPress={() => props.resetForm() as any}
-                          variant="secondary"
+                          variant="outline"
                           testID="reset"
                         >
                           Reset

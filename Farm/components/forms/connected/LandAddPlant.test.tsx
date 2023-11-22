@@ -15,9 +15,10 @@ import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 import * as requestFlavorCodeService from "../../lookups/services/Flavor"
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-window.localStorage.setItem("@token", "sampleToken");
+window.AsyncStorage.setItem("@token", "sampleToken");
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();

@@ -532,7 +532,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
           onPress={() => onExport()}
           className='me-md-2'
           size="sm"
-          variant="secondary">
+          variant="outline">
           Export
         </Button>
       </div>

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react"; 
-import "../../../App.scss";
+
 import {useField } from 'formik';
 import { onKeyDown } from "../../../common/utilities"; 
 import { FormControl, Input, VStack, WarningOutlineIcon } from "native-base";

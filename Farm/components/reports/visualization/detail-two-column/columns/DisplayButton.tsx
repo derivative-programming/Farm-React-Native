@@ -27,10 +27,10 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
   
   const displayValue = (isVisible && conditionallyVisible);
        
-  let buttonVariant = "secondary";
+  let buttonVariant = "outline";
   if(isButtonCallToAction)
   {
-    buttonVariant = "primary";
+    buttonVariant = "solid";
   }
 
   if (!displayValue) return null;

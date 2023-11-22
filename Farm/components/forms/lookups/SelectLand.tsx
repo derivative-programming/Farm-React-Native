@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState,useEffect } from "react"; 
-import "../../../App.scss"; 
+ 
 import * as PacUserLandListService from "../../lookups/services/Land";
 import {useField } from 'formik';
 import { FormInputSelect,FormInputSelectOption } from "../input-fields/InputSelect";

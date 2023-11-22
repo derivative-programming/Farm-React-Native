@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from "native-base";
-import "../../../App.scss"; 
+import { Box, Button } from "native-base";
+ 
    
 export interface FormInputButtonProps {
   name: string
@@ -24,23 +24,25 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
   className = ""
 }): ReactElement => { 
   
-  let buttonVariant = "secondary";
+  let buttonVariant = "outline";
   if(isButtonCallToAction)
   {
-    buttonVariant = "primary";
+    buttonVariant = "solid";
   }
-
+ 
       
   return (
-    <Button testID={name}
-        id={name}
-        onPress={onPress}
-        style={{ display: isVisible ? 'flex' : 'none' }}
-        disabled={!isEnabled} 
-        isFocused={autoFocus} 
-        variant={buttonVariant}>
-        {buttonText}
-    </Button>
+    <Box py="3">
+      <Button testID={name} 
+          id={name}
+          onPress={onPress}
+          style={{ display: isVisible ? 'flex' : 'none' }}
+          disabled={!isEnabled} 
+          isFocused={autoFocus}  
+          variant={buttonVariant}>
+          {buttonText}
+      </Button>
+    </Box>
   );
 };
    

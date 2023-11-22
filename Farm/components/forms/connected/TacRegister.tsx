@@ -19,6 +19,7 @@ import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import * as AnalyticsService from "../../services/analyticsService";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface FormProps {
   tacCode: string;
@@ -111,9 +112,9 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       }
       authContext.setToken(response.apiKey);
       authContext.setRoles(response.roleNameCSVList);
-      localStorage.setItem("@token", response.apiKey);
-      localStorage.setItem("customerCode", response.customerCode);
-      localStorage.setItem("email", response.email);
+      AsyncStorage.setItem("@token", response.apiKey);
+      AsyncStorage.setItem("customerCode", response.customerCode);
+      AsyncStorage.setItem("email", response.email);
       AnalyticsService.start();
       actions.setSubmitting(false);
       actions.resetForm();

@@ -20,6 +20,7 @@ import * as AnalyticsService from "../../services/analyticsService";
 import { Box, VStack, Text, FormControl, Spinner, Button } from "native-base";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface FormProps {
   landCode:string;
@@ -177,7 +178,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   };
   
   return ( 
-    <Box flex={1} justifyContent="center" alignItems="center">
+    <Box flex={1} py="5" alignItems="center">
     <VStack space={4} width="90%">
         <Text fontSize="xl" testID="page-title-text">Add Plant</Text>
         <Text fontSize="md" testID="page-intro-text">Add plant intro text.</Text>
@@ -290,8 +291,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                       navigateTo("LandPlantList", "landCode");
                     }}
                     isButtonCallToAction={false}
-                    isVisible={true}
-                    className="me-2 mt-3"
+                    isVisible={true} 
                   />
               <InputFields.FormInputButton name="other-button"
                 buttonText="Go To Dashboard" 
@@ -300,8 +300,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                   navigateTo("TacFarmDashboard", "tacCode");
                 }}
                 isButtonCallToAction={false}
-                isVisible={true}
-                className="me-2 mt-3"
+                isVisible={true} 
               />
             </FormControl>
           )}

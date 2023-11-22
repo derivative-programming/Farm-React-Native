@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button, Container, Row, View, Col } from "native-base";
 import useAnalyticsDB from "../../hooks/useAnalyticsDB"; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GDPRBanner: React.FC = () => {
   const [showBanner, setShowBanner] = useState(true);
   const { logClick } = useAnalyticsDB();
 
   useEffect(() => {
-    const hasAccepted = localStorage.getItem("gdpr_accepted");
+    const hasAccepted = AsyncStorage.getItem("gdpr_accepted");
     if (hasAccepted) {
       setShowBanner(false);
     }
@@ -15,7 +16,7 @@ const GDPRBanner: React.FC = () => {
 
   const handleAccept = () => {
     logClick("GDPRBanner","accept","");
-    localStorage.setItem("gdpr_accepted", "true");
+    AsyncStorage.setItem("gdpr_accepted", "true");
     setShowBanner(false);
   };
 

@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext } from "react";
-import { openDB } from "idb";
+import { useEffect, useState, useContext } from "react"; 
+// import SQLite from 'react-native-sqlite-storage';
 import uuid from 'react-native-uuid';
 import { SubscribeDBContext } from "../context/subscribeDB-context";
-import { ANALYTICS_DBNAME, ANALYTICS_DBTABLE } from "../constants/dbName";
-import { useParams } from "react-router-dom";
+import { ANALYTICS_DBNAME, ANALYTICS_DBTABLE } from "../constants/dbName"; 
 import { sendClientAnalyticsData } from "../components/services/analyticsService";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import "fake-indexeddb/auto";
 
 type TAnalyticsEvent = {
@@ -17,24 +17,50 @@ type TAnalyticsEvent = {
 function useAnalyticsDB() {
   const [db, setDB] = useState<any>(null);
   const { updateDB } = useContext(SubscribeDBContext);
-  
-  const { id } = useParams();
-  const contextCode: string = id ?? "00000000-0000-0000-0000-000000000000";
+   
+  const contextCode: string = "00000000-0000-0000-0000-000000000000";
+
+
+  // SQLite.enablePromise(true); // Optional: Enable promise API for more straightforward async/await usage
+
+  // const database = SQLite.openDatabase(
+  //   { name: "analytics.db", location: "default" },
+  //   () => console.log("Database opened"),
+  //   error => console.error("Error opening database", error)
+  // );
+
+  // const createTable = async () => {
+  //   try {
+  //     const db = await SQLite.openDatabase({ name: 'analytics.db', location: 'default' });
+  //     await db.executeSql(`CREATE TABLE IF NOT EXISTS ${ANALYTICS_DBTABLE} (...);`);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // const addDB = async (event) => {
+  //   try {
+  //     const db = await SQLite.openDatabase({ name: 'analytics.db', location: 'default' });
+  //     await db.executeSql(`INSERT INTO ${ANALYTICS_DBTABLE} (column1, column2, ...) VALUES (?, ?, ...);`, [value1, value2, ...]);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     (async function () {
-      const data = await connectDB;
-      setDB(data);
+      // const data = await connectDB;
+      // setDB(data);
     })();
   }, []);
 
-  const connectDB = openDB(ANALYTICS_DBNAME, 1, {
-    upgrade(db) {
-      db.createObjectStore(ANALYTICS_DBTABLE, {
-        autoIncrement: true,
-      });
-    },
-  });
+  // const connectDB = openDB(ANALYTICS_DBNAME, 1, {
+  //   upgrade(db) {
+  //     db.createObjectStore(ANALYTICS_DBTABLE, {
+  //       autoIncrement: true,
+  //     });
+  //   },
+  // });
 
   const getIsRowDB = async () => {
     const arrKeys = await db.getAllKeys(ANALYTICS_DBTABLE);
@@ -49,7 +75,7 @@ function useAnalyticsDB() {
     db.clear(ANALYTICS_DBTABLE);
   };
   const addDB = (event: TAnalyticsEvent) => {
-    const customerCode = localStorage.getItem("customerCode");
+    const customerCode = AsyncStorage.getItem("customerCode");
     const appName = "React Native";
     const dbData = {
         ...event, 
@@ -59,8 +85,8 @@ function useAnalyticsDB() {
         new Date().toISOString(), 
         customerCode: customerCode,
         appName: appName,
-        hostName: window.location.hostname, 
-        pathName: window.location.pathname, 
+        hostName: "",//window.location.hostname, 
+        pathName: "",//window.location.pathname, 
       }
     if(!!db){
       db.add(ANALYTICS_DBTABLE, dbData);

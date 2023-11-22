@@ -1,6 +1,6 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
 import { Card, View } from "native-base";
-import "../../../App.scss"; 
+ 
 import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/TacFarmDashboard";
 import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
