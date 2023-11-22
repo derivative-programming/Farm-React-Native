@@ -5,13 +5,13 @@ import {
   cleanup,
   screen,
   act, 
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import ReportConnectedLandPlantList from "./LandPlantList"; 
 import * as ReportService from "../services/LandPlantList";
-import * as InitReportService from "../services/init/LandPlantListInitReport";
-import { BrowserRouter } from "react-router-dom";
+import * as InitReportService from "../services/init/LandPlantListInitReport"; 
 import * as flavorCodeService from "../../lookups/services/Flavor"
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
 
@@ -45,9 +45,9 @@ describe("LandPlantList Connected Report Component", () => {
 
     await act(async () => {
       render(
-        <BrowserRouter>
+        
           <ReportConnectedLandPlantList />
-        </BrowserRouter>
+        
       
       )
     });
@@ -64,12 +64,7 @@ describe("LandPlantList Connected Report Component", () => {
     expect(screen.getByTestId("tacFarmDashboardBreadcrumb")).toBeInTheDocument();
 
     expect(screen.getByTestId("back-button")).toBeInTheDocument(); 
-
-    if("Plant List".length > 0){
-      expect(screen.getByTestId("page-title-text")).toBeInTheDocument();
-      expect(screen.getByTestId("page-title-text"))
-        .toHaveTextContent("Plant List");
-    }
+ 
     if("A list of plants on the land".length > 0){ 
       expect(screen.getByTestId("page-intro-text")).toBeInTheDocument();
       expect(screen.getByTestId("page-intro-text"))

@@ -1,7 +1,7 @@
-import React, { FC, ReactElement,} from "react";
-import { Col, ListGroup } from "react-bootstrap";
+import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
 import moment from "moment";
+import { Box, VStack, Text } from "native-base";
    
 export interface ReportColumnDisplayDateProps {
   forColumn:string 
@@ -17,7 +17,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
   label,
   isVisible = true,
   conditionallyVisible = true
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn;
   
@@ -50,20 +50,32 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
     
     return result;
   }
+  
+  if (!isVisible) return null;
 
   return ( 
-    <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
-        <ListGroup.Item
-            as="li"
-            className="text-start"
-        >
-            <div className="ms-2 me-auto">
-                <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
-                {formatDate()}&nbsp;
-            </div>
+    // <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
+    //     <ListGroup.Item
+    //         as="li"
+    //         className="text-start"
+    //     >
+    //         <div className="ms-2 me-auto">
+    //             <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
+    //             {formatDate()}&nbsp;
+    //         </div>
 
-        </ListGroup.Item>
-    </Col>
+    //     </ListGroup.Item>
+    // </Col>
+    <Box testID={groupName} flex={1} /* Adjust flex based on lg/md/xs equivalent */>
+      <VStack space={2} /* Adjust styling as needed */>
+        <Text fontWeight="bold" testID={groupName + '-header'}>
+          {label}
+        </Text>
+        <Text>
+          {formatDate()}  
+        </Text>
+      </VStack>
+    </Box>
   );
 };
    

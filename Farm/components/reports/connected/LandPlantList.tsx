@@ -6,10 +6,9 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Button, Form, Card, Breadcrumb, Container } from "react-bootstrap";
+import { Button, Card, Breadcrumb, Container, View, Text } from "native-base";
 import "../../../App.scss";
-
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigation } from '@react-navigation/native';
 import ReportFilterLandPlantList from "../filters/LandPlantList";
 import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
 import { ReportDetailThreeColLandPlantList } from "../visualization/detail-three-column/LandPlantList";
@@ -20,9 +19,19 @@ import HeaderLandPlantList from "../headers/LandPlantListInitReport";
 import * as ReportInput from "../input-fields";
 import { PlusCircle, ArrowLeft } from "react-bootstrap-icons";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
-import { v4 as uuidv4 } from "uuid";
+import uuid from 'react-native-uuid';
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
 
-export const ReportConnectedLandPlantList: FC = (): ReactElement => {
+type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+ 
+export interface ReportProps {
+  landCode:string; 
+}
+
+export const ReportConnectedLandPlantList: FC<ReportProps> = ({
+  landCode = "00000000-0000-0000-0000-000000000000" 
+}): ReactElement => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -48,9 +57,10 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
   const isBreadcrumbSectionHidden = false;
   const isButtonDropDownAllowed = false;
 
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const contextCode: string = id ?? "00000000-0000-0000-0000-000000000000";
+  const navigation = useNavigation<ScreenNavigationProp>();
+  
+  
+  const contextCode: string = landCode ?? "00000000-0000-0000-0000-000000000000";
   
   const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
@@ -99,8 +109,8 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
-  const onNavigateTo = (url: string) => {
-    navigate(url);
+  const onNavigateTo = (page: string,targetContextCode:string) => { 
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
   const navigateTo = (page: string, codeName: string) => { 
@@ -113,9 +123,8 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
           return;
         }
       }
-    });
-    const url = "/" + page + "/" + targetContextCode;
-    navigate(url);
+    });  
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
   const onRefreshRequest = () => {
@@ -193,7 +202,7 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
       const url = URL.createObjectURL(blob);  
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'LandPlantList-' + uuidv4() + '.csv');
+      link.setAttribute('download', 'LandPlantList-' + uuid.v4() + '.csv');
       document.body.appendChild(link);
       link.click();
     })
@@ -201,36 +210,19 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
   }, [exportQuery]);
 
   return (
-    <div
+    <View
       className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3 "
-      data-testid="reportConnectedLandPlantList"
+      testID="reportConnectedLandPlantList"
     > 
-      <div className="w-100">
-        <Breadcrumb hidden={isBreadcrumbSectionHidden}>
-          <Breadcrumb.Item id="tacFarmDashboardBreadcrumb" 
-            data-testid="tacFarmDashboardBreadcrumb" 
-            onClick={() => 
-              {
-                logClick("ReportConnectedLandPlantList","tacFarmDashboardBreadcrumb","");
-                navigateTo("tac-farm-dashboard", "tacCode");
-              }}
-            >
-            Farm Dashboard
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active href="">
-            Plant List
-          </Breadcrumb.Item>
-        </Breadcrumb>
-      </div>
-
+       
        
       <Card
         className="mt-1 page-card report-card"
          
       > 
       
-        <h2 data-testid="page-title-text">Plant List</h2>
-        <h6 data-testid="page-intro-text">A list of plants on the land</h6>
+        <Text testID="page-title-text">Plant List</Text>
+        <Text testID="page-intro-text">A list of plants on the land</Text>
         
 
         <HeaderLandPlantList  
@@ -241,37 +233,37 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
 
 
           
-        <div className="col-12 d-flex flex-column flex-md-row justify-content-between">
-          <div className="mb-2 mb-md-0">
+        <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
+          <View className="mb-2 mb-md-0">
             <ReportInput.ReportInputButton name="back-button"
-              onClick={() => {
+              onPress={() => {
                   logClick("ReportConnectedLandPlantList","back","");
-                  navigateTo("tac-farm-dashboard", "tacCode");
+                  navigateTo("TacFarmDashboard", "tacCode");
               }}
               buttonText={<><ArrowLeft className="mb-1"/> Farm Dashboard</>}
               isButtonCallToAction={false}
               isVisible={true}
               isEnabled={true}
             /> 
-          </div>
-          <div className="d-flex flex-column flex-md-row">
-            <div className="mb-2 mb-md-0">
+          </View>
+          <View className="d-flex flex-column flex-md-row">
+            <View className="mb-2 mb-md-0">
               <ReportInput.ReportInputButton name="otherAddButton"
-                onClick={() => {
+                onPress={() => {
                   logClick("ReportConnectedLandPlantList","otherAddButton","");
-                  navigateTo("land-add-plant", "landCode");
+                  navigateTo("LandAddPlant", "landCode");
                 }}
                 buttonText="Other Add Button"
                 isButtonCallToAction={false}
                 isVisible={true}
                 isEnabled={true}
               />
-            </div>
-            <div>
+            </View>
+            <View>
               <ReportInput.ReportInputButton name="add-button"
-                onClick={() => {
+                onPress={() => {
                   logClick("ReportConnectedLandPlantList","add","");
-                  navigateTo("land-add-plant", "landCode");
+                  navigateTo("LandAddPlant", "landCode");
                 }}
                 buttonText={<><PlusCircle className="mb-1"/> Add A Plant</>}
                 className="ms-md-2"
@@ -279,9 +271,9 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
                 isVisible={true}
                 isEnabled={true}
               />
-            </div>
-          </div>
-        </div> 
+            </View>
+          </View>
+        </View> 
         
         
 
@@ -295,7 +287,7 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
           hidden={isFilterSectionHidden} 
         />
 
-        <div
+        <View
           className="d-flex w-100  justify-content-end"
           hidden={
             !isFilterSectionHidden ||
@@ -303,9 +295,9 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
           }
         >
           <Button
-            data-testid="refresh-button"
+            testID="refresh-button"
             className="ms-2 mt-3" 
-            onClick={onRefreshRequest}
+            onPress={onRefreshRequest}
             hidden={
               !isFilterSectionHidden ||
               (isFilterSectionHidden && isRefreshButtonHidden)
@@ -313,7 +305,7 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
           >
             Refresh
           </Button> 
-        </div>
+        </View>
         
 
         <ReportGridLandPlantList
@@ -340,7 +332,7 @@ export const ReportConnectedLandPlantList: FC = (): ReactElement => {
 
       </Card> 
       
-    </div>
+    </View>
   );
 };
 export default ReportConnectedLandPlantList;

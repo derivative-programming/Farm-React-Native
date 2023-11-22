@@ -1,5 +1,6 @@
 import React, { FC, ReactElement } from "react"; 
 import "../../../App.scss"; 
+import { View } from "native-base";
    
 export interface ErrorDisplayProps {
   name:string
@@ -17,15 +18,15 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
   const allErrors = errorArray.concat(errorArray2)
       
   return (
-    <div data-testid={name}> 
+    <View data-testid={name}> 
       {allErrors && allErrors.length > 0 ? ( 
           allErrors.map((item, index) => {
             return (
-              <div className="text-left text-danger mt-2 mb-2" key={item}>{item}</div>  
+              <View key={item}>{item}</View>  
           );
         })
       ) : null}
-    </div>
+    </View>
   );
 };
    

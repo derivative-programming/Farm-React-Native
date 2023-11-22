@@ -9,8 +9,8 @@
     ],
     "templateSet":
     {
-        "name": "React v18 Bootstrap v5 UI",
-        "internalName" : "ui_r18_bs5",
+        "name": "React Native UI",
+        "internalName" : "ui_react_native",
         "versionNumber" : {
             "major": "1",
             "minor": "0",

@@ -7,11 +7,12 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import ReportFilterLandPlantList from "./LandPlantList";  
 import * as flavorCodeService from "../../lookups/services/Flavor"
 import * as ReportService from "../services/LandPlantList";  
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
  
@@ -110,18 +111,16 @@ describe("LandPlantList Component", () => {
   });
   it("when user enter someIntVal, it set accordingly", async () => { 
     const input = screen.getByTestId("someIntVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "99" } });
-    }); 
-    expect(screen.getByTestId("someIntVal-field")).toHaveValue(99);
+    fireEvent.changeText(input, '99');
+
+    expect(input.props.value).toBe('99');
   });
 
   it("when user enter someBigIntVal, it set accordingly", async () => { 
     const input = screen.getByTestId("someBigIntVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "99" } });
-    }); 
-    expect(screen.getByTestId("someBigIntVal-field")).toHaveValue(99);
+    fireEvent.changeText(input, '99');
+
+    expect(input.props.value).toBe('99');
   });
 
   it("when user enter someBitVal, it set accordingly", async () => {
@@ -184,42 +183,37 @@ describe("LandPlantList Component", () => {
 
   it("when user enter someNVarCharVal, it set accordingly", async () => {
     const input = screen.getByTestId("someNVarCharVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("someNVarCharVal-field")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter someVarCharVal, it set accordingly", async () => {
     const input = screen.getByTestId("someVarCharVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("someVarCharVal-field")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter someTextVal, it set accordingly", async () => {
     const input = screen.getByTestId("someTextVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("someTextVal-field")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter somePhoneNumber, it set accordingly", async () => {
     const input = screen.getByTestId("somePhoneNumber-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("somePhoneNumber-field")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter someEmailAddress, it set accordingly", async () => {
     const input = screen.getByTestId("someEmailAddress-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("someEmailAddress-field")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   }); 
 
   it("when user entered LandPlantList details and clicks on register button, LandPlantListUser api should be called", async () => {

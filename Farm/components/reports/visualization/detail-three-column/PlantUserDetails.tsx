@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Col, ListGroup, Row, Spinner } from "react-bootstrap";
+import { Row, Spinner, View } from "native-base";
 import * as ReportService from "../../services/PlantUserDetails"; 
 import * as AsyncServices from "../../../services";
 import * as ReportColumnDisplay from "./columns";
@@ -8,7 +8,7 @@ import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";
 export interface ReportDetailThreeColPlantUserDetailsProps {
     name: string
     item: ReportService.QueryResultItem
-    onNavigateTo(url: string): void
+    onNavigateTo(page: string, targetContextCode:string): void
     onRefreshRequest(): void
     showProcessing?: boolean;
 }
@@ -22,18 +22,17 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
     const { logClick } = useAnalyticsDB();
     
     return (
-        <div data-testid={name} className='mt-3 w-100'> 
+        <View testID={name} > 
         { showProcessing ? 
             <Row>
-                <Col  lg="12" md="12" xs="12">
-                <div className="text-center  bg-secondary bg-opacity-25">
+                <View  >
+                <View className="text-center  bg-secondary bg-opacity-25">
                       <Spinner animation="border" className="mt-2 mb-2" />
-                  </div>
-                </Col>
+                  </View>
+                </View>
             </Row>
             : 
-            <Row><Col  lg="9" md="9" xs="12">
-                <ListGroup as="ol"> 
+            <Row><Col  lg="9" md="9" xs="12"> 
                     <Row>
                         <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
                             label="Flavor Name"
@@ -156,8 +155,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                             isVisible={true}
                         />
 
-                    </Row>
-                </ListGroup>
+                    </Row> 
             </Col>
             <Col> 
 
@@ -166,9 +164,9 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     value={item.updateButtonTextLinkPlantCode}
                     isButtonCallToAction={true}
                     isVisible={false}
-                    onClick={() => {
+                    onPress={() => {
                         logClick("ReportDetailThreeColPlantUserDetails","updateButtonTextLinkPlantCode","");
-                        onNavigateTo("/plant-user-details/" + item.updateButtonTextLinkPlantCode);
+                        onNavigateTo("PlantUserDetails",item.updateButtonTextLinkPlantCode);
                     }}
                 />
 
@@ -177,9 +175,9 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     value={item.backToDashboardLinkTacCode}
                     isButtonCallToAction={true}
                     isVisible={true}
-                    onClick={() => {
+                    onPress={() => {
                         logClick("ReportDetailThreeColPlantUserDetails","backToDashboardLinkTacCode","");
-                        onNavigateTo("/tac-farm-dashboard/" + item.backToDashboardLinkTacCode)
+                        onNavigateTo("TacFarmDashboard",item.backToDashboardLinkTacCode)
                     }}
                 />
 
@@ -190,7 +188,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     value={item.randomPropertyUpdatesLinkPlantCode}
                     isButtonCallToAction={false}
                     isVisible={true}
-                    onClick={() =>{
+                    onPress={() =>{
                         logClick("ReportDetailThreeColPlantUserDetails","randomPropertyUpdatesLinkPlantCode","");
                         const data: any = {};
                         AsyncServices.PlantUserPropertyRandomUpdateSubmitRequest(data, item.randomPropertyUpdatesLinkPlantCode)
@@ -200,6 +198,6 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
             </Col>
             </Row>
         }
-        </div>
+        </View>
     );
 }; 

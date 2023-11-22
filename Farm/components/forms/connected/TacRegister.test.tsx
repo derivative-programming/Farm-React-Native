@@ -7,12 +7,13 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import FormConnectedTacRegister from "./TacRegister"; 
-import { BrowserRouter } from "react-router-dom"; 
+
 import * as FormService from "../services/TacRegister";
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
 
@@ -38,9 +39,9 @@ describe("TacRegister Component", () => {
       });
 
     render(
-      <BrowserRouter>
+      
         <FormConnectedTacRegister name="testForm" showProcessingAnimationOnInit={false} />
-      </BrowserRouter>
+      
     );
   });
 

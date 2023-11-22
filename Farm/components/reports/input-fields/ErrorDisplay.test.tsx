@@ -1,5 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react-native";
 import { ReportErrorDisplay } from "./ErrorDisplay";
+import '@testing-library/jest-dom';
 
 describe("ReportErrorDisplay Component", () => {
   it("renders correctly when no errors are provided", () => {

@@ -7,10 +7,11 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {FormInputFile} from "./InputFile";   
 import { Formik } from "formik";
-import { Form, Button } from "react-bootstrap";
+import { Button } from "native-base";
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
 
@@ -24,13 +25,13 @@ describe("InputFile Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-            <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+             <>
               <FormInputFile label="Test Label" name="testName"/>  
-              <Button type="submit" data-testid="submit-button"
-                    size="sm"> 
+              <Button type="submit" testID="submit-button"
+                    > 
                   Submit
               </Button>
-            </Form>  
+              </>
         )}
       </Formik>
     );
@@ -81,12 +82,12 @@ describe("InputFile Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-            <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+             <>
               <FormInputFile label="Test Label" name="testName2" autoFocus={true}/>  
-              <Button type="submit" data-testid="submit-button"> 
+              <Button type="submit" testID="submit-button"> 
                   Submit
               </Button>
-            </Form>  
+              </>
         )}
       </Formik>
     );

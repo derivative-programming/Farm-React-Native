@@ -55,3 +55,124 @@ expo init YourProjectName
 npm install @react-navigation/native
 ???expo install react-native-screens react-native-safe-area-context
 npm install @react-navigation/stack
+
+
+dependency injection...
+
+function LoginScreen({ navigation }) {
+      <Button
+        title="Go to Registration"
+        onPress={() => navigation.navigate('Registration')}
+
+navigation.navigate('Dashboard', { guid: '123123-12312-12312-312' });
+
+  const userGUID = '123123-12312-12312-312'; // This would be dynamically obtained
+  navigation.navigate(RouteNames.DASHBOARD, { guid: userGUID });
+
+
+const DashboardScreen = ({ route }) => {
+  const { guid } = route.params;
+
+  return (
+    <View>
+      <Text>Dashboard ID: {guid}</Text>
+      {/* Rest of your Dashboard UI */}
+    </View>
+  );
+};
+
+
+
+textbox and button controls...
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+
+
+secure button...
+      <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+
+simple textbox style...
+      <TextInput style={styles.input} placeholder="Username" />
+
+  input: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    marginBottom: 10,
+  },
+
+
+bootstrap...sorta...
+npm install native-base
+
+import { Container, Header, Content, Button, Text } from 'native-base';
+
+
+
+activity indicator...
+import { ActivityIndicator } from 'react-native';
+
+      <Button onPress={handleLogin} title="Login" disabled={isLoading} />
+      {isLoading && <ActivityIndicator size="large" color="#0000ff" />} {/* Loading animation */}
+    </View>
+
+
+custom control...pass in
+const CustomButton = ({ onPress, title, style, textStyle, ...props }) => {
+  return (
+    <TouchableOpacity style={[styles.button, style]} onPress={onPress} {...props}>
+      <Text style={[styles.text, textStyle]}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+
+use a theme provider....
+import React, { createContext, useContext } from 'react';
+
+const ThemeContext = createContext();
+
+export const useTheme = () => useContext(ThemeContext);
+
+export const ThemeProvider = ({ children, theme }) => {
+  return (
+    <ThemeContext.Provider value={theme}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+applying theme...
+import { useTheme } from './ThemeContext';
+
+const CustomButton = ({ title, ...props }) => {
+  const theme = useTheme();
+
+  return (
+    <TouchableOpacity style={[styles.button, theme.buttonStyle]} {...props}>
+      <Text style={[styles.text, theme.textStyle]}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+// Similar usage in other components
+
+import { ThemeProvider } from './ThemeContext';
+
+const App = () => {
+  const theme = {
+    buttonStyle: { /* styles */ },
+    textStyle: { /* styles */ },
+    // other global styles
+  };
+
+  return (
+    <ThemeProvider theme={theme}>
+      {/* rest of the app */}
+    </ThemeProvider>
+  );
+};
+
+
+how to reuire auth on a screen?
+

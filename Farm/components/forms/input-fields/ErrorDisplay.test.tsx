@@ -1,5 +1,6 @@
-import { render, cleanup, screen } from "@testing-library/react";
+import { render, cleanup, screen } from "@testing-library/react-native";
 import ErrorDisplay from "./ErrorDisplay";
+import '@testing-library/jest-dom';
 
 describe("ErrorDisplay Component", () => {
   afterEach(cleanup);

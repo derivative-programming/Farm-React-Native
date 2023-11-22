@@ -7,12 +7,13 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {ReportInputText} from "./InputText";   
 import {ReportInputErrorDisplay} from "./InputErrorDisplay";   
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+
 import { ReportInputDate } from "./InputDate";
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
  
@@ -24,9 +25,9 @@ describe("ReportInputErrorDisplay Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+               
               <ReportInputDate label="Test Label" name="testInputName"/> 
-              </Form>  
+                
           )}
       </Formik>
       

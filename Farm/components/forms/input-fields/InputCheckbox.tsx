@@ -1,7 +1,7 @@
-import React, { FC, ReactElement } from "react";
-import { Form } from "react-bootstrap";
+import React, { FC, ReactElement } from "react"; 
 import "../../../App.scss";
 import {useField } from 'formik'; 
+import { Checkbox, FormControl, VStack, Text } from "native-base";
    
 export interface FormInputCheckboxProps {
   name: string
@@ -19,34 +19,52 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
-}): ReactElement => {
+}): ReactElement | null => {
   const [field, meta, helpers] = useField(name);  
 
   const errorDisplayControlName = name + "ErrorDisplay";
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
       
+  if (!isVisible) return null;
+
   return (
-    <div className="" hidden={!isVisible}>
-      <Form.Group controlId={name} className="mt-3 mb-3 text-start"> 
-          <Form.Check
-            // ref={inputRef}
-            data-testid={name}
-            type="checkbox"
-            placeholder={placeholder}
-            checked={field.value}
-            name={field.name}
-            value={field.value}
-            onChange={(e) => {helpers.setValue(e.target.checked);}}
-            onBlur={field.onBlur} 
-            disabled={disabled}
-            autoFocus={autoFocus}
-            label={label}
-            isInvalid={isInvalid} 
-          />
-          <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-      </Form.Group> 
-  </div>
+  //   <div className="" hidden={!isVisible}>
+  //     <Form.Group controlId={name} className="mt-3 mb-3 text-start"> 
+  //         <Form.Check
+  //           // ref={inputRef}
+  //           data-testid={name}
+  //           type="checkbox"
+  //           placeholder={placeholder}
+  //           checked={field.value}
+  //           name={field.name}
+  //           value={field.value}
+  //           onChange={(e) => {helpers.setValue(e.target.checked);}}
+  //           onBlur={field.onBlur} 
+  //           disabled={disabled}
+  //           autoFocus={autoFocus}
+  //           label={label}
+  //           isInvalid={isInvalid} 
+  //         />
+  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
+  //     </Form.Group> 
+  // </div>
+  <VStack space={2} width="100%" mt="3" mb="3">
+      <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
+        <Checkbox
+          value={field.value ? 'checked' : 'unchecked'}
+          isChecked={field.value}
+          onChange={(isChecked) => helpers.setValue(isChecked)} 
+          // onBlur={field.onBlur}
+          isDisabled={disabled}
+        >
+          {label}
+        </Checkbox>
+        {meta.touched && meta.error && (
+          <Text color="red.500">{meta.error}</Text>
+        )}
+      </FormControl>
+    </VStack>
   );
 };
    

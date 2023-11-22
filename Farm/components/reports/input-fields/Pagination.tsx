@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Form, Pagination } from "react-bootstrap";
+import { Pagination, View, Text, Select } from "native-base";
 import "../../../App.scss"; 
    
 export interface ReportPaginationProps {
@@ -123,7 +123,7 @@ export const ReportPagination: FC<ReportPaginationProps> = ({
           id={paginationPageSelectionId}
           key={number}
           active={number === currentPage}
-          onClick={() => onPageSelection(number)}
+          onPress={() => onPageSelection(number)}
         >
           {number}
         </Pagination.Item>
@@ -134,54 +134,41 @@ export const ReportPagination: FC<ReportPaginationProps> = ({
 
 
   return (
-    <div
-      hidden={isHidden()}
-      data-testid={name} className="d-flex flex-column flex-md-row w-100 align-items-center justify-content-between">
-      <div className="d-flex align-items-center">
-        <Form.Label className="m-0 me-2" data-testid='items-per-page-label'>Items Per Page</Form.Label>
-        <Form.Select
-          data-testid={paginationPageSizeSelectId}
-          value={pageSize}
-          onChange={(e) => onPageSizeChange(parseInt(e.target.value))}
-          className="w-auto"
-          size="sm"
-        >
-          <option value={1}>1</option>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option>
-        </Form.Select>
-      </div>
+    <View 
+      style={{ display: isHidden() ? 'flex' : 'none' }}
+      testID={name} className="d-flex flex-column flex-md-row w-100 align-items-center justify-content-between">
+      <View>
+        <Text  testID='items-per-page-label'>Items Per Page</Text>
+         
+      </View>
       <Pagination 
-        className="mt-3"
-        data-testid={paginationId}
+        
+        testID={paginationId}
         hidden={isHidden()}>
         <Pagination.First 
-          data-testid={paginationFirstId}
+          testID={paginationFirstId}
           hidden={isFirstPageButtonHidden()}
-          onClick={() => onPageSelection(1)} />
+          onPress={() => onPageSelection(1)} />
         <Pagination.Prev 
-          data-testid={paginationPrevId}
+          testID={paginationPrevId}
           hidden={isPreviousPageButtonHidden()} 
-          onClick={() => onPageSelection(currentPage - 1)} />
+          onPress={() => onPageSelection(currentPage - 1)} />
         {getAvailablePageItems()}
         <Pagination.Next  
-          data-testid={paginationNextId}
+          testID={paginationNextId}
           hidden={isNextPageButtonHidden()} 
-          onClick={() => onPageSelection(currentPage + 1)} />
+          onPress={() => onPageSelection(currentPage + 1)} />
         <Pagination.Last 
-          data-testid={paginationLastId}
+          testID={paginationLastId}
           hidden={isLastPageButtonHidden()}
-          onClick={() => onPageSelection(getMaxPageCount())} /> 
+          onPress={() => onPageSelection(getMaxPageCount())} /> 
       </Pagination>
-      <div 
-        hidden={isHidden()}
-        data-testid={paginationCountDisplayId}>
+      <View  
+        style={{ display: isHidden() ? 'flex' : 'none' }}
+        testID={paginationCountDisplayId}>
         {getFirstItemIndex()}-{getLastItemIndex()} of {totalItemCount} items
-      </div>
-    </div>
+      </View>
+    </View>
   );
 };
    

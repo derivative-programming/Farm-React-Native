@@ -7,14 +7,15 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {FormInputButton} from "./InputButton";   
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
 
-const mockedOnClick = jest.fn();
+const mockedonPress = jest.fn();
  
 describe("InputButton Component", () => {
   // render the InputButton component
@@ -24,9 +25,9 @@ describe("InputButton Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
-                <FormInputButton buttonText="Test Label" name="testName" onClick={mockedOnClick}/> 
-              </Form>  
+               
+                <FormInputButton buttonText="Test Label" name="testName" onPress={mockedonPress}/> 
+                
           )}
       </Formik>
     );
@@ -67,9 +68,9 @@ describe("InputButton Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
-                <FormInputButton buttonText="Test Label" name="testName2" autoFocus={true}  onClick={mockedOnClick}/> 
-              </Form>  
+               
+                <FormInputButton buttonText="Test Label" name="testName2" autoFocus={true}  onPress={mockedonPress}/> 
+                
           )}
       </Formik>
     );

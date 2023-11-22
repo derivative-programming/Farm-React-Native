@@ -14,7 +14,7 @@ first:
 then in vscode:
 - cd Farm
 - npx expo start 
-    or 'expo-cli start --tunnel', if that doesnt work
+    or 'npx expo start --tunnel', if that doesnt work
 - scan qr code on mobile device 
 
 or start a virtual device in android studio and select 'a' for open android. 

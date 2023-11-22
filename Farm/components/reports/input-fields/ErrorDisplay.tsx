@@ -1,3 +1,4 @@
+import { View } from "native-base";
 import React, { FC, ReactElement } from "react"; 
    
 export interface ReportErrorDisplayProps {
@@ -16,15 +17,15 @@ export const ReportErrorDisplay: FC<ReportErrorDisplayProps> = ({
   const allErrors = errorArray.concat(errorArray2)
       
   return (
-    <div data-testid={name}> 
+    <View testID={name}> 
       {allErrors && allErrors.length > 0 ? ( 
           allErrors.map((item, index) => {
             return (
-              <div className="error-message" key={item}>{item}</div>  
+              <View className="error-message" key={item}>{item}</View>  
           );
         })
       ) : null}
-    </div>
+    </View>
   );
 };
    

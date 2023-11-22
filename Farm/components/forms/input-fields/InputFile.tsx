@@ -1,7 +1,9 @@
-import React, { FC, ReactElement } from "react";
-import { Form } from "react-bootstrap";
+import React, { FC, ReactElement } from "react"; 
 import "../../../App.scss";
 import {useField } from 'formik'; 
+import { launchImageLibrary } from 'react-native-image-picker';
+import { Button, FormControl, VStack, Text } from "native-base";
+
    
 export interface FormInputFileProps {
   name: string
@@ -19,13 +21,15 @@ export const FormInputFile: FC<FormInputFileProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
-}): ReactElement => {
+}): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
 
   const errorDisplayControlName = name + "ErrorDisplay";
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
     
+  if (!isVisible) return null;
+
   const convertBase64 = (file:any) => {
     return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -50,29 +54,56 @@ export const FormInputFile: FC<FormInputFileProps> = ({
       const base64 = convertBase64(file); 
     });  
   };
+
+  
+  const handleFileSelection = () => {
+    const options = {}; // Specify any options you need
+    launchImageLibrary(options, (response) => {
+      // Handling the image selection
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        // You can call `uploadImage` here with the selected file
+        uploadImage(response);
+      }
+    });
+  };
       
   return (
-    <div className="" hidden={!isVisible}>
-      <Form.Group controlId={name} className="mb-2 text-start">
-          <Form.Label data-testid={name + '-label'}
-            size="sm">{label}</Form.Label>
-          <Form.Control
-            // ref={inputRef}
-            data-testid={name}
-            type="file" 
-           // placeholder={placeholder}
-            name={field.name}
-            //value={field.value}
-            onBlur={field.onBlur} 
-            onChange={(e) => uploadImage(e)}
-            disabled={disabled}
-            autoFocus={autoFocus}
-            isInvalid={isInvalid} 
-            size="sm"
-          />
-          <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-      </Form.Group> 
-  </div>
+  //   <div className="" hidden={!isVisible}>
+  //     <Form.Group controlId={name} className="mb-2 text-start">
+  //         <Form.Label data-testid={name + '-label'}
+  //           size="sm">{label}</Form.Label>
+  //         <Form.Control
+  //           // ref={inputRef}
+  //           data-testid={name}
+  //           type="file" 
+  //          // placeholder={placeholder}
+  //           name={field.name}
+  //           //value={field.value}
+  //           onBlur={field.onBlur} 
+  //           onChange={(e) => uploadImage(e)}
+  //           disabled={disabled}
+  //           autoFocus={autoFocus}
+  //           isInvalid={isInvalid} 
+  //           size="sm"
+  //         />
+  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
+  //     </Form.Group> 
+  // </div>
+    <VStack space={2} width="100%">
+      <FormControl isInvalid={isInvalid} isDisabled={disabled}>
+        <FormControl.Label>{label}</FormControl.Label>
+        <Button onPress={handleFileSelection} isDisabled={disabled}>
+          Upload File
+        </Button>
+        {isInvalid && (
+          <Text color="red.500">{meta.error}</Text>
+        )}
+      </FormControl>
+    </VStack>
   );
 };
    

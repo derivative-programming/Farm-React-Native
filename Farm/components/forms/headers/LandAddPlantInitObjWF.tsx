@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table } from "react-bootstrap";
+import { Table } from "native-base";
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 
 export interface HeaderLandAddPlantProps {
@@ -23,7 +23,7 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
 
 
   return (
-    <dl data-testid={name}
+    <dl testID={name}
       className="row text-start w-100 mt-3"
       hidden={!isHeaderVisible}>  
       <> {/*landName*/}

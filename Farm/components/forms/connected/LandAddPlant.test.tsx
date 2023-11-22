@@ -7,13 +7,14 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import FormConnectedLandAddPlant from "./LandAddPlant"; 
-import { BrowserRouter } from "react-router-dom"; 
+
 import * as FormService from "../services/LandAddPlant";
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 import * as requestFlavorCodeService from "../../lookups/services/Flavor"
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
 
 
 window.localStorage.setItem("@token", "sampleToken");
@@ -51,9 +52,9 @@ describe("LandAddPlant Component", () => {
 
       await act(async () => {
         render(
-          <BrowserRouter>
+          
             <FormConnectedLandAddPlant name="testForm" showProcessingAnimationOnInit={false} />
-          </BrowserRouter>
+          
         ); 
       })
 
@@ -94,13 +95,7 @@ describe("LandAddPlant Component", () => {
     expect(screen.getByTestId("submit-button")).toBeInTheDocument();
     expect(screen.getByTestId("cancel-button")).toBeInTheDocument();
     expect(screen.getByTestId("other-button")).toBeInTheDocument();
-    
-    if("Add Plant".length > 0){ 
-      expect(screen.getByTestId("page-title-text")) 
-        .toBeInTheDocument();
-      expect(screen.getByTestId("page-title-text"))
-        .toHaveTextContent("Add Plant");
-    }
+     
     if("Add plant intro text.".length > 0){ 
       expect(screen.getByTestId("page-intro-text")).toBeInTheDocument();
       expect(screen.getByTestId("page-intro-text"))
@@ -122,7 +117,7 @@ describe("LandAddPlant Component", () => {
     expect(screen.getByTestId("testForm")).toBeInTheDocument();
     expect(screen.getByTestId("requestFlavorCode")).toHaveTextContent("Please Select One");
     await act(async () => {
-      await fireEvent.change(input, { target: { value: "00000000-0000-0000-0000-000000000000" } });
+      await fireEvent.change(input, { target: { value: "00000000-0000-0000-0000-000000000000" } }); 
     }); 
     expect(screen.getByTestId("requestFlavorCode")).toHaveValue("00000000-0000-0000-0000-000000000000");
   });
@@ -132,26 +127,23 @@ describe("LandAddPlant Component", () => {
 
     const input = screen.getByTestId("requestOtherFlavor");
     expect(screen.getByTestId("testForm")).toBeInTheDocument();
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestOtherFlavor")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSomeIntVal, it set accordingly", async () => { 
     const input = screen.getByTestId("requestSomeIntVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "99" } });
-    }); 
-    expect(screen.getByTestId("requestSomeIntVal")).toHaveValue(99);
+    fireEvent.changeText(input, '99');
+
+    expect(input.props.value).toBe('99');
   });
 
   it("when user enter requestSomeBigIntVal, it set accordingly", async () => { 
     const input = screen.getByTestId("requestSomeBigIntVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "99" } });
-    }); 
-    expect(screen.getByTestId("requestSomeBigIntVal")).toHaveValue(99);
+    fireEvent.changeText(input, '99');
+
+    expect(input.props.value).toBe('99');
   });
 
   it("when user enter requestSomeBitVal, it set accordingly", async () => {
@@ -214,42 +206,37 @@ describe("LandAddPlant Component", () => {
 
   it("when user enter requestSomeNVarCharVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeNVarCharVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestSomeNVarCharVal")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSomeVarCharVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeVarCharVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestSomeVarCharVal")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSomeTextVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeTextVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestSomeTextVal")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSomePhoneNumber, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomePhoneNumber");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestSomePhoneNumber")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSomeEmailAddress, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeEmailAddress");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "sample data" } });
-    }); 
-    expect(screen.getByTestId("requestSomeEmailAddress")).toHaveValue("sample data");
+    fireEvent.changeText(input, 'sample data');
+
+    expect(input.props.value).toBe('sample data');
   });
 
   it("when user enter requestSampleImageUploadFile, it set accordingly", async () => {

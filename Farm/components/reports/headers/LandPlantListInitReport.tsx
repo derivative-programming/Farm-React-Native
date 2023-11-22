@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table } from "react-bootstrap";
+import { Table, View } from "native-base";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
  
 export interface HeaderLandPlantListProps {
@@ -22,8 +22,8 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
   const landNameHeaderIsVisible = true; 
 
   return ( 
-    <div className="ms-3">
-      <dl data-testid={name} 
+    <View>
+      <dl testID={name} 
         className="row text-start w-100 mt-3 p-3 border" 
         hidden={!isHeaderVisible}>
         <> {/*landName*/}
@@ -31,7 +31,7 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
           <dd className="col-sm-9" hidden={!landNameHeaderIsVisible}>{initData.landName}</dd>
         </> 
       </dl> 
-    </div>
+    </View>
   );
 };
 

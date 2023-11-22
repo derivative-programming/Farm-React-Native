@@ -1,6 +1,7 @@
 import React, { FC, ReactElement } from "react"; 
 import {useField } from 'formik';
 import {ReportErrorDisplay } from './ErrorDisplay';
+import { View } from "native-base";
    
 export interface ReportInputErrorDisplayProps {
   name: string,
@@ -16,11 +17,11 @@ export const ReportInputErrorDisplay: FC<ReportInputErrorDisplayProps> = ({
   const errorControlName = forInputName + "Error"
       
   return (
-    <div data-testid={name}> 
+    <View data-testid={name}> 
       {meta.error && meta.touched ? (
           <ReportErrorDisplay name={errorControlName} errorCsv={meta.error}/> 
       ) : null}
-    </div>
+    </View>
   );
 };
    

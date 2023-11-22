@@ -1,2 +1,23 @@
-TODO
-- /screens needs a component for each report and objwf page that has a component. 
+TODO 
+
+add navbase provider https://docs.nativebase.io/setup-provider
+
+need appbar at the top...
+app title
+hamburger menu
+
+
+
+screens...
+screen title
+screen intro text (if exists)
+back button (if exists)
+display primary control for screen
+footer text (if exists)
+
+
+handle light and dark theme
+
+
+implement in app component?...
+import { StatusBar } from 'expo-status-bar';

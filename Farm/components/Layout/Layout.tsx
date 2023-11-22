@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 import Footer from "../footer/Footer";
 import Header from "../header/Header";
-import { Container } from "react-bootstrap";
+import { Container } from "native-base";
 import "../../App.scss"
 type Props = {
   children: ReactElement;
@@ -10,13 +10,13 @@ type Props = {
 const LayoutComponent: FC<Props> = (props: Props): ReactElement => {
   return (
     <Container>
-      <div>
+      <View>
         <Header />
-      </div>
-      <div>{props.children}</div>
-      <div>
+      </View>
+      <View>{props.children}</View>
+      <View>
         <Footer />
-      </div>
+      </View>
     </Container>
   );
 };

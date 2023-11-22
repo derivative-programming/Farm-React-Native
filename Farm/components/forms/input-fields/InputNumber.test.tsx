@@ -7,10 +7,11 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {FormInputNumber} from "./InputNumber";   
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
  
@@ -22,9 +23,9 @@ describe("InputNumber Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+               
       <FormInputNumber label="Test Label" name="testName"/> 
-      </Form>  
+        
   )}
 </Formik>
     );
@@ -76,9 +77,9 @@ describe("InputNumber Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+               
       <FormInputNumber label="Test Label" name="testName2" autoFocus={true}/> 
-      </Form>  
+        
   )}
 </Formik>
     );

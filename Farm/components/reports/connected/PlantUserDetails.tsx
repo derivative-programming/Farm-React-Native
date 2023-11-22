@@ -1,14 +1,24 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
-import { Card, Breadcrumb, Container } from "react-bootstrap";
-import { ArrowLeft } from "react-bootstrap-icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { Card, Breadcrumb, Container, View } from "native-base";
+import { ArrowLeft } from "react-bootstrap-icons"; 
+import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/PlantUserDetails";
 import * as ReportInput from "../input-fields";
 import * as InitReportService from "../services/init/PlantUserDetailsInitReport"; 
 import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
 
-export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
+type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
+export interface ReportProps {
+    plantCode:string; 
+}
+
+export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
+    plantCode = "00000000-0000-0000-0000-000000000000" 
+  }): ReactElement => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(1);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -19,9 +29,9 @@ export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
     const isInitializedRef = useRef(false);
     const { logClick } = useAnalyticsDB();
 
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const contextCode: string = id ?? "00000000-0000-0000-0000-000000000000";
+    const navigation = useNavigation<ScreenNavigationProp>();
+     
+    const contextCode: string = plantCode ?? "00000000-0000-0000-0000-000000000000";
 
     const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
@@ -70,9 +80,9 @@ export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
     const onUnselectAll = () => {
     }
 
-    const onNavigateTo = (url: string) => { 
-        navigate(url); 
-    }
+    const onNavigateTo = (page: string,targetContextCode:string) => { 
+        navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+      };
     
     const navigateTo = (page: string, codeName:string) => { 
         let targetContextCode = contextCode; 
@@ -89,7 +99,7 @@ export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
             }
         })
         const url = '/' + page + '/' + targetContextCode; 
-        navigate(url);
+        navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     }
 
     const onSort = (columnName: string) => {
@@ -134,52 +144,28 @@ export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
 
     return (
 
-        <div className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3" data-testid="reportConnectedPlantUserDetails">
-            <div className="w-100">
-                <Breadcrumb>
-                    <Breadcrumb.Item id="tacFarmDashboardBreadcrumb"  
-                        data-testid="tacFarmDashboardBreadcrumb" 
-                        onClick={() => {
-                            logClick("ReportConnectedPlantUserDetails","tacFarmDashboardBreadcrumb","");
-                            navigateTo('tac-farm-dashboard',"tacCode")
-                        }}>
-                        Farm Dashboard
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item id="landPlantListBreadcrumb" 
-                        data-testid="landPlantListBreadcrumb" 
-                        onClick={() => {
-                            logClick("ReportConnectedPlantUserDetails","landPlantListBreadcrumb","");
-                            navigateTo('land-plant-list',"landCode");
-                        }}>
-                        Plant List
-                    </Breadcrumb.Item>
-                    <Breadcrumb.Item active>
-                        Plant Details
-                    </Breadcrumb.Item>
-                </Breadcrumb>
-            </div>
+        <View className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3" testID="reportConnectedPlantUserDetails">
+              
 
              
             <Card
                 className="mt-1 page-card report-card"
                 
-            > 
-                    <h2 data-testid="page-title-text">Plant Details</h2>
-                    <h6 data-testid="page-intro-text">Plant Details page intro text</h6>
+            >  
                     <Container>  
-                        <div className="d-flex w-100 justify-content-center justify-content-md-start">
+                        <View className="d-flex w-100 justify-content-center justify-content-md-start">
                             <ReportInput.ReportInputButton
                                 name="back-button"
-                                onClick={() => {
+                                onPress={() => {
                                     logClick("ReportConnectedPlantUserDetails","back","");
-                                    navigateTo("land-plant-list","landCode")
+                                    navigateTo("LandPlantList","landCode")
                                 }}
                                 buttonText={<><ArrowLeft className="mb-1"/> Plant List</>} 
                                 isButtonCallToAction={false}
                                 isVisible={true}
                                 isEnabled={true}
                             />
-                        </div>  
+                        </View>  
                     </Container>  
                     {/*//GENTrainingBlock[visualizationType]Start*/}
                     {/*//GENLearn[visualizationType=DetailThreeColumn]Start*/}
@@ -194,7 +180,7 @@ export const ReportConnectedPlantUserDetails: FC = (): ReactElement => {
                     {/*//GENTrainingBlock[visualizationType]End*/}
                 
             </Card> 
-        </div>
+        </View>
     );
 };
 export default ReportConnectedPlantUserDetails;

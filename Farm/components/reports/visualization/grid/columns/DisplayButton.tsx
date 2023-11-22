@@ -1,14 +1,14 @@
 import React, { FC, ReactElement,} from "react"; 
-import { Button } from "react-bootstrap";
 import "../../../../../App.scss"; 
 import "../../../../../index.css"; 
+import { Box } from "native-base";
    
 export interface ReportColumnDisplayButtonProps {
   forColumn:string
   rowIndex: number
   value: string 
   buttonText:string
-  onClick():void
+  onPress():void
   isVisible?:boolean
   conditionallyVisible?:boolean
   isButtonCallToAction?:boolean
@@ -19,11 +19,11 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
   rowIndex,
   value, 
   buttonText,
-  onClick,
+  onPress,
   isVisible = true,
   conditionallyVisible = true,
   isButtonCallToAction = false,
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const buttonName = groupName + '-button'; 
@@ -36,17 +36,32 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
     buttonVariant = "primary";
   }
 
+  if (!isVisible) return null;
+
   return ( 
-    <td data-testid={groupName} hidden={!isVisible}>
+    // <td data-testid={groupName} hidden={!isVisible}>
+    //     <Button
+    //         hidden={!displayValue}
+    //         className="ms-2"
+    //        variant={buttonVariant} 
+    //         data-testid={buttonName}
+    //         onPress={onPress}
+    //         size="sm"
+    //     >{buttonText}</Button>
+    // </td>
+    <Box testID={groupName} /* Additional styling can be added here */>
+      {displayValue && (
         <Button
-            hidden={!displayValue}
-            className="ms-2"
-           variant={buttonVariant} 
-            data-testid={buttonName}
-            onClick={onClick}
-            size="sm"
-        >{buttonText}</Button>
-    </td>
+          testID={buttonName}
+          onPress={onPress}
+          variant={buttonVariant} // Adjust this according to NativeBase's API
+          size="sm" // Adjust size as needed
+          // Additional styling for button
+        >
+          {buttonText}
+        </Button>
+      )}
+    </Box>
   );
 };
    

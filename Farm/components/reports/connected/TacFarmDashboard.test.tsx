@@ -7,12 +7,13 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import ReportConnectedTacFarmDashboard from "./TacFarmDashboard";
 import * as ReportService from "../services/TacFarmDashboard";
 import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
-import { BrowserRouter } from "react-router-dom"; 
+
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
 
@@ -40,9 +41,9 @@ describe("TacFarmDashboard Connected Report Component", () => {
     });
 
     render(
-      <BrowserRouter>
+      
         <ReportConnectedTacFarmDashboard />
-      </BrowserRouter>
+      
     );
   });
 

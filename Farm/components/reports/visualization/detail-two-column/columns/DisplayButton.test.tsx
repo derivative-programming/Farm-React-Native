@@ -6,15 +6,14 @@ import {
   screen,
   act,
   fireEvent,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {ReportColumnDisplayButton} from "./DisplayButton";   
-import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
 
 const handleSubmit = jest.fn();
-const onClick = jest.fn();
+const onPress = jest.fn();
 
 const testId = 'testColumn-column-0-button';
  
@@ -28,7 +27,7 @@ describe("ReportColumnDisplayButton Component", () => {
 
   it("renders 'test Value' correctly", async () => {
     render(
-       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test text" value="test Value" onClick={onClick} />
+       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test text" value="test Value" onPress={onPress} />
     );
 
     expect(screen.getByText("test text")).toBeInTheDocument(); 
@@ -37,35 +36,35 @@ describe("ReportColumnDisplayButton Component", () => {
  
   it("renders no value correctly", async () => {
     render(
-       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value="" onClick={onClick} />
+       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value="" onPress={onPress} />
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-column-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
   
   it("renders null correctly", async () => {
     const noVal:any = null;
 
     render(
-       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value={noVal} onClick={onClick} />
+       <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value={noVal} onPress={onPress} />
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-column-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
   
   it("renders isVisible=false correctly", async () => { 
 
     render(
-      <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value="test value"  onClick={onClick} isVisible={false} />
+      <ReportColumnDisplayButton forColumn="testColumn" buttonText="test label" value="test value"  onPress={onPress} isVisible={false} />
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-column-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
  
  

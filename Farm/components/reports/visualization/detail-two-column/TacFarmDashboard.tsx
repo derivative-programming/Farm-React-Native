@@ -1,13 +1,13 @@
 import React, { FC, ReactElement } from "react"; 
 import * as ReportService from "../../services/TacFarmDashboard";   
-import { Row } from "react-bootstrap";
+import { Row, View } from "native-base";
 import * as ReportColumnDisplay from "./columns";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB"; 
 
 export interface ReportDetailTwoColTacFarmDashboardProps {
     name: string
     item: ReportService.QueryResultItem
-    onNavigateTo(url: string): void
+    onNavigateTo(page: string, targetContextCode:string): void
     onRefreshRequest(): void
 }
 export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDashboardProps> = ({
@@ -19,9 +19,9 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
     const { logClick } = useAnalyticsDB();
   
     return ( 
-        <div data-testid={name}>
-            <Row data-testid="fieldOnePlantListLinkLandCode-header" 
-                className="mt-3" >  
+        <View testID={name}>
+            <Row testID="fieldOnePlantListLinkLandCode-header" 
+                 >  
                 <ReportColumnDisplay.ReportColumnDisplayButton 
                     forColumn="fieldOnePlantListLinkLandCode" 
                     value={item.fieldOnePlantListLinkLandCode}
@@ -29,14 +29,14 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                     isButtonCallToAction={true} 
                     isVisible={true}
                     isEnabled={true}
-                    onClick={() =>{
+                    onPress={() =>{
                         logClick("ReportDetailTwoColTacFarmDashboard","fieldOnePlantListLinkLandCode","");
-                        onNavigateTo("/land-plant-list/" + item.fieldOnePlantListLinkLandCode)
+                        onNavigateTo("LandPlantList",item.fieldOnePlantListLinkLandCode)
                     }} 
                 />
             </Row> 
-            <Row data-testid="conditionalBtnExampleLinkLandCode-header" 
-                className="mt-3" >  
+            <Row testID="conditionalBtnExampleLinkLandCode-header" 
+                 >  
                 <ReportColumnDisplay.ReportColumnDisplayButton 
                     forColumn="conditionalBtnExampleLinkLandCode" 
                     value={item.conditionalBtnExampleLinkLandCode}
@@ -45,12 +45,12 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                     isVisible={true}
                     isEnabled={true}
                     conditionallyVisible={item.isConditionalBtnAvailable}
-                    onClick={() =>{
+                    onPress={() =>{
                         logClick("ReportDetailTwoColTacFarmDashboard","conditionalBtnExampleLinkLandCode","");
-                        onNavigateTo("/land-plant-list/" + item.conditionalBtnExampleLinkLandCode)
+                        onNavigateTo("LandPlantList", item.conditionalBtnExampleLinkLandCode)
                     }} 
                 />
             </Row> 
-        </div>
+        </View>
     );
 }; 

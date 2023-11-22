@@ -6,10 +6,9 @@ import {
   screen,
   act,
   fireEvent,
-} from "@testing-library/react";
-import {ReportColumnDisplayEmail} from "./DisplayEmail";   
-import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+} from "@testing-library/react-native";
+import {ReportColumnDisplayEmail} from "./DisplayEmail";    
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
 
@@ -40,7 +39,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
   });
   
   it("renders null correctly", async () => {
@@ -52,7 +51,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
   });
   
   it("renders isVisible=false correctly", async () => { 
@@ -63,7 +62,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td data-testid=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
   });
  
  

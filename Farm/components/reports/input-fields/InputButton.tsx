@@ -1,10 +1,10 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from "react-bootstrap"; 
+import { Button } from "native-base"; 
 
 export interface ReportInputButtonProps {
   name: string;
   buttonText: any;
-  onClick(): void;
+  onPress(): void;
   isButtonCallToAction?: boolean;
   isVisible?: boolean;
   isEnabled?: boolean;
@@ -15,10 +15,11 @@ export interface ReportInputButtonProps {
 export const ReportInputButton: FC<ReportInputButtonProps> = ({
   name,
   buttonText,
-  onClick,
+  onPress,
   isButtonCallToAction = true,
   isVisible = true,
-  isEnabled = true,type,
+  isEnabled = true,
+  // type,
 
   className = "",
 }): ReactElement => {
@@ -31,12 +32,11 @@ export const ReportInputButton: FC<ReportInputButtonProps> = ({
 
   return (
     <Button
-      data-testid={name}
-      className={className}
-      id={name}
-      type={type}
-      onClick={onClick}
-      hidden={!isVisible}
+      testID={name} 
+      id={name} 
+      // type="button"
+      onPress={onPress}
+      style={{ display: isVisible ? 'flex' : 'none' }}
       disabled={!isEnabled}
       variant={buttonVariant}
     >

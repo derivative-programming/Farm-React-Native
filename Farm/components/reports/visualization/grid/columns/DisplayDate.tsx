@@ -1,6 +1,7 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
 import moment from "moment";
+import { Text } from "native-base";
    
 export interface ReportColumnDisplayDateProps {
   forColumn:string
@@ -16,7 +17,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
   value, 
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   
@@ -50,9 +51,14 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
     
     return result;
   }
+  
+  if (!isVisible) return null;
 
   return (
-    <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatDate()}</td>
+    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatDate()}</td>
+    <Text testID={groupName} /* Add additional styling for text-nowrap equivalent */>
+      {formatDate()} {/* Ensure this function is suitable for React Native */}
+    </Text>
   );
 };
    

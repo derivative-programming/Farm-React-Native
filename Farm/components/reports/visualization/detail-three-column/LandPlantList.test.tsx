@@ -7,10 +7,11 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {ReportDetailThreeColLandPlantList} from "./LandPlantList";
 import * as ReportService from "../../services/LandPlantList";
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
 
 const onRowSelect = jest.fn();
 const onRowUnselect = jest.fn();

@@ -1,5 +1,6 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
+import { Text } from "native-base";
    
 export interface ReportColumnDisplayMoneyProps {
   forColumn:string
@@ -15,7 +16,7 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
   value, 
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   
@@ -47,9 +48,14 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 
     return result;
   }
+  
+  if (!isVisible) return null;
 
   return (
-    <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatMoney()}</td>
+    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatMoney()}</td>
+    <Text testID={groupName} /* Add additional styling for text-nowrap equivalent */>
+      {formatMoney()} {/* Ensure this function is suitable for React Native */}
+    </Text>
   );
 };
    

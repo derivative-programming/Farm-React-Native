@@ -1,6 +1,6 @@
-import React, { FC, ReactElement,} from "react";
-import { Form, Col, ListGroup } from "react-bootstrap";
+import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
+import { Box, VStack, Text, Checkbox } from "native-base";
    
 export interface ReportColumnDisplayCheckboxProps {
   forColumn:string 
@@ -16,50 +16,43 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
   label,
   isVisible = true,
   conditionallyVisible = true
-}): ReactElement => { 
+}): ReactElement | null => { 
  
   const groupName = forColumn;
   const checkboxName = groupName +'-checkbox';
   
   const displayValue = (isVisible && conditionallyVisible);
+  
+  if (!isVisible) return null;
  
   if(isChecked === null || !displayValue){
     return (
     
-      <Col data-testid={groupName} lg="5" md="5" xs="12" hidden={!isVisible}>
-        <ListGroup.Item
-            as="li"
-            className="text-start"
-        >
-            <div className="ms-2 me-auto">
-                <div className="fw-bold">{label}</div> 
-                &nbsp;
-            </div>
-
-        </ListGroup.Item>
-    </Col>
+      <Box testID={groupName} flex={1} /* Adjust flex based on lg/md/xs equivalent */>
+        <VStack space={2} /* Adjust styling as needed */>
+          <Text fontWeight="bold" testID={groupName + '-header'}>
+            {label}
+          </Text> 
+        </VStack>
+      </Box>
     );
   } else {  
     return ( 
-    <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
-        <ListGroup.Item
-            as="li"
-            className="text-start"
-        >
-            <div className="ms-2 me-auto">
-                <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
-                <Form.Check 
-                  readOnly={true}
-                  type="checkbox"
-                  data-testid={checkboxName}
-                  id={checkboxName}
-                  name={checkboxName} 
-                  checked={isChecked}
-                  />
-            </div>
-
-        </ListGroup.Item>
-    </Col>
+      <Box testID={groupName} flex={1} /* Adjust flex based on lg/md/xs equivalent */>
+        <VStack space={2} /* Adjust styling as needed */>
+          <Text fontWeight="bold" testID={groupName + '-header'}>
+            {label}
+          </Text>
+          <Checkbox
+            value={checkboxName}
+            testID={checkboxName}
+            isChecked={isChecked}
+            isReadOnly // If the checkbox is meant to be read-only
+          >
+            {/* Checkbox label if needed */}
+          </Checkbox>
+        </VStack>
+      </Box>
     );
   }
 };

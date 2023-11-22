@@ -1,5 +1,5 @@
 import React, { FC, ReactElement,} from "react";
-import { Button, Form, Card, Col, ListGroup } from "react-bootstrap";
+import { Box, Text, VStack } from 'native-base';
 import "../../../../../App.scss"; 
 import moment from "moment";
    
@@ -17,7 +17,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
   label,
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn +'-column';
   
@@ -51,19 +51,31 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
     return result;
   }
 
-  return ( 
-    <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!displayValue}>
-        <ListGroup.Item
-            as="li"
-            className="text-start"
-        >
-            <div className="ms-2 me-auto">
-                <div className="fw-bold">{label}</div>
-                {formatDate()}&nbsp;
-            </div>
+  if (!displayValue) return null;
 
-        </ListGroup.Item>
-    </Col>
+  return ( 
+    // <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!displayValue}>
+    //     <ListGroup.Item
+    //         as="li"
+    //         className="text-start"
+    //     >
+    //         <div className="ms-2 me-auto">
+    //             <div className="fw-bold">{label}</div>
+    //             {formatDate()}&nbsp;
+    //         </div>
+
+    //     </ListGroup.Item>
+    // </Col>
+    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+      <VStack space={2} /* Adjust styling as needed */>
+        <Text fontWeight="bold">
+          {label}
+        </Text>
+        <Text>
+          {formatDate()} {/* Ensure the function works correctly in React Native */}
+        </Text>
+      </VStack>
+    </Box>
   );
 };
    

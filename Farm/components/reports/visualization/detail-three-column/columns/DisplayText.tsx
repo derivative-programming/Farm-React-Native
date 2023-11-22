@@ -1,5 +1,5 @@
 import React, { FC, ReactElement,} from "react";
-import { Col, ListGroup } from "react-bootstrap";
+import { Box, Text } from "native-base";
 import "../../../../../App.scss"; 
    
 export interface ReportColumnDisplayTextProps {
@@ -16,7 +16,7 @@ export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
   label,
   isVisible = true,
   conditionallyVisible = true
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn;
   
@@ -37,20 +37,31 @@ export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
     
     return value;
   }
+  
+  if (!isVisible) return null;
 
   return ( 
-    <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
-        <ListGroup.Item
-            as="li"
-            className="text-start"
-        >
-            <div className="ms-2 me-auto">
-                <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
-                {formatText()}&nbsp;
-            </div>
+    // <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
+    //     <ListGroup.Item
+    //         as="li"
+    //         className="text-start"
+    //     >
+    //         <div className="ms-2 me-auto">
+    //             <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
+    //             {formatText()}&nbsp;
+    //         </div>
 
-        </ListGroup.Item>
-    </Col>
+    //     </ListGroup.Item>
+    // </Col>
+    
+    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+      <Text fontWeight="bold" testID={groupName + '-header'}>
+        {label}
+      </Text>
+      <Text>
+        {formatText()} 
+      </Text>
+    </Box>
   );
 };
    

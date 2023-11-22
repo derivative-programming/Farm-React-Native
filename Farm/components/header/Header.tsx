@@ -1,13 +1,19 @@
 import React, { FC, ReactElement, useContext } from "react";
-import { Dropdown, Nav, NavItem } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Dropdown, Nav, NavItem, View } from "native-base";
+import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from "../../context/authContext"; 
 import useAnalyticsDB from "../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../services/analyticsService";
+import { StackNavigationProp } from "@react-navigation/stack"; 
+import RootStackParamList from "../../screens/rootStackParamList";
+import * as RouteNames from '../../constants/routeNames';
+
+type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 const Header: FC = (): ReactElement => {
   const authContext = useContext(AuthContext);
-  const navigate = useNavigate();
+  const navigation = useNavigation<ScreenNavigationProp>();
+  
   const { logClick } = useAnalyticsDB();
 
   const onLogout = () => {
@@ -21,29 +27,29 @@ const Header: FC = (): ReactElement => {
   };
 
   const onLogin = () => {
-    logClick("Header","login","");
-    navigate("/");
+    logClick("Header","login",""); 
+    navigation.navigate(RouteNames.TAC_LOGIN, { code: "00000000-0000-0000-0000-000000000000" });
   };
   const onDashboard = () => {
     logClick("Header","dashboard","");
-    navigate("/");
+    navigation.navigate("/");
   };
   const onProfile = () => {
-    logClick("Header","profile","");
-    navigate("/customer-user-update-profile/00000000-0000-0000-0000-000000000000");
+    logClick("Header","profile",""); 
+    navigation.navigate("CustomerUserUpdateProfile", { code: "00000000-0000-0000-0000-000000000000" });
   };
   const onAdminDashboard = () => {
     logClick("Header","admin","");
-    navigate("/customer-admin-dashboard/00000000-0000-0000-0000-000000000000");
+    navigation.navigate("/customer-admin-dashboard/00000000-0000-0000-0000-000000000000");
   };
   const onConfigDashboard = () => {
     logClick("Header","config","");
-    navigate("/pac-config-dashboard/00000000-0000-0000-0000-000000000000");
+    navigation.navigate("/pac-config-dashboard/00000000-0000-0000-0000-000000000000");
   };
 
   const onRegister = () => {
-    logClick("Header","register","");
-    navigate("/tac-register");
+    logClick("Header","register",""); 
+    navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   };
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -56,11 +62,11 @@ const Header: FC = (): ReactElement => {
     setIsHovered(false);
   };
   return (
-    <div className="mt-2">
-      <div className="header-container h-85 d-flex align-items-center justify-content-between px-40">
-        <div className=" pt-2 pr-5 logo-design" ><h4>NewCo Inc.</h4></div>
-        <div className="d-flex align-items-center">
-          <div className="d-none d-md-flex ">
+    <View>
+      <View className="header-container h-85 d-flex align-items-center justify-content-between px-40">
+        <View className=" pt-2 pr-5 logo-design" ><h4>NewCo Inc.</h4></View>
+        <View>
+          <View className="d-none d-md-flex ">
           <Nav className="menu-options-container justify-content-end">
             {authContext && authContext.token ? (  
               <>
@@ -69,9 +75,9 @@ const Header: FC = (): ReactElement => {
                 onMouseLeave={handleMouseLeave}
               >
                 <span
-                  data-testid="header-config-dashboard-link"
+                  testID="header-config-dashboard-link"
                   className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                  onClick={onConfigDashboard}
+                  onPress={onConfigDashboard}
                 >
                   {authContext && authContext.token && authContext.roles.includes('Config') === true ? "Config" : null}
                 </span>
@@ -81,9 +87,9 @@ const Header: FC = (): ReactElement => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
-                    data-testid="header-admin-dashboard-link"
+                    testID="header-admin-dashboard-link"
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onAdminDashboard}
+                    onPress={onAdminDashboard}
                   >
                     {authContext && authContext.token && authContext.roles.includes('Admin') === true ? "Admin" : null}
                   </span>
@@ -93,9 +99,9 @@ const Header: FC = (): ReactElement => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
-                    data-testid="header-dashboard-link"
+                    testID="header-dashboard-link"
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onDashboard}
+                    onPress={onDashboard}
                   >
                     {authContext && authContext.token && authContext.roles.includes('User') === true ? "Dashboard" : null}
                   </span>
@@ -106,9 +112,9 @@ const Header: FC = (): ReactElement => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
-                    data-testid="header-profile-link"
+                    testID="header-profile-link"
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onProfile}
+                    onPress={onProfile}
                   >
                     {authContext && authContext.token && authContext.roles.includes('User') === true ? "Profile" : null}
                   </span>
@@ -120,9 +126,9 @@ const Header: FC = (): ReactElement => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
-                    data-testid='header-logout-link'
+                    testID='header-logout-link'
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onLogout}
+                    onPress={onLogout}
                   >
                     {authContext && authContext.token ? "Log Out" : null}
                   </span>
@@ -135,22 +141,22 @@ const Header: FC = (): ReactElement => {
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
-                    data-testid='header-login-link'
+                    testID='header-login-link'
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onLogin}
+                    onPress={onLogin}
                   >
                     {authContext && authContext.token ? null : "Log In"}
                   </span>
                 </NavItem>
                 
                 <NavItem
-                  data-testid='header-register-link'
+                  testID='header-register-link'
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
                   <span
                     className={`nav-link${isHovered ? ' text-underline' : ''}`}
-                    onClick={onRegister}
+                    onPress={onRegister}
                   >
                     {authContext && authContext.token ? null : "Register"}
                   </span>
@@ -159,10 +165,10 @@ const Header: FC = (): ReactElement => {
               )} 
         </Nav>
             
-          </div>
-          <div className="mobile-menu">
+          </View>
+          <View className="mobile-menu">
             <Dropdown>
-              <Dropdown.Toggle  id="dropdown-basic"  data-testid="header-dropdown-menu">
+              <Dropdown.Toggle  id="dropdown-basic"  testID="header-dropdown-menu">
                 <hr></hr>
                 <hr></hr>
                 <hr></hr>
@@ -173,52 +179,52 @@ const Header: FC = (): ReactElement => {
                   <>
                 
                     <Dropdown.Item 
-                      data-testid="header-dashboard-link"
-                      onClick={onDashboard}>
+                      testID="header-dashboard-link"
+                      onPress={onDashboard}>
                   
                       Dashboard
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      data-testid="header-profile-link"
-                      onClick={onProfile}>
+                      testID="header-profile-link"
+                      onPress={onProfile}>
                   
                       Profile
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      data-testid="header-dashboard-link"
-                      onClick={onAdminDashboard}>
+                      testID="header-dashboard-link"
+                      onPress={onAdminDashboard}>
                   
                       
                       {authContext && authContext.token && authContext.roles.includes('Admin') === true ? "Admin" : null}
                     </Dropdown.Item>
                     <Dropdown.Item 
-                      data-testid="header-dashboard-link"
-                      onClick={onConfigDashboard}>
+                      testID="header-dashboard-link"
+                      onPress={onConfigDashboard}>
                   
                       
                       {authContext && authContext.token && authContext.roles.includes('Config') === true ? "Config" : null}
                     </Dropdown.Item>
                     <Dropdown.Item
-                      data-testid="header-logout-link"
-                      onClick={onLogout}> Logout</Dropdown.Item>
+                      testID="header-logout-link"
+                      onPress={onLogout}> Logout</Dropdown.Item>
                   </>
                 ) : (
                   <>
                     <Dropdown.Item
-                      data-testid="header-login-link" 
-                      onClick={onLogin}> Login</Dropdown.Item>
+                      testID="header-login-link" 
+                      onPress={onLogin}> Login</Dropdown.Item>
                     <Dropdown.Item
-                      data-testid="header-register-link" 
-                      onClick={onRegister}> Register</Dropdown.Item>
+                      testID="header-register-link" 
+                      onPress={onRegister}> Register</Dropdown.Item>
                   </>
                 )}
               </Dropdown.Menu>
             </Dropdown>
-          </div>
-        </div>
-      </div>
+          </View>
+        </View>
+      </View>
       <hr/>
-    </div>
+    </View>
 
   );
 };

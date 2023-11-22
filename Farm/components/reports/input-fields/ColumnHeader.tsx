@@ -24,23 +24,23 @@ export const ReportColumnHeader: FC<ReportColumnHeaderProps> = ({
 
   return (
     <th className="cursor-pointer text-nowrap ps-2 pe-2"
-      data-testid={forColumn + '-header'}
+      testID={forColumn + '-header'}
       id={forColumn + '-header'}
-      hidden={!isVisible}
-      onClick={() => onSort(forColumn)}
+      style={{ display: isVisible ? 'flex' : 'none' }}
+      onPress={() => onSort(forColumn)}
     >
       {label}{" "}
       <span>
         {" "} 
         {sortedColumnName === forColumn && !isSortDescending && isVisible ? ( 
             <SortDownAlt className="w-12 ms-1"  
-              data-testid={forColumn + '-header-sortDown'} 
+              testID={forColumn + '-header-sortDown'} 
             />
         ) : null}
         
         {sortedColumnName === forColumn && isSortDescending && isVisible ? ( 
             <SortUp className="w-12 ms-1"
-              data-testid={forColumn + '-header-sortUp'} 
+              testID={forColumn + '-header-sortUp'} 
             />
         ) : null}
       </span>

@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react-native";
 
 import { InitResultInstance } from "../services/init/LandPlantListInitReport";
 import HeaderLandPlantList, {
   HeaderLandPlantListProps,
 } from "./LandPlantListInitReport";
+import '@testing-library/jest-dom';
 
 const TEST_ID = "test-header";
 const LAND_NAME = "Test Land Name";

@@ -7,10 +7,11 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import FormSelectTriStateFilter from "./SelectTriStateFilter";  
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" }
 const validationSchema  = {}
@@ -24,9 +25,9 @@ describe("FormSelectTriStateFilter Component", () => {
           validationSchema={validationSchema}
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
+               
                 <FormSelectTriStateFilter label="Test Label" name="testName" />
-              </Form>  
+                
           )}
       </Formik>
     );

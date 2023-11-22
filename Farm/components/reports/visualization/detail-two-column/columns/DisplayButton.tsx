@@ -1,12 +1,11 @@
-import React, { FC, ReactElement,} from "react";
-import { Button, Form, Card, Col, ListGroup } from "react-bootstrap";
+import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
    
 export interface ReportColumnDisplayButtonProps {
   forColumn:string 
   value: string 
   buttonText:string  
-  onClick():void
+  onPress():void
   isVisible?:boolean
   isEnabled?: boolean;
   conditionallyVisible?:boolean
@@ -16,12 +15,12 @@ export interface ReportColumnDisplayButtonProps {
 export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
   forColumn,  
   buttonText, 
-  onClick,
+  onPress,
   isVisible = true,
   isEnabled = true,
   conditionallyVisible = true,
   isButtonCallToAction = false,
-}): ReactElement => { 
+}): ReactElement | null => { 
 
   const groupName = forColumn +'-column-0';
   const buttonName = groupName + '-button'; 
@@ -34,19 +33,30 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
     buttonVariant = "primary";
   }
 
+  if (!displayValue) return null;
+
   return ( 
-    <div>
-      <Button 
-        data-testid={buttonName} 
-        id={buttonName} 
-        onClick={onClick} 
-        className='' 
-        variant={buttonVariant} 
-        disabled={!isEnabled} 
-        type="button" hidden={!displayValue}>
-          {buttonText}
-      </Button>
-    </div>
+    // <div>
+    //   <Button 
+    //     data-testid={buttonName} 
+    //     id={buttonName} 
+    //     onPress={onPress} 
+    //     className='' 
+    //     variant={buttonVariant} 
+    //     disabled={!isEnabled} 
+    //     type="button" hidden={!displayValue}>
+    //       {buttonText}
+    //   </Button>
+    // </div>
+    <Button
+      testID={buttonName}
+      onPress={onPress}
+      variant={buttonVariant} // Adjust this according to NativeBase's API
+      isDisabled={!isEnabled}
+      // Additional styling can be added here
+    >
+      {buttonText}
+    </Button>
   );
 }; 
    

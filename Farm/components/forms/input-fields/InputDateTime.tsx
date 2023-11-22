@@ -1,10 +1,10 @@
-import React, { FC, ReactElement } from "react";
-import {  Form } from "react-bootstrap";
+import React, { FC, ReactElement, useState } from "react"; 
 import "../../../App.scss";
 import {useField } from 'formik';
 import moment from "moment";
-import { DatePicker } from "antd";
+import DateTimePicker from '@react-native-community/datetimepicker'; 
 import {FormInputErrorDisplay } from './InputErrorDisplay';
+import { Button, FormControl, VStack, Text } from "native-base";
    
 export interface FormInputDateTimeProps {
   name: string
@@ -22,8 +22,9 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
-}): ReactElement => {
+}): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
+  const [show, setShow] = useState(false);
 
   const getDisplayDateTime = () => {
     const dt:moment.Moment = moment.utc(
@@ -43,29 +44,59 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
   
+  if (!isVisible) return null;
+
+  
+  const onChange = (event: any, selectedDate?: Date) => {
+    const currentDate = selectedDate || selectedDateTimeLocal.toDate();
+    setShow(false);
+    helpers.setValue(moment(currentDate).utc().format("YYYY-MM-DDTHH:mm"));
+  };
+  
   return (
-    <div className="" hidden={!isVisible}>
-      <Form.Group controlId={name} className="mb-2 text-start">
-          <Form.Label data-testid={name + '-label'}>{label}</Form.Label>
-          <DatePicker
-            // ref={inputRef}
-            size="small"
-            showTime={true}
-            format="M/D/YYYY h:mm A"
-            data-testid={name} 
-            aria-label={name} 
-            placeholder={placeholder}
-            name={field.name}
-            defaultValue={selectedDateTimeLocal}
-            value={selectedDateTimeLocal}
-            onChange={(e) => helpers.setValue(moment(e).utc().format("YYYY-MM-DDTHH:mm"))}
-            onBlur={field.onBlur} 
+  //   <div className="" hidden={!isVisible}>
+  //     <Form.Group controlId={name} className="mb-2 text-start">
+  //         <Form.Label data-testid={name + '-label'}>{label}</Form.Label>
+  //         <DatePicker
+  //           // ref={inputRef}
+  //           size="small"
+  //           showTime={true}
+  //           format="M/D/YYYY h:mm A"
+  //           data-testid={name} 
+  //           aria-label={name} 
+  //           placeholder={placeholder}
+  //           name={field.name}
+  //           defaultValue={selectedDateTimeLocal}
+  //           value={selectedDateTimeLocal}
+  //           onChange={(e) => helpers.setValue(moment(e).utc().format("YYYY-MM-DDTHH:mm"))}
+  //           onBlur={field.onBlur} 
+  //           disabled={disabled}
+  //           autoFocus={autoFocus}
+  //         /> 
+  //     </Form.Group>
+  //     <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
+  // </div>
+    <VStack space={2} width="100%">
+      <FormControl isInvalid={isInvalid} isDisabled={disabled}>
+        <FormControl.Label>{label}</FormControl.Label>
+        <Button onPress={() => setShow(true)} isDisabled={disabled}>
+          {selectedDateTimeLocal.format("M/D/YYYY h:mm A") || placeholder}
+        </Button>
+        {show && (
+          <DateTimePicker
+          value={new Date(selectedDateTimeLocal.toDate())}
+            mode="datetime" 
+            // is24Hour={false}
+            display="default"
+            onChange={onChange}
             disabled={disabled}
-            autoFocus={autoFocus}
-          /> 
-      </Form.Group>
-      <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
-  </div>
+          />
+        )}
+        {meta.touched && meta.error && (
+          <Text color="red.500">{meta.error}</Text>
+        )}
+      </FormControl>
+    </VStack>
   );
 };
    

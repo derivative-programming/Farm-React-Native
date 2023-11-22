@@ -5,12 +5,13 @@ import {
   cleanup,
   screen,
   act, 
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import ReportConnectedPlantUserDetails from "./PlantUserDetails";
 import * as ReportService from "../services/PlantUserDetails";
 import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
-import { BrowserRouter } from "react-router-dom"; 
+
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
 
@@ -39,9 +40,9 @@ describe("PlantUserDetails Connected Report Component", () => {
 
     await act(async () => {
       render(
-        <BrowserRouter>
+        
           <ReportConnectedPlantUserDetails />
-        </BrowserRouter>
+        
       )
     });
   });

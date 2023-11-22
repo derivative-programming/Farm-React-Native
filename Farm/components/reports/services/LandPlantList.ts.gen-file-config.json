@@ -17,7 +17,7 @@
         "reportColumn.calculatedIsSummaryDisplayed",
         "reportColumn.calculatedIsAddedIntoExport",
         "reportColumn.isColumnSumMetricAvailable",
-        "reportColumn.isButtonClickedOnRowClick",
+        "reportColumn.isButtonPressedOnRowClick",
         "reportColumn.isConditionallyDisplayed",
         "reportColumn.isJoinedToRightColumn",
         "reportColumn.calculatedIsObjectID",

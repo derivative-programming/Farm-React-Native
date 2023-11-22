@@ -7,12 +7,12 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
-import FormConnectedTacLogin from "./TacLogin"; 
-import { BrowserRouter } from "react-router-dom";
+} from "@testing-library/react-native";
+import FormConnectedTacLogin from "./TacLogin";  
 import * as FormService from "../services/TacLogin";
 import * as InitFormService from "../services/init/TacLoginInitObjWF"; 
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 window.localStorage.setItem("@token", "sampleToken");
 
@@ -38,9 +38,9 @@ describe("TacLogin Component", () => {
     });
 
     render(
-      <BrowserRouter>
+      
         <FormConnectedTacLogin name="testForm" showProcessingAnimationOnInit={false} />
-      </BrowserRouter>
+      
     );
   });
 

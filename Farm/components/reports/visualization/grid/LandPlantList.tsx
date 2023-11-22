@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState } from "react";
-import { Button, Form, Table, Spinner } from "react-bootstrap";
+import { Button, Form,  Spinner } from "react-bootstrap";
 import "../../../../App.scss";
 import * as ReportService from "../../services/LandPlantList";
 import { ReportColumnHeader } from "../../input-fields/ColumnHeader";
@@ -17,7 +17,7 @@ export interface ReportGridLandPlantListProps {
   items: ReportService.QueryResultItem[];
   onSort(columnName: string): void;
   onExport(): void;
-  onNavigateTo(url: string): void;
+  onNavigateTo(page: string, targetContextCode:string): void
   onRefreshRequest(): void;
   currentPage: number;
   totalItemCount: number;
@@ -126,7 +126,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
     <div data-testid={name} className="w-100 mt-3">
       <div className="d-flex w-100 justify-content-left">
         <ReportInput.ReportInputButton name="multSelectButtonToEditable"
-          onClick={() => onMultSelectButtonToEditableClick()}
+          onPress={() => onMultSelectButtonToEditableClick()}
           buttonText="To Editable"
           className="mb-3 me-2"
           isButtonCallToAction={false}
@@ -134,7 +134,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
           isEnabled={true}
         />
         <ReportInput.ReportInputButton name="multSelectButtonToNotEditable"
-          onClick={() => onMultSelectButtonToNotEditableClick()}
+          onPress={() => onMultSelectButtonToNotEditableClick()}
           buttonText="To Not Editable"
           className="mb-3 me-2"
           isButtonCallToAction={false}
@@ -461,9 +461,9 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                     value={item.updateLinkPlantCode}
                     buttonText="Update"
                     isButtonCallToAction={false}
-                    onClick={() => {
+                    onPress={() => {
                       logClick("ReportGridLandPlantList","updateLinkPlantCode","");
-                      onNavigateTo("/plant-user-details/" + item.updateLinkPlantCode)
+                      onNavigateTo("PlantUserDetails", item.updateLinkPlantCode)
                     }}
                     isVisible={false}
                   />
@@ -474,7 +474,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                     buttonText="Delete"
                     isButtonCallToAction={false}
                     isVisible={true}
-                    onClick={() =>
+                    onPress={() =>
                       {
                         logClick("ReportGridLandPlantList","deleteAsyncButtonLinkPlantCode","");
                         const data: any = {};
@@ -490,9 +490,9 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                     buttonText="Details"
                     isButtonCallToAction={true}
                     isVisible={true}
-                    onClick={() => {
+                    onPress={() => {
                       logClick("ReportGridLandPlantList","detailsLinkPlantCode","");
-                      onNavigateTo("/plant-user-details/" + item.detailsLinkPlantCode);
+                      onNavigateTo("PlantUserDetails", item.detailsLinkPlantCode);
                     }}
                   />
                 </tr>
@@ -529,7 +529,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
         hidden={!showExport}
       >
         <Button data-testidid="export-button"
-          onClick={() => onExport()}
+          onPress={() => onExport()}
           className='me-md-2'
           size="sm"
           variant="secondary">

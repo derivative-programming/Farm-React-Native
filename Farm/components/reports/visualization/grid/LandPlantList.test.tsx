@@ -5,9 +5,10 @@ import {
   cleanup,
   screen,
   act, 
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {ReportGridLandPlantList} from "./LandPlantList";
 import "fake-indexeddb/auto";
+import '@testing-library/jest-dom';
  
 const onSort = jest.fn(); 
 const onExport = jest.fn(); 

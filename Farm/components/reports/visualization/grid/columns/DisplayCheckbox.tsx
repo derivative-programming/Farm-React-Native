@@ -1,6 +1,6 @@
-import React, { FC, ReactElement,} from "react";
-import { Form } from "react-bootstrap";
+import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
+import { Box, Checkbox } from "native-base";
    
 export interface ReportColumnDisplayCheckboxProps {
   forColumn:string
@@ -16,12 +16,14 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
   isChecked, 
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement => { 
+}): ReactElement | null => { 
  
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const checkboxName = groupName +'-checkbox';
   
   const displayValue = (isVisible && conditionallyVisible);
+  
+  if (!isVisible) return null;
  
   if(isChecked === null || !displayValue){ 
     return (
@@ -29,16 +31,25 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
     );
   } else {  
     return (
-      <td data-testid={groupName} hidden={!isVisible}>   
-          <Form.Check 
-            readOnly={true}
-            type="checkbox"
-            data-testid={checkboxName}
-            id={checkboxName}
-            name={checkboxName} 
-            checked={isChecked}
-            />
-      </td>
+      // <td data-testid={groupName} hidden={!isVisible}>   
+      //     <Form.Check 
+      //       readOnly={true}
+      //       type="checkbox"
+      //       data-testid={checkboxName}
+      //       id={checkboxName}
+      //       name={checkboxName} 
+      //       checked={isChecked}
+      //       />
+      // </td>
+      <Box testID={groupName} /* Additional styling can be added here */>
+        <Checkbox
+          value={checkboxName}
+          testID={checkboxName}
+          isChecked={isChecked}
+          isDisabled={true} // Makes the checkbox read-only
+          /* Additional styling for checkbox */
+        />
+      </Box>
     );
   }
 };

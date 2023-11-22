@@ -4,7 +4,7 @@ import React, {
   useContext, 
   useState,
 } from "react";
-import { Button, Form, Accordion, Row, Col, Spinner } from "react-bootstrap"; 
+import { Button, Accordion, Row, Spinner, View } from "native-base"; 
 
 import { Formik, FormikHelpers } from "formik";
 import * as ReportService from "../services/LandPlantList";
@@ -46,7 +46,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 
   let headerErrors: string[] = [];
 
-  const submitButtonClick = async (
+  const submitButtonPress = async (
     values: ReportService.QueryRequest,
     actions: FormikHelpers<ReportService.QueryRequest>
   ) => {  
@@ -61,7 +61,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
     }
   };
 
-  const resetButtonClick = () => {
+  const resetButtonPress = () => {
     logClick("ReportFilterLandPlantList","refresh","");
     setInitialValues({ ...initialQuery });
   };
@@ -84,24 +84,24 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
   }
  
   return (
-    <div className="mt-3 w-100" hidden={hidden}>
+    <View className="mt-3 w-100" hidden={hidden}>
       <Accordion defaultActiveKey={defaultAccordianKey} alwaysOpen={!isCollapsible}>
         <Accordion.Item eventKey="0">
-          <Accordion.Header onClick={onAccordianHeaderClick}
-            data-testid={name + '-header'}>Filters</Accordion.Header>
+          <Accordion.Header onPress={onAccordianHeaderClick}
+            testID={name + '-header'}>Filters</Accordion.Header>
           <Accordion.Body>
             <Formik
               enableReinitialize={true}
               initialValues={initialQuery}
               validationSchema={validationSchema}
               onSubmit={async (values, actions) => {
-                await submitButtonClick(values, actions);
+                await submitButtonPress(values, actions);
               }}
             >
               {(props) => (
                 <Form
                   name={name}
-                  data-testid={name}
+                  testID={name}
                   onReset={props.handleReset}
                   onSubmit={props.handleSubmit}
                 >
@@ -208,18 +208,18 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
                     </Col> 
                   </Row>
                   <Row>
-                    <Col xl="12" lg="12" md="12" xs="12">
-                      <div className="d-flex h-100 align-items-end justify-content-end">
+                    <Col xl="12" >
+                      <View className="d-flex h-100 align-items-end justify-content-end">
                         <Button 
                           type="submit"
                           className="ms-2 mt-3"
-                          data-testid="submit-button"
+                          testID="submit-button"
                         >
                           {loading && (
                             <Spinner
                               as="span"
                               animation="border"
-                              size="sm"
+                              
                               role="status"
                               aria-hidden="true"
                               className="spinner-button"
@@ -231,22 +231,22 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
                         <Button
                           className="ms-2 mt-3"
                           type="reset"
-                          onClick={() => props.resetForm() as any}
+                          onPress={() => props.resetForm() as any}
                           variant="secondary"
-                          data-testid="reset"
+                          testID="reset"
                         >
                           Reset
                         </Button>
-                      </div>
+                      </View>
                     </Col>
                   </Row>
-                </Form>
+                </ Form>
               )}
             </Formik>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
-    </div>
+    </View>
   );
 };
 

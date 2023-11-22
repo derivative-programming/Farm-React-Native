@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Container, Row, View, Col } from "native-base";
 import useAnalyticsDB from "../../hooks/useAnalyticsDB"; 
 
 const GDPRBanner: React.FC = () => {
@@ -22,7 +22,7 @@ const GDPRBanner: React.FC = () => {
   return (
     <>
       {showBanner && (
-        <div
+        <View
           className="fixed-bottom p-2 text-white"
           style={{
             zIndex: 9999,
@@ -48,7 +48,7 @@ const GDPRBanner: React.FC = () => {
               <Col xs="auto">
                 <Button
                   variant="light"
-                  onClick={handleAccept}
+                  onPress={handleAccept}
                   style={{ fontSize: "14px" }}
                 >
                   Accept
@@ -56,7 +56,7 @@ const GDPRBanner: React.FC = () => {
               </Col>
             </Row>
           </Container>
-        </div>
+        </View>
       )}
     </>
   );

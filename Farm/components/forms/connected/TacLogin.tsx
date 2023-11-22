@@ -6,8 +6,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, Form, Card, Spinner } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Spinner, View } from "native-base"; 
+import { useNavigation } from '@react-navigation/native';
 import { Formik, FormikHelpers } from "formik"; 
 
 import * as FormService from "../services/TacLogin";
@@ -17,14 +17,21 @@ import { AuthContext } from "../../../context/authContext";
 import * as FormInput from "../input-fields"; 
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../../services/analyticsService";
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
+import * as RouteNames from '../../../constants/routeNames';
 
 
 export interface FormProps {
+  tacCode: string;
   name?: string;
   showProcessingAnimationOnInit?: boolean;
 }
 
+type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 export const FormConnectedTacLogin: FC<FormProps> = ({
+  tacCode = "00000000-0000-0000-0000-000000000000",
   name = "formConnectedTacLogin",
   showProcessingAnimationOnInit = true,
 }): ReactElement => {
@@ -43,9 +50,9 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   const { logClick } = useAnalyticsDB();
   
 
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const contextCode: string = id ?? "00000000-0000-0000-0000-000000000000";
+  const navigation = useNavigation<ScreenNavigationProp>();
+  
+  const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
 
   const validationSchema = FormValidation.buildValidationSchema();
 
@@ -83,7 +90,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     return errors;
   };
 
-  const submitButtonClick = async (
+  const submitButtonPress = async (
     values: FormService.SubmitRequest,
     actions: FormikHelpers<FormService.SubmitRequest>
   ) => {
@@ -127,9 +134,9 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     }
   };
 
-  const registerButtonClick = () => {
-    logClick("FormConnectedTacLogin","otherButton","");
-    navigate("/tac-register");
+  const registerButtonPress = () => {
+    logClick("FormConnectedTacLogin","otherButton",""); 
+    navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   };
 
   useEffect(() => {
@@ -143,95 +150,8 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   }, []);
 
   return (
-    <div 
-      className="row justify-content-center"
-    
-      data-testid="formConnectedTacLogin"
-    >
-      <div className="col-md-7 col-lg-6 col-xl-5">
-        <Card
-          className=" overflow-y-auto border-0 rounded mt-1 page-card"
-        
-        >
-          <h2 data-testid="page-title-text">Log In</h2>
-          <h6 data-testid="page-intro-text">Please enter your email and password.</h6>
-
-          <Formik
-            enableReinitialize={true}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            validate={handleValidate}
-            onSubmit={async (values, actions) => {
-              await submitButtonClick(values, actions);
-            }}
-          >
-            {(props) => (
-              <Form
-                className="m-0  w-100"
-                name={name}
-                data-testid={name}
-                onReset={props.handleReset}
-                onSubmit={props.handleSubmit}
-              >
-                { initForm && showProcessingAnimationOnInit ?
-                  <div className="text-center bg-secondary bg-opacity-25">
-                      <Spinner animation="border" className="mt-2 mb-2" />
-                  </div>
-                  : 
-                  <div>
-                    <FormInput.ErrorDisplay
-                      name="headerErrors"
-                      errorArray={headerErrors}
-                    />
-                    <FormInput.FormInputEmail
-                      name="email"
-                      label="Email"
-                      autoFocus={true}
-                    />
-                    <FormInput.FormInputPassword name="password" label="Password" />
-                  </div>
-                }
-                <div
-                
-                  className="d-flex  justify-content-between mt-3 p-0"
-                >
-                  <Button
-                    type="submit"
-                    data-testid="submit-button" 
-                    >
-                    {
-                      loading &&
-                      (<Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        className="spinner-button"
-                      />)
-                    }
-                    <span className="sr-only">Login</span>
-
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      registerButtonClick();
-                    }}
-                    variant="secondary"
-                    data-testid="other-button"
-                  >
-                    Register
-                  </Button> 
-                </div>
-              </Form>
-            )}
-          </Formik>
-          <div className="mt-3">
-            <h6 data-testid="page-footer-text"></h6>
-          </div>
-        </Card>
-      </div>
-    </div>
+    <View> 
+    </View>
   );
 };
 

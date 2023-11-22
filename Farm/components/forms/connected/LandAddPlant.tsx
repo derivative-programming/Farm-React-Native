@@ -5,10 +5,9 @@ import React, {
   useEffect,
   useRef,
   useState,
-} from "react";
-import { Button, Form, Card, Spinner } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+} from "react";  
 import { Formik, FormikHelpers } from "formik";
+import { useNavigation } from '@react-navigation/native';
 import * as FormService from "../services/LandAddPlant";
 import * as FormValidation from "../validation/LandAddPlant";
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
@@ -18,13 +17,20 @@ import * as InputFields from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../../services/analyticsService";
+import { Box, VStack, Text, FormControl, Spinner, Button } from "native-base";
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
 
 export interface FormProps {
+  landCode:string;
   name?: string;
   showProcessingAnimationOnInit?: boolean;
-}
+} 
+
+type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export const FormConnectedLandAddPlant: FC<FormProps> = ({
+  landCode = "00000000-0000-0000-0000-000000000000",
   name = "formConnectedLandAddPlant",
   showProcessingAnimationOnInit = true,
 }): ReactElement => {
@@ -39,16 +45,17 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   const initHeaderErrors: string[] = [];
   const [headerErrors, setHeaderErrors] = useState(initHeaderErrors);
   const { logClick } = useAnalyticsDB();
+  
+  const navigation = useNavigation<ScreenNavigationProp>();
 
   let lastApiSubmission: any = {
     request: new FormService.SubmitResultInstance(),
     response: new FormService.SubmitRequestInstance(),
   };
   const isInitializedRef = useRef(false);
-
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const contextCode: string = id ?? "00000000-0000-0000-0000-000000000000";
+ 
+  
+  const contextCode: string = landCode ?? "00000000-0000-0000-0000-000000000000";
 
   const validationSchema = FormValidation.buildValidationSchema();
 
@@ -130,7 +137,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   };
 
   const submitButtonNavigateTo = () => {
-    navigateTo("land-plant-list", "landCode");
+    navigateTo("LandPlantList", "landCode");
   };
 
   useEffect(() => {
@@ -158,54 +165,41 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
           return;
         }
       }
-    });
-    const url = "/" + page + "/" + targetContextCode; 
-    navigate(url);
+    }); 
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
+ 
+  const handleSubmit = async (
+    values: any,//InitialValues,
+    actions: any//FormikHelpers<InitialValues>
+  ) => {
+    // Adapt submission logic
+  };
+  
+  return ( 
+    <Box flex={1} justifyContent="center" alignItems="center">
+    <VStack space={4} width="90%">
+        <Text fontSize="xl" testID="page-title-text">Add Plant</Text>
+        <Text fontSize="md" testID="page-intro-text">Add plant intro text.</Text>
 
-  return (
-    <div
-    className="row justify-content-center"
-
-    >
-      <div className="col-md-7 col-lg-6 col-xl-5">
-        <Card
-          className="mt-1 page-card"
-
+        <HeaderLandAddPlant
+          name="headerLandAddPlant"
+          initData={initPageResponse}
+          isHeaderVisible={true}
+        />
+      <Formik
+          enableReinitialize={true}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
         >
-          <h2 data-testid="page-title-text">Add Plant</h2>
-          <h6 data-testid="page-intro-text">Add plant intro text.</h6>
-
-          <HeaderLandAddPlant  
-            name="headerLandAddPlant"
-            initData={initPageResponse}
-            isHeaderVisible={true}
-          />
-
-          <Formik
-            enableReinitialize={true}
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            validate={handleValidate}
-            onSubmit={async (values, actions) => {
-              await submitClick(values, actions);
-            }}
-          >
-            {(props) => (
-              <Form
-                className=""
-                name={name}
-                data-testid={name}
-                onReset={props.handleReset}
-                onSubmit={props.handleSubmit}
-              >
-                { initForm && showProcessingAnimationOnInit ?
-                  <div className="text-center  bg-secondary bg-opacity-25">
-                      <Spinner animation="border" className="mt-2 mb-2" />
-                  </div>
-                  : 
-                  <div> 
-                    <InputFields.ErrorDisplay
+          {({ handleSubmit, handleReset, isSubmitting }) => (
+            <FormControl>
+              {initForm && showProcessingAnimationOnInit ?
+                <Spinner size="lg" />
+                :
+                <VStack space={4}>
+                  <InputFields.ErrorDisplay
                       name="headerErrors"
                       errorArray={headerErrors}
                     />
@@ -281,55 +275,39 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                       label="Sample Image Upload"
                       isVisible={true}
                     />
-                  </div>
-                }
-                <div className="">
-                  <Button type="submit" data-testid="submit-button"
-                    className="me-2 mt-3">
-                    {
-                      loading &&
-                      (<Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        className="spinner-button"
-                      />)
-                    }
-                    <span className="sr-only">OK Button Text</span>
+                </VStack>
+              }
 
-                  </Button>
-                  <InputFields.FormInputButton name="cancel-button"
-                    buttonText="Cancel Button Text"
-                    onClick={() => {
+              <Button 
+                // onPress={handleSubmit} 
+                mt="3" isLoading={isSubmitting} testID="submit-button">
+                OK Button Text
+              </Button> 
+              <InputFields.FormInputButton name="cancel-button"
+                    buttonText="Cancel Button Text" 
+                    onPress={() => {
                       logClick("FormConnectedLandAddPlant","cancel","");
-                      navigateTo("land-plant-list", "landCode");
+                      navigateTo("LandPlantList", "landCode");
                     }}
                     isButtonCallToAction={false}
                     isVisible={true}
                     className="me-2 mt-3"
                   />
-                  <InputFields.FormInputButton name="other-button"
-                    buttonText="Go To Dashboard"
-                    onClick={() => {
-                      logClick("FormConnectedLandAddPlant","otherButton","");
-                      navigateTo("tac-farm-dashboard", "tacCode");
-                    }}
-                    isButtonCallToAction={false}
-                    isVisible={true}
-                    className="me-2 mt-3"
-                  />
-                </div>
-              </Form>
-            )}
-          </Formik>
-          <div className="mt-3">
-            <h6 data-testid="page-footer-text">Add plant form footer text</h6>
-          </div>
-        </Card>
-      </div>
-    </div>
+              <InputFields.FormInputButton name="other-button"
+                buttonText="Go To Dashboard" 
+                onPress={() => {
+                  logClick("FormConnectedLandAddPlant","otherButton","");
+                  navigateTo("TacFarmDashboard", "tacCode");
+                }}
+                isButtonCallToAction={false}
+                isVisible={true}
+                className="me-2 mt-3"
+              />
+            </FormControl>
+          )}
+        </Formik>
+    </VStack>
+    </Box>
   );
 };
 

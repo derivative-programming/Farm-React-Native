@@ -1,11 +1,11 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from "react-bootstrap";
+import { Button } from "native-base";
 import "../../../App.scss"; 
    
 export interface FormInputButtonProps {
   name: string
   buttonText: string
-  onClick(): void
+  onPress(): void
   isButtonCallToAction?:boolean 
   isVisible?:boolean
   isEnabled?:boolean
@@ -16,7 +16,7 @@ export interface FormInputButtonProps {
 export const FormInputButton: FC<FormInputButtonProps> = ({
   name,
   buttonText,
-  onClick,
+  onPress,
   isButtonCallToAction = true, 
   isVisible = true,
   isEnabled = true,
@@ -32,13 +32,12 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
 
       
   return (
-    <Button data-testid={name}
+    <Button testID={name}
         id={name}
-        onClick={onClick}
-        hidden={!isVisible}
-        disabled={!isEnabled}
-        autoFocus={autoFocus}
-        className={className}
+        onPress={onPress}
+        style={{ display: isVisible ? 'flex' : 'none' }}
+        disabled={!isEnabled} 
+        isFocused={autoFocus} 
         variant={buttonVariant}>
         {buttonText}
     </Button>

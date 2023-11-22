@@ -7,14 +7,15 @@ import {
   act,
   fireEvent,
   waitFor,
-} from "@testing-library/react";
+} from "@testing-library/react-native";
 import {ReportInputButton} from "./InputButton";   
 import { Formik } from "formik";
-import { Form } from "react-bootstrap";
+
+import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
 
-const mockedOnClick = jest.fn();
+const mockedonPress = jest.fn();
  
 describe("ReportInputButton Component", () => {
   // render the ReportInputButton component
@@ -24,9 +25,9 @@ describe("ReportInputButton Component", () => {
           initialValues={initialValues} 
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-              <Form onReset={props.handleReset} onSubmit={props.handleSubmit}> 
-                <ReportInputButton buttonText="Test Label" name="testName" onClick={mockedOnClick}/> 
-              </Form>  
+               
+                <ReportInputButton buttonText="Test Label" name="testName" onPress={mockedonPress}/> 
+                
           )}
       </Formik>
     );
