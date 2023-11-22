@@ -6,73 +6,67 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Button, Card, Spinner, View } from "native-base"; 
-import { useNavigation } from '@react-navigation/native';
-import * as RouteNames from '../../../constants/routeNames';
 import { Formik, FormikHelpers } from "formik";
+import { useNavigation } from '@react-navigation/native';
 import * as FormService from "../services/TacRegister";
 import * as FormValidation from "../validation/TacRegister";
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
-import { AuthContext } from "../../../context/authContext"; 
-import * as FormInput from "../input-fields";
-import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
+import HeaderTacRegister from "../headers/TacRegisterInitObjWF";
+import { AuthContext } from "../../../context/authContext";
+import * as InputFields from "../input-fields";
+import * as Lookups from "../lookups";
+import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import * as AnalyticsService from "../../services/analyticsService";
+import { Box, VStack, Text, FormControl, Spinner, Button } from "native-base";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export interface FormProps {
-  tacCode: string;
+  tacCode:string;
   name?: string;
   showProcessingAnimationOnInit?: boolean;
 }
-
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
-
 export const FormConnectedTacRegister: FC<FormProps> = ({
   tacCode = "00000000-0000-0000-0000-000000000000",
   name = "formConnectedTacRegister",
   showProcessingAnimationOnInit = true,
 }): ReactElement => {
+  const [initPageResponse, setInitPageResponse] = useState(
+    new InitFormService.InitResultInstance()
+  );
   const [initialValues, setInitialValues] = useState(
     new FormService.SubmitRequestInstance()
-  ); 
+  );
   const [loading, setLoading] = useState(false);
   const [initForm, setInitForm] = useState(showProcessingAnimationOnInit);
+  const initHeaderErrors: string[] = [];
+  const [headerErrors, setHeaderErrors] = useState(initHeaderErrors);
+  const { logClick } = useAnalyticsDB();
+  const navigation = useNavigation<ScreenNavigationProp>();
   let lastApiSubmission: any = {
     request: new FormService.SubmitResultInstance(),
     response: new FormService.SubmitRequestInstance(),
   };
   const isInitializedRef = useRef(false);
-  const { logClick } = useAnalyticsDB();
-
-  const navigation = useNavigation<ScreenNavigationProp>();
-  
   const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
-
   const validationSchema = FormValidation.buildValidationSchema();
-
   const authContext = useContext(AuthContext);
-
-  let headerErrors: string[] = [];
-
   const handleInit = (responseFull: any) => {
-    const initFormResponse: InitFormService.InitResult = responseFull.data;
-
-    if (!initFormResponse.success) { 
+    const response: InitFormService.InitResult = responseFull.data;
+    if (!response.success) {
+      setHeaderErrors(["An unexpected error occurred."]);
       return;
     }
-
-    setInitialValues({ ...FormService.buildSubmitRequest(initFormResponse) }); 
+    setInitPageResponse({ ...response });
   };
-
   const handleValidate = async (values: FormService.SubmitRequest) => {
     let errors: any = {};
     if (!lastApiSubmission.response.success) {
-      headerErrors = FormService.getValidationErrors(
+      setHeaderErrors(FormService.getValidationErrors(
         "",
         lastApiSubmission.response
-      );
+      ));
       Object.entries(values).forEach(([key, value]) => {
         const fieldErrors: string = FormService.getValidationErrors(
           key,
@@ -85,39 +79,46 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     }
     return errors;
   };
-
-  const submitButtonPress = async (
+  const submitClick = async (
     values: FormService.SubmitRequest,
     actions: FormikHelpers<FormService.SubmitRequest>
   ) => {
     try {
       setLoading(true);
       logClick("FormConnectedTacRegister","submit","");
-      const responseFull: any = await FormService.submitForm(values,contextCode);
+      const responseFull: any = await FormService.submitForm(
+        values,
+        contextCode
+      );
       const response: FormService.SubmitResult = responseFull.data;
       lastApiSubmission = {
         request: { ...values },
         response: { ...response },
       };
       if (!response.success) {
-        headerErrors = FormService.getValidationErrors("", response);
+        setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
-          ([key, value]) =>
-            actions.setFieldError(
+          ([key, value]) => {
+            const fieldErrors: string = FormService.getValidationErrors(
               key,
-              FormService.getValidationErrors(key, response).join(",")
-            )
+              response
+            ).join(",");
+            actions.setFieldError(key, fieldErrors);
+          }
         );
         return;
       }
+
       authContext.setToken(response.apiKey);
       authContext.setRoles(response.roleNameCSVList);
       AsyncStorage.setItem("@token", response.apiKey);
       AsyncStorage.setItem("customerCode", response.customerCode);
       AsyncStorage.setItem("email", response.email);
       AnalyticsService.start();
+
       actions.setSubmitting(false);
       actions.resetForm();
+      submitButtonNavigateTo();
     } catch (error) {
       actions.setSubmitting(false);
     }
@@ -125,12 +126,9 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       setLoading(false);
     }
   };
-
-  const backToLoginButtonPress = () => {
-    logClick("FormConnectedTacRegister","otherButton","");
-    navigation.navigate(RouteNames.TAC_LOGIN, { code: "00000000-0000-0000-0000-000000000000" });
+  const submitButtonNavigateTo = () => {
+    navigateTo("TacFarmDashboard", "tacCode");
   };
-
   useEffect(() => {
     if (isInitializedRef.current) {
       return;
@@ -140,11 +138,98 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       .then((response) => handleInit(response))
       .finally(() => {setInitForm(false)});
   }, []);
-
+  useEffect(() => {
+    const newInitalValues = FormService.buildSubmitRequest(initPageResponse);
+    setInitialValues({ ...newInitalValues });
+  }, [initPageResponse]);
+  const navigateTo = (page: string, codeName: string) => {
+    let targetContextCode = contextCode;
+    Object.entries(initPageResponse).forEach(([key, value]) => {
+      if (key === codeName) {
+        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+          targetContextCode = value;
+        } else {
+          return;
+        }
+      }
+    });
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+  const handleSubmit = async (
+    values: any,//InitialValues,
+    actions: any//FormikHelpers<InitialValues>
+  ) => {
+    // Adapt submission logic
+  };
   return (
-    <View> 
-    </View>
+    <Box flex={1} py="5" alignItems="center">
+    <VStack space={4} width="90%">
+        <Text fontSize="xl" testID="page-title-text">Create your account</Text>
+        <Text fontSize="md" testID="page-intro-text">A Couple Details Then We're Off!</Text>
+        <HeaderTacRegister
+          name="headerTacRegister"
+          initData={initPageResponse}
+          isHeaderVisible={false}
+        />
+      <Formik
+          enableReinitialize={true}
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleSubmit, handleReset, isSubmitting }) => (
+            <FormControl>
+              {initForm && showProcessingAnimationOnInit ?
+                <Spinner size="lg" />
+                :
+                <VStack space={4}>
+                  <InputFields.ErrorDisplay
+                      name="headerErrors"
+                      errorArray={headerErrors}
+                    />
+                    <InputFields.FormInputEmail name="email"
+                      label="Email"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputPassword name="password"
+                      label="Password"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputPassword name="confirmPassword"
+                      label="Confirm Password"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputText name="firstName"
+                      label="First Name"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputText name="lastName"
+                      label="Last Name"
+                      isVisible={true}
+                    />
+                </VStack>
+              }
+              <Button
+                // onPress={handleSubmit}
+                mt="3" isLoading={isSubmitting} testID="submit-button">
+                OK Button Text
+              </Button>
+              <InputFields.FormInputButton name="cancel-button"
+                    buttonText="Back To Log In"
+                    onPress={() => {
+                      logClick("FormConnectedTacAddCustomer","cancel","");
+                      navigateTo("TacLogin", "tacCode");
+                    }}
+                    isButtonCallToAction={false}
+                    isVisible={true}
+                  />
+
+            </FormControl>
+          )}
+        </Formik>
+    </VStack>
+    </Box>
   );
 };
-
 export default FormConnectedTacRegister;
+

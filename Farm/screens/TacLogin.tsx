@@ -18,13 +18,13 @@ type TacLoginScreenProps = {
 const TacLoginScreen: React.FC<TacLoginScreenProps> = ({ route, navigation }) => {
 
   const tacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
- 
+
   return (
     <VStack flex={1}>
-      <ScreenHeader /> 
+      <ScreenHeader />
       <FormConnectedTacLogin tacCode={tacCode} name='tac-login'/>
     </VStack>
   );
 };
- 
+
 export default TacLoginScreen;

@@ -5,6 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import ScreenHeader from '../components/header/ScreenHeader';
 import { HStack, Text, VStack } from 'native-base';
+import { FormConnectedTacRegister } from '../components/forms/connected';
 
 type TacRegisterScreenRouteProp = RouteProp<RootStackParamList, 'TacRegister'>;
 type TacRegisterScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TacRegister'>;
@@ -17,13 +18,13 @@ type TacRegisterScreenProps = {
 const TacRegisterScreen: React.FC<TacRegisterScreenProps> = ({ route, navigation }) => {
 
   const tacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
- 
+
   return (
     <VStack flex={1}>
       <ScreenHeader />
-      <Text>TacRegisterScreen</Text>
+      <FormConnectedTacRegister tacCode={tacCode} name='tac-register'/>
     </VStack>
   );
 };
- 
+
 export default TacRegisterScreen;

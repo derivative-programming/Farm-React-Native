@@ -8,150 +8,122 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import FormConnectedTacRegister from "./TacRegister"; 
-
+import FormConnectedTacRegister from "./TacRegister";
 import * as FormService from "../services/TacRegister";
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
+
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
 window.AsyncStorage.setItem("@token", "sampleToken");
-
 const mockedUsedNavigate = jest.fn();
-
+const mockParams = jest.fn();
 // mock the useNavigate method
 jest.mock("react-router-dom", () => ({
   ...(jest.requireActual("react-router-dom") as any),
   useNavigate: () => mockedUsedNavigate,
+  useParams: () => mockParams.mockReturnValue({ id: "00000000-0000-0000-0000-000000000000",}),
 }));
-
 const mockFormInitService = jest.spyOn(FormService, "initForm");
 const mockFormSubmitService =  jest.spyOn(FormService, "submitForm");
 
 let formSubmitResponse = new FormService.SubmitResultInstance();
 const formInitResponse = new InitFormService.InitResultInstance();
- 
 describe("TacRegister Component", () => {
-
-  beforeEach(async() => { 
+  beforeEach(async () => {
       mockFormInitService.mockResolvedValue({
-        data: formInitResponse,
+        data: new InitFormService.InitResultInstance(),
       });
 
-    render(
-      
-        <FormConnectedTacRegister name="testForm" showProcessingAnimationOnInit={false} />
-      
-    );
-  });
+      await act(async () => {
+        render(
+            <FormConnectedTacRegister name="testForm" showProcessingAnimationOnInit={false} />
+        );
+      })
 
+  });
   // after cleanup when test-case execution is done
   afterEach(cleanup);
-
+  const initTest = async () => {
+  }
   it("renders correctly", async () => {
     expect(screen.getByTestId("testForm")).toBeInTheDocument();
+    expect(screen.getByTestId("headerErrors")).toBeInTheDocument();
     expect(screen.getByTestId("email")).toBeInTheDocument();
     expect(screen.getByTestId("password")).toBeInTheDocument();
     expect(screen.getByTestId("confirmPassword")).toBeInTheDocument();
     expect(screen.getByTestId("firstName")).toBeInTheDocument();
     expect(screen.getByTestId("lastName")).toBeInTheDocument();
-    
     expect(screen.getByTestId("submit-button")).toBeInTheDocument();
     expect(screen.getByTestId("cancel-button")).toBeInTheDocument();
-    
-    expect(screen.getByText("Create your account")).toBeInTheDocument();
-    expect(screen.getByText("A Couple Details Then We're Off!")).toBeInTheDocument();
-    
+
+    if("A Couple Details Then We're Off!".length > 0){
+      expect(screen.getByTestId("page-intro-text")).toBeInTheDocument();
+      expect(screen.getByTestId("page-intro-text"))
+        .toHaveTextContent("A Couple Details Then We're Off!");
+    }
+    if("".length > 0){
+      expect(screen.getByTestId("page-footer-text")).toBeInTheDocument();
+      expect(screen.getByTestId("page-footer-text"))
+        .toHaveTextContent("");
+    }
     await waitFor(() => expect(mockFormInitService).toHaveBeenCalled());
   });
-
-  it("when user enter email address, it set accordingly", async () => {
+  it("when user enter email, it set accordingly", async () => {
     const input = screen.getByTestId("email");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "test@gmail.com" } });
-    });
-
-    expect(screen.getByTestId("email")).toHaveValue("test@gmail.com");
+    fireEvent.changeText(input, 'sample data');
+    expect(input.props.value).toBe('sample data');
   });
-
   it("when user enter password, it set accordingly", async () => {
     const input = screen.getByTestId("password");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "Test@123" } });
-    });
-
-    expect(screen.getByTestId("password")).toHaveValue("Test@123");
+    fireEvent.changeText(input, 'sample data');
+    expect(input.props.value).toBe('sample data');
   });
-
-  it("when user enter confirm password, it set accordingly", async () => {
+  it("when user enter confirmPassword, it set accordingly", async () => {
     const input = screen.getByTestId("confirmPassword");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "Test@123" } });
-    });
-
-    expect(screen.getByTestId("confirmPassword")).toHaveValue("Test@123");
+    fireEvent.changeText(input, 'sample data');
+    expect(input.props.value).toBe('sample data');
   });
-
-  it("when user enter first name, it set accordingly", async () => {
+  it("when user enter firstName, it set accordingly", async () => {
     const input = screen.getByTestId("firstName");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "jerry" } });
-    });
-
-    expect(screen.getByTestId("firstName")).toHaveValue("jerry");
+    expect(screen.getByTestId("testForm")).toBeInTheDocument();
+    fireEvent.changeText(input, 'sample data');
+    expect(input.props.value).toBe('sample data');
   });
-
-  it("when user enter last name, it set accordingly", async () => {
+  it("when user enter lastName, it set accordingly", async () => {
     const input = screen.getByTestId("lastName");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "beggar" } });
-    });
-
-    expect(screen.getByTestId("lastName")).toHaveValue("beggar");
+    expect(screen.getByTestId("testForm")).toBeInTheDocument();
+    fireEvent.changeText(input, 'sample data');
+    expect(input.props.value).toBe('sample data');
   });
-
-  it("when user entered tacRegister details and clicks on register button, tacRegisterUser api should be called", async () => {
+  it("when user entered TacRegister details and clicks on register button, TacRegister api should be called", async () => {
     mockFormSubmitService.mockResolvedValue({
       data: formSubmitResponse,
-    }); 
-
-    // enter email address
+    });
     const emailInput = screen.getByTestId("email");
     await act(async () => {
-      await fireEvent.change(emailInput, {
-        target: { value: "test@gmail.com" },
-      });
+      await fireEvent.change(emailInput, { target: { value: "Sample Data" } });
     });
-
-    // enter password
     const passwordInput = screen.getByTestId("password");
     await act(async () => {
-      await fireEvent.change(passwordInput, { target: { value: "Test@123" } });
+      await fireEvent.change(passwordInput, { target: { value: "Sample Data" } });
     });
-
-    // confirm password
-    const confirmInput = screen.getByTestId("confirmPassword");
+    const confirmPasswordInput = screen.getByTestId("confirmPassword");
     await act(async () => {
-      await fireEvent.change(confirmInput, { target: { value: "Test@123" } });
+      await fireEvent.change(confirmPasswordInput, { target: { value: "Sample Data" } });
     });
-
-    // first name
     const firstNameInput = screen.getByTestId("firstName");
     await act(async () => {
-      await fireEvent.change(firstNameInput, { target: { value: "jerry" } });
+      await fireEvent.change(firstNameInput, { target: { value: "Test@123" } });
     });
-
-    // last name
     const lastNameInput = screen.getByTestId("lastName");
     await act(async () => {
-      await fireEvent.change(lastNameInput, { target: { value: "beggar" } });
+      await fireEvent.change(lastNameInput, { target: { value: "Test@123" } });
     });
-
     await act(async () => {
       await fireEvent.click(screen.getByTestId("submit-button"));
     });
-
     await waitFor(() => expect(mockFormSubmitService).toHaveBeenCalled());
   });
 });
+

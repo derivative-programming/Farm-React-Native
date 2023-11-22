@@ -1,5 +1,6 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
+import { Button } from "native-base";
    
 export interface ReportColumnDisplayButtonProps {
   forColumn:string 

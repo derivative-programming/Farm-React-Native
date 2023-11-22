@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table } from "native-base";
+import { Table, View } from "native-base";
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
 export interface HeaderTacRegisterProps {
   name: string;
@@ -18,11 +18,9 @@ const HeaderTacRegister: FC<HeaderTacRegisterProps> = ({
 }): ReactElement => {
 
   return (
-    <dl testID={name}
-      className="row text-start w-100 mt-3"
-      hidden={!isHeaderVisible}>
+    <View testID={name}  >
 
-    </dl>
+    </View>
   );
 };
 export default HeaderTacRegister;

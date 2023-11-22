@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table } from "native-base";
+import { HStack, View, Text } from "native-base";
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 
 export interface HeaderLandAddPlantProps {
@@ -17,20 +17,21 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
   name,
   isHeaderVisible = false,
   initData,
-}): ReactElement => {
+}): ReactElement | null => {
 
   const landNameHeaderIsVisible = true; 
 
+  if(!isHeaderVisible) return null;
 
   return (
-    <dl testID={name}
-      className="row text-start w-100 mt-3"
-      hidden={!isHeaderVisible}>  
-      <> {/*landName*/}
-        <dt className="col-sm-3" hidden={!landNameHeaderIsVisible}>Land Name</dt>
-        <dd className="col-sm-9" hidden={!landNameHeaderIsVisible}>{initData.landName}</dd>
-      </>
-    </dl>
+    <View testID={name}>  
+      {landNameHeaderIsVisible && ( //landName 
+        <HStack> 
+          <Text>Land Name</Text>
+          <Text>{initData.landName}</Text>
+        </HStack>
+      )}
+    </View>
   );
 };
 

@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table, View } from "native-base";
+import { HStack, Text, View } from "native-base";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
  
 export interface HeaderLandPlantListProps {
@@ -17,20 +17,20 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
   name,
   isHeaderVisible=false,
   initData,
-}): ReactElement => {
+}): ReactElement | null => {
 
   const landNameHeaderIsVisible = true; 
 
-  return ( 
-    <View>
-      <dl testID={name} 
-        className="row text-start w-100 mt-3 p-3 border" 
-        hidden={!isHeaderVisible}>
-        <> {/*landName*/}
-          <dt className="col-sm-3" hidden={!landNameHeaderIsVisible}>Land Name</dt>
-          <dd className="col-sm-9" hidden={!landNameHeaderIsVisible}>{initData.landName}</dd>
-        </> 
-      </dl> 
+  if(!isHeaderVisible) return null;
+
+  return (  
+    <View testID={name}>  
+      {landNameHeaderIsVisible && ( //landName 
+        <HStack> 
+          <Text>Land Name</Text>
+          <Text>{initData.landName}</Text>
+        </HStack>  
+      )}
     </View>
   );
 };
