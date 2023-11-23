@@ -1,7 +1,7 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
 import "../../../../../index.css"; 
-import { Box } from "native-base";
+import { Box } from 'react-native';
    
 export interface ReportColumnDisplayButtonProps {
   forColumn:string

@@ -1,6 +1,6 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
-import { Box, Button, HStack } from "native-base";
+import { StyleSheet, Button, Text, TouchableOpacity, View } from 'react-native';
    
 export interface ReportColumnDisplayButtonProps {
   forColumn:string 
@@ -50,21 +50,47 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
     //         {buttonText}
     //     </Button> 
     // </Row>
-    <HStack id={groupName} testID={groupName} space={3} px="3" mt="3">
-      <Box testID={forColumn + '-header'}>
-        {/* Content for the div */}
-      </Box>
+    // <HStack id={groupName} testID={groupName} space={3} px="3" mt="3">
+    //   <Box testID={forColumn + '-header'}>
+    //     {/* Content for the div */}
+    //   </Box>
+    //   {displayValue && (
+    //     <Button
+    //       testID={buttonName}
+    //       onPress={onPress}
+    //       variant={buttonVariant} // Adjust this according to NativeBase's API
+    //       size="sm" // Adjust size if necessary
+    //     >
+    //       {buttonText}
+    //     </Button>
+    //   )}
+    // </HStack>
+    <View style={styles.horizontalStack} id={groupName} testID={groupName}>
+      <View testID={forColumn + '-header'}> 
+      </View>
       {displayValue && (
-        <Button
+        <TouchableOpacity 
+          onPress={onPress} 
+          style={styles.button}
           testID={buttonName}
-          onPress={onPress}
-          variant={buttonVariant} // Adjust this according to NativeBase's API
-          size="sm" // Adjust size if necessary
         >
-          {buttonText}
-        </Button>
+          <Text>{buttonText}</Text>
+        </TouchableOpacity>
       )}
-    </HStack>
+    </View>
   );
 };
    
+const styles = StyleSheet.create({
+  horizontalStack: {
+    flexDirection: 'row', // HStack equivalent
+    paddingHorizontal: 12, // px="3" equivalent, assuming 1 unit = 4
+    marginTop: 12, // mt="3" equivalent
+    alignItems: 'center', // For vertical alignment
+    // Add other styles as needed
+  },
+  button: {
+    // Add button styling here, adjust size as needed
+  },
+  // Define other styles as needed
+});

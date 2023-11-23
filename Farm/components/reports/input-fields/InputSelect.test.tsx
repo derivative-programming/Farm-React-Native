@@ -12,7 +12,7 @@ import {ReportInputSelect, ReportInputSelectOption} from "./InputSelect";
 import { Formik } from "formik";
 
 import '@testing-library/jest-dom';
-import { Button } from "native-base";
+import { Button } from 'react-native';
 
 const initialValues = { testName:"" } 
 

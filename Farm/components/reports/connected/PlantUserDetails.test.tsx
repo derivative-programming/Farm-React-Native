@@ -13,8 +13,7 @@ import * as InitReportService from "../services/init/PlantUserDetailsInitReport"
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
-window.AsyncStorage.setItem("@token", "sampleToken");
+  
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
@@ -31,6 +30,7 @@ const mockReportService = jest.spyOn(ReportService, "submitRequest");
 describe("PlantUserDetails Connected Report Component", () => {
   // render the PlantUserDetails component
   beforeEach(async() => {
+    await AsyncStorage.setItem("@token", "sampleToken");
     mockReportInitService.mockResolvedValue({
       data: new InitReportService.InitResultInstance(),
     }); 

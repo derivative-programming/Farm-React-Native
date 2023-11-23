@@ -1,6 +1,6 @@
 import { FC, ReactElement } from 'react';
 import '../../App.scss';
-import { View } from 'native-base';
+import { View } from 'react-native';
 
 const Footer: FC = (): ReactElement => {
 

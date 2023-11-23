@@ -3,8 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack'; 
-import ScreenHeader from '../components/header/ScreenHeader';
-import { HStack, Text, VStack } from 'native-base';
+import ScreenHeader from '../components/header/ScreenHeader'; 
 import { FormConnectedLandAddPlant } from '../components/forms/connected';
  
 
@@ -21,10 +20,10 @@ const LandAddPlantScreen: React.FC<LandAddPlantScreenProps> = ({ route, navigati
   const landCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000'; 
     
   return (
-    <VStack flex={1}> 
+    <View style={{ flex: 1 }}>
       <ScreenHeader />  
       <FormConnectedLandAddPlant landCode={landCode} name='land-add-plant'/>
-    </VStack>
+    </View>
   );
 };
 

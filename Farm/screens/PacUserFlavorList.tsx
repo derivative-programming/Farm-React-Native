@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import ScreenHeader from '../components/header/ScreenHeader';
-import { HStack, Text, VStack } from 'native-base';
+import ScreenHeader from '../components/header/ScreenHeader'; 
 
 import { useNavigation } from '@react-navigation/native';
 type PacUserFlavorListScreenRouteProp = RouteProp<RootStackParamList, 'PacUserFlavorList'>;
@@ -18,10 +17,9 @@ const PacUserFlavorListScreen: React.FC<PacUserFlavorListScreenProps> = ({ route
   const pacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
   const navigation = useNavigation<ScreenNavigationProp>();
   return (
-    <VStack flex={1}>
-      <ScreenHeader/>
-      <Text>PacUserFlavorListScreen</Text>
-    </VStack>
+    <View style={{ flex: 1 }}>
+      <ScreenHeader/> 
+    </View>
   );
 };
 export default PacUserFlavorListScreen;

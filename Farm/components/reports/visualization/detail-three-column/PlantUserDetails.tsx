@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Row, Spinner, View } from "native-base";
+import { Row, Spinner, View } from 'react-native';
 import * as ReportService from "../../services/PlantUserDetails"; 
 import * as AsyncServices from "../../../services";
 import * as ReportColumnDisplay from "./columns";

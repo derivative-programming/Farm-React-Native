@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { Box, Button, Card, Spinner, VStack, View, Text, FormControl } from "native-base"; 
+import {   View, Text, ActivityIndicator, TouchableOpacity,StyleSheet } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import { Formik, FormikHelpers } from "formik";  
 import * as FormService from "../services/TacLogin";
@@ -20,6 +20,7 @@ import RootStackParamList from "../../../screens/rootStackParamList";
 import * as RouteNames from '../../../constants/routeNames';
 import * as InputFields from "../input-fields";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
 
 
 export interface FormProps {
@@ -118,9 +119,9 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       {/*//GENLearn[isLoginPage=true]Start*/}
       authContext.setToken(response.apiKey);
       authContext.setRoles(response.roleNameCSVList);
-      AsyncStorage.setItem("@token", response.apiKey);
-      AsyncStorage.setItem("customerCode", response.customerCode);
-      AsyncStorage.setItem("email", response.email);
+      await AsyncStorage.setItem("@token", response.apiKey);
+      await AsyncStorage.setItem("customerCode", response.customerCode);
+      await AsyncStorage.setItem("email", response.email);
       AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
@@ -144,29 +145,33 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       return;
     }
     isInitializedRef.current = true;
-    FormService.initForm(contextCode)
-      .then((response) => handleInit(response))
-      .finally(() => {setInitForm(false)});
+    // FormService.initForm(contextCode)
+    //   .then((response) => handleInit(response))
+    //   .finally(() => {setInitForm(false)});
   }, []);
 
   return (
-    <Box flex={1} py="5" alignItems="center">
-    <VStack space={4} width="90%">
-        <Text fontSize="xl" testID="page-title-text">Log In</Text>
-        <Text fontSize="md" testID="page-intro-text">Please enter your email and password.</Text>
-         
-      <Formik
+    
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.titleText}>Log In</Text>
+        <Text style={styles.introText}>Please enter your email and password.</Text>
+        
+        <Formik
           enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={submitButtonPress}
+          onSubmit={async (values, actions) => {
+            await submitButtonPress(values, actions);
+            actions.setSubmitting(false); // Turn off submitting state
+          }}
         >
           {({ handleSubmit, handleReset, isSubmitting }) => (
-            <FormControl>
+            <View>
               {initForm && showProcessingAnimationOnInit ?
-                <Spinner size="lg" />
+                <ActivityIndicator size="large" color="#0000ff" />
                 :
-                <VStack space={4}>
+                <>
                   <InputFields.ErrorDisplay
                       name="headerErrors"
                       errorArray={headerErrors}
@@ -179,13 +184,20 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
                       label="Password"
                       isVisible={true}
                     />
-                </VStack>
+                </>
               }
-              <Button
-                // onPress={handleSubmit}
-                mt="3" isLoading={isSubmitting} testID="submit-button">
-                OK Button Text
-              </Button>
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                style={[styles.button, isSubmitting && styles.buttonDisabled]}
+                disabled={isSubmitting}
+                testID="submit-button"
+              >
+                {
+                  isSubmitting ?
+                    <ActivityIndicator color="#fff" /> :
+                    <Text style={styles.buttonText}>OK Button Text</Text>
+                }
+              </TouchableOpacity>
               <InputFields.FormInputButton name="other-button"
                 buttonText="Register"
                 onPress={() => {
@@ -193,14 +205,44 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
                   registerButtonPress();
                 }}
                 isButtonCallToAction={false}
-                isVisible={true} 
+                isVisible={true}
               />
-            </FormControl>
+            </View>
           )}
         </Formik>
-    </VStack>
-    </Box>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20, // equivalent to py="5"
+    alignItems: 'center' 
+  },
+  formContainer: {
+    width: '90%',
+    // Add other styles as needed
+  },
+  titleText: {
+    fontSize: theme.fonts.largeSize, 
+    // Add other styles as needed
+  },
+  introText: {
+    fontSize: theme.fonts.mediumSize, 
+    // Add other styles as needed
+  },
+  button: {
+    marginTop: 12, // equivalent to mt="3"
+    // Add other button styling here
+  },
+  buttonText: {
+    // Add text styling here
+  },
+  buttonDisabled: {
+    // Add disabled button styling here
+  }
+});
 
 export default FormConnectedTacLogin;

@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react"; 
  
-import { View } from "native-base";
+import { View } from 'react-native';
    
 export interface ErrorDisplayProps {
   name:string

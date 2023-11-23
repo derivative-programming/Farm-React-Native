@@ -3,8 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import ScreenHeader from '../components/header/ScreenHeader';
-import { HStack, Text, VStack } from 'native-base';
+import ScreenHeader from '../components/header/ScreenHeader'; 
 import { FormConnectedTacRegister } from '../components/forms/connected';
 
 type TacRegisterScreenRouteProp = RouteProp<RootStackParamList, 'TacRegister'>;
@@ -20,10 +19,10 @@ const TacRegisterScreen: React.FC<TacRegisterScreenProps> = ({ route, navigation
   const tacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
 
   return (
-    <VStack flex={1}>
+    <View style={{ flex: 1 }}>
       <ScreenHeader />
       <FormConnectedTacRegister tacCode={tacCode} name='tac-register'/>
-    </VStack>
+    </View>
   );
 };
 

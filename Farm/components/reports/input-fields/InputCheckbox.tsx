@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react";
 import { View, Text, StyleSheet } from 'react-native';
 import {useField } from 'formik'; 
-import { Checkbox, FormControl } from "native-base";
+import { Checkbox, FormControl } from 'react-native';
    
 export interface ReportInputCheckboxProps {
   name: string

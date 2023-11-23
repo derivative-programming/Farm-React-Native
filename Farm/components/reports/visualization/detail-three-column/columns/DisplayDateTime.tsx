@@ -1,7 +1,7 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
 import moment from "moment";
-import { Box, Text } from "native-base";
+import { Box, Text } from 'react-native';
    
 export interface ReportColumnDisplayDateTimeProps {
   forColumn:string 

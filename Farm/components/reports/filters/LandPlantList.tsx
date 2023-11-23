@@ -4,7 +4,7 @@ import React, {
   useContext, 
   useState,
 } from "react";
-import { Button, Accordion, Row, Spinner, View } from "native-base"; 
+import { Button, Accordion, Row, Spinner, View } from 'react-native'; 
 
 import { Formik, FormikHelpers } from "formik";
 import * as ReportService from "../services/LandPlantList";
@@ -67,20 +67,20 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
     setInitialValues({ ...initialQuery });
   };
 
-  const onAccordianHeaderClick = () => { 
+  const onAccordianHeaderClick = async () => { 
     logClick("ReportFilterLandPlantList","accordianClick","");
     const isFiltersVisible = AsyncStorage.getItem("isFiltersVisible");
     if(isFiltersVisible === null)
     {
-      AsyncStorage.setItem("isFiltersVisible","true")
+      await AsyncStorage.setItem("isFiltersVisible","true")
     }
     if(isFiltersVisible === "true")
     {
-      AsyncStorage.setItem("isFiltersVisible","false")
+      await AsyncStorage.setItem("isFiltersVisible","false")
     }
     if(isFiltersVisible === "false")
     {
-      AsyncStorage.setItem("isFiltersVisible","true")
+      await AsyncStorage.setItem("isFiltersVisible","true")
     }
   }
  

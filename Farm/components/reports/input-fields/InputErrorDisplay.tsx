@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react"; 
 import {useField } from 'formik';
 import {ReportErrorDisplay } from './ErrorDisplay';
-import { View } from "native-base";
+import { View } from 'react-native';
    
 export interface ReportInputErrorDisplayProps {
   name: string,

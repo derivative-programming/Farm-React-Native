@@ -1,6 +1,6 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
-import { Text } from "native-base";
+import { Text } from 'react-native';
    
 export interface ReportColumnDisplayTextProps {
   forColumn:string

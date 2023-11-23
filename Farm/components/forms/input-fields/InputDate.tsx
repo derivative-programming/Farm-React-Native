@@ -4,7 +4,8 @@ import {useField } from 'formik';
 import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {FormInputErrorDisplay } from './InputErrorDisplay';
-import { Button, FormControl, VStack, Text } from "native-base";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
    
 export interface FormInputDateProps {
   name: string
@@ -73,26 +74,70 @@ export const FormInputDate: FC<FormInputDateProps> = ({
   //     </Form.Group>
   //     <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
   // </div>
-  <VStack space={2} width="100%">
-    <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
-      <FormControl.Label>{label}</FormControl.Label>
-      <Button onPress={() => setShow(true)} isDisabled={disabled}>
+  // <VStack space={2} width="100%">
+  //   <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
+  //     <FormControl.Label>{label}</FormControl.Label>
+  //     <Button onPress={() => setShow(true)} isDisabled={disabled}>
+  //       {selectedDateTimeLocal.format("YYYY-MM-DD") || placeholder}
+  //     </Button>
+  //     {show && (
+  //       <DateTimePicker
+  //         value={new Date(selectedDateTimeLocal.toDate())}
+  //         mode="date"
+  //         display="default"
+  //         onChange={onChange}
+  //         disabled={disabled}
+  //       />
+  //     )}
+  //     {meta.touched && meta.error && (
+  //       <Text color="red.500">{meta.error}</Text>
+  //     )}
+  //   </FormControl>
+  // </VStack>
+  <View style={styles.container}>
+    <FormLabel text={label} name={name + '-label'}/>
+    <TouchableOpacity 
+      onPress={() => setShow(true)} 
+      style={[styles.button, disabled && styles.disabledButton]}
+      disabled={disabled}
+    >
+      <Text>
         {selectedDateTimeLocal.format("YYYY-MM-DD") || placeholder}
-      </Button>
-      {show && (
-        <DateTimePicker
-          value={new Date(selectedDateTimeLocal.toDate())}
-          mode="date"
-          display="default"
-          onChange={onChange}
-          disabled={disabled}
-        />
-      )}
-      {meta.touched && meta.error && (
-        <Text color="red.500">{meta.error}</Text>
-      )}
-    </FormControl>
-  </VStack>
+      </Text>
+    </TouchableOpacity>
+
+    {show && (
+      <DateTimePicker
+        value={new Date(selectedDateTimeLocal.toDate())}
+        mode="date"
+        display="default"
+        onChange={onChange}
+        disabled={disabled}
+      />
+    )}
+
+    {meta.touched && meta.error && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Add other styling as required
+  }, 
+  button: {
+    // Add button styling here
+  },
+  disabledButton: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    // Add other styling for error text
+  },
+  // Additional styles can be added as needed
+});

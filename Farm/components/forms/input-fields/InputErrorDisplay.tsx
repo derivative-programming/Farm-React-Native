@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from "react";
 
 import {useField } from 'formik';
 import {ErrorDisplay } from './ErrorDisplay';
-import { View } from "native-base";
+import { View } from 'react-native';
    
 export interface FormInputErrorDisplayProps {
   name: string,

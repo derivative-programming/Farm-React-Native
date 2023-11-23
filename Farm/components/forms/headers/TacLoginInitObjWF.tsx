@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table } from "native-base";
+import { View } from 'react-native';
 import * as InitFormService from "../services/init/TacLoginInitObjWF";
 export interface HeaderTacLoginProps {
   name: string;
@@ -18,11 +18,9 @@ const HeaderTacLogin: FC<HeaderTacLoginProps> = ({
 }): ReactElement => {
 
   return (
-    <dl testID={name}
-      className="row text-start w-100 mt-3"
-      hidden={!isHeaderVisible}>
+    <View testID={name}  >
 
-    </dl>
+    </View>
   );
 };
 export default HeaderTacLogin;

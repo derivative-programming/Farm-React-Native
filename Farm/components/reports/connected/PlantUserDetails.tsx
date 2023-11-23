@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
-import { Card, Breadcrumb, Container, View } from "native-base";
+import { Card, Breadcrumb, Container, View } from 'react-native';
 import { ArrowLeft } from "react-bootstrap-icons"; 
 import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/PlantUserDetails";

@@ -1,4 +1,4 @@
-import { View } from "native-base";
+import { View } from 'react-native';
 import React, { FC, ReactElement } from "react"; 
    
 export interface ReportErrorDisplayProps {

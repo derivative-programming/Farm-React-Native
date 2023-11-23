@@ -1,6 +1,6 @@
 import React, { FC, ReactElement,} from "react"; 
 import "../../../../../App.scss"; 
-import { Box, Pressable, Text } from "native-base";
+import { Box, Pressable, Text } from 'react-native';
 import { Linking } from "react-native";
    
 export interface ReportColumnDisplayUrlProps {

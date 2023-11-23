@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react"; 
-
 import {useField } from 'formik'; 
-import { Checkbox, FormControl, VStack, Text } from "native-base";
+import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
+import { FormLabel } from "./InputLabel";
    
 export interface FormInputCheckboxProps {
   name: string
@@ -49,22 +49,53 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
   //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
   //     </Form.Group> 
   // </div>
-  <VStack space={2} width="100%" mt="3" mb="3">
-      <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
-        <Checkbox
-          value={field.value ? 'checked' : 'unchecked'}
-          isChecked={field.value}
-          onChange={(isChecked) => helpers.setValue(isChecked)} 
-          // onBlur={field.onBlur}
-          isDisabled={disabled}
-        >
-          {label}
-        </Checkbox>
-        {meta.touched && meta.error && (
-          <Text color="red.500">{meta.error}</Text>
-        )}
-      </FormControl>
-    </VStack>
+  // <VStack space={2} width="100%" mt="3" mb="3">
+  //     <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
+  //       <Checkbox
+  //         value={field.value ? 'checked' : 'unchecked'}
+  //         isChecked={field.value}
+  //         onChange={(isChecked) => helpers.setValue(isChecked)} 
+  //         // onBlur={field.onBlur}
+  //         isDisabled={disabled}
+  //       >
+  //         {label}
+  //       </Checkbox>
+  //       {meta.touched && meta.error && (
+  //         <Text color="red.500">{meta.error}</Text>
+  //       )}
+  //     </FormControl>
+  //   </VStack>
+  <View style={styles.container}>
+    <View style={styles.switchContainer}>
+      <FormLabel text={label} name={name + '-label'}/> 
+      <Switch
+        // onValueChange={(e) => {helpers.setValue(e.target.checked);}}
+        value={field.value}
+        disabled={disabled}
+        // Additional props for Switch as needed
+      /> 
+    </View>
+    {meta.touched && meta.error && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+
+const styles = StyleSheet.create({
+  container: {
+    // Styles for the container
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8, // Add space between the switch and the label
+    // Additional styles for the switch container
+  }, 
+  errorText: {
+    color: 'red',
+    // Styles for the error text
+  },
+  // Other styles as needed
+});

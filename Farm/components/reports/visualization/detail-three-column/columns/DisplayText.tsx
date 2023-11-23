@@ -1,5 +1,5 @@
 import React, { FC, ReactElement,} from "react";
-import { Box, Text } from "native-base";
+import { Box, Text } from 'react-native';
 import "../../../../../App.scss"; 
    
 export interface ReportColumnDisplayTextProps {

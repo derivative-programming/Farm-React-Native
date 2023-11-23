@@ -3,8 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import ScreenHeader from '../components/header/ScreenHeader';
-import { HStack, Text, VStack } from 'native-base';
+import ScreenHeader from '../components/header/ScreenHeader'; 
 
 import { useNavigation } from '@react-navigation/native';
 type PacUserRoleListScreenRouteProp = RouteProp<RootStackParamList, 'PacUserRoleList'>;
@@ -18,10 +17,9 @@ const PacUserRoleListScreen: React.FC<PacUserRoleListScreenProps> = ({ route }) 
   const pacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
   const navigation = useNavigation<ScreenNavigationProp>();
   return (
-    <VStack flex={1}>
-      <ScreenHeader/>
-      <Text>PacUserRoleListScreen</Text>
-    </VStack>
+    <View style={{ flex: 1 }}>
+      <ScreenHeader/> 
+    </View>
   );
 };
 export default PacUserRoleListScreen;

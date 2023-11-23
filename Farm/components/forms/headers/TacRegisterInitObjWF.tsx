@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { Table, View } from "native-base";
+import { View } from 'react-native';
 import * as InitFormService from "../services/init/TacRegisterInitObjWF";
 export interface HeaderTacRegisterProps {
   name: string;

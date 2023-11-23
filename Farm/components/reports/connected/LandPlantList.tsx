@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Button, Card, Breadcrumb, Container, View, Text } from "native-base";
+import { Button, Card, Breadcrumb, Container, View, Text } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import ReportFilterLandPlantList from "../filters/LandPlantList";
@@ -104,9 +104,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setQuery({ ...query, pageNumber: pageNumber });
   };
 
-  const onPageSizeChange = (pageSize: number) => {
+  const onPageSizeChange = async (pageSize: number) => {
     logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
-    AsyncStorage.setItem("pageSize",pageSize.toString());
+    await AsyncStorage.setItem("pageSize",pageSize.toString());
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 

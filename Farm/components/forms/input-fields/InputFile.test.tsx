@@ -10,7 +10,7 @@ import {
 } from "@testing-library/react-native";
 import {FormInputFile} from "./InputFile";   
 import { Formik } from "formik";
-import { Button } from "native-base";
+import { Button } from 'react-native';
 import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 

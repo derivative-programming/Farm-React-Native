@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from "native-base"; 
+import { Button } from 'react-native'; 
 
 export interface ReportInputButtonProps {
   name: string;

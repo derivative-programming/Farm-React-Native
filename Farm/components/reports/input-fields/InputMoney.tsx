@@ -1,7 +1,7 @@
 import React, { FC, ReactElement} from "react"; 
 import {useField } from 'formik';
 import { onKeyDown } from "../../../common/utilities"; 
-import { FormControl, HStack, Input, Text, WarningOutlineIcon } from "native-base";
+import { FormControl, HStack, Input, Text, WarningOutlineIcon } from 'react-native';
    
 export interface ReportInputMoneyProps {
   name: string

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Pagination, View, Text, Select } from "native-base";
+import { Pagination, View, Text, Select } from 'react-native';
  
    
 export interface ReportPaginationProps {

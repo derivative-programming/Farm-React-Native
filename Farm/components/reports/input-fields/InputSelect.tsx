@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { FormControl, Select, WarningOutlineIcon, Box, Text, CheckIcon } from 'native-base';
+import { FormControl, Select, WarningOutlineIcon, Box, Text, CheckIcon } from 'react-native';
 import {useField } from 'formik'; 
    
 export interface ReportInputSelectProps {

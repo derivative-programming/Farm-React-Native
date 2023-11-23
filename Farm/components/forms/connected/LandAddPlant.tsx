@@ -17,10 +17,11 @@ import * as InputFields from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../../services/analyticsService";
-import { Box, VStack, Text, FormControl, Spinner, Button } from "native-base";
+import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
 
 export interface FormProps {
   landCode:string;
@@ -178,28 +179,33 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   };
   
   return ( 
-    <Box flex={1} py="5" alignItems="center">
-    <VStack space={4} width="90%">
-        <Text fontSize="xl" testID="page-title-text">Add Plant</Text>
-        <Text fontSize="md" testID="page-intro-text">Add plant intro text.</Text>
+    
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.titleText}>Add Plant</Text>
+        <Text style={styles.introText}>Add plant intro text.</Text>
 
         <HeaderLandAddPlant
           name="headerLandAddPlant"
           initData={initPageResponse}
           isHeaderVisible={true}
         />
-      <Formik
+
+        <Formik
           enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
+          onSubmit={async (values, actions) => {
+            await submitClick(values, actions);
+            actions.setSubmitting(false); // Turn off submitting state
+          }}
         >
           {({ handleSubmit, handleReset, isSubmitting }) => (
-            <FormControl>
+            <View>
               {initForm && showProcessingAnimationOnInit ?
-                <Spinner size="lg" />
+                <ActivityIndicator size="large" color="#0000ff" />
                 :
-                <VStack space={4}>
+                <>
                   <InputFields.ErrorDisplay
                       name="headerErrors"
                       errorArray={headerErrors}
@@ -276,14 +282,20 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                       label="Sample Image Upload"
                       isVisible={true}
                     />
-                </VStack>
-              }
-
-              <Button 
-                // onPress={handleSubmit} 
-                mt="3" isLoading={isSubmitting} testID="submit-button">
-                OK Button Text
-              </Button> 
+                </>
+              } 
+              <TouchableOpacity 
+                onPress={() => handleSubmit()} 
+                style={[styles.button, isSubmitting && styles.buttonDisabled]}
+                disabled={isSubmitting}
+                testID="submit-button"
+              >
+                {
+                  isSubmitting ? 
+                    <ActivityIndicator color="#fff" /> :
+                    <Text style={styles.buttonText}>OK Button Text</Text>
+                }
+              </TouchableOpacity>
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Cancel Button Text" 
                     onPress={() => {
@@ -302,12 +314,53 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                 isButtonCallToAction={false}
                 isVisible={true} 
               />
-            </FormControl>
+            </View>
           )}
         </Formik>
-    </VStack>
-    </Box>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20, // equivalent to py="5"
+    alignItems: 'center'
+  },
+  formContainer: {
+    width: '90%',
+    // Add other styles as needed
+  },
+  titleText: {
+    fontSize: theme.fonts.largeSize, 
+    // Add other styles as needed
+  },
+  introText: {
+    fontSize: theme.fonts.mediumSize, 
+    // Add other styles as needed
+  },
+  button: {
+    marginTop: 12, // equivalent to mt="3"
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center', // Center text horizontally
+    justifyContent: 'center', // Center text vertically
+    backgroundColor: theme.bootstrapColors.primary,
+    borderWidth: 1,
+    borderColor: theme.bootstrapColors.primary, // You can use your theme's primary color 
+    // Add other button styling here
+  },
+  buttonText: {
+    fontSize: theme.fonts.mediumSize,
+    fontWeight: 'bold',
+    color: 'white',  
+    // Add text styling here
+  },
+  buttonDisabled: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  }
+});
 
 export default FormConnectedLandAddPlant;

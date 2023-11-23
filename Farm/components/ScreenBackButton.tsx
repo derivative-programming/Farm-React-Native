@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from "native-base"; 
+import { Button } from 'react-native'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export interface ScreenBackButtonProps {

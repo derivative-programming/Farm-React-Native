@@ -1,8 +1,9 @@
 import React, { FC, ReactElement } from "react"; 
 
-import {useField } from 'formik';
-import { onKeyDown } from "../../../common/utilities"; 
-import { FormControl, HStack, Input, VStack, WarningOutlineIcon, Text } from "native-base";
+import {useField } from 'formik'; 
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
+import * as theme from '../../../constants/theme'
    
 export interface FormInputMoneyProps {
   name: string
@@ -52,28 +53,85 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
   //         </InputGroup>
   //     </Form.Group> 
   // </div>
-  <VStack space={2} width="100%">
-      <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-        <FormControl.Label>{label}</FormControl.Label>
-        <HStack alignItems="center" space={2}>
-          <Text>$</Text> {/* Prefix */}
-          <Input
-            testID={name}
-            keyboardType="numeric" // For number input
+  // <VStack space={2} width="100%">
+  //     <FormControl isInvalid={isInvalid} isDisabled={disabled}>
+  //       <FormControl.Label>{label}</FormControl.Label>
+  //       <HStack alignItems="center" space={2}>
+  //         <Text>$</Text> {/* Prefix */}
+  //         <Input
+  //           testID={name}
+  //           keyboardType="numeric" // For number input
+  //           placeholder="Amount"
+  //           {...field}
+  //           isDisabled={disabled}
+  //           // React Native does not directly support onKeyDown in the same way as web
+  //           // Implement any specific logic needed for React Native here
+  //         />
+  //       </HStack>
+  //       {isInvalid && (
+  //         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
+  //           {meta.error}
+  //         </FormControl.ErrorMessage>
+  //       )}
+  //     </FormControl>
+  //   </VStack>
+    <View style={styles.container}>
+        <FormLabel text={label} name={name + '-label'}/>
+        <View style={styles.horizontalStack}>
+          <Text style={styles.prefix}>$</Text> {/* Prefix */}
+          <TextInput
+            style={[styles.input, disabled && styles.disabledInput]}
+            keyboardType="numeric"
             placeholder="Amount"
+            editable={!disabled}
             {...field}
-            isDisabled={disabled}
-            // React Native does not directly support onKeyDown in the same way as web
-            // Implement any specific logic needed for React Native here
+            testID={name}
+            // Additional TextInput props as needed
           />
-        </HStack>
+        </View>
         {isInvalid && (
-          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-            {meta.error}
-          </FormControl.ErrorMessage>
+          <Text style={styles.errorText}>{meta.error}</Text>
         )}
-      </FormControl>
-    </VStack>
+    </View>
   );
 };
    
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Additional container styling
+  }, 
+  horizontalStack: {
+    flexDirection: 'row', // Aligns children horizontally
+    alignItems: 'center', // Center items vertically in the row
+    // Additional styling for the horizontal stack
+  },
+  prefix: {
+    // Styling for the prefix text
+  },
+  input: {
+    // Styling for the TextInput
+    width: '100%',
+    fontSize: theme.fonts.mediumSize,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    color: '#333',
+    backgroundColor: '#fff',
+    marginBottom: 15, // Space below the input for spacing in forms
+  },
+  disabledInput: {
+    // Styling for the disabled TextInput
+    // backgroundColor: '#f7f7f7',
+    // color: '#c7c7c7',
+    // borderColor: '#e7e7e7',
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    // Additional styling for error message text
+  },
+  // Other styles as needed
+});

@@ -1,9 +1,10 @@
 import * as FormInit  from "./init/TacRegisterInitObjWF"; 
 import { apiCall } from "../../../apiConfig/apiCall";
  
-
+//
 export const initForm = (tacCode:string) => {
     const data ={};
+    console.log('Services.TacRegister.initForm ' + tacCode)
     return apiCall({
         url: '/tac-register/' + tacCode + '/init',
         method: "get",

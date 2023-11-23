@@ -13,8 +13,7 @@ import * as flavorCodeService from "../../lookups/services/Flavor"
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
- 
-window.AsyncStorage.setItem("@token", "sampleToken");
+  
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
@@ -32,6 +31,7 @@ const mockFlavorCodeService =  jest.spyOn(flavorCodeService, "submitRequest");
 describe("LandPlantList Connected Report Component", () => {
   // render the LandPlantList component
   beforeEach(async() => {
+    await AsyncStorage.setItem("@token", "sampleToken");
     mockReportInitService.mockResolvedValue({
       data: new InitReportService.InitResultInstance(),
     });

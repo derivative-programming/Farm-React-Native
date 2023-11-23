@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { HStack, View, Text } from "native-base";
+import { StyleSheet, View, Text } from 'react-native';
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 
 export interface HeaderLandAddPlantProps {
@@ -23,16 +23,24 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
 
   if(!isHeaderVisible) return null;
 
-  return (
-    <View testID={name}>  
-      {landNameHeaderIsVisible && ( //landName 
-        <HStack> 
+  return ( 
+    <View testID={name}>
+      {landNameHeaderIsVisible && (
+        <View style={styles.horizontalStack}>
           <Text>Land Name</Text>
           <Text>{initData.landName}</Text>
-        </HStack>
+        </View>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  horizontalStack: {
+    flexDirection: 'row', // Aligns children horizontally
+    alignItems: 'center', // Center items vertically in the row
+    // Add additional styling as required
+  }
+});
 
 export default HeaderLandAddPlant;

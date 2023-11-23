@@ -15,7 +15,6 @@ import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
  
-window.AsyncStorage.setItem("@token", "sampleToken");
  
 const mockFlavorCodeService =  jest.spyOn(flavorCodeService, "submitRequest");
  
@@ -27,6 +26,8 @@ const intialQuery:ReportService.QueryRequest = new ReportService.QueryRequestIns
 describe("LandPlantList Component", () => {
 
   beforeEach(async () => {  
+    await AsyncStorage.setItem("@token", "sampleToken");
+
     mockFlavorCodeService.mockResolvedValue({
         data: new flavorCodeService.QueryResultTestInstance(),
       }); 

@@ -15,8 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
- 
-window.AsyncStorage.setItem("@token", "sampleToken");
+  
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
@@ -32,7 +31,8 @@ const mockReportService = jest.spyOn(ReportService, "submitRequest");
 
 describe("TacFarmDashboard Connected Report Component", () => {
   // render the TacFarmDashboard component
-  beforeEach(() => {
+  beforeEach(async() => {
+    await AsyncStorage.setItem("@token", "sampleToken");
     mockReportInitService.mockResolvedValue({
       data: new InitReportService.InitResultInstance(),
     }); 

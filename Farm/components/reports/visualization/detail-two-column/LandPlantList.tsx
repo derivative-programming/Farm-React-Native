@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState } from "react";
-import { Button, Row,  View } from "native-base";
+import { Button, Row,  View } from 'react-native';
 import * as ReportService from "../../services/LandPlantList";
 import { ReportColumnHeader } from "../../input-fields/ColumnHeader";
 import * as AsyncServices from "../../../services";

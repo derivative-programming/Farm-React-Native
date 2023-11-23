@@ -2,7 +2,8 @@ import React, { FC, ReactElement } from "react";
 
 import {useField } from 'formik'; 
 import { launchImageLibrary } from 'react-native-image-picker';
-import { Button, FormControl, VStack, Text } from "native-base";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
 
    
 export interface FormInputFileProps {
@@ -58,17 +59,17 @@ export const FormInputFile: FC<FormInputFileProps> = ({
   
   const handleFileSelection = () => {
     const options = {}; // Specify any options you need
-    launchImageLibrary(options, (response) => {
-      // Handling the image selection
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        // You can call `uploadImage` here with the selected file
-        uploadImage(response);
-      }
-    });
+    // launchImageLibrary(options, (response) => {
+    //   // Handling the image selection
+    //   if (response.didCancel) {
+    //     console.log('User cancelled image picker');
+    //   } else if (response.error) {
+    //     console.log('ImagePicker Error: ', response.error);
+    //   } else {
+    //     // You can call `uploadImage` here with the selected file
+    //     uploadImage(response);
+    //   }
+    // });
   };
       
   return (
@@ -93,17 +94,49 @@ export const FormInputFile: FC<FormInputFileProps> = ({
   //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
   //     </Form.Group> 
   // </div>
-    <VStack space={2} width="100%">
-      <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-        <FormControl.Label>{label}</FormControl.Label>
-        <Button onPress={handleFileSelection} isDisabled={disabled}>
-          Upload File
-        </Button>
-        {isInvalid && (
-          <Text color="red.500">{meta.error}</Text>
-        )}
-      </FormControl>
-    </VStack>
+    // <VStack space={2} width="100%">
+    //   <FormControl isInvalid={isInvalid} isDisabled={disabled}>
+    //     <FormControl.Label>{label}</FormControl.Label>
+    //     <Button onPress={handleFileSelection} isDisabled={disabled}>
+    //       Upload File
+    //     </Button>
+    //     {isInvalid && (
+    //       <Text color="red.500">{meta.error}</Text>
+    //     )}
+    //   </FormControl>
+    // </VStack>
+    <View style={styles.container}>
+      <FormLabel text={label} name={name + '-label'}/>
+      <TouchableOpacity 
+        onPress={handleFileSelection} 
+        style={[styles.button, disabled && styles.disabledButton]}
+        disabled={disabled}
+      >
+        <Text>Upload File</Text>
+      </TouchableOpacity>
+      {isInvalid && (
+        <Text style={styles.errorText}>{meta.error}</Text>
+      )}
+    </View>
   );
 };
    
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Add other styling as required
+  }, 
+  button: {
+    // Add button styling here
+  },
+  disabledButton: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    // Add other styling for error text
+  },
+  // Additional styles can be added as needed
+});

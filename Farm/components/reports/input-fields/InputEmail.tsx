@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react"; 
 import {useField } from 'formik'; 
-import { FormControl, Icon, Input, Text, WarningOutlineIcon } from "native-base";
+import { FormControl, Icon, Input, Text, WarningOutlineIcon } from 'react-native';
    
 export interface ReportInputEmailProps {
   name: string

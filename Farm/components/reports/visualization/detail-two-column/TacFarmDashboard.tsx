@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react"; 
 import * as ReportService from "../../services/TacFarmDashboard";   
-import { Row, View } from "native-base";
+import { Row, View } from 'react-native';
 import * as ReportColumnDisplay from "./columns";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB"; 
 

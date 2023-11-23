@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from "../../../context/authContext"; 
 import * as AnalyticsService from "../../services/analyticsService";
-import { View } from "native-base";
+import { View } from 'react-native';
 import * as RouteNames from '../../../constants/routeNames';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";

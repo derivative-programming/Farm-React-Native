@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { HStack, Text, View } from "native-base";
+import { HStack, Text, View } from 'react-native';
 import * as InitReportService from "../services/init/LandPlantListInitReport";
  
 export interface HeaderLandPlantListProps {

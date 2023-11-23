@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
-import { Card, View } from "native-base";
+import { Card, View } from 'react-native';
  
 import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/TacFarmDashboard";

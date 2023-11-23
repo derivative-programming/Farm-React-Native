@@ -1,7 +1,7 @@
 import React, { FC, ReactElement} from "react"; 
 import {useField } from 'formik';
 import { onKeyDown } from "../../../common/utilities"; 
-import { FormControl, Input, WarningOutlineIcon } from "native-base";
+import { FormControl, Input, WarningOutlineIcon } from 'react-native';
    
 export interface ReportInputNumberProps {
   name: string

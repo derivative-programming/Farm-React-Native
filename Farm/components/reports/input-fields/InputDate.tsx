@@ -3,7 +3,7 @@ import {useField } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"; 
 import {ReportInputErrorDisplay } from './InputErrorDisplay';
-import { View,Text, Button } from "native-base";
+import { View,Text, Button } from 'react-native';
    
 export interface ReportInputDateProps {
   name: string

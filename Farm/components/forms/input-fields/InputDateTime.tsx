@@ -4,7 +4,8 @@ import {useField } from 'formik';
 import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker'; 
 import {FormInputErrorDisplay } from './InputErrorDisplay';
-import { Button, FormControl, VStack, Text } from "native-base";
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
    
 export interface FormInputDateTimeProps {
   name: string
@@ -76,27 +77,50 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   //     </Form.Group>
   //     <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
   // </div>
-    <VStack space={2} width="100%">
-      <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-        <FormControl.Label>{label}</FormControl.Label>
-        <Button onPress={() => setShow(true)} isDisabled={disabled}>
-          {selectedDateTimeLocal.format("M/D/YYYY h:mm A") || placeholder}
-        </Button>
-        {show && (
-          <DateTimePicker
-          value={new Date(selectedDateTimeLocal.toDate())}
-            mode="datetime" 
-            // is24Hour={false}
-            display="default"
-            onChange={onChange}
-            disabled={disabled}
-          />
-        )}
-        {meta.touched && meta.error && (
-          <Text color="red.500">{meta.error}</Text>
-        )}
-      </FormControl>
-    </VStack>
+  <View style={styles.container}>
+    <FormLabel text={label} name={name + '-label'}/>
+    <TouchableOpacity 
+      onPress={() => setShow(true)} 
+      style={[styles.button, disabled && styles.disabledButton]}
+      disabled={disabled}
+    >
+      <Text>
+        {selectedDateTimeLocal.format("M/D/YYYY h:mm A") || placeholder}
+      </Text>
+    </TouchableOpacity>
+
+    {show && (
+      <DateTimePicker
+        value={new Date(selectedDateTimeLocal.toDate())}
+        mode="datetime"
+        display="default"
+        onChange={onChange}
+        disabled={disabled}
+      />
+    )}
+
+    {meta.touched && meta.error && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Add other styling as required
+  }, 
+  button: {
+    // Add button styling here
+  },
+  disabledButton: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    // Add other styling for error text
+  },
+  // Additional styles can be added as needed
+});

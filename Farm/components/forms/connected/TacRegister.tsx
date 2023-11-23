@@ -17,10 +17,11 @@ import * as InputFields from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import * as AnalyticsService from "../../services/analyticsService";
-import { Box, VStack, Text, FormControl, Spinner, Button } from "native-base";
+import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
 export interface FormProps {
   tacCode:string;
   name?: string;
@@ -111,9 +112,9 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
 
       authContext.setToken(response.apiKey);
       authContext.setRoles(response.roleNameCSVList);
-      AsyncStorage.setItem("@token", response.apiKey);
-      AsyncStorage.setItem("customerCode", response.customerCode);
-      AsyncStorage.setItem("email", response.email);
+      await AsyncStorage.setItem("@token", response.apiKey);
+      await AsyncStorage.setItem("customerCode", response.customerCode);
+      await AsyncStorage.setItem("email", response.email);
       AnalyticsService.start();
 
       actions.setSubmitting(false);
@@ -162,27 +163,27 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     // Adapt submission logic
   };
   return (
-    <Box flex={1} py="5" alignItems="center">
-    <VStack space={4} width="90%">
-        <Text fontSize="xl" testID="page-title-text">Create your account</Text>
-        <Text fontSize="md" testID="page-intro-text">A Couple Details Then We're Off!</Text>
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <Text style={styles.titleText}>Create your account</Text>
+        <Text style={styles.introText}>A Couple Details Then We're Off!</Text>
         <HeaderTacRegister
           name="headerTacRegister"
           initData={initPageResponse}
           isHeaderVisible={false}
         />
-      <Formik
+        <Formik
           enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ handleSubmit, handleReset, isSubmitting }) => (
-            <FormControl>
+            <View>
               {initForm && showProcessingAnimationOnInit ?
-                <Spinner size="lg" />
+                <ActivityIndicator size="large" color="#0000ff" />
                 :
-                <VStack space={4}>
+                <>
                   <InputFields.ErrorDisplay
                       name="headerErrors"
                       errorArray={headerErrors}
@@ -207,13 +208,20 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
                       label="Last Name"
                       isVisible={true}
                     />
-                </VStack>
+                </>
               }
-              <Button
+              <TouchableOpacity
                 // onPress={handleSubmit}
-                mt="3" isLoading={isSubmitting} testID="submit-button">
-                OK Button Text
-              </Button>
+                style={[styles.button, isSubmitting && styles.buttonDisabled]}
+                disabled={isSubmitting}
+                testID="submit-button"
+              >
+                {
+                  isSubmitting ?
+                    <ActivityIndicator color="#fff" /> :
+                    <Text style={styles.buttonText}>OK Button Text</Text>
+                }
+              </TouchableOpacity>
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Back To Log In"
                     onPress={() => {
@@ -224,12 +232,41 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
                     isVisible={true}
                   />
 
-            </FormControl>
+            </View>
           )}
         </Formik>
-    </VStack>
-    </Box>
+      </View>
+    </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20, // equivalent to py="5"
+    alignItems: 'center'
+  },
+  formContainer: {
+    width: '90%',
+    // Add other styles as needed
+  },
+  titleText: {
+    fontSize: theme.fonts.largeSize, 
+    // Add other styles as needed
+  },
+  introText: {
+    fontSize: theme.fonts.mediumSize, 
+    // Add other styles as needed
+  },
+  button: {
+    marginTop: 12, // equivalent to mt="3"
+    // Add other button styling here
+  },
+  buttonText: {
+    // Add text styling here
+  },
+  buttonDisabled: {
+    // Add disabled button styling here
+  }
+});
 export default FormConnectedTacRegister;
 

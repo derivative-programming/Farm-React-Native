@@ -16,9 +16,7 @@ import * as requestFlavorCodeService from "../../lookups/services/Flavor"
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-window.AsyncStorage.setItem("@token", "sampleToken");
+ 
 
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
@@ -41,6 +39,7 @@ const formInitResponse = new InitFormService.InitResultInstance();
 describe("LandAddPlant Component", () => {
 
   beforeEach(async () => { 
+    await AsyncStorage.setItem("@token", "sampleToken");
       mockFormInitService.mockResolvedValue({
         data: new InitFormService.InitResultInstance(),
       });
@@ -54,7 +53,9 @@ describe("LandAddPlant Component", () => {
       await act(async () => {
         render(
           
-            <FormConnectedLandAddPlant name="testForm" showProcessingAnimationOnInit={false} />
+            <FormConnectedLandAddPlant name="testForm" 
+              showProcessingAnimationOnInit={false} 
+              landCode = "00000000-0000-0000-0000-000000000000"/>
           
         ); 
       })
