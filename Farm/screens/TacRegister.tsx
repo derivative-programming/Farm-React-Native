@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -20,20 +20,20 @@ const TacRegisterScreen: React.FC<TacRegisterScreenProps> = ({ route, navigation
   const tacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
 
   return (
-    <KeyboardAvoidingView 
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={{ flex: 1 }}
-  >
-    <ScrollView style={styles.container}> 
-      <ScreenHeader />
-      <FormConnectedTacRegister tacCode={tacCode} name='tac-register'/> 
-    
-    </ScrollView>
+
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={styles.container}>
+        <ScreenHeader />
+        <FormConnectedTacRegister tacCode={tacCode} name='tac-register'/>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.Colors.background,
