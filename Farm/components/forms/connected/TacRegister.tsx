@@ -176,7 +176,10 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
           enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={handleSubmit}
+          onSubmit={async (values, actions) => {
+            await submitClick(values, actions);
+            actions.setSubmitting(false); // Turn off submitting state
+          }}
         >
           {({ handleSubmit, handleReset, isSubmitting }) => (
             <View>
@@ -210,18 +213,14 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
                     />
                 </>
               }
-              <TouchableOpacity
-                // onPress={handleSubmit}
-                style={[styles.button, isSubmitting && styles.buttonDisabled]}
-                disabled={isSubmitting}
-                testID="submit-button"
-              >
-                {
-                  isSubmitting ?
-                    <ActivityIndicator color="#fff" /> :
-                    <Text style={styles.buttonText}>OK Button Text</Text>
-                }
-              </TouchableOpacity>
+              <InputFields.FormInputButton name="submit-button"
+                buttonText="Register"
+                onPress={() => handleSubmit()}
+                isButtonCallToAction={true}
+                isVisible={true}
+                isEnabled={!isSubmitting}
+                isProcessing={isSubmitting}
+              />
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Back To Log In"
                     onPress={() => {
@@ -250,22 +249,37 @@ const styles = StyleSheet.create({
     // Add other styles as needed
   },
   titleText: {
-    fontSize: theme.fonts.largeSize, 
+    fontSize: theme.fonts.largeSize,
+    marginBottom: 8,
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   introText: {
-    fontSize: theme.fonts.mediumSize, 
+    fontSize: theme.fonts.mediumSize,
+    marginBottom: 8,
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   button: {
     marginTop: 12, // equivalent to mt="3"
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center', // Center text horizontally
+    justifyContent: 'center', // Center text vertically
+    backgroundColor: theme.Colors.primary,
+    borderWidth: 1,
+    borderColor: theme.Colors.primary, // You can use your theme's primary color
     // Add other button styling here
   },
   buttonText: {
+    fontSize: theme.fonts.mediumSize,
+    fontWeight: 'bold',
+    color: 'white',
     // Add text styling here
   },
   buttonDisabled: {
     // Add disabled button styling here
+    opacity: 0.5,
   }
 });
 export default FormConnectedTacRegister;

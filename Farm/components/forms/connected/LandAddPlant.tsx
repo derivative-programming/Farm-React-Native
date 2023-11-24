@@ -283,19 +283,15 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                       isVisible={true}
                     />
                 </>
-              } 
-              <TouchableOpacity 
-                onPress={() => handleSubmit()} 
-                style={[styles.button, isSubmitting && styles.buttonDisabled]}
-                disabled={isSubmitting}
-                testID="submit-button"
-              >
-                {
-                  isSubmitting ? 
-                    <ActivityIndicator color="#fff" /> :
-                    <Text style={styles.buttonText}>OK Button Text</Text>
-                }
-              </TouchableOpacity>
+              }  
+              <InputFields.FormInputButton name="submit-button"
+                buttonText="OK Button Text"
+                onPress={() => handleSubmit()}
+                isButtonCallToAction={true}
+                isVisible={true}
+                isEnabled={!isSubmitting}
+                isProcessing={isSubmitting}
+              />
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Cancel Button Text" 
                     onPress={() => {
@@ -334,10 +330,14 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: theme.fonts.largeSize, 
+    marginBottom: 8,    
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   introText: {
     fontSize: theme.fonts.mediumSize, 
+    marginBottom: 8,    
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   button: {
@@ -346,9 +346,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center', // Center text horizontally
     justifyContent: 'center', // Center text vertically
-    backgroundColor: theme.bootstrapColors.primary,
+    backgroundColor: theme.Colors.primary,
     borderWidth: 1,
-    borderColor: theme.bootstrapColors.primary, // You can use your theme's primary color 
+    borderColor: theme.Colors.primary, // You can use your theme's primary color 
     // Add other button styling here
   },
   buttonText: {

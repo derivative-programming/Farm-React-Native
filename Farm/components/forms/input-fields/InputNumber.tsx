@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    marginBottom: 8,    
     // Additional styling for the error message text
   },
   // Add any other styles as needed

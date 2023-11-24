@@ -144,10 +144,10 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     if (isInitializedRef.current) {
       return;
     }
-    isInitializedRef.current = true;
-    // FormService.initForm(contextCode)
-    //   .then((response) => handleInit(response))
-    //   .finally(() => {setInitForm(false)});
+    isInitializedRef.current = true; 
+    FormService.initForm(contextCode)
+      .then((response) => handleInit(response))
+      .finally(() => {setInitForm(false)});
   }, []);
 
   return (
@@ -185,19 +185,15 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
                       isVisible={true}
                     />
                 </>
-              }
-              <TouchableOpacity
+              } 
+              <InputFields.FormInputButton name="submit-button"
+                buttonText="OK Button Text"
                 onPress={() => handleSubmit()}
-                style={[styles.button, isSubmitting && styles.buttonDisabled]}
-                disabled={isSubmitting}
-                testID="submit-button"
-              >
-                {
-                  isSubmitting ?
-                    <ActivityIndicator color="#fff" /> :
-                    <Text style={styles.buttonText}>OK Button Text</Text>
-                }
-              </TouchableOpacity>
+                isButtonCallToAction={true}
+                isVisible={true}
+                isEnabled={!isSubmitting}
+                isProcessing={isSubmitting}
+              />
               <InputFields.FormInputButton name="other-button"
                 buttonText="Register"
                 onPress={() => {
@@ -227,10 +223,14 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: theme.fonts.largeSize, 
+    marginBottom: 8,          
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   introText: {
     fontSize: theme.fonts.mediumSize, 
+    marginBottom: 8,    
+    color: theme.Colors.text,
     // Add other styles as needed
   },
   button: {

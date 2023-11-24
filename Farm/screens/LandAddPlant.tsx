@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack'; 
 import ScreenHeader from '../components/header/ScreenHeader'; 
 import { FormConnectedLandAddPlant } from '../components/forms/connected';
+import * as theme from '../constants/theme'
  
 
 type LandAddPlantScreenRouteProp = RouteProp<RootStackParamList, 'LandAddPlant'>;
@@ -20,12 +21,24 @@ const LandAddPlantScreen: React.FC<LandAddPlantScreenProps> = ({ route, navigati
   const landCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000'; 
     
   return (
-    <View style={{ flex: 1 }}>
-      <ScreenHeader />  
-      <FormConnectedLandAddPlant landCode={landCode} name='land-add-plant'/>
-    </View>
+    
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={styles.container}> 
+        <ScreenHeader />
+        <FormConnectedLandAddPlant landCode={landCode} name='land-add-plant'/> 
+      </ScrollView>
+    </KeyboardAvoidingView> 
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.Colors.background,  
+  },
+});
 
 export default LandAddPlantScreen;

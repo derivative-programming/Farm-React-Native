@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    marginBottom: 8,    
     // Add other styling for error text
   },
   // Additional styles can be added as needed

@@ -6,6 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ScreenHeader from '../components/header/ScreenHeader'; 
 import { ScreenBackButton } from '../components/ScreenBackButton';
 import { useNavigation } from '@react-navigation/native';
+import * as theme from '../constants/theme'
  
 type LandPlantListScreenRouteProp = RouteProp<RootStackParamList, 'LandPlantList'>;
 type LandPlantListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LandPlantList'>;
@@ -25,10 +26,17 @@ const LandPlantListScreen: React.FC<LandPlantListScreenProps> = ({ route }) => {
    
 
   return (
-    <View style={{ flex: 1 }}>
+    <View  style={styles.container}>
       <ScreenHeader/>   
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.Colors.background,  
+  },
+});
   
 export default LandPlantListScreen;

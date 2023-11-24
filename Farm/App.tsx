@@ -13,17 +13,17 @@ const App: React.FC = (): React.ReactElement => {
   return (  
     <MenuProvider
       customStyles={{ menuProviderWrapper: styles.menuProviderWrapper }}
-      backHandler={false}>
+      backHandler={false} children={undefined}>
       <NavigationContainer>
         {authValue && authValue.token ? <AppRoute /> : <AuthRoute />} 
       </NavigationContainer> 
     </MenuProvider> 
-  );
-};
 
+  );
+}; 
  
 export default () => (
-  <AuthProvider>
+  <AuthProvider children={undefined}>
     <App />
   </AuthProvider>
 );

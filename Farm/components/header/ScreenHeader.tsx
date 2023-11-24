@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useContext } from "react";
 import { View, Text, Pressable, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
 import Icon from 'react-native-vector-icons/MaterialIcons';  
-import {bootstrapColors} from '../../constants/theme'
+import {Colors} from '../../constants/theme'
 import * as theme from '../../constants/theme'
 import { AuthContext } from "../../context/authContext"; 
 import { useNavigation } from '@react-navigation/native';
@@ -67,13 +67,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     logClick("Header","register",""); 
     navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   }; 
-
   
-  const handleMenuTriggerPress = () => {
-    console.log('Menu Trigger Pressed');
-    // Any other logic you want to execute when the MenuTrigger is pressed
-  };
-
   return (   
     // <Box backgroundColor="primary.500"> 
     //   <HStack bg="primary.500" px="1" py="3" alignItems="center" justifyContent="space-between">
@@ -99,38 +93,37 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>
       <View style={styles.horizontalStack}>
+        
         <Menu>
-          <MenuTrigger>
-            <Pressable style={styles.menuTrigger}  onPress={handleMenuTriggerPress}>
-              <Icon name="menu" size={25} color="white" /> 
-            </Pressable>
+          <MenuTrigger> 
+              <Icon name="menu" size={25} color="white" style={styles.menuTrigger} />  
           </MenuTrigger>
-          <MenuOptions customStyles={styles.menuOptions}>
+          <MenuOptions customStyles={styles.menuOptions}> 
             {authContext && authContext.token ? (  
               //autenticated
               <>
                 {authContext && authContext.token && authContext.roles.includes('User') === true && (
                   //all users
                   <>
-                    <MenuOption onSelect={() => onDashboard()} text="Dashboard" /> 
-                    <MenuOption onSelect={() => onProfile()} text="Profile" /> 
+                    <MenuOption value={1} onSelect={() => onDashboard()} text="Dashboard" /> 
+                    <MenuOption value={2} onSelect={() => onProfile()} text="Profile" /> 
                   </>
                 )}
                 
                 {authContext && authContext.token && authContext.roles.includes('Admin') === true && (
                   //admin users
                   <>
-                    <MenuOption onSelect={() => onAdminDashboard()} text="Admin" /> 
+                    <MenuOption value={3} onSelect={() => onAdminDashboard()} text="Admin" /> 
                   </>
                 )}
                 
                 {authContext && authContext.token && authContext.roles.includes('Config') === true && (
                   //config users
                   <>
-                    <MenuOption onSelect={() => onConfigDashboard()} text="Config" /> 
+                    <MenuOption value={4} onSelect={() => onConfigDashboard()} text="Config" /> 
                   </>
                 )}
-                <MenuOption onSelect={() => onLogout()} text="Logout" 
+                <MenuOption value={5} onSelect={() => onLogout()} text="Logout" 
                customStyles={optionStyles} /> 
               </>
             ) 
@@ -138,9 +131,9 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
             (
               //not autenticated
               <>
-                <MenuOption onSelect={() => onLogin()} text="Login" 
+                <MenuOption value={6} onSelect={() => onLogin()} text="Login" 
                customStyles={optionStyles} /> 
-                <MenuOption onSelect={() => onRegister()} text="Register"  
+                <MenuOption value={7} onSelect={() => onRegister()} text="Register"  
                customStyles={optionStyles} /> 
               </>
             )}
@@ -171,10 +164,10 @@ const styles = StyleSheet.create({
     
   },
   container: {
-    backgroundColor: bootstrapColors.primary, // Replace with your primary color
+    backgroundColor: Colors.primary, // Replace with your primary color
     // Additional container styling 
     height: 50, 
-  },
+  },  
   menuOptions: {
     // padding: 10,
     // backgroundColor: 'white',
@@ -189,6 +182,7 @@ const styles = StyleSheet.create({
   },
   menuTrigger: {
     // Styles for the menu trigger
+    paddingLeft: 10,
   },
   menuIcon: {
     color: 'white',
@@ -203,6 +197,7 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     width: 25,
+    paddingRight: 10,
     // Additional placeholder view styling if needed
   },
   // Other styles as needed

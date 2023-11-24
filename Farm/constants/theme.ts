@@ -1,5 +1,5 @@
 
-export const bootstrapColors = {
+export const Colors = {
     primary: "#007bff",
     secondary: "#6c757d",
     success: "#28a745",
@@ -8,6 +8,8 @@ export const bootstrapColors = {
     info: "#17a2b8",
     light: "#f8f9fa",
     dark: "#343a40", 
+    background: 'f8f9fa',
+    text: 'black'
   };
 
 export const fonts = {
@@ -15,3 +17,4 @@ export const fonts = {
   mediumSize: 16,
   largeSize: 24,
 }
+ 

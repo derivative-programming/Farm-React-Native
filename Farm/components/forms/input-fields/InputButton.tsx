@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { bootstrapColors } from "../../../constants/theme";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { Colors } from "../../../constants/theme";
 import * as theme from '../../../constants/theme'
 
  
@@ -14,6 +14,7 @@ export interface FormInputButtonProps {
   isEnabled?:boolean
   autoFocus?:boolean
   className?:string
+  isProcessing?:boolean
 }
    
 export const FormInputButton: FC<FormInputButtonProps> = ({
@@ -24,7 +25,8 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
   isVisible = true,
   isEnabled = true,
   autoFocus = false,
-  className = ""
+  className = "",
+  isProcessing = false,
 }): ReactElement => { 
   
   let buttonVariant = "outline";
@@ -60,10 +62,17 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
           // accessibilityTraits={autoFocus ? 'button' : undefined}
           // accessibilityComponentType={autoFocus ? 'button' : undefined}
         >
-          <Text style={[styles.buttonText, 
-            isButtonCallToAction && styles.solidButton, 
-            !isButtonCallToAction && styles.outlineButton, 
-            !isEnabled && styles.disabledButtonText]}>{buttonText}</Text>
+          
+          {
+            isProcessing ?
+              <ActivityIndicator color="#fff" /> :
+              <Text style={[styles.buttonText, 
+                isButtonCallToAction && styles.solidButtonText, 
+                !isButtonCallToAction && styles.outlineButtonText, 
+                !isEnabled && styles.disabledButtonText]}>{buttonText}
+              </Text>
+          }
+          
         </TouchableOpacity>
       )}
     </View>
@@ -96,17 +105,17 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   outlineButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.secondary,
     borderWidth: 1,
-    borderColor: bootstrapColors.primary, // You can use your theme's primary color 
+    borderColor: Colors.secondary, // You can use your theme's primary color 
   },
   outlineButtonText: {
-    color: bootstrapColors.primary, // This can be the same as the border color 
+    color: 'white', // This can be the same as the border color 
   }, 
   solidButton: {
-    backgroundColor: bootstrapColors.primary,
+    backgroundColor: Colors.primary,
     borderWidth: 1,
-    borderColor: bootstrapColors.primary, // You can use your theme's primary color 
+    borderColor: Colors.primary, // You can use your theme's primary color 
   },
   solidButtonText: {
     color: 'white',  

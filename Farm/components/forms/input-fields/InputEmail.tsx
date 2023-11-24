@@ -80,7 +80,7 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
       // Additional TextInput props as needed
     />
     {isInvalid && (
-      <Text style={styles.errorMessage}>{meta.error}</Text>
+      <Text style={styles.errorText}>{meta.error}</Text>
     )}
   </View>
   );
@@ -110,8 +110,9 @@ const styles = StyleSheet.create({
     // borderColor: '#e7e7e7',
     opacity: 0.5,
   },
-  errorMessage: {
+  errorText: {
     color: 'red',
+    marginBottom: 8,    
     // Additional styling for error message text
   },
   // Other styles as needed

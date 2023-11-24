@@ -14,7 +14,7 @@ import * as InitFormService from "../services/init/TacLoginInitObjWF";
 
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const mockedUsedNavigate = jest.fn();
 const mockParams = jest.fn();
 // mock the useNavigate method
@@ -30,14 +30,16 @@ let formSubmitResponse = new FormService.SubmitResultInstance();
 const formInitResponse = new InitFormService.InitResultInstance();
 describe("TacLogin Component", () => {
   beforeEach(async () => {
-    await AsyncStorage.setItem("@token", "sampleToken");  
+    await AsyncStorage.setItem("@token", "sampleToken");
       mockFormInitService.mockResolvedValue({
         data: new InitFormService.InitResultInstance(),
       });
 
       await act(async () => {
         render(
-            <FormConnectedTacLogin name="testForm" showProcessingAnimationOnInit={false} />
+            <FormConnectedTacLogin name="testForm"
+              showProcessingAnimationOnInit={false}
+              tacCode = "00000000-0000-0000-0000-000000000000"/>
         );
       })
 

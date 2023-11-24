@@ -14,7 +14,7 @@ import * as InitFormService from "../services/init/TacRegisterInitObjWF";
 
 import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const mockedUsedNavigate = jest.fn();
 const mockParams = jest.fn();
 // mock the useNavigate method
@@ -37,7 +37,9 @@ describe("TacRegister Component", () => {
 
       await act(async () => {
         render(
-            <FormConnectedTacRegister name="testForm" showProcessingAnimationOnInit={false} />
+            <FormConnectedTacRegister name="testForm"
+              showProcessingAnimationOnInit={false}
+              tacCode = "00000000-0000-0000-0000-000000000000"/>
         );
       })
 
