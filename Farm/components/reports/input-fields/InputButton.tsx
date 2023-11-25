@@ -1,5 +1,6 @@
 import React, { FC, ReactElement } from "react";
-import { Button } from 'react-native'; 
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'; 
+import * as theme from '../../../constants/theme'
 
 export interface ReportInputButtonProps {
   name: string;
@@ -10,6 +11,7 @@ export interface ReportInputButtonProps {
   isEnabled?: boolean;
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
+  isProcessing?:boolean;
 }
 
 export const ReportInputButton: FC<ReportInputButtonProps> = ({
@@ -22,26 +24,90 @@ export const ReportInputButton: FC<ReportInputButtonProps> = ({
   // type,
 
   className = "",
+  isProcessing = false,
 }): ReactElement => {
 
 
-  let buttonVariant = "outline";
+  // let buttonVariant = "outline";
 
-  if (isButtonCallToAction) {
-    buttonVariant = "primary";
-  }
+  // if (isButtonCallToAction) {
+  //   buttonVariant = "primary";
+  // }
 
   return (
-    <Button
-      testID={name} 
-      id={name} 
-      // type="button"
-      onPress={onPress}
-      style={{ display: isVisible ? 'flex' : 'none' }}
-      disabled={!isEnabled}
-      variant={buttonVariant}
-    >
-      {buttonText}
-    </Button>
+    
+    <View style={styles.container}>
+      {isVisible && (
+        <TouchableOpacity
+          onPress={onPress}
+          style={[styles.button, 
+            isButtonCallToAction && styles.solidButton, 
+            !isButtonCallToAction && styles.outlineButton, 
+            !isEnabled && styles.disabledButton]}
+          testID={name}
+          id={name}
+          disabled={!isEnabled} 
+          // accessibilityTraits={autoFocus ? 'button' : undefined}
+          // accessibilityComponentType={autoFocus ? 'button' : undefined}
+        >
+          
+          {
+            isProcessing ?
+              <ActivityIndicator color="#fff" /> :
+              <Text style={[styles.buttonText, 
+                isButtonCallToAction && styles.solidButtonText, 
+                !isButtonCallToAction && styles.outlineButtonText, 
+                !isEnabled && styles.disabledButtonText]}>{buttonText}
+              </Text>
+          }
+          
+        </TouchableOpacity>
+      )}
+    </View>
   );
 }; 
+ 
+
+const styles = StyleSheet.create({
+  container: { 
+    paddingVertical: 12, // py="3" equivalent, assuming 1 unit = 4
+    // Add other styling as required
+  },
+  button: { 
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center', // Center text horizontally
+    justifyContent: 'center', // Center text vertically
+    // Add button styling here
+  },
+  disabledButton: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  },
+  buttonText: { 
+    fontSize: theme.fonts.mediumSize,
+    fontWeight: 'bold',
+    // Add button styling here
+  },
+  disabledButtonText: {
+    // Add disabled button styling here
+    opacity: 0.5,
+  },
+  outlineButton: {
+    backgroundColor: Colors.secondary,
+    borderWidth: 1,
+    borderColor: Colors.secondary, // You can use your theme's primary color 
+  },
+  outlineButtonText: {
+    color: 'white', // This can be the same as the border color 
+  }, 
+  solidButton: {
+    backgroundColor: Colors.primary,
+    borderWidth: 1,
+    borderColor: Colors.primary, // You can use your theme's primary color 
+  },
+  solidButtonText: {
+    color: 'white',  
+  },
+  // Additional styles can be added as needed
+});

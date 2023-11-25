@@ -40,7 +40,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 
   const validationSchema = ReportService.buildValidationSchema();
  
-  const isFiltersVisibleDefault = AsyncStorage.getItem("isFiltersVisible");
+  const isFiltersVisibleDefault = false;// await AsyncStorage.getItem("isFiltersVisible");
   const defaultAccordianKey = (isFiltersVisibleDefault === "true" ? "0" : "-1");
 
   const authContext = useContext(AuthContext);
@@ -69,7 +69,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 
   const onAccordianHeaderClick = async () => { 
     logClick("ReportFilterLandPlantList","accordianClick","");
-    const isFiltersVisible = AsyncStorage.getItem("isFiltersVisible");
+    const isFiltersVisible = await AsyncStorage.getItem("isFiltersVisible");
     if(isFiltersVisible === null)
     {
       await AsyncStorage.setItem("isFiltersVisible","true")

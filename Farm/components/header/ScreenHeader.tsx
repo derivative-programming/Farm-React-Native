@@ -33,8 +33,8 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   const { logClick } = useAnalyticsDB();
 
   const onLogout = async () => {
-    logClick("Header","logOut","");
-    AnalyticsService.stop();
+    await logClick("Header","logOut","");
+    await AnalyticsService.stop();
     authContext.setToken("");
     authContext.setRoles("");
     await AsyncStorage.setItem("@token", "");
@@ -42,29 +42,29 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     await AsyncStorage.setItem("email", "");
   };
 
-  const onLogin = () => {
-    logClick("Header","login",""); 
+  const onLogin = async () => {
+    await logClick("Header","login",""); 
     navigation.navigate(RouteNames.TAC_LOGIN, { code: "00000000-0000-0000-0000-000000000000" });
   };
-  const onDashboard = () => {
-    logClick("Header","dashboard","");
+  const onDashboard = async () => {
+    await logClick("Header","dashboard","");
     navigation.navigate(RouteNames.TAC_FARM_DASHBOARD, { code: "00000000-0000-0000-0000-000000000000" });
   };
-  const onProfile = () => {
-    logClick("Header","profile",""); 
+  const onProfile = async () => {
+    await logClick("Header","profile",""); 
     navigation.navigate("CustomerUserUpdateProfile" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
   };
-  const onAdminDashboard = () => {
-    logClick("Header","admin","");
+  const onAdminDashboard = async () => {
+    await logClick("Header","admin","");
     navigation.navigate("CustomerAdminDashboard" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
   };
-  const onConfigDashboard = () => {
-    logClick("Header","config","");
+  const onConfigDashboard = async () => {
+    await logClick("Header","config","");
     navigation.navigate("PacConfigDashboard" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
   };
 
-  const onRegister = () => {
-    logClick("Header","register",""); 
+  const onRegister = async () => {
+    await logClick("Header","register",""); 
     navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   }; 
   
@@ -105,25 +105,25 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
                 {authContext && authContext.token && authContext.roles.includes('User') === true && (
                   //all users
                   <>
-                    <MenuOption value={1} onSelect={() => onDashboard()} text="Dashboard" /> 
-                    <MenuOption value={2} onSelect={() => onProfile()} text="Profile" /> 
+                    <MenuOption value={1} onSelect={async () => await onDashboard()} text="Dashboard" /> 
+                    <MenuOption value={2} onSelect={async () => await onProfile()} text="Profile" /> 
                   </>
                 )}
                 
                 {authContext && authContext.token && authContext.roles.includes('Admin') === true && (
                   //admin users
                   <>
-                    <MenuOption value={3} onSelect={() => onAdminDashboard()} text="Admin" /> 
+                    <MenuOption value={3} onSelect={async () => await onAdminDashboard()} text="Admin" /> 
                   </>
                 )}
                 
                 {authContext && authContext.token && authContext.roles.includes('Config') === true && (
                   //config users
                   <>
-                    <MenuOption value={4} onSelect={() => onConfigDashboard()} text="Config" /> 
+                    <MenuOption value={4} onSelect={async () => await onConfigDashboard()} text="Config" /> 
                   </>
                 )}
-                <MenuOption value={5} onSelect={() => onLogout()} text="Logout" 
+                <MenuOption value={5} onSelect={async () => await onLogout()} text="Logout" 
                customStyles={optionStyles} /> 
               </>
             ) 
@@ -131,9 +131,9 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
             (
               //not autenticated
               <>
-                <MenuOption value={6} onSelect={() => onLogin()} text="Login" 
+                <MenuOption value={6} onSelect={async () => await onLogin()} text="Login" 
                customStyles={optionStyles} /> 
-                <MenuOption value={7} onSelect={() => onRegister()} text="Register"  
+                <MenuOption value={7} onSelect={async () => await onRegister()} text="Register"  
                customStyles={optionStyles} /> 
               </>
             )}

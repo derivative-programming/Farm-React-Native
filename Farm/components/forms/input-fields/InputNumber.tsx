@@ -77,8 +77,11 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
           keyboardType="numeric"
           placeholder={placeholder}
           editable={!disabled}
-          {...field}
+          id={name} 
           testID={name}
+          onChangeText={field.onChange(name)}
+          onBlur={field.onBlur(name)}
+          value={field.value}   
           // Additional props for TextInput as needed
         />
         {isInvalid && (

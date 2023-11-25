@@ -1,6 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { Colors } from "../../../constants/theme";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'; 
 import * as theme from '../../../constants/theme'
 
  
@@ -29,11 +28,11 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
   isProcessing = false,
 }): ReactElement => { 
   
-  let buttonVariant = "outline";
-  if(isButtonCallToAction)
-  {
-    buttonVariant = "solid";
-  }
+  // let buttonVariant = "outline";
+  // if(isButtonCallToAction)
+  // {
+  //   buttonVariant = "solid";
+  // }
  
       
   return (

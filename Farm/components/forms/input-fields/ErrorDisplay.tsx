@@ -1,6 +1,6 @@
 import React, { FC, ReactElement } from "react"; 
  
-import { View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
    
 export interface ErrorDisplayProps {
   name:string
@@ -21,13 +21,28 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
     <View data-testid={name}> 
       {allErrors && allErrors.length > 0 ? ( 
           allErrors.map((item, index) => {
-            return (
-              <View key={item}>{item}</View>  
-          );
+            if (item.length > 0) {
+              return (
+                <View key={item}><Text style={styles.errorText}>{item}</Text></View>  
+              );
+            }
+            return null;
         })
       ) : null}
     </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Additional container styling
+  },  
+  errorText: {
+    color: 'red',
+    marginBottom: 8,    
+    // Additional styling for error message text
+  },
+  // Other styles as needed
+});
 export default ErrorDisplay;

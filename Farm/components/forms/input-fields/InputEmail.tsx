@@ -5,7 +5,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { FormLabel } from "./InputLabel";
 import * as theme from '../../../constants/theme'
 
-   
+    
 export interface FormInputEmailProps {
   name: string
   label: string
@@ -13,7 +13,7 @@ export interface FormInputEmailProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
-}
+} 
    
 export const FormInputEmail: FC<FormInputEmailProps> = ({
   name,
@@ -75,8 +75,11 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
       keyboardType="email-address"
       placeholder={placeholder}
       editable={!disabled}
-      {...field}
+      id={name} 
       testID={name}
+      onChangeText={field.onChange(name)}
+      onBlur={field.onBlur(name)}
+      value={field.value}   
       // Additional TextInput props as needed
     />
     {isInvalid && (

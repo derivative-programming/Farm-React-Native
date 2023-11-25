@@ -77,8 +77,11 @@ export const FormInputTextArea: FC<FormInputTextAreaProps> = ({
         numberOfLines={3}
         placeholder={placeholder}
         editable={!disabled}
-        {...field}
+        id={name} 
         testID={name}
+        onChangeText={field.onChange(name)}
+        onBlur={field.onBlur(name)}
+        value={field.value}   
         autoFocus={autoFocus}
         // Additional props for TextInput as needed
       />

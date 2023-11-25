@@ -86,7 +86,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   ) => {
     try {
       setLoading(true);
-      logClick("FormConnectedTacRegister","submit","");
+      await logClick("FormConnectedTacRegister","submit","");
       const responseFull: any = await FormService.submitForm(
         values,
         contextCode
@@ -115,7 +115,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       await AsyncStorage.setItem("@token", response.apiKey);
       await AsyncStorage.setItem("customerCode", response.customerCode);
       await AsyncStorage.setItem("email", response.email);
-      AnalyticsService.start();
+      // await AnalyticsService.start();
 
       actions.setSubmitting(false);
       actions.resetForm();
@@ -155,12 +155,6 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       }
     });
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
-  };
-  const handleSubmit = async (
-    values: any,//InitialValues,
-    actions: any//FormikHelpers<InitialValues>
-  ) => {
-    // Adapt submission logic
   };
   return (
     <View style={styles.container}>
@@ -223,8 +217,8 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
               />
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Back To Log In"
-                    onPress={() => {
-                      logClick("FormConnectedTacAddCustomer","cancel","");
+                    onPress={async () => {
+                      await logClick("FormConnectedTacAddCustomer","cancel","");
                       navigateTo("TacLogin", "tacCode");
                     }}
                     isButtonCallToAction={false}

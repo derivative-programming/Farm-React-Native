@@ -21,7 +21,7 @@ export const FormInputPassword: FC<FormInputPasswordProps> = ({
   disabled = false,
   isVisible = true,
 }): ReactElement | null => {
-  const [field, meta, helpers] = useField(name); 
+  const [field, meta, helpers] = useField(name);  
 
   const errorDisplayControlName = name + "ErrorDisplay";
   
@@ -72,8 +72,11 @@ export const FormInputPassword: FC<FormInputPasswordProps> = ({
           secureTextEntry={true} // For password input
           placeholder={placeholder}
           editable={!disabled}
-          {...field}
+          id={name}
           testID={name}
+          onChangeText={field.onChange(name)}
+          onBlur={field.onBlur(name)}
+          value={field.value}  
           // Additional props for TextInput as needed
         />
         {isInvalid && (

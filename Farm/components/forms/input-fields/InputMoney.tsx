@@ -84,8 +84,11 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
             keyboardType="numeric"
             placeholder="Amount"
             editable={!disabled}
-            {...field}
+            id={name} 
             testID={name}
+            onChangeText={field.onChange(name)}
+            onBlur={field.onBlur(name)}
+            value={field.value}   
             // Additional TextInput props as needed
           />
         </View>

@@ -69,9 +69,12 @@ export const FormInputText: FC<FormInputTextProps> = ({
     <TextInput
       style={[styles.input, disabled && styles.disabledInput]}
       placeholder={placeholder}
-      editable={!disabled}
-      {...field}
+      editable={!disabled} 
+      id={name} 
       testID={name}
+      onChangeText={field.onChange(name)}
+      onBlur={field.onBlur(name)}
+      value={field.value}   
       // Additional props for TextInput as needed
     />
     {isInvalid && (

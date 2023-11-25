@@ -74,8 +74,8 @@ function useAnalyticsDB() {
     })
     db.clear(ANALYTICS_DBTABLE);
   };
-  const addDB = (event: TAnalyticsEvent) => {
-    const customerCode = AsyncStorage.getItem("customerCode");
+  const addDB = async (event: TAnalyticsEvent) => {
+    const customerCode = await AsyncStorage.getItem("customerCode");
     const appName = "React Native";
     const dbData = {
         ...event, 
@@ -93,8 +93,8 @@ function useAnalyticsDB() {
       updateDB();
     }
   };
-  const logClick = (controlName: string, sourceObjectName: string, param1: string) => {
-    //console.log('logClick ' + controlName + ' ' + sourceObjectName + ' ' + param1);
+  const logClick = async (controlName: string, sourceObjectName: string, param1: string) => {
+    console.log('logClick ' + controlName + ' ' + sourceObjectName + ' ' + param1);
     const eventData = { 
       messageType: "UI Click", 
       controlName: controlName,  
@@ -102,10 +102,10 @@ function useAnalyticsDB() {
       param1: param1,  
       description: "Click", 
     }
-    addDB(eventData);
+    // await addDB(eventData);
   };
   
-  const logInitStartEvent = (controlName: string) => {
+  const logInitStartEvent = async (controlName: string) => {
     console.log('logInitStartEvent ' + controlName);
     const eventData = { 
       messageType: "event", 
@@ -114,10 +114,10 @@ function useAnalyticsDB() {
       param1: "",  
       description: "", 
     }
-    addDB(eventData);
+    await addDB(eventData);
   }
   
-  const logInitCompleteEvent = (controlName: string) => {
+  const logInitCompleteEvent = async (controlName: string) => {
     console.log('logInitCompleteEvent ' + controlName);
     const eventData = { 
       messageType: "event", 
@@ -126,10 +126,10 @@ function useAnalyticsDB() {
       param1: "",  
       description: "", 
     }
-    addDB(eventData);
+    await addDB(eventData);
   }
 
-  const logEvent = (eventName:string) => {
+  const logEvent = async (eventName:string) => {
     console.log('logEvent ' + eventName);
     const eventData = { 
       messageType: "event", 
@@ -138,7 +138,7 @@ function useAnalyticsDB() {
       param1: "",  
       description: "", 
     }
-    addDB(eventData);
+    await addDB(eventData);
   }
   
 

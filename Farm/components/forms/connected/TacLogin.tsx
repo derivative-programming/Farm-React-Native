@@ -69,6 +69,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     }
 
     setInitialValues({ ...FormService.buildSubmitRequest(initFormResponse) }); 
+    console.log('Services.TacLogin.handleInit success');
   };
 
   const handleValidate = async (values: FormService.SubmitRequest) => {
@@ -97,7 +98,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   ) => {
     try {
       setLoading(true);
-      logClick("FormConnectedTacLogin","submit","");
+      await logClick("FormConnectedTacLogin","submit","");
       const responseFull: any = await FormService.submitForm(values,contextCode);
       const response: FormService.SubmitResult = responseFull.data;
       lastApiSubmission = {
@@ -122,7 +123,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       await AsyncStorage.setItem("@token", response.apiKey);
       await AsyncStorage.setItem("customerCode", response.customerCode);
       await AsyncStorage.setItem("email", response.email);
-      AnalyticsService.start();
+      // await AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
       actions.setSubmitting(false);
@@ -135,8 +136,8 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     }
   };
 
-  const registerButtonPress = () => {
-    logClick("FormConnectedTacLogin","otherButton",""); 
+  const registerButtonPress = async () => {
+    await logClick("FormConnectedTacLogin","otherButton",""); 
     navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   };
 
@@ -196,9 +197,9 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
               />
               <InputFields.FormInputButton name="other-button"
                 buttonText="Register"
-                onPress={() => {
-                  logClick("FormConnectedTacLogin","otherButton","");
-                  registerButtonPress();
+                onPress={async () => {
+                  await logClick("FormConnectedTacLogin","otherButton","");
+                  await registerButtonPress();
                 }}
                 isButtonCallToAction={false}
                 isVisible={true}

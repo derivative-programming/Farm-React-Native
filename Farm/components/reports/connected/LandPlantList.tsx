@@ -23,6 +23,7 @@ import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
  
@@ -65,8 +66,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   
   const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
-  // console.log('report ctrl initial values...');
-  // console.log(initialValues);
+  console.log('report ctrl initial values...');
+  console.log(initialValues);
 
   const handleInit = (responseFull: any) => {
     const response: InitReportService.InitResult = responseFull.data;
@@ -94,18 +95,18 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     } 
   };
 
-  const onSubmit = (queryRequest: ReportService.QueryRequest) => {
-    logClick("ReportConnectedLandPlantList","search","");
+  const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
+    await logClick("ReportConnectedLandPlantList","search","");
     setQuery({ ...queryRequest });
   };
 
-  const onPageSelection = (pageNumber: number) => {
-    logClick("ReportConnectedLandPlantList","selectPage",pageNumber.toString());
+  const onPageSelection = async (pageNumber: number) => {
+    await logClick("ReportConnectedLandPlantList","selectPage",pageNumber.toString());
     setQuery({ ...query, pageNumber: pageNumber });
   };
 
   const onPageSizeChange = async (pageSize: number) => {
-    logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
+    await logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
     await AsyncStorage.setItem("pageSize",pageSize.toString());
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
@@ -128,13 +129,13 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
-  const onRefreshRequest = () => {
-    logClick("ReportConnectedLandPlantList","refresh","");
+  const onRefreshRequest = async () => {
+    await logClick("ReportConnectedLandPlantList","refresh","");
     setQuery({ ...query });
   };
 
-  const onSort = (columnName: string) => { 
-    logClick("ReportConnectedLandPlantList","sort",columnName);
+  const onSort = async (columnName: string) => { 
+    await logClick("ReportConnectedLandPlantList","sort",columnName);
     let orderByDescending = false;
     if (query.OrderByColumnName === columnName) {
       orderByDescending = !query.OrderByDescending;
@@ -147,8 +148,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   
-  const onExport = () => {   
-    logClick("ReportConnectedLandPlantList","export","");
+  const onExport = async () => {   
+    await logClick("ReportConnectedLandPlantList","export","");
     if(isProcessing){
       return;
     } 
@@ -170,15 +171,19 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setInitialValues({ ...newInitalValues });
   }, [initPageResponse]);
 
-  useEffect(() => {
-    if (JSON.stringify(initialValues) !== JSON.stringify(query)) { 
-      let pageSize = AsyncStorage.getItem("pageSize");
-      if(pageSize !== null)
-      { 
-        initialValues.ItemCountPerPage = parseInt(pageSize);
+  useEffect(() => { 
+    const fetchData = async () => {
+      if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
+          // Use await for AsyncStorage
+          let pageSize = await AsyncStorage.getItem("pageSize");
+          if (pageSize !== null) {
+              initialValues.ItemCountPerPage = parseInt(pageSize);
+          }
+          setQuery({ ...initialValues });
       }
-      setQuery({ ...initialValues });
-    }
+    };
+ 
+    fetchData();
   }, [initialValues]);
 
   useEffect(() => { 
@@ -222,6 +227,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
          
       > 
       
+        <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
+        <Text style={styles.introText} testID="page-intro-text">A list of plants on the land</Text>
         <Text testID="page-title-text">Plant List</Text>
         <Text testID="page-intro-text">A list of plants on the land</Text>
         
@@ -237,8 +244,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
         <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
           <View className="mb-2 mb-md-0">
             <ReportInput.ReportInputButton name="back-button"
-              onPress={() => {
-                  logClick("ReportConnectedLandPlantList","back","");
+              onPress={async () => {
+                  await logClick("ReportConnectedLandPlantList","back","");
                   navigateTo("TacFarmDashboard", "tacCode");
               }}
               buttonText={<><ArrowLeft className="mb-1"/> Farm Dashboard</>}
@@ -250,8 +257,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           <View className="d-flex flex-column flex-md-row">
             <View className="mb-2 mb-md-0">
               <ReportInput.ReportInputButton name="otherAddButton"
-                onPress={() => {
-                  logClick("ReportConnectedLandPlantList","otherAddButton","");
+                onPress={async () => {
+                  await logClick("ReportConnectedLandPlantList","otherAddButton","");
                   navigateTo("LandAddPlant", "landCode");
                 }}
                 buttonText="Other Add Button"
@@ -262,8 +269,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             </View>
             <View>
               <ReportInput.ReportInputButton name="add-button"
-                onPress={() => {
-                  logClick("ReportConnectedLandPlantList","add","");
+                onPress={async () => {
+                  await logClick("ReportConnectedLandPlantList","add","");
                   navigateTo("LandAddPlant", "landCode");
                 }}
                 buttonText={<><PlusCircle className="mb-1"/> Add A Plant</>}
@@ -336,4 +343,30 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20, // equivalent to py="5"
+    alignItems: 'center'
+  },
+  formContainer: {
+    width: '90%',
+    // Add other styles as needed
+  },
+  titleText: {
+    fontSize: theme.fonts.largeSize, 
+    marginBottom: 8,    
+    color: theme.Colors.text,
+    // Add other styles as needed
+  },
+  introText: {
+    fontSize: theme.fonts.mediumSize, 
+    marginBottom: 8,    
+    color: theme.Colors.text,
+    // Add other styles as needed
+  }, 
+});
+
+
 export default ReportConnectedLandPlantList;

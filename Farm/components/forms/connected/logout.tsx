@@ -36,7 +36,7 @@ export const Logout: FC<FormProps> = ({
   // navigate("/tac-login");
   
   const handleLogout = async () => {
-    AnalyticsService.stop();
+    await AnalyticsService.stop();
     authContext.setToken("");
     authContext.setRoles("");
 

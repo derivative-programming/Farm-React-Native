@@ -3,6 +3,7 @@ import { apiCall } from "../../../apiConfig/apiCall";
 
 export const initForm = (tacCode:string) => {
     const data ={};
+    console.log('Services.TacLogin.initForm ' + tacCode)
     return apiCall({
         url: '/tac-login/' + tacCode + '/init',
         method: "get", 

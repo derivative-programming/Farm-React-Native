@@ -156,8 +156,8 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                         <View className="d-flex w-100 justify-content-center justify-content-md-start">
                             <ReportInput.ReportInputButton
                                 name="back-button"
-                                onPress={() => {
-                                    logClick("ReportConnectedPlantUserDetails","back","");
+                                onPress={async () => {
+                                    await logClick("ReportConnectedPlantUserDetails","back","");
                                     navigateTo("LandPlantList","landCode")
                                 }}
                                 buttonText={<><ArrowLeft className="mb-1"/> Plant List</>} 

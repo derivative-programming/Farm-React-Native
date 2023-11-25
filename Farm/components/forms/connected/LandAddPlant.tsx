@@ -100,7 +100,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   ) => {
     try {
       setLoading(true);
-      logClick("FormConnectedLandAddPlant","submit","");
+      await logClick("FormConnectedLandAddPlant","submit","");
       const responseFull: any = await FormService.submitForm(
         values,
         contextCode
@@ -170,20 +170,13 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
     }); 
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
- 
-  const handleSubmit = async (
-    values: any,//InitialValues,
-    actions: any//FormikHelpers<InitialValues>
-  ) => {
-    // Adapt submission logic
-  };
   
   return ( 
     
     <View style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Add Plant</Text>
-        <Text style={styles.introText}>Add plant intro text.</Text>
+        <Text style={styles.titleText} testID="page-title-text">Add Plant</Text>
+        <Text style={styles.introText} testID="page-intro-text">Add plant intro text.</Text>
 
         <HeaderLandAddPlant
           name="headerLandAddPlant"
@@ -294,8 +287,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
               />
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Cancel Button Text" 
-                    onPress={() => {
-                      logClick("FormConnectedLandAddPlant","cancel","");
+                    onPress={async () => {
+                      await logClick("FormConnectedLandAddPlant","cancel","");
                       navigateTo("LandPlantList", "landCode");
                     }}
                     isButtonCallToAction={false}
@@ -303,8 +296,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                   />
               <InputFields.FormInputButton name="other-button"
                 buttonText="Go To Dashboard" 
-                onPress={() => {
-                  logClick("FormConnectedLandAddPlant","otherButton","");
+                onPress={async () => {
+                  await logClick("FormConnectedLandAddPlant","otherButton","");
                   navigateTo("TacFarmDashboard", "tacCode");
                 }}
                 isButtonCallToAction={false}
@@ -339,28 +332,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,    
     color: theme.Colors.text,
     // Add other styles as needed
-  },
-  button: {
-    marginTop: 12, // equivalent to mt="3"
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center', // Center text horizontally
-    justifyContent: 'center', // Center text vertically
-    backgroundColor: theme.Colors.primary,
-    borderWidth: 1,
-    borderColor: theme.Colors.primary, // You can use your theme's primary color 
-    // Add other button styling here
-  },
-  buttonText: {
-    fontSize: theme.fonts.mediumSize,
-    fontWeight: 'bold',
-    color: 'white',  
-    // Add text styling here
-  },
-  buttonDisabled: {
-    // Add disabled button styling here
-    opacity: 0.5,
-  }
+  }, 
 });
 
 export default FormConnectedLandAddPlant;

@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(AsyncStorage.getItem("@token"));
+  const [token, setToken] = useState(null);
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
@@ -18,8 +18,18 @@ const AuthProvider = ({ children }) => {
 
   
   useEffect(() => {
+     console.log("roles...");
      console.log(roles);
   }, [roles]);
+
+  useEffect(() => { 
+    const loadToken = async () => {
+        const storedToken = await AsyncStorage.getItem("@token");
+        setToken(storedToken);
+    };
+ 
+    loadToken();
+}, []); // Empty dependency array to run only once on mount
 
   const onRoles = (rolesCSV) => { 
     const roles  = rolesCSV.split(','); 
