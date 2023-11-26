@@ -9,22 +9,29 @@ const AuthProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
+    console.log("Set header Api-Key..." + token);
     apiInstance.defaults.headers.common["Api-Key"] = token;
   }, [token]);
 
   const onToken = (token) => { 
+    console.log("AuthContext token updated..." + token);
     setToken(token);
   };
 
   
   useEffect(() => {
-     console.log("roles...");
+     console.log("AuthContext roles updated...");
      console.log(roles);
   }, [roles]);
 
   useEffect(() => { 
+    console.log("AuthContext initial effect...");
     const loadToken = async () => {
+        console.log("AuthContext initial effect - loadToken...");
         const storedToken = await AsyncStorage.getItem("@token");
+        console.log("AuthContext initial effect - loadToken token found..." + storedToken);
+        console.log("Set header Api-Key asap..." + storedToken);
+        apiInstance.defaults.headers.common["Api-Key"] = storedToken;
         setToken(storedToken);
     };
  

@@ -1,6 +1,6 @@
 import React, { FC, ReactElement,} from "react";
 import { Box, Checkbox, VStack, Text } from 'react-native';
-import "../../../../../App.scss"; 
+ 
    
 export interface ReportColumnDisplayCheckboxProps {
   forColumn:string 

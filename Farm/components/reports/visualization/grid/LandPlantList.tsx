@@ -1,5 +1,4 @@
-import React, { FC, ReactElement, useState } from "react"; 
-import "../../../../App.scss";
+import React, { FC, ReactElement, useState } from "react";  
 import * as ReportService from "../../services/LandPlantList";
 import { ReportColumnHeader } from "../../input-fields/ColumnHeader";
 import * as ReportColumnDisplay from "./columns";

@@ -1,6 +1,5 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
-import { Card, Breadcrumb, Container, View } from 'react-native';
-import { ArrowLeft } from "react-bootstrap-icons"; 
+import { Card, Breadcrumb, Container, View } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/PlantUserDetails";
 import * as ReportInput from "../input-fields";
@@ -9,6 +8,7 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
+import * as theme from '../../../constants/theme'
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -35,6 +35,11 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
 
     const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
+    console.log('report ctrl plantCode...' + plantCode);
+
+    console.log('report ctrl initial values...');
+    console.log(initialValues);
+
     const handleInit = (responseFull: any) => {
         
         const response: InitReportService.InitResult = responseFull.data;
@@ -47,6 +52,10 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
 
     const handleQueryResults = (responseFull: any) => {
         const queryResult: ReportService.QueryResult = responseFull.data;
+ 
+        console.log('report ctrl query results...');
+        console.log(responseFull);
+
 
         if (!queryResult.success) {
             return;
@@ -81,10 +90,16 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     }
 
     const onNavigateTo = (page: string,targetContextCode:string) => { 
+        console.log('onNavigateTo...');
+        console.log('page...' + page);
+        console.log('targetContextCode...' + targetContextCode);
         navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
       };
     
     const navigateTo = (page: string, codeName:string) => { 
+        console.log('navigateTo...');
+        console.log('page...' + page);
+        console.log('codeName...' + codeName);
         let targetContextCode = contextCode; 
         Object.entries(initPageResponse)
         .forEach(([key, value]) => { 
@@ -97,8 +112,8 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                     return;
                 }
             }
-        })
-        const url = '/' + page + '/' + targetContextCode; 
+        }) 
+        console.log('targetContextCode...' + targetContextCode);
         navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     }
 
@@ -136,6 +151,10 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     }, [initialValues]); 
 
     useEffect(() => { 
+
+        console.log('report ctrl query...');
+        console.log(query);
+    
         setIsProcessing(true);
         ReportService.submitRequest(query, contextCode)
             .then(response => handleQueryResults(response))
@@ -144,14 +163,8 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
 
     return (
 
-        <View className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3" testID="reportConnectedPlantUserDetails">
-              
-
-             
-            <Card
-                className="mt-1 page-card report-card"
-                
-            >  
+        <View style={styles.container}>
+        <View style={styles.formContainer}>
                     <Container>  
                         <View className="d-flex w-100 justify-content-center justify-content-md-start">
                             <ReportInput.ReportInputButton
@@ -179,8 +192,34 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                     {/*//GENLearn[visualizationType=DetailThreeColumn]End*/}
                     {/*//GENTrainingBlock[visualizationType]End*/}
                 
-            </Card> 
-        </View>
+      </View>
+    </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingVertical: 20, // equivalent to py="5"
+      alignItems: 'center'
+    },
+    formContainer: {
+      width: '90%',
+      // Add other styles as needed
+    },
+    titleText: {
+      fontSize: theme.fonts.largeSize, 
+      marginBottom: 8,    
+      color: theme.Colors.text,
+      textAlign: 'center', // Center the text
+      // Add other styles as needed
+    },
+    introText: {
+      fontSize: theme.fonts.mediumSize, 
+      marginBottom: 8,    
+      color: theme.Colors.text,
+      // Add other styles as needed
+    }, 
+  });
+  
 export default ReportConnectedPlantUserDetails;

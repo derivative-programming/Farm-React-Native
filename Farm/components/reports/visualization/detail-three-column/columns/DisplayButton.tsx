@@ -1,5 +1,5 @@
 import React, { FC, ReactElement,} from "react"; 
-import "../../../../../App.scss"; 
+ 
 import { StyleSheet, Button, Text, TouchableOpacity, View } from 'react-native';
    
 export interface ReportColumnDisplayButtonProps {

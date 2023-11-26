@@ -59,6 +59,10 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
 
   const authContext = useContext(AuthContext); 
 
+  console.log('form ctrl initial values...');
+  console.log(initialValues);
+
+
   // let headerErrors: string[] = [];
 
   const handleInit = (responseFull: any) => {
@@ -105,6 +109,10 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
         request: { ...values },
         response: { ...response },
       };
+      
+      console.log('form ctrl submit values and results...');
+      console.log(lastApiSubmission);
+
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
@@ -128,6 +136,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
       actions.setSubmitting(false);
       actions.resetForm();
+      navigation.navigate(RouteNames.TAC_FARM_DASHBOARD, { code: "00000000-0000-0000-0000-000000000000" });
     } catch (error) {
       actions.setSubmitting(false);
     }
@@ -226,6 +235,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,          
     color: theme.Colors.text,
+    textAlign: 'center', // Center the text
     // Add other styles as needed
   },
   introText: {

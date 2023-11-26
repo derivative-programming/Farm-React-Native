@@ -9,7 +9,7 @@ export { ReportConnectedLandPlantList} from "./LandPlantList"
 //GENTrainingBlock[d]End
 //GENLOOPReportEnd
 //GENLearn[modelType=object,name=Land]End
-export { ReportConnectedPlantUserDetails} from "./PlantUserDetails"  
+// export { ReportConnectedPlantUserDetails} from "./PlantUserDetails"  
 export { ReportConnectedTacFarmDashboard} from "./TacFarmDashboard"  
 //GENTrainingBlock[c]End
 //GENLOOPObjectEnd

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement, useState, useEffect, useRef } from "react";
-import { Card, View } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
  
 import { useNavigation } from '@react-navigation/native';
 import * as ReportService from "../services/TacFarmDashboard";
@@ -7,6 +7,7 @@ import * as InitReportService from "../services/init/TacFarmDashboardInitReport"
 import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-column/TacFarmDashboard";
 import RootStackParamList from '../../../screens/rootStackParamList';
 import { StackNavigationProp } from "@react-navigation/stack"; 
+import * as theme from '../../../constants/theme'
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -30,7 +31,13 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
 
     const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
+    console.log('report ctrl tacCode...' + tacCode);
+
+    console.log('report ctrl initial values...');
+    console.log(initialValues);
+
     const handleInit = (responseFull: any) => {
+        console.log('report ctrl handleInit...');
         
         const response: InitReportService.InitResult = responseFull.data;
 
@@ -42,6 +49,9 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
 
     const handleQueryResults = (responseFull: any) => {
         const queryResult: ReportService.QueryResult = responseFull.data;
+    
+        console.log('report ctrl query results...');
+        console.log(responseFull); 
 
         if (!queryResult.success) {
             return;
@@ -51,6 +61,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
     }
 
     const onSubmit = (queryRequest: ReportService.QueryRequest) => { 
+        console.log('report ctrl onSubmit...');
         setQuery({ ...queryRequest });
     }
 
@@ -76,10 +87,16 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
     }
 
     const onNavigateTo = (page: string,targetContextCode:string) => { 
+        console.log('onNavigateTo...');
+        console.log('page...' + page);
+        console.log('targetContextCode...' + targetContextCode);
         navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     };
     
     const navigateTo = (page: string, codeName:string) => { 
+        console.log('navigateTo...');
+        console.log('page...' + page);
+        console.log('codeName...' + codeName);
         let targetContextCode = contextCode; 
         Object.entries(initPageResponse)
         .forEach(([key, value]) => { 
@@ -93,7 +110,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
                 }
             }
         })
-        const url = '/' + page + '/' + targetContextCode;   
+        console.log('targetContextCode...' + targetContextCode);
         navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     }
 
@@ -106,10 +123,12 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
     }
 
     const onRefreshRequest =() => { 
+        console.log('report ctrl onRefreshRequest...');
         setQuery({ ...query});
     }
 
     useEffect(() => {
+        console.log('report ctrl initial effect...');
         if (isInitializedRef.current) {
             return;
         }
@@ -119,47 +138,71 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
     },[]);
 
     useEffect(() => {
+        console.log('report ctrl init request...');
         const newInitalValues = ReportService.buildQueryRequest(initPageResponse);   
         setInitialValues({ ...newInitalValues });
     }, [initPageResponse]); 
     
 
     useEffect(() => { 
+        console.log('report ctrl initialvalues effect...');
         if(JSON.stringify(initialValues) !== JSON.stringify(query)){ 
             setQuery({ ...initialValues });
         }
     }, [initialValues]); 
 
     useEffect(() => { 
+
+        console.log('report ctrl query...');
+        console.log(query);
+    
         ReportService.submitRequest(query, contextCode)
             .then(response => handleQueryResults(response));
     }, [query]); 
 
-    return (
-
-        <View className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3" testID="reportConnectedTacFarmDashboard">
-            
-           
-            <Card
-                className="mt-1 page-card report-card"
-                
-            > 
-                    <h2 testID="page-title-text">Farm Dashboard</h2>
-                    <h6 testID="page-intro-text">Farm Dashboard page intro text</h6>
-                    <View className="d-flex w-100 justify-content-between"> 
-                    </View>  
-                    {/*//GENTrainingBlock[visualizationType]Start*/}
-                    {/*//GENLearn[visualizationType=DetailTwoColumn]Start*/}
-                    <ReportDetailTwoColTacFarmDashboard 
-                        item= {displayItem}
-                        name="reportConnectedTacFarmDashboard-table" 
-                        onNavigateTo={onNavigateTo} 
-                        onRefreshRequest={onRefreshRequest}
-                    /> 
-                    {/*//GENLearn[visualizationType=DetailTwoColumn]End*/}
-                    {/*//GENTrainingBlock[visualizationType]End*/}
-            </Card> 
+    return ( 
+        <View style={styles.container}testID="reportConnectedTacFarmDashboard">
+            <View style={styles.formContainer}> 
+                <Text style={styles.titleText} testID="page-title-text">Farm Dashboard</Text>
+                <Text style={styles.introText} testID="page-intro-text">Farm Dashboard page intro text</Text>  
+                {/*//GENTrainingBlock[visualizationType]Start*/}
+                {/*//GENLearn[visualizationType=DetailTwoColumn]Start*/}
+                <ReportDetailTwoColTacFarmDashboard 
+                    item= {displayItem}
+                    name="reportConnectedTacFarmDashboard-table" 
+                    onNavigateTo={onNavigateTo} 
+                    onRefreshRequest={onRefreshRequest}
+                /> 
+                {/*//GENLearn[visualizationType=DetailTwoColumn]End*/}
+                {/*//GENTrainingBlock[visualizationType]End*/} 
+            </View>
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingVertical: 20, // equivalent to py="5"
+      alignItems: 'center'
+    },
+    formContainer: {
+      width: '90%',
+      // Add other styles as needed
+    },
+    titleText: {
+      fontSize: theme.fonts.largeSize, 
+      marginBottom: 8,    
+      color: theme.Colors.text,
+      textAlign: 'center', // Center the text
+      // Add other styles as needed
+    },
+    introText: {
+      fontSize: theme.fonts.mediumSize, 
+      marginBottom: 8,    
+      color: theme.Colors.text,
+      // Add other styles as needed
+    }, 
+  });
+  
 export default ReportConnectedTacFarmDashboard;

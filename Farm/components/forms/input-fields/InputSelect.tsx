@@ -4,6 +4,7 @@ import {useField } from 'formik';
 import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';  
 import { FormLabel } from "./InputLabel";
+import * as theme from '../../../constants/theme'
 
    
 export interface FormInputSelectProps {
@@ -125,7 +126,16 @@ const styles = StyleSheet.create({
     // Additional container styling
   }, 
   picker: {
-    // Styling for the Picker
+    // Styling for the Picker 
+    width: '100%',
+    fontSize: theme.fonts.mediumSize,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    color: '#333',
+    backgroundColor: '#fff',
+    marginBottom: 15, // Space below the input for spacing in form
   },
   errorText: {
     color: 'red',

@@ -40,6 +40,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     await AsyncStorage.setItem("@token", "");
     await AsyncStorage.setItem("customerCode","");
     await AsyncStorage.setItem("email", "");
+    await onLogin();
   };
 
   const onLogin = async () => {
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
     
   },
   container: {
-    backgroundColor: Colors.primary, // Replace with your primary color
+    backgroundColor: theme.Colors.primary, // Replace with your primary color
     // Additional container styling 
     height: 50, 
   },  
@@ -193,10 +194,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: theme.fonts.mediumSize,
     fontWeight: 'bold',
+    textAlign: 'center', // Center the text
     // Additional title text styling
   },
   placeholderView: {
-    width: 25,
+    width: 35,
     paddingRight: 10,
     // Additional placeholder view styling if needed
   },

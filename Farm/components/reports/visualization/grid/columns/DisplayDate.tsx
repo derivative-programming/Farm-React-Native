@@ -1,5 +1,5 @@
 import React, { FC, ReactElement,} from "react"; 
-import "../../../../../App.scss"; 
+ 
 import moment from "moment";
 import { Text } from 'react-native';
    

@@ -19,9 +19,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
     const { logClick } = useAnalyticsDB();
   
     return ( 
-        <View testID={name}>
-            <Row testID="fieldOnePlantListLinkLandCode-header" 
-                 >  
+        <View testID={name}> 
                 <ReportColumnDisplay.ReportColumnDisplayButton 
                     forColumn="fieldOnePlantListLinkLandCode" 
                     value={item.fieldOnePlantListLinkLandCode}
@@ -33,10 +31,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                         logClick("ReportDetailTwoColTacFarmDashboard","fieldOnePlantListLinkLandCode","");
                         onNavigateTo("LandPlantList",item.fieldOnePlantListLinkLandCode)
                     }} 
-                />
-            </Row> 
-            <Row testID="conditionalBtnExampleLinkLandCode-header" 
-                 >  
+                />  
                 <ReportColumnDisplay.ReportColumnDisplayButton 
                     forColumn="conditionalBtnExampleLinkLandCode" 
                     value={item.conditionalBtnExampleLinkLandCode}
@@ -49,8 +44,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                         logClick("ReportDetailTwoColTacFarmDashboard","conditionalBtnExampleLinkLandCode","");
                         onNavigateTo("LandPlantList", item.conditionalBtnExampleLinkLandCode)
                     }} 
-                />
-            </Row> 
+                /> 
         </View>
     );
 }; 

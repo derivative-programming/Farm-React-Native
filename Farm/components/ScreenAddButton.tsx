@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from "react";
 import { Button, TouchableOpacity, StyleSheet, View } from 'react-native'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export interface ScreenBackButtonProps {
+export interface ScreenAddButtonProps {
   name: string; 
   buttonText: string; 
   onPress(): void; 
@@ -11,7 +11,7 @@ export interface ScreenBackButtonProps {
   className?: string; 
 }
 
-export const ScreenBackButton: FC<ScreenBackButtonProps> = ({
+export const ScreenAddButton: FC<ScreenAddButtonProps> = ({
   name, 
   buttonText, 
   onPress, 
@@ -27,15 +27,15 @@ export const ScreenBackButton: FC<ScreenBackButtonProps> = ({
   return (
     <View>
       {isVisible ? (
-        <TouchableOpacity  testID={name}
-            style={styles.backButton}
+        <TouchableOpacity testID={name}
+            style={styles.addButton}
             onPress={onPress} 
             disabled={!isEnabled} 
         >
-            <Icon name="arrow-back" size={25} color="#000" />  
+            <Icon name="add" size={25} color="#000" />  
         </TouchableOpacity>
         ) : (
-          <View style={styles.placeholder} testID={name} /> 
+          <View style={styles.placeholder}  testID={name}/> 
         )
       }
     </View>
@@ -44,15 +44,15 @@ export const ScreenBackButton: FC<ScreenBackButtonProps> = ({
 
 
 const styles = StyleSheet.create({ 
-  backButton: {
-      paddingLeft: 10,
+  addButton: {
+      paddingRight: 10,
       // alignSelf: 'flex-start', // Align button to the left
       // flexDirection: 'row',
       
       // Adjust styling as needed
   }, 
   placeholder: {
-      width: 35, // Adjust to match the width of your back button
-      // Height, padding, or any other styling to match the back button
+      width: 35, // Adjust to match the width of your add button
+      // Height, padding, or any other styling to match the add button
   }, 
 });

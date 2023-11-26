@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   }, 
   button: {
     // Add button styling here
+    marginBottom: 8,    
   },
   disabledButton: {
     // Add disabled button styling here

@@ -63,6 +63,9 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
 
   const authContext = useContext(AuthContext); 
 
+  console.log('form ctrl initial values...');
+  console.log(initialValues);
+
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
 
@@ -110,6 +113,10 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
         request: { ...values },
         response: { ...response },
       };
+      
+      console.log('form ctrl submit values and results...');
+      console.log(lastApiSubmission);
+
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
@@ -158,6 +165,9 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   }, [initPageResponse]);
 
   const navigateTo = (page: string, codeName: string) => {
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
     let targetContextCode = contextCode;
     Object.entries(initPageResponse).forEach(([key, value]) => {
       if (key === codeName) {
@@ -168,6 +178,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
         }
       }
     }); 
+    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
   
@@ -325,6 +336,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,    
     color: theme.Colors.text,
+    textAlign: 'center', // Center the text
     // Add other styles as needed
   },
   introText: {

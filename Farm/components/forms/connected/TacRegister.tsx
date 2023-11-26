@@ -96,6 +96,10 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
         request: { ...values },
         response: { ...response },
       };
+      
+      console.log('form ctrl submit values and results...');
+      console.log(lastApiSubmission);
+
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
@@ -144,6 +148,9 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     setInitialValues({ ...newInitalValues });
   }, [initPageResponse]);
   const navigateTo = (page: string, codeName: string) => {
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
     let targetContextCode = contextCode;
     Object.entries(initPageResponse).forEach(([key, value]) => {
       if (key === codeName) {
@@ -154,6 +161,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
         }
       }
     });
+    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
   return (
@@ -218,7 +226,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Back To Log In"
                     onPress={async () => {
-                      await logClick("FormConnectedTacAddCustomer","cancel","");
+                      await logClick("FormConnectedTacLogin","Back To Log In","");
                       navigateTo("TacLogin", "tacCode");
                     }}
                     isButtonCallToAction={false}
@@ -246,6 +254,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
+    textAlign: 'center', // Center the text
     // Add other styles as needed
   },
   introText: {

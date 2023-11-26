@@ -81,7 +81,7 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
           testID={name}
           onChangeText={field.onChange(name)}
           onBlur={field.onBlur(name)}
-          value={field.value}   
+          value={field.value.toString()}   
           // Additional props for TextInput as needed
         />
         {isInvalid && (

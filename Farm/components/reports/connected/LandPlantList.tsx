@@ -6,8 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Button, Card, Breadcrumb, Container, View, Text } from 'react-native';
-
+import { Button, View, Text, StyleSheet, TouchableOpacity } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import ReportFilterLandPlantList from "../filters/LandPlantList";
 import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
@@ -16,14 +15,16 @@ import { ReportDetailTwoColLandPlantList } from "../visualization/detail-two-col
 import * as ReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
 import HeaderLandPlantList from "../headers/LandPlantListInitReport";
-import * as ReportInput from "../input-fields";
-import { PlusCircle, ArrowLeft } from "react-bootstrap-icons";
+import * as ReportInput from "../input-fields"; 
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
+import Icon from 'react-native-vector-icons/Ionicons'; 
+import { ScreenBackButton } from "../../ScreenBackButton";
+import { ScreenAddButton } from "../../ScreenAddButton";
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
  
@@ -66,6 +67,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   
   const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
+  console.log('report ctrl landCode...' + landCode);
+
   console.log('report ctrl initial values...');
   console.log(initialValues);
 
@@ -80,6 +83,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
   const handleQueryResults = (responseFull: any) => {
     const queryResult: ReportService.QueryResult = responseFull.data;
+ 
+    console.log('report ctrl query results...');
+    console.log(responseFull);
 
     if (!queryResult.success) {
       return;
@@ -112,10 +118,16 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   const onNavigateTo = (page: string,targetContextCode:string) => { 
+    console.log('onNavigateTo...');
+    console.log('page...' + page);
+    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
   const navigateTo = (page: string, codeName: string) => { 
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
     let targetContextCode = contextCode;
     Object.entries(initPageResponse).forEach(([key, value]) => {
       if (key === codeName) {
@@ -126,6 +138,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
         }
       }
     });  
+    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
@@ -187,6 +200,10 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   }, [initialValues]);
 
   useEffect(() => { 
+
+    console.log('report ctrl query...');
+    console.log(query);
+
     setIsProcessing(true);
     ReportService.submitRequest(query, contextCode).then((response) =>
       handleQueryResults(response)
@@ -207,7 +224,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = URL.createObjectURL(blob);  
       const link = document.createElement('a');
-      link.href = url;
+      // link.href = url;
       link.setAttribute('download', 'LandPlantList-' + uuid.v4() + '.csv');
       document.body.appendChild(link);
       link.click();
@@ -216,21 +233,35 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   }, [exportQuery]);
 
   return (
-    <View
-      className="d-flex flex-column align-items-center h-90vh pb-2 pl-3 pr-3 "
-      testID="reportConnectedLandPlantList"
-    > 
+    <View style={styles.container}> 
+      <View style={styles.header}>
+          <ScreenBackButton name="back-button"
+            onPress={async () => {
+              await logClick("ReportConnectedLandPlantList","back","");
+              navigateTo("TacFarmDashboard", "tacCode");
+            }}
+            buttonText="Farm Dashboard" 
+            isVisible={true}
+            isEnabled={true} 
+          /> 
+
+          <View style={styles.titleContainer}>
+              <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
+          </View>
+          
+          <ScreenAddButton name="add-button"
+            onPress={async () => {
+              await logClick("ReportConnectedLandPlantList","add","");
+              navigateTo("LandAddPlant", "landCode");
+            }}
+            buttonText="Add A Plant" 
+            isVisible={true}
+            isEnabled={true}
+          /> 
+      </View>
+      <View style={styles.formContainer}>
        
-       
-      <Card
-        className="mt-1 page-card report-card"
-         
-      > 
-      
-        <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
-        <Text style={styles.introText} testID="page-intro-text">A list of plants on the land</Text>
-        <Text testID="page-title-text">Plant List</Text>
-        <Text testID="page-intro-text">A list of plants on the land</Text>
+        <Text style={styles.introText} testID="page-intro-text">A list of plants on the land</Text> 
         
 
         <HeaderLandPlantList  
@@ -239,7 +270,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           isHeaderVisible={true}
         />
 
-
+{/* 
           
         <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
           <View className="mb-2 mb-md-0">
@@ -248,7 +279,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                   await logClick("ReportConnectedLandPlantList","back","");
                   navigateTo("TacFarmDashboard", "tacCode");
               }}
-              buttonText={<><ArrowLeft className="mb-1"/> Farm Dashboard</>}
+              buttonText="<< Farm Dashboard"
               isButtonCallToAction={false}
               isVisible={true}
               isEnabled={true}
@@ -273,7 +304,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                   await logClick("ReportConnectedLandPlantList","add","");
                   navigateTo("LandAddPlant", "landCode");
                 }}
-                buttonText={<><PlusCircle className="mb-1"/> Add A Plant</>}
+                buttonText="+ Add A Plant"
                 className="ms-md-2"
                 isButtonCallToAction={true}
                 isVisible={true}
@@ -282,12 +313,12 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             </View>
           </View>
         </View> 
-        
+         */}
         
 
         {/*//GENTrainingBlock[visualizationType]Start*/}
         {/*//GENLearn[visualizationType=Grid]Start*/}
-        <ReportFilterLandPlantList
+        {/* <ReportFilterLandPlantList
           name="reportConnectedLandPlantList-filter"
           initialQuery={initialValues}
           onSubmit={onSubmit}
@@ -334,12 +365,11 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           showPagingControls={isPagingAvailable}
           showExport={!isExportButtonsHidden}
           showProcessing={isProcessing}
-        />
+        /> */}
         {/*//GENLearn[visualizationType=Grid]End*/}
         {/*//GENTrainingBlock[visualizationType]End*/}
 
-      </Card> 
-      
+        </View>
     </View>
   );
 };
@@ -350,6 +380,26 @@ const styles = StyleSheet.create({
     paddingVertical: 20, // equivalent to py="5"
     alignItems: 'center'
   },
+  header: {
+      flexDirection: 'row', // Arrange items in a row
+      alignItems: 'center', // Align items vertically in the center
+      // Add padding, margin, or any other styling as needed
+  },
+  backButton: {
+      paddingLeft: 10,
+      // alignSelf: 'flex-start', // Align button to the left
+      // flexDirection: 'row',
+      
+      // Adjust styling as needed
+  },
+  titleContainer: {
+      flex: 1, // Take the remaining space in the row
+      justifyContent: 'center', // Center the title horizontally in the remaining space
+  },
+  placeholder: {
+      width: 35, // Adjust to match the width of your back button
+      // Height, padding, or any other styling to match the back button
+  },
   formContainer: {
     width: '90%',
     // Add other styles as needed
@@ -357,7 +407,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,    
-    color: theme.Colors.text,
+    color: theme.Colors.text, 
+    textAlign: 'center', // Center the text
     // Add other styles as needed
   },
   introText: {

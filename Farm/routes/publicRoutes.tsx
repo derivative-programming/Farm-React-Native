@@ -6,7 +6,7 @@ import * as Screens from '../screens';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const AuthRoute = () => {
+const PublicRoute = () => {
 
     return (
         <Stack.Navigator initialRouteName={RouteNames.TAC_LOGIN}
@@ -64,4 +64,4 @@ const AuthRoute = () => {
         </Stack.Navigator>
     )
 }
-export default AuthRoute;
+export default PublicRoute;

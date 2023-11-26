@@ -7,9 +7,9 @@ import * as Screens from '../screens';
 const Stack = createStackNavigator<RootStackParamList>();
  
 
-const AppRoute = () => {
+const AuthenticatedRoute = () => {
   return (
-    <Stack.Navigator initialRouteName={RouteNames.TAC_LOGIN} 
+    <Stack.Navigator initialRouteName={RouteNames.TAC_FARM_DASHBOARD} 
         screenOptions={{ 
         headerShown: false
         }}> 
@@ -64,4 +64,4 @@ const AppRoute = () => {
         </Stack.Navigator>
   );
 };
-export default AppRoute;
+export default AuthenticatedRoute;

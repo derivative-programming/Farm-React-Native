@@ -1,6 +1,4 @@
-import React, { FC, ReactElement } from "react";  
-import { SortUp,SortDownAlt } from "react-bootstrap-icons";
-
+import React, { FC, ReactElement } from "react";   
 export interface ReportColumnHeaderProps {
   name?: string;
   forColumn: string;

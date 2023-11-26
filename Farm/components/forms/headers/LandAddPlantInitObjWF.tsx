@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   horizontalStack: {
     flexDirection: 'row', // Aligns children horizontally
     alignItems: 'center', // Center items vertically in the row
+    marginBottom: 8,    
     // Add additional styling as required
   }
 });

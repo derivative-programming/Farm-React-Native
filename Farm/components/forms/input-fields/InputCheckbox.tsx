@@ -72,6 +72,13 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
         // onValueChange={(e) => {helpers.setValue(e.target.checked);}}
         value={field.value}
         disabled={disabled}
+        testID={name} 
+        onValueChange={(value) => {
+          helpers.setValue(value);
+        }}
+        // onChangeText={field.onChange(name)}
+        // onBlur={field.onBlur(name)}
+        // value={field.value.toString()}   
         // Additional props for Switch as needed
       /> 
     </View>

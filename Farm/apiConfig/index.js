@@ -23,7 +23,7 @@ apiInstance.interceptors.response.use(
   function (error) {
     
     if (error.response && error.response.status === 401) { 
-      window.location.href = '/logout'; 
+      // window.location.href = '/logout'; 
     }
 
     return Promise.reject(error);

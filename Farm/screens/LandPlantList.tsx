@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -7,6 +7,7 @@ import ScreenHeader from '../components/header/ScreenHeader';
 import { ScreenBackButton } from '../components/ScreenBackButton';
 import { useNavigation } from '@react-navigation/native';
 import * as theme from '../constants/theme'
+import { ReportConnectedLandPlantList } from '../components/reports/connected';
  
 type LandPlantListScreenRouteProp = RouteProp<RootStackParamList, 'LandPlantList'>;
 type LandPlantListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LandPlantList'>;
@@ -25,10 +26,16 @@ const LandPlantListScreen: React.FC<LandPlantListScreenProps> = ({ route }) => {
   const navigation = useNavigation<ScreenNavigationProp>();
    
 
-  return (
-    <View  style={styles.container}>
-      <ScreenHeader/>   
-    </View>
+  return ( 
+    <KeyboardAvoidingView 
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={{ flex: 1 }}
+    >
+      <ScrollView style={styles.container}> 
+        <ScreenHeader /> 
+        <ReportConnectedLandPlantList landCode={landCode}/>
+      </ScrollView>
+    </KeyboardAvoidingView> 
   );
 };
 

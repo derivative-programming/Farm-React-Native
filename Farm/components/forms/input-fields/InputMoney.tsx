@@ -78,7 +78,7 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
     <View style={styles.container}>
         <FormLabel text={label} name={name + '-label'}/>
         <View style={styles.horizontalStack}>
-          <Text style={styles.prefix}>$</Text> {/* Prefix */}
+          <Text style={styles.prefix}>$</Text> 
           <TextInput
             style={[styles.input, disabled && styles.disabledInput]}
             keyboardType="numeric"
@@ -88,7 +88,7 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
             testID={name}
             onChangeText={field.onChange(name)}
             onBlur={field.onBlur(name)}
-            value={field.value}   
+            value={field.value.toString()}   
             // Additional TextInput props as needed
           />
         </View>

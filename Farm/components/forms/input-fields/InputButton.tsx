@@ -104,17 +104,17 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   outlineButton: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: theme.Colors.secondary,
     borderWidth: 1,
-    borderColor: Colors.secondary, // You can use your theme's primary color 
+    borderColor: theme.Colors.secondary, // You can use your theme's primary color 
   },
   outlineButtonText: {
     color: 'white', // This can be the same as the border color 
   }, 
   solidButton: {
-    backgroundColor: Colors.primary,
+    backgroundColor: theme.Colors.primary,
     borderWidth: 1,
-    borderColor: Colors.primary, // You can use your theme's primary color 
+    borderColor: theme.Colors.primary, // You can use your theme's primary color 
   },
   solidButtonText: {
     color: 'white',  

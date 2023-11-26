@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from "react";
-import { HStack, Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import * as InitReportService from "../services/init/LandPlantListInitReport";
  
 export interface HeaderLandPlantListProps {
@@ -25,14 +25,23 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
 
   return (  
     <View testID={name}>  
-      {landNameHeaderIsVisible && ( //landName 
-        <HStack> 
-          <Text>Land Name</Text>
-          <Text>{initData.landName}</Text>
-        </HStack>  
+      {landNameHeaderIsVisible && ( //landName  
+        <View style={styles.horizontalStack}>
+          <Text>Land Name:</Text>
+          <Text style={{ marginLeft: 10 }}>{initData.landName}</Text> 
+        </View>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  horizontalStack: {
+    flexDirection: 'row', // Aligns children horizontally
+    alignItems: 'center', // Center items vertically in the row
+    marginBottom: 8,    
+    // Add additional styling as required
+  }
+});
 
 export default HeaderLandPlantList;
