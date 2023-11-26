@@ -59,7 +59,7 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
   //         isDisabled={disabled}
   //       >
   //         {label}
-  //       </Checkbox>
+  //       </CheckView>
   //       {meta.touched && meta.error && (
   //         <Text color="red.500">{meta.error}</Text>
   //       )}

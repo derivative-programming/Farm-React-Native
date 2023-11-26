@@ -76,7 +76,7 @@ if (!displayValue) return null;
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
       <VStack space={2} /* Adjust styling as needed */>
         <Text fontWeight="bold">
           {label}
@@ -85,7 +85,7 @@ if (!displayValue) return null;
           {formatPhoneNumber()} {/* Ensure the function works correctly in React Native */}
         </Text>
       </VStack>
-    </Box>
+    </View>
   );
 };
    

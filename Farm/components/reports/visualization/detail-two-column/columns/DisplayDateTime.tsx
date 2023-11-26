@@ -66,7 +66,7 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
       <VStack space={2} /* Adjust styling as needed */>
         <Text fontWeight="bold">
           {label}
@@ -75,7 +75,7 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
           {formatDateTime()} {/* Ensure the function works correctly in React Native */}
         </Text>
       </VStack>
-    </Box>
+    </View>
   );
 };
    

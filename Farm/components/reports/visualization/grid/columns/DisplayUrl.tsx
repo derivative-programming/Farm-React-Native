@@ -1,10 +1,13 @@
 import React, { FC, ReactElement,} from "react"; 
  
 import { Pressable, Text } from 'react-native';
-import { Linking } from "react-native";
+import { Linking, View, StyleSheet } from "react-native";
+import { ReportColumnDisplayLabel } from "./DisplayLabel";
+import { ReportColumnDisplayValue } from "./DisplayValue";
    
 export interface ReportColumnDisplayUrlProps {
   forColumn:string
+  label:string
   rowIndex: number
   value: string 
   linkText: string 
@@ -14,6 +17,7 @@ export interface ReportColumnDisplayUrlProps {
    
 export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
   forColumn,
+  label,
   rowIndex,
   value, 
   linkText, 
@@ -22,6 +26,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 }): ReactElement | null => { 
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
+  const labelName = groupName +'-label';
 
   let url = value;
   if(!linkText.toLowerCase().startsWith("http"))
@@ -48,7 +53,8 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
     //       {linkText}
     //     </a>
     //   </td>
-    <Box testID={groupName} /* Additional styling can be added here */>
+    <View testID={groupName} style={styles.container}>
+      <ReportColumnDisplayLabel name={labelName} text={label}  />
       {displayValue && (
         <Pressable onPress={handlePress}>
           <Text /* Add styling to replicate the look of a link */>
@@ -56,7 +62,13 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
           </Text>
         </Pressable>
       )}
-    </Box>
+    </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Aligns children horizontally
+    // Styles for the container
+  },  
+});

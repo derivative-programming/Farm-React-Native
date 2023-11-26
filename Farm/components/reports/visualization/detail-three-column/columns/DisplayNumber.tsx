@@ -62,14 +62,14 @@ export const ReportColumnDisplayNumber: FC<ReportColumnDisplayNumberProps> = ({
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
       <Text fontWeight="bold" testID={groupName + '-header'}>
         {label}
       </Text>
       <Text>
         {formatNumber()} {/* Ensure the function is compatible with React Native */}
       </Text>
-    </Box>
+    </View>
   );
 };
    

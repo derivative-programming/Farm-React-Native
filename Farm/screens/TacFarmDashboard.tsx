@@ -19,15 +19,15 @@ const TacFarmDashboardScreen: React.FC<TacFarmDashboardScreenProps> = ({ route }
   const tacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
   const navigation = useNavigation<ScreenNavigationProp>();
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
     behavior={Platform.OS === "ios" ? "padding" : "height"}
     style={{ flex: 1 }}
     >
-      <ScrollView style={styles.container}> 
-        <ScreenHeader /> 
-        <ReportConnectedTacFarmDashboard tacCode={tacCode} />
+      <ScrollView style={styles.container}>
+        <ScreenHeader />
+        <ReportConnectedTacFarmDashboard tacCode={tacCode}/>
       </ScrollView>
-    </KeyboardAvoidingView> 
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({

@@ -67,14 +67,14 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
     //     </ListGroup.Item>
     // </Col>
     
-    <Box testID={groupName} flex={1} /* Adjust for lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust for lg/md/xs equivalent */>
       <Text fontWeight="bold" testID={groupName + '-header'}>
         {label}
       </Text>
       <Text>
         {formatDateTime()} 
       </Text>
-    </Box>
+    </View>
   );
 };
    

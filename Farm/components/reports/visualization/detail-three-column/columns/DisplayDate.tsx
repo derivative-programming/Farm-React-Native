@@ -66,7 +66,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust flex based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust flex based on lg/md/xs equivalent */>
       <VStack space={2} /* Adjust styling as needed */>
         <Text fontWeight="bold" testID={groupName + '-header'}>
           {label}
@@ -75,7 +75,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
           {formatDate()}  
         </Text>
       </VStack>
-    </Box>
+    </View>
   );
 };
    

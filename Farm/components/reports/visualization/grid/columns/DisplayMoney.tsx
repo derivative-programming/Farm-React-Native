@@ -1,9 +1,12 @@
 import React, { FC, ReactElement,} from "react"; 
  
-import { Text } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
+import { ReportColumnDisplayLabel } from "./DisplayLabel";
+import { ReportColumnDisplayValue } from "./DisplayValue";
    
 export interface ReportColumnDisplayMoneyProps {
   forColumn:string
+  label:string
   rowIndex: number
   value: number 
   isVisible?:boolean
@@ -12,6 +15,7 @@ export interface ReportColumnDisplayMoneyProps {
    
 export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
   forColumn,
+  label,
   rowIndex,
   value, 
   isVisible = true,
@@ -19,6 +23,8 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 }): ReactElement | null => { 
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
+  const labelName = groupName +'-label';
+  const valueName = groupName +'-value';
   
   const displayValue = (isVisible && conditionallyVisible);
       
@@ -53,9 +59,16 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 
   return (
     // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatMoney()}</td>
-    <Text testID={groupName} /* Add additional styling for text-nowrap equivalent */>
-      {formatMoney()} {/* Ensure this function is suitable for React Native */}
-    </Text>
+    <View data-testid={groupName} style={styles.container}>
+      <ReportColumnDisplayLabel name={labelName} text={label}  />
+      <ReportColumnDisplayValue name={valueName} text={formatMoney()} />   
+    </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Aligns children horizontally
+    // Styles for the container
+  },  
+});

@@ -43,7 +43,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
       <Text fontWeight="bold" testID={groupName + '-header'}>
         {label}
       </Text>
@@ -52,7 +52,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
           {linkText}
         </Link>
       )}
-    </Box>
+    </View>
   );
 };
    

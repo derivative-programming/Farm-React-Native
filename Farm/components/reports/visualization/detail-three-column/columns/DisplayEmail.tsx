@@ -56,14 +56,14 @@ export const ReportColumnDisplayEmail: FC<ReportColumnDisplayEmailProps> = ({
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
+    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
       <Text fontWeight="bold" testID={groupName + '-header'}>
         {label}
       </Text>
       <Text>
         {formatEmail()} 
       </Text>
-    </Box>
+    </View>
   );
 };
    

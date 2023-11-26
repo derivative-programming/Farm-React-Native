@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Button, View, Text, StyleSheet, TouchableOpacity } from 'react-native'; 
+import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import ReportFilterLandPlantList from "../filters/LandPlantList";
 import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { ScreenBackButton } from "../../ScreenBackButton";
-import { ScreenAddButton } from "../../ScreenAddButton";
+import { ScreenAddButton } from "../../ScreenAddButton";  
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
  
@@ -35,8 +35,9 @@ export interface ReportProps {
 export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   landCode = "00000000-0000-0000-0000-000000000000" 
 }): ReactElement => {
+  const [items, setItems] = useState<ReportService.EnhancedQueryResultItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [isProcessing, setIsProcessing] = useState(false);
   const [initPageResponse, setInitPageResponse] = useState(
     new InitReportService.InitResultInstance()
@@ -49,6 +50,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   const [initialValues, setInitialValues] = useState(
     new ReportService.QueryRequestInstance()
   );
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
 
@@ -67,10 +70,10 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   
   const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
-  console.log('report ctrl landCode...' + landCode);
+  // console.log('report ctrl landCode...' + landCode);
 
-  console.log('report ctrl initial values...');
-  console.log(initialValues);
+  // console.log('report ctrl initial values...');
+  // console.log(initialValues);
 
   const handleInit = (responseFull: any) => {
     const response: InitReportService.InitResult = responseFull.data;
@@ -85,12 +88,30 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     const queryResult: ReportService.QueryResult = responseFull.data;
  
     console.log('report ctrl query results...');
-    console.log(responseFull);
+    console.log('success:' + queryResult.success);
+    console.log('pageNumber:' + queryResult.pageNumber);
+    console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
+    console.log('total count:' + queryResult.recordsTotal);
 
     if (!queryResult.success) {
       return;
     }
     setQueryResult({ ...queryResult });
+    const currentItemCount = items.length
+    const enhancedItems = queryResult.items.map((item,index) => ({
+      ...item,
+      rowKey: uuid.v4().toString(), // Add a UUID to each item
+      rowNumber: currentItemCount + index
+    }));
+    console.log('currentPage:' + queryResult.pageNumber);
+    if(queryResult.pageNumber == 1) {
+      console.log('set items page 1');
+      setItems(enhancedItems);
+    }
+    else{
+      console.log('set items page ' + queryResult.pageNumber);
+      setItems([...items, ...enhancedItems]); 
+    }
   };
   
   const handleExportQueryResults = (responseFull: any) => {
@@ -181,7 +202,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
   useEffect(() => {
     const newInitalValues = ReportService.buildQueryRequest(initPageResponse); 
-    setInitialValues({ ...newInitalValues });
+    setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
   }, [initPageResponse]);
 
   useEffect(() => { 
@@ -203,12 +224,24 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
     console.log('report ctrl query...');
     console.log(query);
+ 
+    if(query.pageNumber == 1) {
+      setRefreshing(true);
+      setLoadingMore(false);
+    } else {
+      setRefreshing(false);
+      setLoadingMore(true);
+    } 
 
     setIsProcessing(true);
     ReportService.submitRequest(query, contextCode).then((response) =>
       handleQueryResults(response)
     )
-    .finally(() => {setIsProcessing(false);});
+    .finally(() => {
+      setIsProcessing(false); 
+      setRefreshing(false);
+      setLoadingMore(false);
+    });
   }, [query]);
   
   useEffect(() => {   
@@ -231,6 +264,17 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     })
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]);
+
+  
+  const onRefresh = () => {
+    onPageSelection(1);
+  };
+
+  const onEndReached = () => {
+    if (!loadingMore) {
+      onPageSelection(queryResult.pageNumber + 1);
+    }
+  };
 
   return (
     <View style={styles.container}> 
@@ -325,31 +369,12 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           isCollapsible={isFilterSectionCollapsable}
           hidden={isFilterSectionHidden} 
         />
-
-        <View
-          className="d-flex w-100  justify-content-end"
-          hidden={
-            !isFilterSectionHidden ||
-            (isFilterSectionHidden && isRefreshButtonHidden)
-          }
-        >
-          <Button
-            testID="refresh-button"
-            className="ms-2 mt-3" 
-            onPress={onRefreshRequest}
-            hidden={
-              !isFilterSectionHidden ||
-              (isFilterSectionHidden && isRefreshButtonHidden)
-            }
-          >
-            Refresh
-          </Button> 
-        </View>
+ 
         
-
+*/} 
         <ReportGridLandPlantList
           isSortDescending={queryResult.orderByDescending}
-          items={queryResult.items}
+          items={items}
           name="reportConnectedLandPlantList-table"
           contextCode={contextCode}
           onSort={onSort}
@@ -357,15 +382,13 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           onNavigateTo={onNavigateTo}
           onRefreshRequest={onRefreshRequest}
           sortedColumnName={queryResult.orderByColumnName}
-          currentPage={queryResult.pageNumber}
-          onPageSelection={onPageSelection}
-          onPageSizeChange={onPageSizeChange}
+          currentPage={queryResult.pageNumber}  
           pageSize={queryResult.itemCountPerPage}
-          totalItemCount={queryResult.recordsTotal}
-          showPagingControls={isPagingAvailable}
-          showExport={!isExportButtonsHidden}
-          showProcessing={isProcessing}
-        /> */}
+          totalItemCount={queryResult.recordsTotal}   
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          onEndReached={onEndReached}
+        />  
         {/*//GENLearn[visualizationType=Grid]End*/}
         {/*//GENTrainingBlock[visualizationType]End*/}
 
@@ -379,6 +402,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 20, // equivalent to py="5"
     alignItems: 'center'
+  },
+  safeArea: { 
+    
   },
   header: {
       flexDirection: 'row', // Arrange items in a row

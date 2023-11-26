@@ -182,13 +182,13 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                     </Container>  
                     {/*//GENTrainingBlock[visualizationType]Start*/}
                     {/*//GENLearn[visualizationType=DetailThreeColumn]Start*/}
-                    <ReportDetailThreeColPlantUserDetails 
+                    {/* <ReportDetailThreeColPlantUserDetails 
                         item= {displayItem}
                         name="reportConnectedPlantUserDetails-table" 
                         onNavigateTo={onNavigateTo} 
                         onRefreshRequest={onRefreshRequest}
                         showProcessing={isProcessing}
-                    /> 
+                    />  */}
                     {/*//GENLearn[visualizationType=DetailThreeColumn]End*/}
                     {/*//GENTrainingBlock[visualizationType]End*/}
                 

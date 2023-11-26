@@ -51,9 +51,9 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
     //     </Button> 
     // </Row>
     // <HStack id={groupName} testID={groupName} space={3} px="3" mt="3">
-    //   <Box testID={forColumn + '-header'}>
+    //   <View testID={forColumn + '-header'}>
     //     {/* Content for the div */}
-    //   </Box>
+    //   </View>
     //   {displayValue && (
     //     <Button
     //       testID={buttonName}

@@ -36,7 +36,7 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
  
       
   return (
-    // <Box py="3">
+    // <View py="3">
     //   <Button testID={name} 
     //       id={name}
     //       onPress={onPress}
@@ -46,7 +46,7 @@ export const FormInputButton: FC<FormInputButtonProps> = ({
     //       variant={buttonVariant}>
     //       {buttonText}
     //   </Button>
-    // </Box>
+    // </View>
     <View style={styles.container}>
       {isVisible && (
         <TouchableOpacity

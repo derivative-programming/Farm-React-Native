@@ -70,7 +70,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   }; 
   
   return (   
-    // <Box backgroundColor="primary.500"> 
+    // <View backgroundColor="primary.500"> 
     //   <HStack bg="primary.500" px="1" py="3" alignItems="center" justifyContent="space-between">
     //     <Menu
     //       trigger={(triggerProps) => {
@@ -89,7 +89,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     //     </Text>
     //     <View style={{ width: 25 }} />  
     //   </HStack>
-    // </Box> 
+    // </View> 
     
     <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>

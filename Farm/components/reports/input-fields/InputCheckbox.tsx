@@ -54,7 +54,7 @@ export const ReportInputCheckbox: FC<ReportInputCheckboxProps> = ({
           isDisabled={disabled} 
           value={""}>
           {label}
-        </Checkbox>
+        </CheckView>
         {meta.touched && meta.error && (
           <FormControl.ErrorMessage>
             {meta.error}

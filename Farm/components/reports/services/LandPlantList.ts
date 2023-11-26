@@ -440,3 +440,8 @@ export class QueryResultTestInstance implements QueryResult {
     }
 }
 
+
+export interface EnhancedQueryResultItem extends QueryResultItem {
+  rowKey: string;
+  rowNumber: number;
+}

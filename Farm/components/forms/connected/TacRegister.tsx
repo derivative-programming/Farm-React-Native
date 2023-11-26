@@ -53,6 +53,8 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
   const validationSchema = FormValidation.buildValidationSchema();
   const authContext = useContext(AuthContext);
+  console.log('form ctrl initial values...');
+  console.log(initialValues);
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
     if (!response.success) {
@@ -96,10 +98,8 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
         request: { ...values },
         response: { ...response },
       };
-      
       console.log('form ctrl submit values and results...');
       console.log(lastApiSubmission);
-
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
@@ -167,8 +167,8 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Create your account</Text>
-        <Text style={styles.introText}>A Couple Details Then We're Off!</Text>
+        <Text style={styles.titleText} testID="page-title-text">Create your account</Text>
+        <Text style={styles.introText} testID="page-intro-text">A Couple Details Then We're Off!</Text>
         <HeaderTacRegister
           name="headerTacRegister"
           initData={initPageResponse}
@@ -226,7 +226,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
               <InputFields.FormInputButton name="cancel-button"
                     buttonText="Back To Log In"
                     onPress={async () => {
-                      await logClick("FormConnectedTacLogin","Back To Log In","");
+                      await logClick("FormConnectedTacAddCustomer","cancel","");
                       navigateTo("TacLogin", "tacCode");
                     }}
                     isButtonCallToAction={false}
@@ -263,27 +263,6 @@ const styles = StyleSheet.create({
     color: theme.Colors.text,
     // Add other styles as needed
   },
-  button: {
-    marginTop: 12, // equivalent to mt="3"
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center', // Center text horizontally
-    justifyContent: 'center', // Center text vertically
-    backgroundColor: theme.Colors.primary,
-    borderWidth: 1,
-    borderColor: theme.Colors.primary, // You can use your theme's primary color
-    // Add other button styling here
-  },
-  buttonText: {
-    fontSize: theme.fonts.mediumSize,
-    fontWeight: 'bold',
-    color: 'white',
-    // Add text styling here
-  },
-  buttonDisabled: {
-    // Add disabled button styling here
-    opacity: 0.5,
-  }
 });
 export default FormConnectedTacRegister;
 

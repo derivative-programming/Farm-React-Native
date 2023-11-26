@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, SafeAreaView } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -27,15 +27,15 @@ const LandPlantListScreen: React.FC<LandPlantListScreenProps> = ({ route }) => {
    
 
   return ( 
-    <KeyboardAvoidingView 
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={{ flex: 1 }}
-    >
-      <ScrollView style={styles.container}> 
-        <ScreenHeader /> 
-        <ReportConnectedLandPlantList landCode={landCode}/>
-      </ScrollView>
-    </KeyboardAvoidingView> 
+      <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      >
+        <View style={styles.container}> 
+          <ScreenHeader />  
+          <ReportConnectedLandPlantList landCode={landCode}/> 
+        </View>
+      </KeyboardAvoidingView> 
   );
 };
 
@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.Colors.background,  
+  },
+  safeArea: { 
+    
   },
 });
   

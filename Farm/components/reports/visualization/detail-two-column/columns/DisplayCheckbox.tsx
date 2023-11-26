@@ -1,5 +1,6 @@
 import React, { FC, ReactElement,} from "react";
-import { Box, Checkbox, VStack, Text } from 'react-native';
+import { View,  Text } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
  
    
 export interface ReportColumnDisplayCheckboxProps {
@@ -40,13 +41,11 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust for lg/md/xs equivalent */>
-      <VStack space={2} /* Adjust styling as needed */>
-        <Text fontWeight="bold">
+    <View testID={groupName}>
+        <Text>
           {label}
-        </Text> 
-      </VStack>
-    </Box>
+        </Text>  
+    </View>
     );
   } else {  
     return ( 
@@ -69,21 +68,16 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 
     //     </ListGroup.Item>
     // </Col>
-    <Box testID={groupName} flex={1} /* Adjust for lg/md/xs equivalent */>
-      <VStack space={2} /* Adjust styling as needed */>
-        <Text fontWeight="bold">
-          {label}
+    <View testID={groupName}>
+        <Text>
+          {label}  
         </Text>
-        <Checkbox
-          value={checkboxName}
-          testID={checkboxName}
-          isChecked={isChecked}
-          isReadOnly // If the checkbox is meant to be read-only
-        >
-          {/* Checkbox label if needed */}
-        </Checkbox>
-      </VStack>
-    </Box>
+        {isChecked ? (
+          <Icon name="check-circle" size={30} color="#4CAF50" />
+        ) : (
+          <Icon name="radio-button-unchecked" size={30} color="#000000" />
+        )} 
+    </View>
     );
   }
 };
