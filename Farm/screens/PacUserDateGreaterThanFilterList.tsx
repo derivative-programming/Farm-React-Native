@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform, SafeAreaView } from 'react-native';
 import RootStackParamList from './rootStackParamList';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -19,21 +19,23 @@ const PacUserDateGreaterThanFilterListScreen: React.FC<PacUserDateGreaterThanFil
   const pacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
   const navigation = useNavigation<ScreenNavigationProp>();
   return (
-    <KeyboardAvoidingView
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={{ flex: 1 }}
-    >
-      <ScrollView style={styles.container}>
-        <ScreenHeader />
-        <ReportConnectedPacUserDateGreaterThanFilterList pacCode={pacCode}/>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      >
+        <View style={styles.container}>
+          <ScreenHeader />
+          <ReportConnectedPacUserDateGreaterThanFilterList pacCode={pacCode}/>
+        </View>
+      </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.Colors.background,
+  },
+  safeArea: {
   },
 });
 export default PacUserDateGreaterThanFilterListScreen;
