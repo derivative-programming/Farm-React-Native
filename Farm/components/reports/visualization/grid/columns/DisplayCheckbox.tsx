@@ -37,17 +37,7 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
     </View>
     );
   } else {  
-    return (
-      // <td data-testid={groupName} hidden={!isVisible}>   
-      //     <Form.Check 
-      //       readOnly={true}
-      //       type="checkbox"
-      //       data-testid={checkboxName}
-      //       id={checkboxName}
-      //       name={checkboxName} 
-      //       checked={isChecked}
-      //       />
-      // </td>
+    return ( 
       <View testID={groupName} style={styles.container}>
         <ReportColumnDisplayLabel name={labelName} text={label}  />
         {isChecked ? (
@@ -63,6 +53,6 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

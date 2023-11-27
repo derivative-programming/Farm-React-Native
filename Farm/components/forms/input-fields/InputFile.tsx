@@ -125,20 +125,20 @@ export const FormInputFile: FC<FormInputFileProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Add other styling as required
+    
   }, 
   button: {
-    // Add button styling here
+    
     marginBottom: 8,    
   },
   disabledButton: {
-    // Add disabled button styling here
+    
     opacity: 0.5,
   },
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Add other styling for error text
+    
   },
-  // Additional styles can be added as needed
+  
 });

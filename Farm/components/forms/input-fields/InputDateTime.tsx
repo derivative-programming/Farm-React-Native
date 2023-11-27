@@ -54,29 +54,7 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
     helpers.setValue(moment(currentDate).utc().format("YYYY-MM-DDTHH:mm"));
   };
   
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}>{label}</Form.Label>
-  //         <DatePicker
-  //           // ref={inputRef}
-  //           size="small"
-  //           showTime={true}
-  //           format="M/D/YYYY h:mm A"
-  //           data-testid={name} 
-  //           aria-label={name} 
-  //           placeholder={placeholder}
-  //           name={field.name}
-  //           defaultValue={selectedDateTimeLocal}
-  //           value={selectedDateTimeLocal}
-  //           onChange={(e) => helpers.setValue(moment(e).utc().format("YYYY-MM-DDTHH:mm"))}
-  //           onBlur={field.onBlur} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //         /> 
-  //     </Form.Group>
-  //     <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
-  // </div>
+  return ( 
   <View style={styles.container}>
     <FormLabel text={label} name={name + '-label'}/>
     <TouchableOpacity 
@@ -109,20 +87,20 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Add other styling as required
+    
   }, 
   button: {
-    // Add button styling here
+    
     marginBottom: 8,    
   },
   disabledButton: {
-    // Add disabled button styling here
+    
     opacity: 0.5,
   },
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Add other styling for error text
+    
   },
-  // Additional styles can be added as needed
+  
 });

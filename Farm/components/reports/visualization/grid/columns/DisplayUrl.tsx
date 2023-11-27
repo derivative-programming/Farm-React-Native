@@ -42,17 +42,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
     Linking.openURL(url); // Make sure the URL is valid
   };
   
-  return (
-    // <td data-testid={groupName} 
-    //   className="text-nowrap" 
-    //   hidden={!isVisible}>
-    //     <a href={url}
-    //       hidden={!displayValue}
-    //       target="_blank"
-    //       >
-    //       {linkText}
-    //     </a>
-    //   </td>
+  return ( 
     <View testID={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       {displayValue && (
@@ -69,6 +59,6 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

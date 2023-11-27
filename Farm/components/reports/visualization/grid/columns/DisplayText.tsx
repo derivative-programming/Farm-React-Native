@@ -46,8 +46,7 @@ export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
   
   if (!isVisible) return null;
 
-  return (
-    // <td data-testid={groupName} hidden={!isVisible}>{formatText()}</td>
+  return ( 
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatText()} />   
@@ -58,6 +57,6 @@ export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

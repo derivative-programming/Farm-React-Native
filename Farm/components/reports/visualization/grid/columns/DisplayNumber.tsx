@@ -53,8 +53,7 @@ export const ReportColumnDisplayNumber: FC<ReportColumnDisplayNumberProps> = ({
   
   if (!isVisible) return null;
 
-  return (
-    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatNumber()}</td>
+  return ( 
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatNumber()} />  
@@ -67,6 +66,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row', // Aligns children horizontally
     // justifyContent: 'space-between', 
     // alignItems: 'center'
-    // Styles for the container
+    
   },  
 });

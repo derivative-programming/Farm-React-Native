@@ -28,42 +28,7 @@ export const FormInputText: FC<FormInputTextProps> = ({
   
   if (!isVisible) return null;
       
-  return (
-  //   <div hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start" >
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name}
-  //           type="text"
-  //           placeholder={placeholder}
-  //           {...field} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}  
-  //           isInvalid={isInvalid}
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-  // <VStack space={2} width="100%">
-  //     <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-  //       <FormControl.Label>{label}</FormControl.Label>
-  //       <Input
-  //         testID={name}
-  //         placeholder={placeholder}
-  //         {...field}
-  //         isDisabled={disabled}
-  //         // No direct equivalent in NativeBase for autoFocus, handled differently in React Native
-  //       />
-  //       {isInvalid && (
-  //         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-  //           {meta.error}
-  //         </FormControl.ErrorMessage>
-  //       )}
-  //     </FormControl>
-  //   </VStack>
+  return ( 
   <View style={styles.container}>
     <FormLabel text={label} name={name + '-label'}/>
     <TextInput
@@ -75,7 +40,7 @@ export const FormInputText: FC<FormInputTextProps> = ({
       onChangeText={field.onChange(name)}
       onBlur={field.onBlur(name)}
       value={field.value}   
-      // Additional props for TextInput as needed
+      
     />
     {isInvalid && (
       <Text style={styles.errorText}>{meta.error}</Text>
@@ -113,7 +78,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Additional styling for the error message text
+    
   },
-  // Add any other styles as needed
+  
 });

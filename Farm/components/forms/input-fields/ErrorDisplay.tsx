@@ -36,13 +36,13 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Additional container styling
+    
   },  
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Additional styling for error message text
+    
   },
-  // Other styles as needed
+  
 });
 export default ErrorDisplay;

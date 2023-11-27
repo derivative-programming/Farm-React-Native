@@ -31,45 +31,7 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
       
   if (!isVisible) return null;
 
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name}
-  //           type="number"
-  //           placeholder={placeholder}
-  //           {...field} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           onKeyDown={onKeyDown}
-  //           isInvalid={isInvalid}
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-  // <VStack space={2} width="100%">
-  //     <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-  //       <FormControl.Label>{label}</FormControl.Label>
-  //       <Input
-  //         testID={name}
-  //         keyboardType="numeric" // For number input
-  //         placeholder={placeholder}
-  //         {...field}
-  //         isDisabled={disabled}
-  //         // React Native does not directly support onKeyDown in the same way as web
-  //         // Implement any specific logic needed for React Native here
-  //       />
-  //       {isInvalid && (
-  //         <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-  //           {meta.error}
-  //         </FormControl.ErrorMessage>
-  //       )}
-  //     </FormControl>
-  //   </VStack>
+  return ( 
     <View style={styles.container}>
         <FormLabel text={label} name={name + '-label'}/>
         <TextInput
@@ -82,7 +44,7 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
           onChangeText={field.onChange(name)}
           onBlur={field.onBlur(name)}
           value={field.value.toString()}   
-          // Additional props for TextInput as needed
+          
         />
         {isInvalid && (
           <Text style={styles.errorText}>{meta.error}</Text>
@@ -119,7 +81,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Additional styling for the error message text
+    
   },
-  // Add any other styles as needed
+  
 });

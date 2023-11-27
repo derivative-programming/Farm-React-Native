@@ -53,47 +53,7 @@ export const FormInputDate: FC<FormInputDateProps> = ({
     helpers.setValue(moment(currentDate).utc().format("YYYY-MM-DD"));
   };
 
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}>{label}</Form.Label>
-  //         <DatePicker 
-  //           size="small"
-  //           // ref={inputRef}
-  //           data-testid={name} 
-  //           aria-label={name} 
-  //           placeholder={placeholder}
-  //           name={field.name}
-  //           defaultValue={selectedDateTimeLocal}
-  //           value={selectedDateTimeLocal}
-  //           onChange={(e) => helpers.setValue(moment(e).utc().format("YYYY-MM-DDTHH:mm"))}
-  //           onBlur={field.onBlur} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //         /> 
-  //     </Form.Group>
-  //     <FormInputErrorDisplay name={errorDisplayControlName} forInputName={name} /> 
-  // </div>
-  // <VStack space={2} width="100%">
-  //   <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
-  //     <FormControl.Label>{label}</FormControl.Label>
-  //     <Button onPress={() => setShow(true)} isDisabled={disabled}>
-  //       {selectedDateTimeLocal.format("YYYY-MM-DD") || placeholder}
-  //     </Button>
-  //     {show && (
-  //       <DateTimePicker
-  //         value={new Date(selectedDateTimeLocal.toDate())}
-  //         mode="date"
-  //         display="default"
-  //         onChange={onChange}
-  //         disabled={disabled}
-  //       />
-  //     )}
-  //     {meta.touched && meta.error && (
-  //       <Text color="red.500">{meta.error}</Text>
-  //     )}
-  //   </FormControl>
-  // </VStack>
+  return ( 
   <View style={styles.container}>
     <FormLabel text={label} name={name + '-label'}/>
     <TouchableOpacity 
@@ -126,20 +86,20 @@ export const FormInputDate: FC<FormInputDateProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Add other styling as required
+    
   }, 
   button: {
-    // Add button styling here
+    
     marginBottom: 8,    
   },
   disabledButton: {
-    // Add disabled button styling here
+    
     opacity: 0.5,
   },
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Add other styling for error text
+    
   },
-  // Additional styles can be added as needed
+  
 });

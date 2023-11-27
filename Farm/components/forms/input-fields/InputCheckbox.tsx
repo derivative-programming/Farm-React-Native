@@ -28,48 +28,11 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
       
   if (!isVisible) return null;
 
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mt-3 mb-3 text-start"> 
-  //         <Form.Check
-  //           // ref={inputRef}
-  //           data-testid={name}
-  //           type="checkbox"
-  //           placeholder={placeholder}
-  //           checked={field.value}
-  //           name={field.name}
-  //           value={field.value}
-  //           onChange={(e) => {helpers.setValue(e.target.checked);}}
-  //           onBlur={field.onBlur} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           label={label}
-  //           isInvalid={isInvalid} 
-  //         />
-  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-  // <VStack space={2} width="100%" mt="3" mb="3">
-  //     <FormControl isInvalid={!!(meta.touched && meta.error)} isDisabled={disabled}>
-  //       <Checkbox
-  //         value={field.value ? 'checked' : 'unchecked'}
-  //         isChecked={field.value}
-  //         onChange={(isChecked) => helpers.setValue(isChecked)} 
-  //         // onBlur={field.onBlur}
-  //         isDisabled={disabled}
-  //       >
-  //         {label}
-  //       </CheckView>
-  //       {meta.touched && meta.error && (
-  //         <Text color="red.500">{meta.error}</Text>
-  //       )}
-  //     </FormControl>
-  //   </VStack>
+  return ( 
   <View style={styles.container}>
     <View style={styles.switchContainer}>
       <FormLabel text={label} name={name + '-label'}/> 
-      <Switch
-        // onValueChange={(e) => {helpers.setValue(e.target.checked);}}
+      <Switch 
         value={field.value}
         disabled={disabled}
         testID={name} 
@@ -77,9 +40,7 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
           helpers.setValue(value);
         }}
         // onChangeText={field.onChange(name)}
-        // onBlur={field.onBlur(name)}
-        // value={field.value.toString()}   
-        // Additional props for Switch as needed
+        // onBlur={field.onBlur(name)} 
       /> 
     </View>
     {meta.touched && meta.error && (
@@ -92,18 +53,16 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    // Styles for the container
+    
   },
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 8, // Add space between the switch and the label
-    // Additional styles for the switch container
+    marginLeft: 8, // Add space between the switch and the label 
   }, 
   errorText: {
     color: 'red',
-    marginBottom: 8,    
-    // Styles for the error text
+    marginBottom: 8,     
   },
-  // Other styles as needed
+  
 });

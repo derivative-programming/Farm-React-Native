@@ -36,28 +36,7 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
 
   if (!displayValue) return null;
 
-  return ( 
-    // <div>
-    //   <Button 
-    //     data-testid={buttonName} 
-    //     id={buttonName} 
-    //     onPress={onPress} 
-    //     className='' 
-    //     variant={buttonVariant} 
-    //     disabled={!isEnabled} 
-    //     type="button" hidden={!displayValue}>
-    //       {buttonText}
-    //   </Button>
-    // </div>
-    // <Button
-    //   testID={buttonName}
-    //   onPress={onPress}
-    //   variant={buttonVariant} // Adjust this according to NativeBase's API
-    //   isDisabled={!isEnabled}
-    //   // Additional styling can be added here
-    // >
-    //   {buttonText}
-    // </Button>
+  return (  
 
         
     <View style={styles.container}>
@@ -92,26 +71,26 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
 const styles = StyleSheet.create({
   container: { 
     paddingVertical: 12, // py="3" equivalent, assuming 1 unit = 4
-    // Add other styling as required
+    
   },
   button: { 
     padding: 12,
     borderRadius: 6,
     alignItems: 'center', // Center text horizontally
     justifyContent: 'center', // Center text vertically
-    // Add button styling here
+    
   },
   disabledButton: {
-    // Add disabled button styling here
+    
     opacity: 0.5,
   },
   buttonText: { 
     fontSize: theme.fonts.mediumSize,
     fontWeight: 'bold',
-    // Add button styling here
+    
   },
   disabledButtonText: {
-    // Add disabled button styling here
+    
     opacity: 0.5,
   },
   outlineButton: {
@@ -130,5 +109,5 @@ const styles = StyleSheet.create({
   solidButtonText: {
     color: 'white',  
   },
-  // Additional styles can be added as needed
+  
 });

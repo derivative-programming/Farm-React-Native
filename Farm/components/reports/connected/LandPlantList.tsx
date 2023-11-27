@@ -316,19 +316,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
 {/* 
           
-        <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
-          <View className="mb-2 mb-md-0">
-            <ReportInput.ReportInputButton name="back-button"
-              onPress={async () => {
-                  await logClick("ReportConnectedLandPlantList","back","");
-                  navigateTo("TacFarmDashboard", "tacCode");
-              }}
-              buttonText="<< Farm Dashboard"
-              isButtonCallToAction={false}
-              isVisible={true}
-              isEnabled={true}
-            /> 
-          </View>
+        <View className="col-12 d-flex flex-column flex-md-row justify-content-between"> 
           <View className="d-flex flex-column flex-md-row">
             <View className="mb-2 mb-md-0">
               <ReportInput.ReportInputButton name="otherAddButton"
@@ -341,37 +329,22 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                 isVisible={true}
                 isEnabled={true}
               />
-            </View>
-            <View>
-              <ReportInput.ReportInputButton name="add-button"
-                onPress={async () => {
-                  await logClick("ReportConnectedLandPlantList","add","");
-                  navigateTo("LandAddPlant", "landCode");
-                }}
-                buttonText="+ Add A Plant"
-                className="ms-md-2"
-                isButtonCallToAction={true}
-                isVisible={true}
-                isEnabled={true}
-              />
-            </View>
+            </View> 
           </View>
         </View> 
          */}
         
-
-        {/*//GENTrainingBlock[visualizationType]Start*/}
-        {/*//GENLearn[visualizationType=Grid]Start*/}
         {/* <ReportFilterLandPlantList
           name="reportConnectedLandPlantList-filter"
           initialQuery={initialValues}
           onSubmit={onSubmit}
           isCollapsible={isFilterSectionCollapsable}
           hidden={isFilterSectionHidden} 
-        />
- 
-        
-*/} 
+        /> 
+        */} 
+
+        {/*//GENTrainingBlock[visualizationType]Start*/}
+        {/*//GENLearn[visualizationType=Grid]Start*/}
         <ReportGridLandPlantList
           isSortDescending={queryResult.orderByDescending}
           items={items}
@@ -416,7 +389,7 @@ const styles = StyleSheet.create({
       // alignSelf: 'flex-start', // Align button to the left
       // flexDirection: 'row',
       
-      // Adjust styling as needed
+      
   },
   titleContainer: {
       flex: 1, // Take the remaining space in the row
@@ -428,20 +401,20 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
-    // Add other styles as needed
+    
   },
   titleText: {
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,    
     color: theme.Colors.text, 
     textAlign: 'center', // Center the text
-    // Add other styles as needed
+    
   },
   introText: {
     fontSize: theme.fonts.mediumSize, 
     marginBottom: 8,    
     color: theme.Colors.text,
-    // Add other styles as needed
+    
   }, 
 });
 

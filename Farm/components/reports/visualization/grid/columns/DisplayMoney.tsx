@@ -57,8 +57,7 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
   
   if (!isVisible) return null;
 
-  return (
-    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatMoney()}</td>
+  return ( 
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatMoney()} />   
@@ -69,6 +68,6 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

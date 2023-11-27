@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
       // alignSelf: 'flex-start', // Align button to the left
       // flexDirection: 'row',
       
-      // Adjust styling as needed
+      
   }, 
   placeholder: {
       width: 35, // Adjust to match the width of your back button

@@ -205,20 +205,20 @@ const styles = StyleSheet.create({
     },
     formContainer: {
       width: '90%',
-      // Add other styles as needed
+      
     },
     titleText: {
       fontSize: theme.fonts.largeSize, 
       marginBottom: 8,    
       color: theme.Colors.text,
       textAlign: 'center', // Center the text
-      // Add other styles as needed
+      
     },
     introText: {
       fontSize: theme.fonts.mediumSize, 
       marginBottom: 8,    
       color: theme.Colors.text,
-      // Add other styles as needed
+      
     }, 
   });
   

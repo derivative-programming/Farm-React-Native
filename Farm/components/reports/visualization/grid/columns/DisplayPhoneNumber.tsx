@@ -69,8 +69,7 @@ export const ReportColumnDisplayPhoneNumber: FC<ReportColumnDisplayPhoneNumberPr
     
   if (!isVisible) return null;
       
-  return (
-    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatPhoneNumber()}</td>
+  return ( 
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatPhoneNumber()} />  
@@ -81,6 +80,6 @@ export const ReportColumnDisplayPhoneNumber: FC<ReportColumnDisplayPhoneNumberPr
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: theme.Colors.primary, // Replace with your primary color
-    // Additional container styling 
+     
     height: 50, 
   },  
   menuOptions: {
@@ -178,31 +178,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 4, // px="1" equivalent
-    paddingVertical: 12, // py="3" equivalent
-    // Additional horizontal stack styling
+    paddingVertical: 12, // py="3" equivalent 
   },
-  menuTrigger: {
-    // Styles for the menu trigger
+  menuTrigger: { 
     paddingLeft: 10,
   },
   menuIcon: {
     color: 'white',
-    fontSize: theme.fonts.largeSize,
-    // Additional icon styling
+    fontSize: theme.fonts.largeSize, 
   },
   titleText: {
     color: 'white',
     fontSize: theme.fonts.mediumSize,
     fontWeight: 'bold',
-    textAlign: 'center', // Center the text
-    // Additional title text styling
+    textAlign: 'center', // Center the text 
   },
   placeholderView: {
     width: 35,
-    paddingRight: 10,
-    // Additional placeholder view styling if needed
+    paddingRight: 10, 
   },
-  // Other styles as needed
+  
 });
 
 export default ScreenHeader;

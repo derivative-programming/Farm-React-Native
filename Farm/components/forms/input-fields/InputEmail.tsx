@@ -31,43 +31,7 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
       
   if (!isVisible) return null;
 
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start" data-testid={name + '-group'}>
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name}
-  //           type="email"
-  //           placeholder={placeholder}
-  //           {...field} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           isInvalid={isInvalid}
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback  className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-  // <VStack space={2} width="100%">
-  //   <FormControl isInvalid={isInvalid} isDisabled={disabled} testID={name + '-group'}>
-  //     <FormControl.Label testID={name + '-label'}>{label}</FormControl.Label>
-  //     <Input
-  //       testID={name}
-  //       keyboardType="email-address" 
-  //       placeholder={placeholder}
-  //       {...field}
-  //       isDisabled={disabled}
-  //       // React Native does not directly support autoFocus in the same way as web
-  //     />
-  //     {isInvalid && (
-  //       <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-  //         {meta.error}
-  //       </FormControl.ErrorMessage>
-  //     )}
-  //   </FormControl>
-  // </VStack>
+  return ( 
   <View style={styles.container} testID={name + '-group'}>
     <FormLabel name={name + '-label'} text={label}/>
     <TextInput
@@ -80,7 +44,7 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
       onChangeText={field.onChange(name)}
       onBlur={field.onBlur(name)}
       value={field.value}   
-      // Additional TextInput props as needed
+      
     />
     {isInvalid && (
       <Text style={styles.errorText}>{meta.error}</Text>
@@ -92,7 +56,7 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    // Additional container styling
+    
   }, 
   input: {
     // Styling for the TextInput
@@ -116,7 +80,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Additional styling for error message text
+    
   },
-  // Other styles as needed
+  
 });

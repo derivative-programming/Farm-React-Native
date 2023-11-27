@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12, // px="3" equivalent, assuming 1 unit = 4
     marginTop: 12, // mt="3" equivalent
     alignItems: 'center', // For vertical alignment
-    // Add other styles as needed
+    
   },
   button: {
-    // Add button styling here, adjust size as needed
+    , adjust size as needed
   },
   // Define other styles as needed
 });

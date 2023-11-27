@@ -64,14 +64,13 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatDate()} />
-    </View>
-    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatDate()}</td>
+    </View> 
   );
 };
    
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

@@ -59,8 +59,7 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
   
   if (!isVisible) return null;
 
-  return (
-    // <td data-testid={groupName} className="text-nowrap" hidden={!isVisible}>{formatDateTime()}</td>
+  return ( 
     <View data-testid={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       <ReportColumnDisplayValue name={valueName} text={formatDateTime()} /> 
@@ -71,6 +70,6 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    // Styles for the container
+    
   },  
 });

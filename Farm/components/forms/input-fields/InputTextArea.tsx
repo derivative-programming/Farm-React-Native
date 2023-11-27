@@ -31,43 +31,7 @@ export const FormInputTextArea: FC<FormInputTextAreaProps> = ({
       
   if (!isVisible) return null;
 
-  return ( 
-      // <Form.Group controlId={name} className="mb-2 text-start">
-      //     <Form.Label data-testid={name + '-label'}
-      //       size="sm">{label}</Form.Label>
-      //     <Form.Control
-      //       // ref={inputRef}
-      //       as="textarea"
-      //       data-testid={name}
-      //       type="text"
-      //       rows={3}
-      //       placeholder={placeholder}
-      //       {...field} 
-      //       disabled={disabled}
-      //       autoFocus={autoFocus}
-      //       isInvalid={isInvalid}
-      //       size="sm"
-      //     />
-      //     <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-      // </Form.Group>  
-  
-    // <FormControl isInvalid={isInvalid} isDisabled={disabled} mb="2">
-    //   <FormControl.Label _text={{bold: true}}>{label}</FormControl.Label>
-    //   <TextArea
-    //     autoCompleteType={undefined} 
-    //     testID={name}
-    //     numberOfLines={3} 
-    //     placeholder={placeholder}
-    //     {...field}
-    //     isDisabled={disabled}
-    //     autoFocus={autoFocus}  
-    //   />
-    //   {isInvalid && (
-    //     <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-    //       {meta.error}
-    //     </FormControl.ErrorMessage>
-    //   )}
-    // </FormControl>
+  return (  
 
     <View style={styles.container}>
       <FormLabel text={label} name={name + '-label'}/>
@@ -83,7 +47,7 @@ export const FormInputTextArea: FC<FormInputTextAreaProps> = ({
         onBlur={field.onBlur(name)}
         value={field.value}   
         autoFocus={autoFocus}
-        // Additional props for TextInput as needed
+        
       />
       {isInvalid && (
         <Text style={styles.errorText}>{meta.error}</Text>
@@ -95,12 +59,12 @@ export const FormInputTextArea: FC<FormInputTextAreaProps> = ({
 const styles = StyleSheet.create({
   container: {
     marginBottom: 8, // mb="2" equivalent, assuming 1 unit = 4
-    // Additional container styling
+    
   }, 
   textArea: {
     // Styling for the TextInput as a TextArea
     textAlignVertical: 'top', // Important for multiline
-    // Add other styling as required
+    
     width: '100%',
     fontSize: theme.fonts.mediumSize,
     padding: 12,
@@ -121,8 +85,8 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    // Additional styling for the error message text
+    
   },
-  // Add any other styles as needed
+  
 });
    

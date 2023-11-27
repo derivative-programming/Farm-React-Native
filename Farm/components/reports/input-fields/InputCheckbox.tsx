@@ -67,8 +67,7 @@ export const ReportInputCheckbox: FC<ReportInputCheckboxProps> = ({
    
 const styles = StyleSheet.create({
   container: {
-    marginTop: 8,
-    // Additional styles
+    marginTop: 8, 
   },
   // ... other styles
 });
