@@ -1,6 +1,9 @@
-import React, { FC, ReactElement } from "react";
-import { FormControl, Input, WarningOutlineIcon, Box, Text } from 'react-native';
+import React, { FC, ReactElement } from "react"; 
+
 import {useField } from 'formik'; 
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
+import * as theme from '../../../constants/theme'
    
 export interface ReportInputTextProps {
   name: string
@@ -8,6 +11,7 @@ export interface ReportInputTextProps {
   placeholder?: string
   autoFocus?:boolean
   disabled?: boolean
+  isVisible?:boolean
 }
     
 export const ReportInputText: FC<ReportInputTextProps> = ({
@@ -16,47 +20,65 @@ export const ReportInputText: FC<ReportInputTextProps> = ({
   placeholder,
   autoFocus = false,
   disabled = false,
-}): ReactElement => {
+  isVisible = true,
+}): ReactElement | null => {
   const [field, meta] = useField(name);  
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
+  
+  if (!isVisible) return null;
       
-  return (
-  //   <div className="">
-  //     <Form.Group controlId={name}
-  //       data-testid={name} className="mt-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name + '-field'}
-  //           type="text"
-  //           placeholder={placeholder}
-  //           {...field} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           isInvalid={isInvalid}
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback  className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-  <FormControl isInvalid={meta.touched && !!meta.error}>
-      <FormControl.Label>{label}</FormControl.Label>
-      <Input
-        placeholder={placeholder}
-        onChangeText={field.onChange(name)}
-        onBlur={field.onBlur}
-        value={field.value}
-        isDisabled={disabled}
-        autoFocus={autoFocus} // Limited support in React Native
-      />
-      {meta.touched && meta.error ? (
-        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-          {meta.error}
-        </FormControl.ErrorMessage>
-      ) : null}
-    </FormControl>
+  return ( 
+  <View style={styles.container}>
+    <FormLabel text={label} name={name + '-label'}/>
+    <TextInput
+      style={[styles.input, disabled && styles.disabledInput]}
+      placeholder={placeholder}
+      editable={!disabled} 
+      id={name} 
+      testID={name}
+      onChangeText={field.onChange(name)}
+      onBlur={field.onBlur(name)}
+      value={field.value}   
+      
+    />
+    {isInvalid && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    // Add additional styling for the container
+  }, 
+  input: {
+    // Styling for the TextInput
+    width: '100%',
+    fontSize: theme.fonts.mediumSize,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    color: '#333',
+    backgroundColor: '#fff',
+    marginBottom: 15, // Space below the input for spacing in forms
+    
+  },
+  disabledInput: {
+    // Styling for the disabled TextInput
+    // backgroundColor: '#f7f7f7',
+    // color: '#c7c7c7',
+    // borderColor: '#e7e7e7',
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 8,    
+    
+  },
+  
+});

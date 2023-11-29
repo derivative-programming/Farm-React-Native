@@ -1,84 +1,58 @@
 import React, { FC, ReactElement,} from "react";
-import { View,  Text } from 'react-native';
+
+import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
- 
-   
+import { ReportColumnDisplayLabel } from "./DisplayLabel";
+
 export interface ReportColumnDisplayCheckboxProps {
-  forColumn:string 
-  isChecked: boolean 
+  forColumn:string
   label:string
+  rowIndex?: number
+  isChecked: boolean
   isVisible?:boolean
   conditionallyVisible?:boolean
 }
-   
+
 export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> = ({
-  forColumn, 
-  isChecked, 
+  forColumn,
   label,
+  rowIndex = 0,
+  isChecked,
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement | null => { 
- 
-  const groupName = forColumn +'-column';
+}): ReactElement | null => {
+
+  const groupName = forColumn +'-column-' + rowIndex.toString();
   const checkboxName = groupName +'-checkbox';
-  
+  const labelName = groupName +'-label';
+
   const displayValue = (isVisible && conditionallyVisible);
 
-  if (!displayValue) return null;
- 
-  if(isChecked === null || !isVisible){
-    return (
-    
-    //   <Col data-testid={groupName} lg="5" md="5" xs="12" hidden={!displayValue}>
-    //     <ListGroup.Item
-    //         as="li"
-    //         className="text-start"
-    //     >
-    //         <div className="ms-2 me-auto">
-    //             <div className="fw-bold">{label}</div> 
-    //             &nbsp;
-    //         </div>
+  if (!isVisible) return null;
 
-    //     </ListGroup.Item>
-    // </Col>
-    <View testID={groupName}>
-        <Text>
-          {label}
-        </Text>  
+  if(isChecked === null || !displayValue){
+    return (
+    <View data-testid={groupName}>
+      <ReportColumnDisplayLabel name={labelName} text={label}  />
     </View>
     );
-  } else {  
-    return ( 
-    // <Col data-testid={groupName} lg="6" md="6" xs="12">
-    //     <ListGroup.Item
-    //         as="li"
-    //         className="text-start"
-    //     >
-    //         <div className="ms-2 me-auto">
-    //             <div className="fw-bold">{label}</div>
-    //             <Form.Check 
-    //               readOnly={true}
-    //               type="checkbox"
-    //               data-testid={checkboxName}
-    //               id={checkboxName}
-    //               name={checkboxName} 
-    //               checked={isChecked}
-    //               />
-    //         </div>
-
-    //     </ListGroup.Item>
-    // </Col>
-    <View testID={groupName}>
-        <Text>
-          {label}  
-        </Text>
+  } else {
+    return (
+      <View testID={groupName} style={styles.container}>
+        <ReportColumnDisplayLabel name={labelName} text={label}  />
         {isChecked ? (
-          <Icon name="check-circle" size={30} color="#4CAF50" />
+          <Icon name="checkbox-outline" size={30} color="#4CAF50" />
         ) : (
-          <Icon name="radio-button-unchecked" size={30} color="#000000" />
-        )} 
-    </View>
+          <Icon name="square-outline" size={30} color="#000000" />
+        )}
+      </View>
     );
   }
 };
-   
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Aligns children horizontally
+
+  },
+});

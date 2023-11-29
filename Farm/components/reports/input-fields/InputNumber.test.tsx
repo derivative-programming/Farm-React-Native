@@ -15,8 +15,8 @@ import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
  
-describe("ReportInputNumber Component", () => {
-  // render the ReportInputNumber component
+describe("InputNumber Component", () => {
+  // render the InputNumber component
   beforeEach(() => {
     render(
       <Formik
@@ -36,41 +36,39 @@ describe("ReportInputNumber Component", () => {
 
   it("renders correctly", async () => {
     expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName-label")).toBeInTheDocument();
-    expect(screen.getByTestId("testName-field")).toBeInTheDocument();
-    expect(screen.getByTestId("testName-field")).not.toHaveFocus();
-    expect(screen.getByTestId("testName-field")).toBeEnabled();
+    expect(screen.getByTestId("testName")).not.toHaveFocus();
+    expect(screen.getByTestId("testName")).toBeEnabled();
     expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
   });
 
   it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
 
     await act(async () => {
       await fireEvent.change(input, { target: { value: "123" } });
     });
 
-    expect(screen.getByTestId("testName-field")).toHaveValue(123);
+    expect(screen.getByTestId("testName")).toHaveValue(123);
   }); 
   
   it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
 
     await act(async () => {
       await fireEvent.change(input, { target: { disabled: true } });
     });
 
-    expect(screen.getByTestId("testName-field")).toBeDisabled();
+    expect(screen.getByTestId("testName")).toBeDisabled();
   }); 
 
   it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
 
     await act(async () => {
       await fireEvent.change(input, { target: { disabled: false } });
     });
 
-    expect(screen.getByTestId("testName-field")).not.toBeDisabled();
+    expect(screen.getByTestId("testName")).not.toBeDisabled();
   }); 
   
   it("when user sets prop autoFocus to true, control is autoFocused", async () => {
@@ -86,12 +84,12 @@ describe("ReportInputNumber Component", () => {
 </Formik>
     );
 
-    const input = screen.getByTestId("testName2-field");
+    const input = screen.getByTestId("testName2");
 
     await act(async () => {
       await fireEvent.change(input, { target: { autoFocus: true } });
     });
 
-    expect(screen.getByTestId("testName2-field")).toHaveFocus();
+    expect(screen.getByTestId("testName2")).toHaveFocus();
   }); 
 });

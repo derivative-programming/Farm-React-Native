@@ -5,7 +5,7 @@ import { SubscribeDBContext } from "../context/subscribeDB-context";
 import { ANALYTICS_DBNAME, ANALYTICS_DBTABLE } from "../constants/dbName"; 
 import { sendClientAnalyticsData } from "../components/services/analyticsService";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import "fake-indexeddb/auto";
+//
 
 type TAnalyticsEvent = {
   messageType: string;

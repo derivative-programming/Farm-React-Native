@@ -1,7 +1,7 @@
-import React, { FC, ReactElement } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import React, { FC, ReactElement } from "react"; 
 import {useField } from 'formik'; 
-import { Checkbox, FormControl } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
+import { FormLabel } from "./InputLabel";
    
 export interface ReportInputCheckboxProps {
   name: string
@@ -9,6 +9,7 @@ export interface ReportInputCheckboxProps {
   placeholder?: string
   autoFocus?:boolean
   disabled?: boolean
+  isVisible?:boolean
 }
    
 export const ReportInputCheckbox: FC<ReportInputCheckboxProps> = ({
@@ -17,57 +18,51 @@ export const ReportInputCheckbox: FC<ReportInputCheckboxProps> = ({
   placeholder,
   autoFocus = false,
   disabled = false,
-}): ReactElement => {
-  const [field, meta, helpers] = useField(name);   
+  isVisible = true,
+}): ReactElement | null => {
+  const [field, meta, helpers] = useField(name);  
+
+  const errorDisplayControlName = name + "ErrorDisplay";
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
       
-  return (
-  //   <div className="">
-  //     <Form.Group controlId={name} 
-  //       data-testid={name}
-  //       className="mt-2 text-start"> 
-  //         <Form.Check
-  //           // ref={inputRef}
-  //           data-testid={name + '-field'}
-  //           type="checkbox"
-  //           placeholder={placeholder}
-  //           checked={field.value}
-  //           name={field.name}
-  //           value={field.value}
-  //           onChange={(e) => {helpers.setValue(e.target.checked);}}
-  //           onBlur={field.onBlur} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           label={label}
-  //           isInvalid={isInvalid}
-  //         />
-  //         <Form.Control.Feedback  className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
+  if (!isVisible) return null;
+
+  return ( 
   <View style={styles.container}>
-      <FormControl isInvalid={meta.touched && !!meta.error}>
-        <Checkbox
-          isChecked={field.value}
-          onChange={(isChecked) => helpers.setValue(isChecked)}
-          // onBlur={field.onBlur}
-          isDisabled={disabled} 
-          value={""}>
-          {label}
-        </CheckView>
-        {meta.touched && meta.error && (
-          <FormControl.ErrorMessage>
-            {meta.error}
-          </FormControl.ErrorMessage>
-        )}
-      </FormControl>
+    <View style={styles.switchContainer}>
+      <FormLabel text={label} name={name + '-label'}/> 
+      <Switch 
+        value={field.value}
+        disabled={disabled}
+        testID={name} 
+        onValueChange={(value) => {
+          helpers.setValue(value);
+        }}
+        // onChangeText={field.onChange(name)}
+        // onBlur={field.onBlur(name)} 
+      /> 
     </View>
+    {meta.touched && meta.error && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+
 const styles = StyleSheet.create({
   container: {
-    marginTop: 8, 
+    
   },
-  // ... other styles
+  switchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 8, // Add space between the switch and the label 
+  }, 
+  errorText: {
+    color: 'red',
+    marginBottom: 8,     
+  },
+  
 });

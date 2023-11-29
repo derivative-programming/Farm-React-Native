@@ -10,7 +10,7 @@ import {
 } from "@testing-library/react-native";
 import {ReportDetailTwoColLandPlantList} from "./LandPlantList";
 import * as ReportService from "../../services/LandPlantList";
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 
 const onRowSelect = jest.fn();
@@ -26,10 +26,10 @@ describe("LandPlantList Form Component", () => {
   // render the LandPlantList Form component
   beforeEach(() => {
     render(
-        <ReportDetailTwoColLandPlantList  
+        <ReportDetailTwoColLandPlantList
           item={new ReportService.QueryResultItemInstance}
-          name="testName"  
-          onNavigateTo={onNavigateTo} 
+          name="testName"
+          onNavigateTo={onNavigateTo}
           onRefreshRequest={onRefreshRequest}
           />
     );
@@ -41,5 +41,6 @@ describe("LandPlantList Form Component", () => {
   it("renders correctly", async () => {
     expect(screen.getByTestId("testName")).toBeInTheDocument();
   });
- 
+
 });
+

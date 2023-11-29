@@ -17,7 +17,7 @@ import * as InputFields from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import * as AnalyticsService from "../../services/analyticsService";
-import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -63,8 +63,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
 
   const authContext = useContext(AuthContext); 
 
-  console.log('form ctrl initial values...');
-  console.log(initialValues);
+  // console.log('form ctrl initial values...');
+  // console.log(initialValues);
 
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
@@ -194,7 +194,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
           initData={initPageResponse}
           isHeaderVisible={true}
         />
-
+        <ScrollView>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -317,6 +317,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
             </View>
           )}
         </Formik>
+        </ScrollView>
       </View>
     </View>
   );

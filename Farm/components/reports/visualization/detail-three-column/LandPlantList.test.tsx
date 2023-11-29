@@ -5,12 +5,10 @@ import {
   cleanup,
   screen,
   act,
-  fireEvent,
-  waitFor,
 } from "@testing-library/react-native";
 import {ReportDetailThreeColLandPlantList} from "./LandPlantList";
 import * as ReportService from "../../services/LandPlantList";
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 
 const onRowSelect = jest.fn();
@@ -24,15 +22,17 @@ const onRefreshRequest = jest.fn();
 
 describe("LandPlantList Form Component", () => {
   // render the LandPlantList Form component
-  beforeEach(() => {
-    render(
-        <ReportDetailThreeColLandPlantList  
+  beforeEach(async() => {
+    await act(async () => {
+      render(
+        <ReportDetailThreeColLandPlantList
           item={new ReportService.QueryResultItemInstance}
-          name="testName"  
-          onNavigateTo={onNavigateTo} 
+          name="testName"
+          onNavigateTo={onNavigateTo}
           onRefreshRequest={onRefreshRequest}
           />
-    );
+      )
+    });
   });
 
   // after cleanup when test-case execution is done
@@ -41,5 +41,6 @@ describe("LandPlantList Form Component", () => {
   it("renders correctly", async () => {
     expect(screen.getByTestId("testName")).toBeInTheDocument();
   });
- 
+
 });
+

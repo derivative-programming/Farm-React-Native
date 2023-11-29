@@ -13,7 +13,6 @@ import FormConnectedLandAddPlant from "./LandAddPlant";
 import * as FormService from "../services/LandAddPlant";
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
 import * as requestFlavorCodeService from "../../lookups/services/Flavor"
-import "fake-indexeddb/auto";
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
  
@@ -22,10 +21,16 @@ const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
 
 // mock the useNavigate method
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate,
-  useParams: () => mockUserParams.mockReturnValue({ id: "00000000-0000-0000-0000-000000000000",}),
+// jest.mock("react-router-dom", () => ({
+//   ...(jest.requireActual("react-router-dom") as any),
+//   useNavigate: () => mockedUsedNavigate,
+//   useParams: () => mockUserParams.mockReturnValue({ id: "00000000-0000-0000-0000-000000000000",}),
+// }));
+
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: jest.fn(),
+  }),
 }));
 
 const mockFormInitService = jest.spyOn(FormService, "initForm");
@@ -49,16 +54,14 @@ describe("LandAddPlant Component", () => {
       }); 
 //endset
       
-
-      await act(async () => {
-        render(
-          
-            <FormConnectedLandAddPlant name="testForm" 
-              showProcessingAnimationOnInit={false} 
-              landCode = "00000000-0000-0000-0000-000000000000"/>
-          
-        ); 
-      })
+ 
+      render(
+        
+          <FormConnectedLandAddPlant name="testForm" 
+            showProcessingAnimationOnInit={false} 
+            landCode = "00000000-0000-0000-0000-000000000000"/>
+        
+      );  
 
       await waitFor(() => expect(mockRequestFlavorCodeService).toHaveBeenCalled());
 //endset
@@ -117,10 +120,10 @@ describe("LandAddPlant Component", () => {
 
     const input = screen.getByTestId("requestFlavorCode");
     expect(screen.getByTestId("testForm")).toBeInTheDocument();
-    expect(screen.getByTestId("requestFlavorCode")).toHaveTextContent("Please Select One");
-    await act(async () => {
+    expect(screen.getByTestId("requestFlavorCode")).toHaveTextContent("Please Select One"); 
+    //await act(async () => {
       await fireEvent.change(input, { target: { value: "00000000-0000-0000-0000-000000000000" } }); 
-    }); 
+    // }); 
     expect(screen.getByTestId("requestFlavorCode")).toHaveValue("00000000-0000-0000-0000-000000000000");
   });
 
@@ -149,15 +152,22 @@ describe("LandAddPlant Component", () => {
   });
 
   it("when user enter requestSomeBitVal, it set accordingly", async () => {
-    const input = screen.getByTestId("requestSomeBitVal");
-    fireEvent.click(screen.getByTestId("requestSomeBitVal"));
-    expect(screen.getByTestId("requestSomeBitVal")).toBeChecked();
+    const input = screen.getByTestId("requestSomeBitVal"); 
+    fireEvent.press(input);
+    expect(input).toBeChecked();
   });
 
   it("when user enter requestIsEditAllowed, it set accordingly", async () => {
     const input = screen.getByTestId("requestIsEditAllowed"); 
-    fireEvent.click(screen.getByTestId("requestIsEditAllowed"));
-    expect(screen.getByTestId("requestIsEditAllowed")).toBeChecked();
+    expect(input.props.value).toBe(false);
+    // fireEvent.press(input);
+    // expect(input).toBeChecked();
+
+    fireEvent(input, 'onValueChange');
+ 
+    await waitFor(() => { 
+      expect(input.props.value).toBe(true);
+    });
   });
 
   it("when user enter requestIsDeleteAllowed, it set accordingly", async () => {
@@ -168,42 +178,62 @@ describe("LandAddPlant Component", () => {
 
   it("when user enter requestSomeFloatVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeFloatVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("requestSomeFloatVal")).toHaveValue(1);
+    //await act(async () => {
+      // await fireEvent.change(input, { target: { value: "1" } });
+      fireEvent(input, "onChangeText", "1");
+    // });  
+    // expect(screen.getByTestId("requestSomeFloatVal")).toHaveValue(1);
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter requestSomeDecimalVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeDecimalVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("requestSomeDecimalVal")).toHaveValue(1);
+    //await act(async () => {
+      // await fireEvent.change(input, { target: { value: "1" } });
+    fireEvent(input, "onChangeText", "1");
+    // }); 
+    // expect(screen.getByTestId("requestSomeDecimalVal")).toHaveValue(1);
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter requestSomeUTCDateTimeVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeUTCDateTimeVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1/1/2000" } });
-    }); 
-    expect(screen.getByTestId("requestSomeUTCDateTimeVal")).toHaveValue("1/1/2000");
+    //await act(async () => {
+      // await fireEvent.change(input, { target: { value: "1/1/2000" } });
+    fireEvent(input, "onChangeText", "1/1/2000");
+    // }); 
+    // expect(screen.getByTestId("requestSomeUTCDateTimeVal")).toHaveValue("1/1/2000");
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1/1/2000');
+    });
   });
 
   it("when user enter requestSomeDateVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeDateVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1/1/2000" } });
-    }); 
-    expect(screen.getByTestId("requestSomeDateVal")).toHaveValue("1/1/2000");
+    //await act(async () => {
+      // await fireEvent.change(input, { target: { value: "1/1/2000" } });
+    fireEvent(input, "onChangeText", "1/1/2000");
+    // }); 
+    // expect(screen.getByTestId("requestSomeDateVal")).toHaveValue("1/1/2000");
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1/1/2000');
+    });
   });
 
   it("when user enter requestSomeMoneyVal, it set accordingly", async () => {
     const input = screen.getByTestId("requestSomeMoneyVal");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("requestSomeMoneyVal")).toHaveValue(1);
+    //await act(async () => {
+      // await fireEvent.change(input, { target: { value: "1" } });
+      fireEvent(input, "onChangeText", "1");
+    // }); 
+    // expect(input).toHaveValue(1);
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter requestSomeNVarCharVal, it set accordingly", async () => {
@@ -243,9 +273,9 @@ describe("LandAddPlant Component", () => {
 
   it("when user enter requestSampleImageUploadFile, it set accordingly", async () => {
     const input = screen.getByTestId("requestSampleImageUploadFile");
-    await act(async () => {
+    //await act(async () => {
      // await fireEvent.change(input, { target: { value: "1" } });
-    }); 
+    // }); 
   //  expect(screen.getByTestId("requestSampleImageUploadFile")).toHaveValue(1);
   });
 
@@ -257,25 +287,29 @@ describe("LandAddPlant Component", () => {
     }); 
    
     const requestFlavorCodeInput = screen.getByTestId("requestFlavorCode");
-    await act(async () => {
-        await fireEvent.change(requestFlavorCodeInput, { target: { value: "Test@123" } });
-    }); 
+    //await act(async () => {
+        // await fireEvent.change(requestFlavorCodeInput, { target: { value: "Test@123" } });
+        fireEvent(requestFlavorCodeInput, "onChangeText", "Test@123");
+    // }); 
  
    
     const requestOtherFlavorInput = screen.getByTestId("requestOtherFlavor");
-    await act(async () => {
-      await fireEvent.change(requestOtherFlavorInput, { target: { value: "Test@123" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestOtherFlavorInput, { target: { value: "Test@123" } });
+      fireEvent(requestOtherFlavorInput, "onChangeText", "xyz");
+    // });
  
     const requestSomeIntValInput = screen.getByTestId("requestSomeIntVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeIntValInput, { target: { value: "99" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeIntValInput, { target: { value: "99" } });
+      fireEvent(requestSomeIntValInput, "onChangeText", "99");
+    // });
  
     const requestSomeBigIntValInput = screen.getByTestId("requestSomeBigIntVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeBigIntValInput, { target: { value: "99" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeBigIntValInput, { target: { value: "99" } });
+      fireEvent(requestSomeBigIntValInput, "onChangeText", "99");
+    // });
  
     const requestSomeBitValInput = screen.getByTestId("requestSomeBitVal");
     fireEvent.click(screen.getByTestId("requestSomeBitVal"));
@@ -287,63 +321,73 @@ describe("LandAddPlant Component", () => {
     fireEvent.click(screen.getByTestId("requestIsDeleteAllowed"));
  
     const requestSomeFloatValInput = screen.getByTestId("requestSomeFloatVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeFloatValInput, { target: { value: "99" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeFloatValInput, { target: { value: "99" } });
+      fireEvent(requestSomeFloatValInput, "onChangeText", "99");
+    // });
  
     const requestSomeDecimalValInput = screen.getByTestId("requestSomeDecimalVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeDecimalValInput, { target: { value: "99" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeDecimalValInput, { target: { value: "99" } });
+      fireEvent(requestSomeDecimalValInput, "onChangeText", "99");
+    // });
  
     const requestSomeUTCDateTimeValInput = screen.getByTestId("requestSomeUTCDateTimeVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeUTCDateTimeValInput, { target: { value: "1/1/2000" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeUTCDateTimeValInput, { target: { value: "1/1/2000" } });
+      fireEvent(requestSomeUTCDateTimeValInput, "onChangeText", "1/1/2000");
+    // });
  
     const requestSomeDateValInput = screen.getByTestId("requestSomeDateVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeDateValInput, { target: { value: "1/1/2000" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeDateValInput, { target: { value: "1/1/2000" } });
+      fireEvent(requestSomeDateValInput, "onChangeText", "1/1/2000");
+    // });
  
     const requestSomeMoneyValInput = screen.getByTestId("requestSomeMoneyVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeMoneyValInput, { target: { value: "99" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeMoneyValInput, { target: { value: "99" } });
+      fireEvent(requestSomeMoneyValInput, "onChangeText", "99");
+    // });
  
     const requestSomeNVarCharValInput = screen.getByTestId("requestSomeNVarCharVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeNVarCharValInput, { target: { value: "Sample Data" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeNVarCharValInput, { target: { value: "Sample Data" } });
+      fireEvent(requestSomeNVarCharValInput, "onChangeText", "Sample Data");
+    // });
  
     const requestSomeVarCharValInput = screen.getByTestId("requestSomeVarCharVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeVarCharValInput, { target: { value: "Sample Data" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeVarCharValInput, { target: { value: "Sample Data" } });
+      fireEvent(requestSomeVarCharValInput, "onChangeText", "Sample Data");
+    // });
  
     const requestSomeTextValInput = screen.getByTestId("requestSomeTextVal");
-    await act(async () => {
-      await fireEvent.change(requestSomeTextValInput, { target: { value: "Sample Data" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeTextValInput, { target: { value: "Sample Data" } });
+      fireEvent(requestSomeTextValInput, "onChangeText", "Sample Data");
+    // });
  
     const requestSomePhoneNumberInput = screen.getByTestId("requestSomePhoneNumber");
-    await act(async () => {
-      await fireEvent.change(requestSomePhoneNumberInput, { target: { value: "Sample Data" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomePhoneNumberInput, { target: { value: "Sample Data" } });
+      fireEvent(requestSomePhoneNumberInput, "onChangeText", "123-123-1234");
+    // });
  
     const requestSomeEmailAddressInput = screen.getByTestId("requestSomeEmailAddress");
-    await act(async () => {
-      await fireEvent.change(requestSomeEmailAddressInput, { target: { value: "Sample Data" } });
-    });
+    //await act(async () => {
+      // await fireEvent.change(requestSomeEmailAddressInput, { target: { value: "Sample Data" } });
+      fireEvent(requestSomeEmailAddressInput, "onChangeText", "test@test.com");
+    // });
  
     const requestSampleImageUploadFileInput = screen.getByTestId("requestSampleImageUploadFile");
-    await act(async () => {
+    //await act(async () => {
     //  await fireEvent.change(requestSampleImageUploadFileInput, { target: { value: "Sample Data" } });
-    });
+    // });
 
-    await act(async () => {
+    //await act(async () => {
       await fireEvent.click(screen.getByTestId("submit-button"));
-    });
+    // });
 
     await waitFor(() => expect(mockFormSubmitService).toHaveBeenCalled());
   });

@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {   View, Text, ActivityIndicator, TouchableOpacity,StyleSheet } from 'react-native'; 
+import {   View, Text, ActivityIndicator, TouchableOpacity,StyleSheet, ScrollView } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native';
 import { Formik, FormikHelpers } from "formik";  
 import * as FormService from "../services/TacLogin";
@@ -166,7 +166,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       <View style={styles.formContainer}>
         <Text style={styles.titleText}>Log In</Text>
         <Text style={styles.introText}>Please enter your email and password.</Text>
-        
+        <ScrollView>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -216,6 +216,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
             </View>
           )}
         </Formik>
+        </ScrollView>
       </View>
     </View>
   );

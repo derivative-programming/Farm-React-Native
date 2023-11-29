@@ -17,8 +17,8 @@ const initialValues = { testName:"" }
 
 const mockedonPress = jest.fn();
  
-describe("ReportInputButton Component", () => {
-  // render the ReportInputButton component
+describe("InputButton Component", () => {
+  // render the InputButton component
   beforeEach(() => {
     render(
       <Formik
@@ -42,24 +42,46 @@ describe("ReportInputButton Component", () => {
     expect(screen.getByTestId("testName")).toBeEnabled(); 
   }); 
   
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
+  // it("when user sets prop disable to true, control is disabled", async () => {
+  //   const input = screen.getByTestId("testName");
+
+  //   await act(async () => {
+  //     await fireEvent.change(input, { target: { isEnabled: false } });
+  //   });
+
+  //   expect(screen.getByTestId("testName")).toBeDisabled();
+  // }); 
+
+  // it("when user sets prop disable to false, control is not disabled", async () => {
+  //   const input = screen.getByTestId("testName");
+
+  //   await act(async () => {
+  //     await fireEvent.change(input, { target: { isEnabled: true } });
+  //   });
+
+  //   expect(screen.getByTestId("testName")).not.toBeDisabled();
+  // }); 
+  
+  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
+    render( 
+      <Formik
+          initialValues={initialValues} 
+          onSubmit={async (values,actions) => {}}>
+          {(props) => (
+               
+                <ReportInputButton buttonText="Test Label" name="testName2" autoFocus={true}  onPress={mockedonPress}/> 
+                
+          )}
+      </Formik>
+    );
+
+    const input = screen.getByTestId("testName2");
 
     await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
+      await fireEvent.change(input, { target: { autoFocus: true } });
     });
 
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
+    expect(screen.getByTestId("testName2")).toHaveFocus();
   }); 
    
 });

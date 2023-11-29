@@ -12,7 +12,7 @@ import FormConnectedTacLogin from "./TacLogin";
 import * as FormService from "../services/TacLogin";
 import * as InitFormService from "../services/init/TacLoginInitObjWF";
 
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const mockedUsedNavigate = jest.fn();

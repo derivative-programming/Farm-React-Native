@@ -7,64 +7,63 @@ import {
   act,
   fireEvent,
 } from "@testing-library/react-native";
-import {ReportColumnDisplayText} from "./DisplayText";   
+import {ReportColumnDisplayText} from "./DisplayText";
 import '@testing-library/jest-dom';
 
-const initialValues = { testName:"" } 
+const initialValues = { testName:"" }
 
 const handleSubmit = jest.fn();
 
-const testId = 'testColumn';
- 
+const testId = 'testColumn-column-1';
+
 describe("ReportColumnDisplayText Component", () => {
   // render the ReportColumnDisplayText component
-  beforeEach(() => { 
+  beforeEach(() => {
   });
 
   // after cleanup when test-case execution is done
-  afterEach(cleanup); 
+  afterEach(cleanup);
 
   it("renders 'test Value' correctly", async () => {
     render(
-       <ReportColumnDisplayText forColumn="testColumn" label="test label" value="test Value" />
+       <table><tbody><tr><ReportColumnDisplayText forColumn="testColumn" label="test label" rowIndex={1} value="test Value" /></tr></tbody></table>
     );
 
-    expect(screen.getByText("test Value")).toBeInTheDocument(); 
-    
+    expect(screen.getByText("test Value")).toBeInTheDocument();
+
   });
- 
+
   it("renders no value correctly", async () => {
     render(
-       <ReportColumnDisplayText forColumn="testColumn" label="test label" value="" />
+       <table><tbody><tr><ReportColumnDisplayText forColumn="testColumn" label="test label" rowIndex={1} value="" /></tr></tbody></table>
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
-  
+
   it("renders null correctly", async () => {
     const noVal:any = null;
 
     render(
-       <ReportColumnDisplayText forColumn="testColumn" label="test label" value={noVal} />
+       <table><tbody><tr><ReportColumnDisplayText forColumn="testColumn" label="test label" rowIndex={1} value={noVal} /></tr></tbody></table>
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
-  
-  it("renders isVisible=false correctly", async () => { 
+
+  it("renders isVisible=false correctly", async () => {
 
     render(
-      <ReportColumnDisplayText forColumn="testColumn" label="test label" value="test value" isVisible={false} />
+       <table><tbody><tr><ReportColumnDisplayText forColumn="testColumn" label="test label" rowIndex={1} value="test Value" isVisible={false} /></tr></tbody></table>
     );
 
     expect(screen.getByTestId(testId)).toBeInTheDocument();
 
-    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-1\" />");
+    expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
- 
- 
+
 });

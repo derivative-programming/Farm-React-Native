@@ -17,8 +17,8 @@ import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
  
-describe("ReportInputErrorDisplay Component", () => {
-  // render the ReportInputErrorDisplay component
+describe("InputErrorDisplay Component", () => {
+  // render the InputErrorDisplay component
   beforeEach(() => {
     render(
       <Formik

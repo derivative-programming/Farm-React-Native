@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react-native";
 import {ReportDetailThreeColPlantUserDetails} from "./PlantUserDetails";
 import * as ReportService from "../../services/PlantUserDetails";
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 
 const onRowSelect = jest.fn();

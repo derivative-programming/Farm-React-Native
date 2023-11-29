@@ -2,40 +2,40 @@ import React, { FC, ReactElement } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native'; 
 import * as theme from '../../../constants/theme'
 
+ 
+   
 export interface ReportInputButtonProps {
-  name: string;
-  buttonText: any;
-  onPress(): void;
-  isButtonCallToAction?: boolean;
-  isVisible?: boolean;
-  isEnabled?: boolean;
-  className?: string;
-  type?: "button" | "submit" | "reset" | undefined;
-  isProcessing?:boolean;
+  name: string
+  buttonText: string
+  onPress(): void
+  isButtonCallToAction?:boolean 
+  isVisible?:boolean
+  isEnabled?:boolean
+  autoFocus?:boolean
+  className?:string
+  isProcessing?:boolean
 }
-
+   
 export const ReportInputButton: FC<ReportInputButtonProps> = ({
   name,
   buttonText,
   onPress,
-  isButtonCallToAction = true,
+  isButtonCallToAction = true, 
   isVisible = true,
   isEnabled = true,
-  // type,
-
+  autoFocus = false,
   className = "",
   isProcessing = false,
-}): ReactElement => {
-
-
+}): ReactElement => { 
+  
   // let buttonVariant = "outline";
-
-  // if (isButtonCallToAction) {
-  //   buttonVariant = "primary";
+  // if(isButtonCallToAction)
+  // {
+  //   buttonVariant = "solid";
   // }
-
-  return (
-    
+ 
+      
+  return ( 
     <View style={styles.container}>
       {isVisible && (
         <TouchableOpacity
@@ -65,9 +65,8 @@ export const ReportInputButton: FC<ReportInputButtonProps> = ({
       )}
     </View>
   );
-}; 
- 
-
+};
+   
 const styles = StyleSheet.create({
   container: { 
     paddingVertical: 12, // py="3" equivalent, assuming 1 unit = 4

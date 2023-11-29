@@ -1,14 +1,19 @@
 import React, { FC, ReactElement } from "react"; 
+
 import {useField } from 'formik'; 
-import { FormControl, Icon, Input, Text, WarningOutlineIcon } from 'react-native';
-   
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { FormLabel } from "./InputLabel";
+import * as theme from '../../../constants/theme'
+
+    
 export interface ReportInputEmailProps {
   name: string
   label: string
   placeholder?: string
   autoFocus?:boolean
   disabled?: boolean
-}
+  isVisible?:boolean
+} 
    
 export const ReportInputEmail: FC<ReportInputEmailProps> = ({
   name,
@@ -16,48 +21,66 @@ export const ReportInputEmail: FC<ReportInputEmailProps> = ({
   placeholder,
   autoFocus = false,
   disabled = false,
-}): ReactElement => {
-  const [field, meta, helpers] = useField(name);  
+  isVisible = true,
+}): ReactElement | null => {
+  const [field, meta, helpers] = useField(name); 
+
+  const errorDisplayControlName = name + "ErrorDisplay";
   
   const isInvalid:boolean = (meta.error && meta.touched) ? true : false;
       
-  return (
-  //   <div className="">
-  //     <Form.Group controlId={name}
-  //       data-testid={name} className="mt-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name + '-field'}
-  //           type="email"
-  //           placeholder={placeholder}
-  //           {...field} 
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           isInvalid={isInvalid}
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback  className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-    <FormControl isInvalid={meta.touched && !!meta.error}>
-      <FormControl.Label>{label}</FormControl.Label>
-      <Input 
-        placeholder={placeholder}
-        onChangeText={field.onChange(name)}
-        onBlur={field.onBlur(name)}
-        value={field.value}
-        isDisabled={disabled}
-        autoFocus={autoFocus}
-        keyboardType="email-address"
-      />
-      {meta.touched && meta.error ? (
-        <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
-          {meta.error}
-        </FormControl.ErrorMessage>
-      ) : null}
-    </FormControl>
+  if (!isVisible) return null;
+
+  return ( 
+  <View style={styles.container} testID={name + '-group'}>
+    <FormLabel name={name + '-label'} text={label}/>
+    <TextInput
+      style={[styles.input, disabled && styles.disabledInput]}
+      keyboardType="email-address"
+      placeholder={placeholder}
+      editable={!disabled}
+      id={name} 
+      testID={name}
+      onChangeText={field.onChange(name)}
+      onBlur={field.onBlur(name)}
+      value={field.value}   
+      
+    />
+    {isInvalid && (
+      <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+  </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    
+  }, 
+  input: {
+    // Styling for the TextInput
+    width: '100%',
+    fontSize: theme.fonts.mediumSize,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 6,
+    color: '#333',
+    backgroundColor: '#fff',
+    marginBottom: 15, // Space below the input for spacing in forms
+  },
+  disabledInput: {
+    // Styling for the disabled TextInput
+    // backgroundColor: '#f7f7f7',
+    // color: '#c7c7c7',
+    // borderColor: '#e7e7e7',
+    opacity: 0.5,
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 8,    
+    
+  },
+  
+});

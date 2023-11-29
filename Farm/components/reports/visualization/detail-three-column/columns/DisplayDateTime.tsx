@@ -1,33 +1,39 @@
-import React, { FC, ReactElement,} from "react"; 
- 
+import React, { FC, ReactElement,} from "react";
+
 import moment from "moment";
-import { Box, Text } from 'react-native';
-   
+import { Text, View, StyleSheet } from 'react-native';
+import { ReportColumnDisplayLabel } from "./DisplayLabel";
+import { ReportColumnDisplayValue } from "./DisplayValue";
+
 export interface ReportColumnDisplayDateTimeProps {
-  forColumn:string 
-  value: string 
+  forColumn:string
   label:string
+  rowIndex?: number
+  value: string
   isVisible?:boolean
   conditionallyVisible?:boolean
 }
-   
-export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> = ({
-  forColumn, 
-  value, 
-  label,
-  isVisible = true,
-  conditionallyVisible = true
-}): ReactElement | null => { 
 
-  const groupName = forColumn;
-  
+export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> = ({
+  forColumn,
+  label,
+  rowIndex = 0,
+  value,
+  isVisible = true,
+  conditionallyVisible = true,
+}): ReactElement | null => {
+
+  const groupName = forColumn +'-column-' + rowIndex.toString();
+  const labelName = groupName +'-label';
+  const valueName = groupName +'-value';
+
   const displayValue = (isVisible && conditionallyVisible);
-      
-  const formatDateTime = () => {  
+
+  const formatDateTime = () => {
     let result:string = "";
-    
+
     try {
-        
+
       if(value === null || !displayValue)
       {
           return result;
@@ -38,43 +44,32 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
       if(!dateTime.isValid()){
         return result;
       }
-      
+
       if(dateTime.format("MM-DD-YYYY") === "12-31-1752"){
         return result;
       }
 
       result = moment.utc(value).local().format("M/D/YYYY h:m A");
-      
+
     } catch (error) {
-      console.log('Error(' + error + ') with value(' + value + ') typeof(' + typeof value + ') in ReportColummDisplayDateTime.');
+      console.log('Error(' + error + ') with value(' + value + ') typeof(' + typeof value + ') in ReportColummDisplayDateTime');
     }
     return result;
   }
-  
+
   if (!isVisible) return null;
 
-  return ( 
-    // <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!isVisible}>
-    //     <ListGroup.Item
-    //         as="li"
-    //         className="text-start"
-    //     >
-    //         <div className="ms-2 me-auto">
-    //             <div className="fw-bold" data-testid={groupName + '-header'}>{label}</div>
-    //             {formatDateTime()} &nbsp;
-    //         </div>
-
-    //     </ListGroup.Item>
-    // </Col>
-    
-    <View testID={groupName} flex={1} /* Adjust for lg/md/xs equivalent */>
-      <Text fontWeight="bold" testID={groupName + '-header'}>
-        {label}
-      </Text>
-      <Text>
-        {formatDateTime()} 
-      </Text>
+  return (
+    <View data-testid={groupName} style={styles.container}>
+      <ReportColumnDisplayLabel name={labelName} text={label}  />
+      <ReportColumnDisplayValue name={valueName} text={formatDateTime()} />
     </View>
   );
 };
-   
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Aligns children horizontally
+
+  },
+});

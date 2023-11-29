@@ -4,7 +4,7 @@ import React, {
   useContext, 
   useState,
 } from "react";
-import { Button, Accordion, Row, Spinner, View } from 'react-native'; 
+import { Button, Accordion,  View } from 'react-native'; 
 
 import { Formik, FormikHelpers } from "formik";
 import * as ReportService from "../services/LandPlantList";

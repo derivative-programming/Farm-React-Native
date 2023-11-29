@@ -25,10 +25,10 @@ const TacRegisterScreen: React.FC<TacRegisterScreenProps> = ({ route, navigation
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <ScreenHeader />
         <FormConnectedTacRegister tacCode={tacCode} name='tac-register'/>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };

@@ -1,29 +1,29 @@
-import React, { FC, ReactElement,} from "react"; 
- 
+import React, { FC, ReactElement,} from "react";
+
 import { Pressable, Text } from 'react-native';
 import { Linking, View, StyleSheet } from "react-native";
 import { ReportColumnDisplayLabel } from "./DisplayLabel";
 import { ReportColumnDisplayValue } from "./DisplayValue";
-   
+
 export interface ReportColumnDisplayUrlProps {
   forColumn:string
   label:string
-  rowIndex: number
-  value: string 
-  linkText: string 
+  rowIndex?: number
+  value: string
+  linkText: string
   isVisible?:boolean
   conditionallyVisible?:boolean
 }
-   
+
 export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
   forColumn,
   label,
-  rowIndex,
-  value, 
-  linkText, 
+  rowIndex = 0,
+  value,
+  linkText,
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement | null => { 
+}): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const labelName = groupName +'-label';
@@ -33,16 +33,16 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
   {
     url = "https://" + url;
   }
-  
+
   const displayValue = (isVisible && conditionallyVisible);
-  
+
   if (!isVisible) return null;
-       
+
   const handlePress = () => {
     Linking.openURL(url); // Make sure the URL is valid
   };
-  
-  return ( 
+
+  return (
     <View testID={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       {displayValue && (
@@ -55,10 +55,10 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
     </View>
   );
 };
-   
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row', // Aligns children horizontally
-    
-  },  
+
+  },
 });

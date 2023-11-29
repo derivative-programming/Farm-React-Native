@@ -1,13 +1,14 @@
-import { View } from 'react-native';
 import React, { FC, ReactElement } from "react"; 
+ 
+import { View, Text, StyleSheet } from 'react-native';
    
-export interface ReportErrorDisplayProps {
+export interface ErrorDisplayProps {
   name:string
   errorCsv?: string  
   errorArray?: string [] 
 }
    
-export const ReportErrorDisplay: FC<ReportErrorDisplayProps> = ({
+export const ErrorDisplay: FC<ErrorDisplayProps> = ({
   name="",
   errorCsv = "",
   errorArray = []
@@ -17,15 +18,31 @@ export const ReportErrorDisplay: FC<ReportErrorDisplayProps> = ({
   const allErrors = errorArray.concat(errorArray2)
       
   return (
-    <View testID={name}> 
+    <View data-testid={name}> 
       {allErrors && allErrors.length > 0 ? ( 
           allErrors.map((item, index) => {
-            return (
-              <View className="error-message" key={item}>{item}</View>  
-          );
+            if (item.length > 0) {
+              return (
+                <View key={item}><Text style={styles.errorText}>{item}</Text></View>  
+              );
+            }
+            return null;
         })
       ) : null}
     </View>
   );
 };
    
+const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    
+  },  
+  errorText: {
+    color: 'red',
+    marginBottom: 8,    
+    
+  },
+  
+});
+export default ErrorDisplay;

@@ -69,27 +69,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
   }; 
   
-  return (   
-    // <View backgroundColor="primary.500"> 
-    //   <HStack bg="primary.500" px="1" py="3" alignItems="center" justifyContent="space-between">
-    //     <Menu
-    //       trigger={(triggerProps) => {
-    //         return (
-    //           <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-    //             <Icon name="menu" size={25} color="white" />
-    //           </Pressable>
-    //         );
-    //       }}>
-    //       <Menu.Item onPress={() => navigateTo()}>Login</Menu.Item>
-    //       <Menu.Item onPress={() => navigateTo()}>Register</Menu.Item>
-    //       <Menu.Item onPress={() => navigateTo()}>Logout</Menu.Item>
-    //     </Menu>
-    //     <Text color="white" fontSize="20" fontWeight="bold">
-    //       {title}
-    //     </Text>
-    //     <View style={{ width: 25 }} />  
-    //   </HStack>
-    // </View> 
+  return (    
     
     <SafeAreaView style={styles.safeArea}>
     <View style={styles.container}>

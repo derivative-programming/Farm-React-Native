@@ -7,15 +7,15 @@ import {
   act, 
 } from "@testing-library/react-native";
 import {ReportGridLandPlantList} from "./LandPlantList";
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
  
 const onSort = jest.fn(); 
 const onExport = jest.fn(); 
 const onNavigateTo = jest.fn();
 const onRefreshRequest = jest.fn();
-const onPageSelection = jest.fn();
-const onPageSizeChange = jest.fn();
+const onRefresh = jest.fn();
+const onEndReached = jest.fn();
 
 describe("LandPlantList Form Component", () => {
   // render the LandPlantList Form component
@@ -25,19 +25,19 @@ describe("LandPlantList Form Component", () => {
         <ReportGridLandPlantList 
           isSortDescending={true}
           items={[]}
-          name="testName"  
+          name="testName"
           contextCode=""
           onSort={onSort}
           onExport={onExport}
           onNavigateTo={onNavigateTo}
           onRefreshRequest={onRefreshRequest}
-          sortedColumnName="testColumnName" 
+          sortedColumnName="testColumnName"
           currentPage={1}
-          onPageSelection={onPageSelection}
-          onPageSizeChange={onPageSizeChange}
           pageSize={10}
           totalItemCount={0} 
-          />
+          onRefresh={onRefresh}
+          onEndReached={onEndReached}
+        />
     
       )
     });

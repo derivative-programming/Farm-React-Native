@@ -10,7 +10,7 @@ import ReportConnectedLandPlantList from "./LandPlantList";
 import * as ReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport"; 
 import * as flavorCodeService from "../../lookups/services/Flavor"
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
   

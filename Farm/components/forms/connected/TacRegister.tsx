@@ -17,7 +17,7 @@ import * as InputFields from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import * as AnalyticsService from "../../services/analyticsService";
-import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -174,6 +174,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
           initData={initPageResponse}
           isHeaderVisible={false}
         />
+        <ScrollView style={styles.scrollView}>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -236,6 +237,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
             </View>
           )}
         </Formik>
+        </ScrollView>
       </View>
     </View>
   );
@@ -248,20 +250,21 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
-    
+  },
+  scrollView: {
+    // flex: 1,
+    // paddingVertical: 20, // equivalent to py="5"  
   },
   titleText: {
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
     textAlign: 'center', // Center the text
-    
   },
   introText: {
     fontSize: theme.fonts.mediumSize,
     marginBottom: 8,
     color: theme.Colors.text,
-    
   },
 });
 export default FormConnectedTacRegister;

@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Row, Spinner, View } from 'react-native';
+import { ActivityIndicator,  View } from 'react-native';
 import * as ReportService from "../../services/PlantUserDetails"; 
 import * as AsyncServices from "../../../services";
 import * as ReportColumnDisplay from "./columns";
@@ -24,140 +24,130 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
     return (
         <View testID={name} > 
         { showProcessing ? 
-            <Row>
-                <View  >
-                <View className="text-center  bg-secondary bg-opacity-25">
-                      <Spinner animation="border" className="mt-2 mb-2" />
-                  </View>
-                </View>
-            </Row>
-            : 
-            <Row><Col  lg="9" md="9" xs="12"> 
-                    <Row>
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
-                            label="Flavor Name"
-                            value={item.flavorName}
-                            isVisible={true}
-                        />
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="otherFlavor"
-                            label="Other Flavor"
-                            value={item.otherFlavor}
-                            isVisible={true}
-                        />
+            
+            <ActivityIndicator />
+            : <View>
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
+                    label="Flavor Name"
+                    value={item.flavorName}
+                    isVisible={true}
+                />
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="otherFlavor"
+                    label="Other Flavor"
+                    value={item.otherFlavor}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isDeleteAllowed"
-                            label="Is Delete Allowed"
-                            isChecked={item.isDeleteAllowed}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isDeleteAllowed"
+                    label="Is Delete Allowed"
+                    isChecked={item.isDeleteAllowed}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isEditAllowed"
-                            label="Is Edit Allowed"
-                            isChecked={item.isEditAllowed}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isEditAllowed"
+                    label="Is Edit Allowed"
+                    isChecked={item.isEditAllowed}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someBigIntVal"
-                            label="Some Big Int Val"
-                            value={item.someBigIntVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someBigIntVal"
+                    label="Some Big Int Val"
+                    value={item.someBigIntVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="someBitVal"
-                            label="Some Bit Val"
-                            isChecked={item.someBitVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="someBitVal"
+                    label="Some Bit Val"
+                    isChecked={item.someBitVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayDate forColumn="someDateVal"
-                            label="Some Date Val"
-                            value={item.someDateVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayDate forColumn="someDateVal"
+                    label="Some Date Val"
+                    value={item.someDateVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayDateTime forColumn="someUTCDateTimeVal"
-                            label="Some UTC Date Time Val"
-                            value={item.someUTCDateTimeVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayDateTime forColumn="someUTCDateTimeVal"
+                    label="Some UTC Date Time Val"
+                    value={item.someUTCDateTimeVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someDecimalVal"
-                            label="Some Decimal Val"
-                            value={item.someDecimalVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someDecimalVal"
+                    label="Some Decimal Val"
+                    value={item.someDecimalVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayEmail forColumn="someEmailAddress"
-                            label="Some Email Address"
-                            value={item.someEmailAddress}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayEmail forColumn="someEmailAddress"
+                    label="Some Email Address"
+                    value={item.someEmailAddress}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="somePhoneNumber"
-                            label="Some Phone Number"
-                            value={item.somePhoneNumber}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="somePhoneNumber"
+                    label="Some Phone Number"
+                    value={item.somePhoneNumber}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someFloatVal"
-                            label="Some Float Val"
-                            value={item.someFloatVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someFloatVal"
+                    label="Some Float Val"
+                    value={item.someFloatVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someIntVal"
-                            label="Some Int Val"
-                            value={item.someIntVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someIntVal"
+                    label="Some Int Val"
+                    value={item.someIntVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayMoney forColumn="someMoneyVal"
-                            label="Some Money Val"
-                            value={item.someMoneyVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayMoney forColumn="someMoneyVal"
+                    label="Some Money Val"
+                    value={item.someMoneyVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="someTextVal"
-                            label="Some Text Val"
-                            value={item.someTextVal}
-                            isVisible={true}
-                        />
- 
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="someVarCharVal"
-                            label="Some Var Char Val"
-                            value={item.someVarCharVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="someTextVal"
+                    label="Some Text Val"
+                    value={item.someTextVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="someNVarCharVal"
-                            label="Some N Var Char Val"
-                            value={item.someNVarCharVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="someVarCharVal"
+                    label="Some Var Char Val"
+                    value={item.someVarCharVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayText forColumn="someUniqueidentifierVal"
-                            label="Some Uniqueidentifier Val"
-                            value={item.someUniqueidentifierVal}
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="someNVarCharVal"
+                    label="Some N Var Char Val"
+                    value={item.someNVarCharVal}
+                    isVisible={true}
+                />
 
-                        <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="phoneNumConditionalOnIsEditable"
-                            label="Conditional Column"
-                            value={item.phoneNumConditionalOnIsEditable}
-                            conditionallyVisible={item.isEditAllowed}
-                            isVisible={true}
-                        />
-                        
-                        <ReportColumnDisplay.ReportColumnDisplayUrl forColumn="nVarCharAsUrl"
-                            label="N Var Char As Url"
-                            value={item.nVarCharAsUrl}
-                            linkText="Click Here"
-                            isVisible={true}
-                        />
+                <ReportColumnDisplay.ReportColumnDisplayText forColumn="someUniqueidentifierVal"
+                    label="Some Uniqueidentifier Val"
+                    value={item.someUniqueidentifierVal}
+                    isVisible={true}
+                />
 
-                    </Row> 
-            </Col>
-            <Col> 
+                <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="phoneNumConditionalOnIsEditable"
+                    label="Conditional Column"
+                    value={item.phoneNumConditionalOnIsEditable}
+                    conditionallyVisible={item.isEditAllowed}
+                    isVisible={true}
+                />
+                
+                <ReportColumnDisplay.ReportColumnDisplayUrl forColumn="nVarCharAsUrl"
+                    label="N Var Char As Url"
+                    value={item.nVarCharAsUrl}
+                    linkText="Click Here"
+                    isVisible={true}
+                />
+
 
                 <ReportColumnDisplay.ReportColumnDisplayButton forColumn="updateButtonTextLinkPlantCode"
                     buttonText="Update Button Text"
@@ -194,9 +184,8 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                         AsyncServices.PlantUserPropertyRandomUpdateSubmitRequest(data, item.randomPropertyUpdatesLinkPlantCode)
                             .then((response) => onRefreshRequest())
                     } }
-                />
-            </Col>
-            </Row>
+                /> 
+            </View>
         }
         </View>
     );

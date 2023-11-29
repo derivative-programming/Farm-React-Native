@@ -10,7 +10,7 @@ import {
 } from "@testing-library/react-native";
 import {ReportDetailTwoColTacFarmDashboard} from "./TacFarmDashboard";
 import * as ReportService from "../../services/TacFarmDashboard";
-import "fake-indexeddb/auto";
+
 import '@testing-library/jest-dom';
 
 const onRowSelect = jest.fn();

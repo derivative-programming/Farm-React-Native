@@ -1,68 +1,62 @@
 import React, { FC, ReactElement,} from "react";
-import { Box, Text, VStack } from 'react-native';
- 
-   
+
+import { Text, View, StyleSheet } from 'react-native';
+import { ReportColumnDisplayLabel } from "./DisplayLabel";
+import { ReportColumnDisplayValue } from "./DisplayValue";
+
 export interface ReportColumnDisplayTextProps {
-  forColumn:string 
-  value: string 
+  forColumn:string
   label:string
+  rowIndex?: number
+  value: string
   isVisible?:boolean
   conditionallyVisible?:boolean
 }
-   
+
 export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
-  forColumn, 
-  value,
+  forColumn,
   label,
+  rowIndex = 0,
+  value,
   isVisible = true,
   conditionallyVisible = true,
-}): ReactElement | null => { 
+}): ReactElement | null => {
 
-  const groupName = forColumn +'-column';
-  
+  const groupName = forColumn +'-column-' + rowIndex.toString();
+  const labelName = groupName +'-label';
+  const valueName = groupName +'-value';
+
   const displayValue = (isVisible && conditionallyVisible);
-      
-  const formatText = () => {  
+
+  const formatText = () => {
     let result:string = "";
-    
+
     try {
-      
-      if(value === null || value === "" || !isVisible)
+
+      if(value === null || value === "" || !displayValue)
       {
           return result;
       }
     } catch (error) {
       console.log('Error(' + error + ') with value(' + value + ') typeof(' + typeof value + ') in ReportColummDisplayText');
     }
-    
+
     return value;
   }
 
-  if (!displayValue) return null;
+  if (!isVisible) return null;
 
-  return ( 
-    // <Col data-testid={groupName} lg="6" md="6" xs="12" hidden={!displayValue}>
-    //     <ListGroup.Item
-    //         as="li"
-    //         className="text-start"
-    //     >
-    //         <div className="ms-2 me-auto">
-    //             <div className="fw-bold">{label}</div>
-    //             {formatText()}&nbsp;
-    //         </div>
-
-    //     </ListGroup.Item>
-    // </Col>
-    <View testID={groupName} flex={1} /* Adjust based on lg/md/xs equivalent */>
-      <VStack space={2} /* Adjust styling as needed */>
-        <Text fontWeight="bold">
-          {label}
-        </Text>
-        <Text>
-          {formatText()} {/* Ensure the function works correctly in React Native */}
-        </Text>
-      </VStack>
+  return (
+    <View data-testid={groupName} style={styles.container}>
+      <ReportColumnDisplayLabel name={labelName} text={label}  />
+      <ReportColumnDisplayValue name={valueName} text={formatText()} />
     </View>
   );
 };
-   
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row', // Aligns children horizontally
+
+  },
+});

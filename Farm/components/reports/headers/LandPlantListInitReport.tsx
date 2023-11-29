@@ -29,8 +29,8 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
         <View style={styles.horizontalStack}>
           <Text>Land Name:</Text>
           <Text style={{ marginLeft: 10 }}>{initData.landName}</Text> 
-        </View>
-      )}
+        </View>)
+      }
     </View>
   );
 };

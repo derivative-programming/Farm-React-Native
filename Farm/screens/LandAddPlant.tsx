@@ -26,10 +26,10 @@ const LandAddPlantScreen: React.FC<LandAddPlantScreenProps> = ({ route, navigati
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <ScrollView style={styles.container}> 
+      <View style={styles.container}> 
         <ScreenHeader />
         <FormConnectedLandAddPlant landCode={landCode} name='land-add-plant'/> 
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView> 
   );
 };

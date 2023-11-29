@@ -25,10 +25,10 @@ const TacLoginScreen: React.FC<TacLoginScreenProps> = ({ route, navigation }) =>
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <ScreenHeader />
         <FormConnectedTacLogin tacCode={tacCode} name='tac-login'/>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 };

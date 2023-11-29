@@ -15,8 +15,8 @@ import '@testing-library/jest-dom';
 
 const initialValues = { testName:"" } 
  
-describe("ReportInputCheckbox Component", () => {
-  // render the ReportInputCheckbox component
+describe("InputCheckbox Component", () => {
+  // render the InputCheckbox component
   beforeEach(() => {
     render(
       <Formik
@@ -36,45 +36,44 @@ describe("ReportInputCheckbox Component", () => {
 
   it("renders correctly", async () => {
     expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName-field")).toBeInTheDocument();
-    expect(screen.getByTestId("testName-field")).not.toHaveFocus();
-    expect(screen.getByTestId("testName-field")).toBeEnabled();
+    expect(screen.getByTestId("testName")).not.toHaveFocus();
+    expect(screen.getByTestId("testName")).toBeEnabled();
     expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
   });
 
   it("when user checks, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName-field"); 
-    fireEvent.click(screen.getByTestId("testName-field"));
-    expect(screen.getByTestId("testName-field")).toBeChecked();
+    const input = screen.getByTestId("testName");
+    fireEvent.click(input); 
+    expect(input).toBeChecked();
   }); 
 
   it("when user unchecks, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
     await act(async () => {
         await fireEvent.change(input, { target: { checked: false } });
     });
 
-    expect(screen.getByTestId("testName-field")).not.toBeChecked();
+    expect(screen.getByTestId("testName")).not.toBeChecked();
   }); 
   
   it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
 
     await act(async () => {
       await fireEvent.change(input, { target: { disabled: true } });
     });
 
-    expect(screen.getByTestId("testName-field")).toBeDisabled();
+    expect(screen.getByTestId("testName")).toBeDisabled();
   }); 
 
   it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName-field");
+    const input = screen.getByTestId("testName");
 
     await act(async () => {
       await fireEvent.change(input, { target: { disabled: false } });
     });
 
-    expect(screen.getByTestId("testName-field")).not.toBeDisabled();
+    expect(screen.getByTestId("testName")).not.toBeDisabled();
   }); 
   
   it("when user sets prop autoFocus to true, control is autoFocused", async () => {
@@ -90,12 +89,13 @@ describe("ReportInputCheckbox Component", () => {
       </Formik>
     );
 
-    const input = screen.getByTestId("testName2-field");
+    const input = screen.getByTestId("testName2");
 
     await act(async () => {
       await fireEvent.change(input, { target: { autoFocus: true } });
     });
 
-    expect(screen.getByTestId("testName2-field")).toHaveFocus();
+    expect(screen.getByTestId("testName2")).toHaveFocus();
   }); 
+   
 });
