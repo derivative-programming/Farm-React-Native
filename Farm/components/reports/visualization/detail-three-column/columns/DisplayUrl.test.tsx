@@ -29,7 +29,7 @@ describe("ReportColumnDisplayUrl Component", () => {
        <table><tbody><tr><ReportColumnDisplayUrl forColumn="testColumn" label="test label" rowIndex={1} value="" linkText="Test Text" /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -41,7 +41,7 @@ describe("ReportColumnDisplayUrl Component", () => {
        <table><tbody><tr><ReportColumnDisplayUrl forColumn="testColumn" label="test label" rowIndex={1} value={noVal} linkText="Test Text" /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -52,7 +52,7 @@ describe("ReportColumnDisplayUrl Component", () => {
        <table><tbody><tr><ReportColumnDisplayUrl forColumn="testColumn" label="test label" rowIndex={1} value="test Value" isVisible={false} linkText="test text" /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

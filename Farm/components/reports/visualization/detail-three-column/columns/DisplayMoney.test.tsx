@@ -29,7 +29,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={123} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("$123.00")).toBeInTheDocument();
+    expect(screen.getByText("$123.00")).toBeTruthy();
 
   });
 
@@ -38,7 +38,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={1234} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("$1,234.00")).toBeInTheDocument();
+    expect(screen.getByText("$1,234.00")).toBeTruthy();
   });
 
   it("renders 1234.5 correctly", async () => {
@@ -46,7 +46,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={1234.5} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("$1,234.50")).toBeInTheDocument();
+    expect(screen.getByText("$1,234.50")).toBeTruthy();
 
   });
 
@@ -55,7 +55,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={1234.56} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("$1,234.56")).toBeInTheDocument();
+    expect(screen.getByText("$1,234.56")).toBeTruthy();
 
   });
 
@@ -66,7 +66,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={noVal} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -77,7 +77,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayMoney forColumn="testColumn" label="test label" rowIndex={1} value={123} isVisible={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

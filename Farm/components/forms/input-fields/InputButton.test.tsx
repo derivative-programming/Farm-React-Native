@@ -1,87 +1,66 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputButton} from "./InputButton";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { FormInputButton } from './InputButton'; // Adjust the import path
+import { ActivityIndicator } from 'react-native';
 
-import '@testing-library/jest-dom';
+describe('FormInputButton', () => {
 
-const initialValues = { testName:"" } 
-
-const mockedonPress = jest.fn();
- 
-describe("InputButton Component", () => {
-  // render the InputButton component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-                <FormInputButton buttonText="Test Label" name="testName" onPress={mockedonPress}/> 
-                
-          )}
-      </Formik>
+  it('renders correctly', () => {
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={() => {}} />
     );
+    expect(getByTestId('testButton')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled(); 
-  }); 
-  
-  // it("when user sets prop disable to true, control is disabled", async () => {
-  //   const input = screen.getByTestId("testName");
-
-  //   await act(async () => {
-  //     await fireEvent.change(input, { target: { isEnabled: false } });
-  //   });
-
-  //   expect(screen.getByTestId("testName")).toBeDisabled();
-  // }); 
-
-  // it("when user sets prop disable to false, control is not disabled", async () => {
-  //   const input = screen.getByTestId("testName");
-
-  //   await act(async () => {
-  //     await fireEvent.change(input, { target: { isEnabled: true } });
-  //   });
-
-  //   expect(screen.getByTestId("testName")).not.toBeDisabled();
-  // }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-                <FormInputButton buttonText="Test Label" name="testName2" autoFocus={true}  onPress={mockedonPress}/> 
-                
-          )}
-      </Formik>
+  it('is visible when isVisible is true', () => {
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={() => {}} isVisible={true} />
     );
+    expect(getByTestId('testButton')).toBeTruthy();
+  });
 
-    const input = screen.getByTestId("testName2");
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={() => {}} isVisible={false} />
+    );
+    expect(queryByTestId('testButton')).toBeNull();
+  });
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
+  it('is disabled when isEnabled is false', () => {
+    const onPressMock = jest.fn();
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={onPressMock} isEnabled={false} />
+    );
+    fireEvent.press(getByTestId('testButton'));
+    expect(onPressMock).not.toHaveBeenCalled();
+  });
 
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
-   
+
+  it('is enabled when isEnabled is true', () => {
+    const onPressMock = jest.fn();
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={onPressMock} isEnabled={true} />
+    );
+    fireEvent.press(getByTestId('testButton'));
+    expect(onPressMock).toHaveBeenCalled();
+  });
+
+  it('calls onPress when pressed', () => {
+    const onPressMock = jest.fn();
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={onPressMock} />
+    );
+    fireEvent.press(getByTestId('testButton'));
+    expect(onPressMock).toHaveBeenCalled();
+  });
+
+  it('shows ActivityIndicator when isProcessing is true', () => {
+    const { getByTestId } = render(
+      <FormInputButton name="testButton" buttonText="Click Me" onPress={() => {}} isProcessing={true} />
+    );
+    const indicator = getByTestId('testButton').findByType(ActivityIndicator);
+    expect(indicator).toBeTruthy();
+  });
+
+  // Add more tests as needed, for example, to test different styles based on props
 });

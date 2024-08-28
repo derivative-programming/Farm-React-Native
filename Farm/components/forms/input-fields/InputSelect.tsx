@@ -48,7 +48,7 @@ export const FormInputSelect: FC<FormInputSelectProps> = ({
         enabled={!disabled}
         testID={name}
         accessibilityLabel={name}
-        style={styles.picker} 
+        style={styles.picker}  
       >
         <Picker.Item label="Please Select One" value="" />
         {options.map((item, index) => (

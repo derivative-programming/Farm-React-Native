@@ -1,52 +1,55 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputText} from "./InputText";   
-import {FormInputErrorDisplay} from "./InputErrorDisplay";   
-import { Formik } from "formik";
+import React from 'react';
+import { render } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputErrorDisplay } from './InputErrorDisplay'; // Adjust the import path
 
-import { FormInputDate } from "./InputDate";
-import '@testing-library/jest-dom';
+describe('FormInputErrorDisplay', () => {
 
-const initialValues = { testName:"" } 
- 
-describe("InputErrorDisplay Component", () => {
-  // render the InputErrorDisplay component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-              <FormInputDate label="Test Label" name="testInputName"/> 
-                
-          )}
+  it('renders correctly', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testField: '' }} onSubmit={() => {}}>
+        <FormInputErrorDisplay name="testErrorDisplay" forInputName="testField" />
       </Formik>
-      
     );
+    expect(getByTestId('testErrorDisplay')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testInputNameErrorDisplay")).toBeInTheDocument(); 
+  it('displays error message when field has error and is touched', () => {
+    const { getByText, getByTestId } = render(
+      <Formik 
+        initialValues={{ testField: '' }}
+        initialErrors={{ testField: 'Error message' }}
+        initialTouched={{ testField: true }}
+        onSubmit={() => {}}
+      >
+        <FormInputErrorDisplay name="testErrorDisplay" forInputName="testField" />
+      </Formik>
+    );
+    expect(getByText('Error message')).toBeTruthy();
+    expect(getByTestId('testErrorDisplay')).toBeTruthy();
   });
 
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testInputNameErrorDisplay");
-    // await act(async () => {
-    //   await fireEvent.change(input, { target: { value: "test@gmail.com" } });
-    // });
+  it('does not display error message when field has no error', () => {
+    const { queryByText } = render(
+      <Formik initialValues={{ testField: '' }} onSubmit={() => {}}>
+        <FormInputErrorDisplay name="testErrorDisplay" forInputName="testField" />
+      </Formik>
+    );
+    expect(queryByText('Error message')).toBeNull();
+  });
 
-    // expect(screen.getByTestId("testName")).toHaveValue("test@gmail.com");
-  }); 
+  it('does not display error message when field is not touched', () => {
+    const { queryByText } = render(
+      <Formik 
+        initialValues={{ testField: '' }}
+        initialErrors={{ testField: 'Error message' }}
+        onSubmit={() => {}}
+      >
+        <FormInputErrorDisplay name="testErrorDisplay" forInputName="testField" />
+      </Formik>
+    );
+    expect(queryByText('Error message')).toBeNull();
+  });
+
+  // Additional tests as needed...
 });

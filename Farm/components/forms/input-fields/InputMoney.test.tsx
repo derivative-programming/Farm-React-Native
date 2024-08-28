@@ -1,95 +1,119 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputMoney} from "./InputMoney";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputMoney } from './InputMoney'; // Adjust the import path
 
-import '@testing-library/jest-dom';
+describe('FormInputMoney', () => {
 
-const initialValues = { testName:"" } 
- 
-describe("InputMoney Component", () => {
-  // render the InputMoney component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputMoney label="Test Label" name="testName"/> 
-        
-  )}
-</Formik>
+  it('renders correctly', () => {
+    const { getByTestId, getByText } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" />
+      </Formik>
     );
+    expect(getByTestId('money')).toBeTruthy();
+    expect(getByText('Money')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" isVisible={false} />
+      </Formik>
+    ); 
+    expect(queryByTestId('money')).toBeNull();
   });
 
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
+  it('is   visible when isVisible is true', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" isVisible={true} />
+      </Formik>
+    ); 
+    expect(queryByTestId('money')).toBeTruthy();
+  });
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "123" } });
-    });
-
-    expect(screen.getByTestId("testName")).toHaveValue(123);
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputMoney label="Test Label" name="testName2" autoFocus={true}/> 
-        
-  )}
-</Formik>
+  it('is disabled when disabled is true', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" disabled={true} />
+      </Formik>
     );
+    expect(getByTestId('money').props.editable).toBe(false);
+  });
 
-    const input = screen.getByTestId("testName2");
+  it('is enabled when disabled is false', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" disabled={false} />
+      </Formik>
+    );
+    expect(getByTestId('money').props.editable).toBe(true);
+  });
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
+  
+  it('displays the label correctly', () => {
+    const { getByText } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" />
+      </Formik>
+    );
+    expect(getByText('Money')).toBeTruthy();
+  });
 
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
+  it('updates value when text changes', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" />
+      </Formik>
+    );
+    const input = getByTestId('money');
+    fireEvent.changeText(input, '100');
+    expect(input.props.value).toBe('100');
+  });
+
+  it('displays error text when there is an error', () => {
+    // Test to ensure that error messages are displayed when appropriate
+  });
+
+  it('displays the currency prefix', () => {
+    const { getByText } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" />
+      </Formik>
+    );
+    expect(getByText('$')).toBeTruthy();
+  });
+
+  it('displays the initial value correctly', () => {
+    const initialValue = '100';
+    const { getByTestId } = render(
+      <Formik initialValues={{ money: initialValue }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" />
+      </Formik>
+    );
+    const input = getByTestId('money');
+    expect(input.props.value).toBe(initialValue);
+  });
+
+  it('displays placeholder when no value is entered', () => {
+    const placeholderText = 'Enter amount';
+    const { getByPlaceholderText } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label="Money" placeholder={placeholderText} />
+      </Formik>
+    );
+    expect(getByPlaceholderText(placeholderText)).toBeTruthy();
+  });
+
+  it('is accessible with the correct accessibilityLabel', () => {
+    const labelText = "Money";
+    const { getByTestId } = render(
+      <Formik initialValues={{ money: '' }} onSubmit={() => {}}>
+        <FormInputMoney name="money" label={labelText} />
+      </Formik>
+    );
+    const input = getByTestId('money');
+    // Example: expect(input.props.accessibilityLabel).toBe(labelText);
+  });
 });

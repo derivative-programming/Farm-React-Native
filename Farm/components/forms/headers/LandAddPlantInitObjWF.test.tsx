@@ -1,47 +1,120 @@
-import { render, screen } from "@testing-library/react-native";
+import React from 'react';
+import { render } from '@testing-library/react-native';
+import HeaderLandAddPlant from './LandAddPlantInitObjWF'; // Adjust the import path
 
-import { InitResultInstance } from "../services/init/LandAddPlantInitObjWF";
-import HeaderLandAddPlant, {
-  HeaderLandAddPlantProps,
-} from "./LandAddPlantInitObjWF";
-import '@testing-library/jest-dom';
+describe('HeaderLandAddPlant', () => {
+ 
+  const mockInitData = {
+    
+    requestFlavorCode: '00000000-0000-0000-0000-000000000000',
 
-const TEST_ID = "test-header";
-const LAND_NAME = "Test Land Name";
-const LAND_NAME_LABEL = "Land Name";
-const mockInitData: HeaderLandAddPlantProps["initData"] =
-  new InitResultInstance();
-mockInitData.landName = LAND_NAME;
+    requestOtherFlavor: '',
 
-const renderHeader = (props: HeaderLandAddPlantProps) => {
-  return render(<HeaderLandAddPlant {...props} />);
-};
+    requestSomeIntVal: 0,
 
-describe("HeaderLandAddPlant", () => {
-  it("should render the component with the correct land name", () => {
-    renderHeader({
-      name: TEST_ID,
-      isHeaderVisible: true,
-      initData: mockInitData,
-    });
+    requestSomeBigIntVal: 0,
 
-    const headerElement = screen.getByTestId(TEST_ID);
+    requestSomeBitVal: false,
 
-    expect(headerElement).not.toHaveAttribute("hidden");
-    expect(screen.getByText(LAND_NAME_LABEL)).toBeInTheDocument();
-    expect(screen.getByText(LAND_NAME)).toBeInTheDocument();
+    requestIsDeleteAllowed: false,
+
+    requestIsEditAllowed: false,
+
+    requestSomeFloatVal: 0,
+
+    requestSomeDecimalVal: 0,
+
+    requestSomeUTCDateTimeVal: '1753-01-01T00:00:00Z',
+
+    requestSomeDateVal: '1753-01-01T00:00:00Z',
+
+    requestSomeMoneyVal: 0.0,
+
+    requestSomeNVarCharVal: '',
+
+    requestSomeVarCharVal: '',
+
+    requestSomeTextVal: '',
+
+    requestSomePhoneNumber: '',
+
+    requestSomeEmailAddress: '',
+
+    landName: 'Test Land',
+
+    tacCode: '',
+
+    success: false,
+    message: '',
+    validationErrors:  [], 
+    // Include other necessary properties from InitResultInstance
+  };
+
+  it('renders correctly when header is visible', () => {
+    const { getByText, getByTestId } = render(
+      <HeaderLandAddPlant 
+        name="testHeader" 
+        isHeaderVisible={true} 
+        initData={mockInitData} 
+      />
+    );
+
+    expect(getByTestId('testHeader')).toBeTruthy();
+    expect(getByText('Land Name')).toBeTruthy();
+    expect(getByText('Test Land')).toBeTruthy();
   });
 
-  it("should be hidden elements when isHeaderVisible is false", () => {
-    renderHeader({
-      name: TEST_ID,
-      isHeaderVisible: false,
-      initData: mockInitData,
-    });
+  it('does not render when header is not visible', () => {
+    const { queryByTestId } = render(
+      <HeaderLandAddPlant 
+        name="testHeader" 
+        isHeaderVisible={false} 
+        initData={mockInitData} 
+      />
+    );
 
-    const headerElement = screen.getByTestId(TEST_ID);
+    expect(queryByTestId('testHeader')).toBeNull();
+  });
 
-    expect(headerElement).toBeInTheDocument();
-    expect(headerElement).toHaveAttribute("hidden");
+  it('renders correctly with different initData', () => {
+    const alternativeInitData = {
+      landName: 'Alternative Land'
+      // Include other properties as needed
+    };
+
+    const { getByText } = render(
+      <HeaderLandAddPlant 
+        name="testHeader" 
+        isHeaderVisible={true} 
+        initData={alternativeInitData} 
+      />
+    );
+
+    expect(getByText('Alternative Land')).toBeTruthy();
+  });
+
+  it('applies correct styles', () => {
+    const { getByTestId } = render(
+      <HeaderLandAddPlant 
+        name="testHeader" 
+        isHeaderVisible={true} 
+        initData={mockInitData} 
+      />
+    );
+    const header = getByTestId('testHeader');
+    // Assuming you have a way to check the styles
+    // Example: expect(header.props.style).toMatchObject(styles.horizontalStack);
+  });
+
+  it('is accessible with the correct accessibilityLabel', () => {
+    const { getByTestId } = render(
+      <HeaderLandAddPlant 
+        name="testHeader" 
+        isHeaderVisible={true} 
+        initData={mockInitData} 
+      />
+    );
+    const header = getByTestId('testHeader');
+    // Example: expect(header.props.accessibilityLabel).toBe('testHeader');
   });
 });

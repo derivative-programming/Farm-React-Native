@@ -73,6 +73,7 @@ export const FormInputDate: FC<FormInputDateProps> = ({
         display="default"
         onChange={onChange}
         disabled={disabled}
+        testID={name + '-dateTimePicker'}
       />
     )}
 

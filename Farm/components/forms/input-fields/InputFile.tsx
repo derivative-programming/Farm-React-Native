@@ -105,7 +105,7 @@ export const FormInputFile: FC<FormInputFileProps> = ({
     //     )}
     //   </FormControl>
     // </VStack>
-    <View style={styles.container}>
+    <View style={styles.container} testID={name}>
       <FormLabel text={label} name={name + '-label'}/>
       <TouchableOpacity 
         onPress={handleFileSelection} 

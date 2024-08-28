@@ -28,8 +28,8 @@ describe("HeaderLandAddPlant", () => {
     const headerElement = screen.getByTestId(TEST_ID);
 
     expect(headerElement).not.toHaveAttribute("hidden");
-    expect(screen.getByText(LAND_NAME_LABEL)).toBeInTheDocument();
-    expect(screen.getByText(LAND_NAME)).toBeInTheDocument();
+    expect(screen.getByText(LAND_NAME_LABEL)).toBeTruthy();
+    expect(screen.getByText(LAND_NAME)).toBeTruthy();
   });
 
   it("should be hidden elements when isHeaderVisible is false", () => {
@@ -41,7 +41,7 @@ describe("HeaderLandAddPlant", () => {
 
     const headerElement = screen.getByTestId(TEST_ID);
 
-    expect(headerElement).toBeInTheDocument();
+    expect(headerElement).toBeTruthy();
     expect(headerElement).toHaveAttribute("hidden");
   });
 });

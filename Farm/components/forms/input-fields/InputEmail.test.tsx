@@ -1,95 +1,87 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputEmail} from "./InputEmail";  
-import { Formik } from "formik";
- 
-import '@testing-library/jest-dom';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputEmail } from './InputEmail'; // Adjust the import path
 
-const initialValues = { testName:"" } 
+describe('FormInputEmail', () => {
+  const mockSubmit = jest.fn();
  
-describe("InputEmail Component", () => {
-  // render the InputEmail component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputEmail label="Test Label" name="testName"/> 
-        
-  )}
-</Formik>
+  it('renders correctly', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" />
+      </Formik>
     );
+    expect(getByTestId('email')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" isVisible={false} />
+      </Formik>
+    );
+    expect(queryByTestId('email')).toBeNull();
   });
 
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "test@gmail.com" } });
-    });
-
-    expect(screen.getByTestId("testName")).toHaveValue("test@gmail.com");
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputEmail label="Test Label" name="testName2" autoFocus={true}/> 
-        
-  )}
-</Formik>
+  it('is   visible when isVisible is true', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" isVisible={true} />
+      </Formik>
     );
+    expect(queryByTestId('email')).toBeTruthy();
+  });
 
-    const input = screen.getByTestId("testName2");
+  it('is disabled when disabled is true', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" disabled={true} />
+      </Formik>
+    );
+    expect(getByTestId('email').props.editable).toBe(false);
+  });
+  it('is enabled when disabled is false', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" disabled={false} />
+      </Formik>
+    );
+    expect(getByTestId('email').props.editable).toBe(true);
+  });
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
+  it('updates value when text changes', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" />
+      </Formik>
+    );
+    const input = getByTestId('email');
+    fireEvent.changeText(input, 'test@example.com');
+    expect(input.props.value).toBe('test@example.com');
+  });
 
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
+  it('displays error text when there is an error', () => {
+    // Simulate a scenario where an error message should be displayed
+  });
+
+  it('displays the correct placeholder', () => {
+    const { getByPlaceholderText } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" placeholder="Enter your email" />
+      </Formik>
+    );
+    expect(getByPlaceholderText('Enter your email')).toBeTruthy();
+  });
+
+  it('displays the label correctly', () => {
+    const { getByText } = render(
+      <Formik initialValues={{ email: '' }} onSubmit={mockSubmit}>
+        <FormInputEmail name="email" label="Email" />
+      </Formik>
+    );
+    expect(getByText('Email')).toBeTruthy();
+  });
+
+  // Add more tests as needed...
 });

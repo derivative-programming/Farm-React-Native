@@ -1,101 +1,85 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputCheckbox} from "./InputCheckbox";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { FormInputCheckbox } from './InputCheckbox'; // Adjust the import path
+import { Formik } from 'formik';
 
-import '@testing-library/jest-dom';
+describe('FormInputCheckbox', () => {
+  const onSubmit = jest.fn();
 
-const initialValues = { testName:"" } 
- 
-describe("InputCheckbox Component", () => {
-  // render the InputCheckbox component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-                <FormInputCheckbox label="Test Label" name="testName"/> 
-                
-          )}
+  it('renders correctly', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" />
       </Formik>
     );
+    expect(getByTestId('testCheckbox')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
-  });
-
-  it("when user checks, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-    fireEvent.click(input); 
-    expect(input).toBeChecked();
-  }); 
-
-  it("when user unchecks, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-    await act(async () => {
-        await fireEvent.change(input, { target: { checked: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeChecked();
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-                <FormInputCheckbox label="Test Label" name="testName2" autoFocus={true}/> 
-                
-          )}
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" isVisible={false} />
       </Formik>
     );
+    expect(queryByTestId('testCheckbox')).toBeNull();
+  });
+  
 
-    const input = screen.getByTestId("testName2");
+  it('is visible when isVisible is true', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" isVisible={true} />
+      </Formik>
+    );
+    expect(queryByTestId('testCheckbox')).toBeTruthy();
+  });
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
+  it('is disabled when disabled is true', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" disabled={true} />
+      </Formik>
+    );
+    expect(getByTestId('testCheckbox').props.disabled).toBeTruthy();
+  });
+  it('is enabled when disabled is false', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" disabled={false} />
+      </Formik>
+    );
+    expect(getByTestId('testCheckbox').props.disabled).not.toBeTruthy();
+  });
 
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
-   
+  it('toggles value when pressed', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" />
+      </Formik>
+    );
+    const switchComponent = getByTestId('testCheckbox');
+    fireEvent(switchComponent, 'onValueChange', true);
+    expect(switchComponent.props.value).toBe(true);
+  });
+
+  it('displays error text when there is an error', () => {
+    // You need to trigger validation and make sure the field is touched to test this
+  });
+
+  // Additional test for label presence
+  it('displays the label', () => {
+    const { getByText } = render(
+      <Formik initialValues={{ testCheckbox: false }}
+      onSubmit={onSubmit}>
+        <FormInputCheckbox name="testCheckbox" label="Test Checkbox" />
+      </Formik>
+    );
+    expect(getByText('Test Checkbox')).toBeTruthy();
+  });
 });

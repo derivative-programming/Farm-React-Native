@@ -1,6 +1,6 @@
 import axios from "axios";  
  
-console.log('build apiInstance')
+// console.log('build apiInstance')
 export const apiInstance = axios.create({
   baseURL:
   "https://dp-farm-pageapi.azurewebsites.net/api/v1_0",

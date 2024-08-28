@@ -50,57 +50,57 @@ describe("LandPlantList Component", () => {
   }
 
   it("renders correctly", async () => { 
-    expect(screen.getByTestId("testForm")).toBeInTheDocument();
-    expect(screen.getByTestId("flavorCode")).toBeInTheDocument();
-    expect(screen.getByTestId("someIntVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someBigIntVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someBitVal")).toBeInTheDocument();
-    expect(screen.getByTestId("isEditAllowed")).toBeInTheDocument();
-    expect(screen.getByTestId("isDeleteAllowed")).toBeInTheDocument();
-    expect(screen.getByTestId("someFloatVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someDecimalVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinUTCDateTimeVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinDateVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someMoneyVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someNVarCharVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someVarCharVal")).toBeInTheDocument();
-    expect(screen.getByTestId("someTextVal")).toBeInTheDocument();
-    expect(screen.getByTestId("somePhoneNumber")).toBeInTheDocument();
-    expect(screen.getByTestId("someEmailAddress")).toBeInTheDocument(); 
+    expect(screen.getByTestId("testForm")).toBeTruthy();
+    expect(screen.getByTestId("flavorCode")).toBeTruthy();
+    expect(screen.getByTestId("someIntVal")).toBeTruthy();
+    expect(screen.getByTestId("someBigIntVal")).toBeTruthy();
+    expect(screen.getByTestId("someBitVal")).toBeTruthy();
+    expect(screen.getByTestId("isEditAllowed")).toBeTruthy();
+    expect(screen.getByTestId("isDeleteAllowed")).toBeTruthy();
+    expect(screen.getByTestId("someFloatVal")).toBeTruthy();
+    expect(screen.getByTestId("someDecimalVal")).toBeTruthy();
+    expect(screen.getByTestId("someMinUTCDateTimeVal")).toBeTruthy();
+    expect(screen.getByTestId("someMinDateVal")).toBeTruthy();
+    expect(screen.getByTestId("someMoneyVal")).toBeTruthy();
+    expect(screen.getByTestId("someNVarCharVal")).toBeTruthy();
+    expect(screen.getByTestId("someVarCharVal")).toBeTruthy();
+    expect(screen.getByTestId("someTextVal")).toBeTruthy();
+    expect(screen.getByTestId("somePhoneNumber")).toBeTruthy();
+    expect(screen.getByTestId("someEmailAddress")).toBeTruthy(); 
     
-    expect(screen.getByTestId("flavorCode-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someIntVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someBigIntVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someBitVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("isEditAllowed-field")).toBeInTheDocument();
-    expect(screen.getByTestId("isDeleteAllowed-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someFloatVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someDecimalVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinUTCDateTimeVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinDateVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someMoneyVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someNVarCharVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someVarCharVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someTextVal-label")).toBeInTheDocument();
-    expect(screen.getByTestId("somePhoneNumber-label")).toBeInTheDocument();
-    expect(screen.getByTestId("someEmailAddress-label")).toBeInTheDocument(); 
+    expect(screen.getByTestId("flavorCode-label")).toBeTruthy();
+    expect(screen.getByTestId("someIntVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someBigIntVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someBitVal-field")).toBeTruthy();
+    expect(screen.getByTestId("isEditAllowed-field")).toBeTruthy();
+    expect(screen.getByTestId("isDeleteAllowed-field")).toBeTruthy();
+    expect(screen.getByTestId("someFloatVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someDecimalVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someMinUTCDateTimeVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someMinDateVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someMoneyVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someNVarCharVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someVarCharVal-label")).toBeTruthy();
+    expect(screen.getByTestId("someTextVal-label")).toBeTruthy();
+    expect(screen.getByTestId("somePhoneNumber-label")).toBeTruthy();
+    expect(screen.getByTestId("someEmailAddress-label")).toBeTruthy(); 
     
-    expect(screen.getByTestId("flavorCode-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someIntVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someBigIntVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someBitVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("isEditAllowed-field")).toBeInTheDocument();
-    expect(screen.getByTestId("isDeleteAllowed-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someFloatVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someDecimalVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinUTCDateTimeVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someMinDateVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someMoneyVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someNVarCharVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someVarCharVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someTextVal-field")).toBeInTheDocument();
-    expect(screen.getByTestId("somePhoneNumber-field")).toBeInTheDocument();
-    expect(screen.getByTestId("someEmailAddress-field")).toBeInTheDocument(); 
+    expect(screen.getByTestId("flavorCode-field")).toBeTruthy();
+    expect(screen.getByTestId("someIntVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someBigIntVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someBitVal-field")).toBeTruthy();
+    expect(screen.getByTestId("isEditAllowed-field")).toBeTruthy();
+    expect(screen.getByTestId("isDeleteAllowed-field")).toBeTruthy();
+    expect(screen.getByTestId("someFloatVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someDecimalVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someMinUTCDateTimeVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someMinDateVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someMoneyVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someNVarCharVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someVarCharVal-field")).toBeTruthy();
+    expect(screen.getByTestId("someTextVal-field")).toBeTruthy();
+    expect(screen.getByTestId("somePhoneNumber-field")).toBeTruthy();
+    expect(screen.getByTestId("someEmailAddress-field")).toBeTruthy(); 
   });
  
 
@@ -145,18 +145,18 @@ describe("LandPlantList Component", () => {
 
   it("when user enter someFloatVal, it set accordingly", async () => {
     const input = screen.getByTestId("someFloatVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("someFloatVal-field")).toHaveValue(1);
+    fireEvent(input, "onChangeText", "1"); 
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter someDecimalVal, it set accordingly", async () => {
     const input = screen.getByTestId("someDecimalVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("someDecimalVal-field")).toHaveValue(1);
+    fireEvent(input, "onChangeText", "1"); 
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter someMinUTCDateTimeVal, it set accordingly", async () => {
@@ -177,10 +177,10 @@ describe("LandPlantList Component", () => {
 
   it("when user enter someMoneyVal, it set accordingly", async () => {
     const input = screen.getByTestId("someMoneyVal-field");
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1" } });
-    }); 
-    expect(screen.getByTestId("someMoneyVal-field")).toHaveValue(1);
+    fireEvent(input, "onChangeText", "1"); 
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
+    });
   });
 
   it("when user enter someNVarCharVal, it set accordingly", async () => {

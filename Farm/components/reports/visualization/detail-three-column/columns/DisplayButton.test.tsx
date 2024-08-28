@@ -30,7 +30,7 @@ describe("ReportColumnDisplayButton Component", () => {
        <table><tbody><tr><ReportColumnDisplayButton forColumn="testColumn" rowIndex={1} value="test Value" buttonText="test text" onPress={onPress} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("test text")).toBeInTheDocument();
+    expect(screen.getByText("test text")).toBeTruthy();
 
   });
 
@@ -39,7 +39,7 @@ describe("ReportColumnDisplayButton Component", () => {
        <table><tbody><tr><ReportColumnDisplayButton forColumn="testColumn" rowIndex={1} value="" buttonText="test text" onPress={onPress} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -51,7 +51,7 @@ describe("ReportColumnDisplayButton Component", () => {
        <table><tbody><tr><ReportColumnDisplayButton forColumn="testColumn" rowIndex={1} value={noVal} buttonText="test text" onPress={onPress} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -62,7 +62,7 @@ describe("ReportColumnDisplayButton Component", () => {
        <table><tbody><tr><ReportColumnDisplayButton forColumn="testColumn" rowIndex={1} value="test Value" buttonText="test text" onPress={onPress} isVisible={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

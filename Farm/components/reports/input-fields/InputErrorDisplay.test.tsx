@@ -38,7 +38,7 @@ describe("InputErrorDisplay Component", () => {
   afterEach(cleanup); 
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testInputNameErrorDisplay")).toBeInTheDocument(); 
+    expect(screen.getByTestId("testInputNameErrorDisplay")).toBeTruthy(); 
   });
 
   it("when user enter value, it set accordingly in control", async () => {

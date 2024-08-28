@@ -18,7 +18,7 @@ export const ErrorDisplay: FC<ErrorDisplayProps> = ({
   const allErrors = errorArray.concat(errorArray2)
       
   return (
-    <View data-testid={name}> 
+    <View testID={name}> 
       {allErrors && allErrors.length > 0 ? ( 
           allErrors.map((item, index) => {
             if (item.length > 0) {

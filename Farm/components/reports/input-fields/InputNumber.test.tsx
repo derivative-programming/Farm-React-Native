@@ -35,20 +35,19 @@ describe("InputNumber Component", () => {
   afterEach(cleanup); 
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
     expect(screen.getByTestId("testName")).not.toHaveFocus();
     expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+    expect(screen.getByLabelText("Test Label")).toBeTruthy();
   });
 
   it("when user enter value, it set accordingly in control", async () => {
     const input = screen.getByTestId("testName");
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "123" } });
+    fireEvent(input, "onChangeText", "1"); 
+    await waitFor(() => { 
+      expect(input.props.value).toBe('1');
     });
-
-    expect(screen.getByTestId("testName")).toHaveValue(123);
   }); 
   
   it("when user sets prop disable to true, control is disabled", async () => {

@@ -37,20 +37,18 @@ describe("InputText Component", () => {
   afterEach(cleanup); 
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
     expect(screen.getByTestId("testName")).not.toHaveFocus();
     expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+    expect(screen.getByLabelText("Test Label")).toBeTruthy();
   });
 
   it("when user enter value, it set accordingly in control", async () => {
     const input = screen.getByTestId("testName");  
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "test@gmail.com" } });
-    });
+    fireEvent.changeText(input, 'sample data');
 
-    expect(screen.getByTestId("testName")).toHaveValue("test@gmail.com");
+    expect(input.props.value).toBe('sample data');
   }); 
   
   it("when user sets prop disable to true, control is disabled", async () => {

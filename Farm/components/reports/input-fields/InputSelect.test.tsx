@@ -37,10 +37,10 @@ describe("InputSelect Component", () => {
   afterEach(cleanup); 
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
     expect(screen.getByTestId("testName")).not.toHaveFocus();
     expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+    expect(screen.getByLabelText("Test Label")).toBeTruthy();
   });
 
   it("when user enter value, it set accordingly in control", async () => {

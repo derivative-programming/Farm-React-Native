@@ -114,8 +114,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
         response: { ...response },
       };
       
-      console.log('form ctrl submit values and results...');
-      console.log(lastApiSubmission);
+      // console.log('form ctrl submit values and results...');
+      // console.log(lastApiSubmission);
 
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
@@ -184,7 +184,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   
   return ( 
     
-    <View style={styles.container}>
+    <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
         <Text style={styles.titleText} testID="page-title-text">Add Plant</Text>
         <Text style={styles.introText} testID="page-intro-text">Add plant intro text.</Text>
@@ -195,7 +195,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
           isHeaderVisible={true}
         />
         <ScrollView>
-        <Formik
+        <Formik  
           enableReinitialize={true}
           initialValues={initialValues}
           validationSchema={validationSchema}

@@ -29,7 +29,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayEmail forColumn="testColumn" label="test label" rowIndex={1} value="test Value" /></tr></tbody></table>
     );
 
-    expect(screen.getByText("test Value")).toBeInTheDocument();
+    expect(screen.getByText("test Value")).toBeTruthy();
   });
 
   it("renders no value correctly", async () => {
@@ -37,7 +37,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayEmail forColumn="testColumn" label="test label" rowIndex={1} value="" /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -49,7 +49,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayEmail forColumn="testColumn" label="test label" rowIndex={1} value={noVal} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -60,7 +60,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayEmail forColumn="testColumn" label="test label" rowIndex={1} value="test Value" isVisible={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

@@ -29,7 +29,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayDateTime forColumn="testColumn" label="test label" rowIndex={1} value={"2034-01-03T13:45:00Z"} /></tr></tbody></table>
     );
 
-    expect(screen.getByText("1/3/2034 8:45 AM")).toBeInTheDocument();
+    expect(screen.getByText("1/3/2034 8:45 AM")).toBeTruthy();
 
   });
 
@@ -38,7 +38,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayDateTime forColumn="testColumn" label="test label" rowIndex={1} value={"1753-01-01T00:00:00Z"} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -50,7 +50,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayDateTime forColumn="testColumn" label="test label" rowIndex={1} value={noVal} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -61,7 +61,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayDateTime forColumn="testColumn" label="test label" rowIndex={1} value="2034-01-03T00:45:00Z" isVisible={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

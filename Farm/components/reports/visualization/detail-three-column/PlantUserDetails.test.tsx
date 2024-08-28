@@ -39,7 +39,7 @@ describe("PlantUserDetails Form Component", () => {
   afterEach(cleanup);
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
   });
  
 });

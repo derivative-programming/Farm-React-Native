@@ -30,7 +30,7 @@ describe("HeaderTacAddPlant", () => {
       initData: mockInitData,
     });
     const headerElement = screen.getByTestId(TEST_ID);
-    expect(headerElement).toBeInTheDocument();
+    expect(headerElement).toBeTruthy();
     expect(headerElement).toHaveAttribute("hidden");
   });
 });

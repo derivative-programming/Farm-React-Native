@@ -17,7 +17,7 @@ export interface FormInputMoneyProps {
 export const FormInputMoney: FC<FormInputMoneyProps> = ({
   name,
   label,
-  placeholder,
+  placeholder = "Amount",
   autoFocus = false,
   disabled = false,
   isVisible = true,
@@ -38,7 +38,7 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
           <TextInput
             style={[styles.input, disabled && styles.disabledInput]}
             keyboardType="numeric"
-            placeholder="Amount"
+            placeholder={placeholder}
             editable={!disabled}
             id={name} 
             testID={name}

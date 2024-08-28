@@ -29,7 +29,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
        <table><tbody><tr><ReportColumnDisplayCheckbox forColumn="testColumn" label="test label" rowIndex={1} isChecked={true}  /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId("testColumn-column-1-checkbox")).toBeChecked();
   });
@@ -39,7 +39,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
       <table><tbody><tr><ReportColumnDisplayCheckbox forColumn="testColumn" label="test label" rowIndex={1} isChecked={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId("testColumn-column-1-checkbox")).not.toBeChecked();
   });
@@ -51,7 +51,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
       <table><tbody><tr><ReportColumnDisplayCheckbox forColumn="testColumn" label="test label" rowIndex={1} isChecked={noVal} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });
@@ -62,7 +62,7 @@ describe("ReportColumnDisplayPhoneNumber Component", () => {
       <table><tbody><tr><ReportColumnDisplayCheckbox forColumn="testColumn" label="test label" rowIndex={1} isChecked={true} isVisible={false} /></tr></tbody></table>
     );
 
-    expect(screen.getByTestId(testId)).toBeInTheDocument();
+    expect(screen.getByTestId(testId)).toBeTruthy();
 
     expect(screen.getByTestId(testId)).toContainHTML("<td testID=\"testColumn-column-1\" />");
   });

@@ -18,10 +18,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const mockedUsedNavigate = jest.fn();
 const mockUserParams = jest.fn();
 
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate,
-  useParams: () => mockUserParams.mockReturnValue({ id: "00000000-0000-0000-0000-000000000000",}),
+// jest.mock("react-router-dom", () => ({
+//   ...(jest.requireActual("react-router-dom") as any),
+//   useNavigate: () => mockedUsedNavigate,
+//   useParams: () => mockUserParams.mockReturnValue({ id: "00000000-0000-0000-0000-000000000000",}),
+// }));
+
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({
+    navigate: jest.fn(),
+  }),
 }));
 
 const mockReportInitService = jest.spyOn(ReportService, "initPage");
@@ -47,7 +53,7 @@ describe("LandPlantList Connected Report Component", () => {
     await act(async () => {
       render(
         
-          <ReportConnectedLandPlantList />
+          <ReportConnectedLandPlantList landCode={"00000"} />
         
       
       )
@@ -60,14 +66,14 @@ describe("LandPlantList Connected Report Component", () => {
 
   it("renders correctly", async () => {
     
-    expect(screen.getByTestId("reportConnectedLandPlantList")).toBeInTheDocument();
+    expect(screen.getByTestId("reportConnectedLandPlantList")).toBeTruthy();
        
-    expect(screen.getByTestId("tacFarmDashboardBreadcrumb")).toBeInTheDocument();
+    expect(screen.getByTestId("tacFarmDashboardBreadcrumb")).toBeTruthy();
 
-    expect(screen.getByTestId("back-button")).toBeInTheDocument(); 
+    expect(screen.getByTestId("back-button")).toBeTruthy(); 
  
     if("A list of plants on the land".length > 0){ 
-      expect(screen.getByTestId("page-intro-text")).toBeInTheDocument();
+      expect(screen.getByTestId("page-intro-text")).toBeTruthy();
       expect(screen.getByTestId("page-intro-text"))
         .toHaveTextContent("A list of plants on the land");
     }

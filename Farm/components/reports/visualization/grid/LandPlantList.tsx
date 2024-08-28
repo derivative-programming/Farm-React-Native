@@ -45,6 +45,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
   const initialCheckedIndexes: string[] = [];
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
   const { logClick } = useAnalyticsDB();  
+  const componentName = "ReportGridLandPlantList";
 
   const handleRowSelectCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -285,6 +286,99 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               onPress={() => {
                 logClick("ReportGridLandPlantList","detailsLinkPlantCode","");
                 onNavigateTo("PlantUserDetails", item.detailsLinkPlantCode);
+              }}
+            />
+ 
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testFileDownloadLinkPacCode"
+              rowIndex={index}
+              buttonText="Test File Download"
+              value={item.testFileDownloadLinkPacCode}
+              isButtonCallToAction={false}
+              isVisible={true}
+              onPress={() =>
+                {
+                  logClick(componentName,"testFileDownloadLinkPacCode","");
+                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = {};
+                  AsyncServices.PacUserTestAsyncFileDownloadSubmitRequest(data, item.testFileDownloadLinkPacCode)
+                  .then((response) => {
+                      //handleExportQueryResults(response);  //NOSONAR
+                      const blob = new Blob([response.data], { type: "text/csv" });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.setAttribute('download', componentName + '-' + uuidv4() + '.csv');
+                      document.body.appendChild(link);
+                      link.click();
+                  }).then(() => onRefreshRequest())
+                }}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalFileDownloadLinkPacCode"
+              rowIndex={index}
+              buttonText="Test Conditional File Download"
+              isButtonCallToAction={false}
+              isVisible={true}
+              conditionallyVisible={item.isEditAllowed} 
+              value={item.testConditionalFileDownloadLinkPacCode}
+              onPress={() =>
+                {
+                  logClick(componentName,"testConditionalFileDownloadLinkPacCode","");
+                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = {};
+                  AsyncServices.PacUserTestAsyncFileDownloadSubmitRequest(data, item.testConditionalFileDownloadLinkPacCode)
+                  .then((response) => {
+                      //handleExportQueryResults(response);  //NOSONAR
+                      const blob = new Blob([response.data], { type: "text/csv" });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.setAttribute('download', componentName + '-' + uuidv4() + '.csv');
+                      document.body.appendChild(link);
+                      link.click();
+                  }).then(() => onRefreshRequest())
+                }}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testAsyncFlowReqLinkPacCode"
+              rowIndex={index}
+              buttonText="Test Async Flow Req"
+              isButtonCallToAction={false}
+              isVisible={true}
+              value={item.testAsyncFlowReqLinkPacCode}
+              onPress={() =>
+                {
+                  logClick(componentName,"testAsyncFlowReqLinkPacCode","");
+                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = {};
+                  AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testAsyncFlowReqLinkPacCode).then(() =>
+                  onRefreshRequest())
+                }}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalAsyncFlowReqLinkPacCode"
+              rowIndex={index}
+              buttonText="Test Conditional Async Flow Req"
+              isButtonCallToAction={false}
+              isVisible={true}
+              conditionallyVisible={item.isEditAllowed} 
+              value={item.testConditionalAsyncFlowReqLinkPacCode}
+              onPress={() =>
+                {
+                  logClick(componentName,"testConditionalAsyncFlowReqLinkPacCode","");
+                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = {};
+                  AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testConditionalAsyncFlowReqLinkPacCode).then(() =>
+                  onRefreshRequest())
+                }}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="conditionalBtnExampleLinkPlantCode"
+              rowIndex={index}
+              buttonText="Conditional Btn Example"
+              isButtonCallToAction={true}
+              isVisible={true}
+              conditionallyVisible={item.isEditAllowed} 
+              value={item.conditionalBtnExampleLinkPlantCode}
+              onPress={() => {
+                logClick(componentName,"conditionalBtnExampleLinkPlantCode",""); 
+                onNavigateTo("PlantUserDetails", item.conditionalBtnExampleLinkPlantCode)
               }}
             />
 {/* ENDSET */}

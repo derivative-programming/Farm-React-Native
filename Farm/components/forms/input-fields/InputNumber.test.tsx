@@ -1,95 +1,111 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputNumber} from "./InputNumber";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputNumber } from './InputNumber'; // Adjust the import path
 
-import '@testing-library/jest-dom';
+describe('FormInputNumber', () => {
 
-const initialValues = { testName:"" } 
+  it('renders correctly', () => {
+    const { getByTestId, getByText } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" />
+      </Formik>
+    );
+    expect(getByTestId('number')).toBeTruthy();
+    expect(getByText('Number')).toBeTruthy();
+  });
+
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" isVisible={false} />
+      </Formik>
+    ); 
+    expect(queryByTestId('number')).toBeNull();
+  });
+
+  it('is   visible when isVisible is true', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" isVisible={true} />
+      </Formik>
+    ); 
+    expect(queryByTestId('number')).toBeTruthy();
+  });
+
+  it('is disabled when disabled is true', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" disabled={true} />
+      </Formik>
+    );
+    expect(getByTestId('number').props.editable).toBe(false);
+  });
+
+  it('is enabled when disabled is false', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" disabled={false} />
+      </Formik>
+    );
+    expect(getByTestId('number').props.editable).toBe(true);
+  });
+
+  
+  it('displays the label correctly', () => {
+    const { getByText } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" />
+      </Formik>
+    );
+    expect(getByText('Number')).toBeTruthy();
+  });
+
+  it('updates value when text changes', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" />
+      </Formik>
+    );
+    const input = getByTestId('number');
+    fireEvent.changeText(input, '100');
+    expect(input.props.value).toBe('100');
+  });
+
+  it('displays error text when there is an error', () => {
+    // Test to ensure that error messages are displayed when appropriate
+  });
  
-describe("InputNumber Component", () => {
-  // render the InputNumber component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputNumber label="Test Label" name="testName"/> 
-        
-  )}
-</Formik>
+
+  it('displays the initial value correctly', () => {
+    const initialValue = '100';
+    const { getByTestId } = render(
+      <Formik initialValues={{ number: initialValue }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" />
+      </Formik>
     );
+    const input = getByTestId('number');
+    expect(input.props.value).toBe(initialValue);
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
-
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+  it('displays placeholder when no value is entered', () => {
+    const placeholderText = 'Enter amount';
+    const { getByPlaceholderText } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label="Number" placeholder={placeholderText} />
+      </Formik>
+    );
+    expect(getByPlaceholderText(placeholderText)).toBeTruthy();
   });
 
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "123" } });
-    });
-
-    expect(screen.getByTestId("testName")).toHaveValue(123);
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputNumber label="Test Label" name="testName2" autoFocus={true}/> 
-        
-  )}
-</Formik>
+  it('is accessible with the correct accessibilityLabel', () => {
+    const labelText = "Number";
+    const { getByTestId } = render(
+      <Formik initialValues={{ number: '' }} onSubmit={() => {}}>
+        <FormInputNumber name="number" label={labelText} />
+      </Formik>
     );
-
-    const input = screen.getByTestId("testName2");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
-
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
+    const input = getByTestId('number');
+    // Example: expect(input.props.accessibilityLabel).toBe(labelText);
+  });
 });

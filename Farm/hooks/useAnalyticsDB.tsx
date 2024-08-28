@@ -94,7 +94,7 @@ function useAnalyticsDB() {
     }
   };
   const logClick = async (controlName: string, sourceObjectName: string, param1: string) => {
-    console.log('logClick ' + controlName + ' ' + sourceObjectName + ' ' + param1);
+    // console.log('logClick ' + controlName + ' ' + sourceObjectName + ' ' + param1);
     const eventData = { 
       messageType: "UI Click", 
       controlName: controlName,  

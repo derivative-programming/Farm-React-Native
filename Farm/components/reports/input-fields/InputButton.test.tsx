@@ -37,7 +37,7 @@ describe("InputButton Component", () => {
   afterEach(cleanup); 
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
     expect(screen.getByTestId("testName")).not.toHaveFocus();
     expect(screen.getByTestId("testName")).toBeEnabled(); 
   }); 

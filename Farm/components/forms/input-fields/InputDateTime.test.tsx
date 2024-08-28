@@ -1,95 +1,102 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputDateTime} from "./InputDateTime";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputDateTime } from './InputDateTime'; // Adjust the import path
 
-import '@testing-library/jest-dom';
+describe('FormInputDateTime', () => {
+  const mockFieldName = 'testDateTime';
+  const mockLabel = 'Test Date & Time';
+  const placeholder = 'Select Date & Time';
 
-const initialValues = { testName:"" } 
+  it('renders correctly when visible', () => {
+    const { getByTestId, getByText } = render(
+      <Formik initialValues={{ [mockFieldName]: '' }} onSubmit={() => {}}>
+        <FormInputDateTime name={mockFieldName} label={mockLabel} />
+      </Formik>
+    );
+    expect(getByText(mockLabel)).toBeTruthy();
+    expect(getByTestId(`${mockFieldName}-button`)).toBeTruthy();
+    expect(getByTestId(mockFieldName).props.children).toBe(placeholder);
+  });
+
+  it('does not render when not visible', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ [mockFieldName]: '' }} onSubmit={() => {}}>
+        <FormInputDateTime name={mockFieldName} label={mockLabel} isVisible={false} />
+      </Formik>
+    );
+    expect(queryByTestId(mockFieldName)).toBeNull();
+  });
+
+  it('displays selected date and time correctly', () => {
+    // Create a mock date-time value
+    const mockDateTime = new Date(2020, 5, 15, 15, 30); // June 15, 2020, 15:30
+    const formattedDateTime = '6/15/2020 3:30 PM'; // Expected display format
+
+    const { getByTestId,queryByTestId } = render(
+      <Formik initialValues={{ [mockFieldName]: mockDateTime.toISOString() }} onSubmit={() => {}}>
+        <FormInputDateTime name={mockFieldName} label={mockLabel} />
+      </Formik>
+    );
+
+    // Simulate opening the DateTimePicker and selecting a date
+    fireEvent.press(getByTestId(`${mockFieldName}-button`));
+    expect(queryByTestId('testDateTime-picker')).toBeTruthy(); 
+    fireEvent(getByTestId(`${mockFieldName}-picker`), 'onChange', {}, mockDateTime);
+
+    expect(getByTestId(mockFieldName).props.children).toBe(formattedDateTime);
+  });
+
+  it('shows error message when there is a validation error', () => {
+    // Render the component with an initial error
+    const errorMessage = 'Invalid date and time';
+    const { getByTestId } = render(
+      <Formik
+        initialValues={{ [mockFieldName]: '' }}
+        initialErrors={{ [mockFieldName]: errorMessage }}
+        initialTouched={{ [mockFieldName]: true }} // Field must be touched for error to show
+        onSubmit={() => {}}
+      >
+        <FormInputDateTime name={mockFieldName} label={mockLabel} />
+      </Formik>
+    );
+
+    expect(getByTestId(`${mockFieldName}-error`).props.children).toBe(errorMessage);
+  }); 
+
+  it('is non-interactive when disabled', () => {
+    const { getByTestId, queryByTestId } = render(
+      <Formik initialValues={{ testDateTime: '' }} onSubmit={() => {}}>
+        <FormInputDateTime name="testDateTime" label="Test Date & Time" disabled={true} />
+      </Formik>
+    );
+
+    expect(queryByTestId('testDateTime-picker')).toBeNull();
+    fireEvent.press(getByTestId('testDateTime-button'));
+    expect(queryByTestId('testDateTime-picker')).toBeNull(); 
  
-describe("InputDateTime Component", () => {
-  // render the InputDateTime component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputDateTime label="Test Label" name="testName"/> 
-                
-          )}
-      </Formik>
-    );
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
 
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    //expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
-  });
-
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { value: "1/1/2000" } });
-    });
-
-    expect(screen.getByTestId("testName")).toHaveValue("1/1/2000"); 
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputDateTime label="Test Label" name="testName2" autoFocus={true}/> 
-                
-          )}
+  it('is interactive when enabled', () => {
+    const { getByTestId, queryByTestId } = render(
+      <Formik initialValues={{ testDateTime: '' }} onSubmit={() => {}}>
+        <FormInputDateTime name="testDateTime" label="Test Date & Time" disabled={false} />
       </Formik>
     );
 
-    const input = screen.getByTestId("testName2");
+    expect(queryByTestId('testDateTime-picker')).toBeNull();
+    fireEvent.press(getByTestId('testDateTime-button'));
+    expect(queryByTestId('testDateTime-picker')).toBeTruthy(); 
+ 
+  });
+  it('is accessible with correct accessibility features', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ testDateTime: '' }} onSubmit={() => {}}>
+        <FormInputDateTime name="testDateTime" label="Test Date & Time" />
+      </Formik>
+    );
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
-
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
+    expect(getByTestId('testDateTime-button').props.accessibilityLabel).toBe('Test Date & Time');
+  });
 });

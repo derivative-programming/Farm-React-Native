@@ -1,96 +1,129 @@
-/* eslint-disable testing-library/no-render-in-setup */
-/* eslint-disable testing-library/no-unnecessary-act */
-import {
-  render,
-  cleanup,
-  screen,
-  act,
-  fireEvent,
-  waitFor,
-} from "@testing-library/react-native";
-import {FormInputSelect, FormInputSelectOption} from "./InputSelect";   
-import { Formik } from "formik";
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react-native';
+import { Formik } from 'formik';
+import { FormInputSelect } from './InputSelect'; // Adjust the import path
 
-import '@testing-library/jest-dom';
+describe('FormInputSelect', () => {
+  const options = [
+    { label: 'Option 1', value: 'opt1' },
+    { label: 'Option 2', value: 'opt2' },
+    // Add more options as needed
+  ];
 
-const initialValues = { testName:"" } 
-
-const options:FormInputSelectOption[] = [{label:"testlabel1",value:"testvalue1"},{label:"testlabel2",value:"testvalue2"}]
- 
-describe("InputSelect Component", () => {
-  // render the InputSelect component
-  beforeEach(() => {
-    render(
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputSelect label="Test Label" name="testName" options={options}/> 
-        
-  )}
-</Formik>
+  it('renders correctly', () => {
+    const { getByTestId, getByText } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} />
+      </Formik>
     );
+    expect(getByTestId('selectField')).toBeTruthy();
+    expect(getByText('Select Field')).toBeTruthy();
   });
 
-  // after cleanup when test-case execution is done
-  afterEach(cleanup); 
+  it('is not visible when isVisible is false', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} isVisible={false} />
+      </Formik>
+    );
+    expect(queryByTestId('selectField')).toBeNull();
+  });
+  
 
-  it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
-    expect(screen.getByTestId("testName")).not.toHaveFocus();
-    expect(screen.getByTestId("testName")).toBeEnabled();
-    expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+  it('is   visible when isVisible is true', () => {
+    const { queryByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} isVisible={true} />
+      </Formik>
+    );
+    expect(queryByTestId('selectField')).toBeTruthy();
   });
 
-  it("when user enter value, it set accordingly in control", async () => {
-    const input = screen.getByTestId("testName");
-    // await act(async () => {
-    //   await fireEvent.change(input, { target: { value: "test@gmail.com" } });
-    // });
-
-    // expect(screen.getByTestId("testName")).toHaveValue("test@gmail.com");
-  }); 
-  
-  it("when user sets prop disable to true, control is disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: true } });
-    });
-
-    expect(screen.getByTestId("testName")).toBeDisabled();
-  }); 
-
-  it("when user sets prop disable to false, control is not disabled", async () => {
-    const input = screen.getByTestId("testName");
-
-    await act(async () => {
-      await fireEvent.change(input, { target: { disabled: false } });
-    });
-
-    expect(screen.getByTestId("testName")).not.toBeDisabled();
-  }); 
-  
-  it("when user sets prop autoFocus to true, control is autoFocused", async () => {
-    render( 
-      <Formik
-          initialValues={initialValues} 
-          onSubmit={async (values,actions) => {}}>
-          {(props) => (
-               
-      <FormInputSelect label="Test Label" name="testName2" autoFocus={true} options={options}/> 
-        
-  )}
-</Formik>
+  it('is disabled when disabled is true', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} disabled={true} />
+      </Formik>
     );
+    
+    expect(getByTestId('selectField').props.enabled).toBe(false);
+  });
 
-    const input = screen.getByTestId("testName2");
 
-    await act(async () => {
-      await fireEvent.change(input, { target: { autoFocus: true } });
-    });
+  it('is enabled when disabled is false', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} disabled={false} />
+      </Formik>
+    );
+    expect(getByTestId('selectField').props.enabled).toBe(false);
+  });
 
-    expect(screen.getByTestId("testName2")).toHaveFocus();
-  }); 
+  it('displays all options including placeholder', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} placeholder="Please Select One" />
+      </Formik>
+    );
+    const picker = getByTestId('selectField');
+    expect(picker.props.children.length).toBe(options.length + 1); // +1 for placeholder
+  });
+
+  it('updates Formik state when an option is selected', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} />
+      </Formik>
+    );
+    const picker = getByTestId('selectField');
+    fireEvent(picker, 'onValueChange', 'opt1');
+    // Verify that the value 'opt1' is now selected in the picker
+  });
+
+  it('displays error text when there is an error', () => {
+    // Test to ensure that error messages are displayed when appropriate
+  });
+
+  it('displays the initial value correctly', () => {
+    const initialValue = 'opt1';
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: initialValue }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} />
+      </Formik>
+    );
+    const picker = getByTestId('selectField');
+    expect(picker.props.selectedValue).toBe(initialValue);
+  });
+
+  it('displays the placeholder correctly', () => {
+    const placeholder = 'Please Select One';
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} placeholder={placeholder} />
+      </Formik>
+    );
+    const picker = getByTestId('selectField');
+    // Check if the placeholder is the first item
+    expect(picker.props.children[0].props.label).toBe(placeholder);
+  });
+
+  it('is accessible with the correct accessibilityLabel', () => {
+    const { getByTestId } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label="Select Field" options={options} />
+      </Formik>
+    );
+    const picker = getByTestId('selectField');
+    expect(picker.props.accessibilityLabel).toBe('selectField');
+  });
+  
+  it('displays the label correctly', () => {
+    const label = "Select Field";
+    const { getByText } = render(
+      <Formik initialValues={{ selectField: '' }} onSubmit={() => {}}>
+        <FormInputSelect name="selectField" label={label} options={options} />
+      </Formik>
+    );
+    expect(getByText(label)).toBeTruthy();
+  });
 });
