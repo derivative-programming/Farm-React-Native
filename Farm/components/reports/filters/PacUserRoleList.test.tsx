@@ -16,8 +16,11 @@ import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const onSubmit = jest.fn();
+
 const intialQuery:ReportService.QueryRequest = new ReportService.QueryRequestInstance();
+
 describe("PacUserRoleList Component", () => {
+
   beforeEach(async () => {
     await AsyncStorage.setItem("@token", "sampleToken");
 
@@ -29,12 +32,15 @@ describe("PacUserRoleList Component", () => {
     );
 
   });
+
   // after cleanup when test-case execution is done
   afterEach(cleanup);
+
   const initTest = async () => {
   }
+
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testForm")).toBeInTheDocument();
+    expect(screen.getByTestId("testForm")).toBeTruthy();
 
   });
 
@@ -43,6 +49,7 @@ describe("PacUserRoleList Component", () => {
     await act(async () => {
       await fireEvent.click(screen.getByTestId("submit-button"));
     });
+
   });
 });
 

@@ -8,7 +8,7 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import FormSelectTac from "./SelectTac";
+import FormSelectPac from "./SelectPac";
 import { Formik } from "formik";
 
 import '@testing-library/jest-dom';
@@ -16,8 +16,8 @@ import '@testing-library/jest-dom';
 const initialValues = { testName:"" }
 const validationSchema  = {}
 
-describe("FormSelectTac Component", () => {
-  // render the FormSelectTac component
+describe("FormSelectPac Component", () => {
+  // render the FormSelectPac component
   beforeEach(() => {
     render(
       <Formik
@@ -26,7 +26,7 @@ describe("FormSelectTac Component", () => {
           onSubmit={async (values,actions) => {}}>
           {(props) => (
 
-                <FormSelectTac label="Test Label" name="testName" />
+                <FormSelectPac label="Test Label" name="testName" />
 
           )}
       </Formik>

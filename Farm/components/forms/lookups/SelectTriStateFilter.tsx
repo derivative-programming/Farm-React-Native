@@ -1,9 +1,9 @@
-import React, { FC, ReactElement, useState,useEffect } from "react"; 
- 
+import React, { FC, ReactElement, useState,useEffect } from "react";
+
 import * as PacUserTriStateFilterListService from "../../lookups/services/TriStateFilter";
 import {useField } from 'formik';
 import { FormInputSelect,FormInputSelectOption } from "../input-fields/InputSelect";
-   
+
 export interface FormSelectTriStateFilterProps {
     name: string
     label: string
@@ -20,37 +20,38 @@ export const FormSelectTriStateFilter: FC<FormSelectTriStateFilterProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
-  }): ReactElement => { 
-    const [field, meta, helpers] = useField(name); 
-    
+  }): ReactElement => {
+    const [field, meta, helpers] = useField(name);
+
     const [triStateFilters, setTriStateFilters] = useState<FormInputSelectOption[]>([])
 
-    const initList = (response:any) => {  
+    const initList = (response:any) => {
 
-        if(response && 
+        if(response &&
             response.data &&
             response.data.items )
         {
-            const data:PacUserTriStateFilterListService.QueryResult = response.data; 
+            const data:PacUserTriStateFilterListService.QueryResult = response.data;
             const triStateFilters = data.items.map(({ triStateFilterCode, triStateFilterName }) => ({ label: triStateFilterName, value:triStateFilterCode }));
 
-            setTriStateFilters(triStateFilters); 
-        } 
-    } 
+            setTriStateFilters(triStateFilters);
+        }
+    }
 
     useEffect(() => {
         PacUserTriStateFilterListService.submitRequest()
         .then((response) => initList(response));
-    },[]); 
+    },[]);
 
-    return ( 
-        <FormInputSelect 
-            label={label} 
+    return (
+        <FormInputSelect
+            label={label}
             name={name}
             options={triStateFilters}
             isVisible={isVisible}
             />
-         
+
     );
 };
 export default FormSelectTriStateFilter;
+

@@ -8,7 +8,7 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import FormSelectTriStateFilter from "./SelectTriStateFilter";  
+import FormSelectTriStateFilter from "./SelectTriStateFilter";
 import { Formik } from "formik";
 
 import '@testing-library/jest-dom';
@@ -25,9 +25,9 @@ describe("FormSelectTriStateFilter Component", () => {
           validationSchema={validationSchema}
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-               
+
                 <FormSelectTriStateFilter label="Test Label" name="testName" />
-                
+
           )}
       </Formik>
     );
@@ -37,7 +37,8 @@ describe("FormSelectTriStateFilter Component", () => {
   afterEach(cleanup);
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
   });
- 
+
 });
+

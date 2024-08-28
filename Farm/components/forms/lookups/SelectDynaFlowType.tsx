@@ -1,10 +1,10 @@
 import React, { FC, ReactElement, useState,useEffect } from "react";
 
-import * as PacUserTacListService from "../../lookups/services/Tac";
+import * as PacUserDynaFlowTypeListService from "../../lookups/services/DynaFlowType";
 import {useField } from 'formik';
 import { FormInputSelect,FormInputSelectOption } from "../input-fields/InputSelect";
 
-export interface FormSelectTacProps {
+export interface FormSelectDynaFlowTypeProps {
     name: string
     label: string
     placeholder?: string
@@ -13,7 +13,7 @@ export interface FormSelectTacProps {
     isVisible?:boolean
   }
 
-export const FormSelectTac: FC<FormSelectTacProps> = ({
+export const FormSelectDynaFlowType: FC<FormSelectDynaFlowTypeProps> = ({
     name,
     label,
     placeholder,
@@ -23,7 +23,7 @@ export const FormSelectTac: FC<FormSelectTacProps> = ({
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 
-    const [tacs, setTacs] = useState<FormInputSelectOption[]>([])
+    const [dynaFlowTypes, setDynaFlowTypes] = useState<FormInputSelectOption[]>([])
 
     const initList = (response:any) => {
 
@@ -31,15 +31,15 @@ export const FormSelectTac: FC<FormSelectTacProps> = ({
             response.data &&
             response.data.items )
         {
-            const data:PacUserTacListService.QueryResult = response.data;
-            const tacs = data.items.map(({ tacCode, tacName }) => ({ label: tacName, value:tacCode }));
+            const data:PacUserDynaFlowTypeListService.QueryResult = response.data;
+            const dynaFlowTypes = data.items.map(({ dynaFlowTypeCode, dynaFlowTypeName }) => ({ label: dynaFlowTypeName, value:dynaFlowTypeCode }));
 
-            setTacs(tacs);
+            setDynaFlowTypes(dynaFlowTypes);
         }
     }
 
     useEffect(() => {
-        PacUserTacListService.submitRequest()
+        PacUserDynaFlowTypeListService.submitRequest()
         .then((response) => initList(response));
     },[]);
 
@@ -47,11 +47,11 @@ export const FormSelectTac: FC<FormSelectTacProps> = ({
         <FormInputSelect
             label={label}
             name={name}
-            options={tacs}
+            options={dynaFlowTypes}
             isVisible={isVisible}
             />
 
     );
 };
-export default FormSelectTac;
+export default FormSelectDynaFlowType;
 

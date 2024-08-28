@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import * as ReportInit  from "./init/TacFarmDashboardInitReport";
   import { apiCall } from "../../../apiConfig/apiCall";
+
 export const submitRequest = (data:any, tacCode:string) => {
     return apiCall({
       url:  "/tac-farm-dashboard/" + tacCode,
@@ -8,6 +9,7 @@ export const submitRequest = (data:any, tacCode:string) => {
       params: data
     });
   };
+
 export const submitCSVRequest = (data:any, tacCode:string) => {
   console.log('csv request');
     return apiCall({
@@ -16,6 +18,7 @@ export const submitCSVRequest = (data:any, tacCode:string) => {
       params: data
     });
   };
+
   export const initPage = (tacCode:string) => {
     const data = {};
     return apiCall({
@@ -24,17 +27,22 @@ export const submitCSVRequest = (data:any, tacCode:string) => {
       data
     });
   };
+
 export const buildQueryRequest = (initResult:ReportInit.InitResult) => {
     let result:QueryRequest = new QueryRequestInstance();
 
     return result;
 }
+
 export const buildValidationSchema = () => {
+
     const validationSchema  = Yup.object().shape({
 
       });
+
     return validationSchema;
 }
+
 export interface QueryResultItem {
     fieldOnePlantListLinkLandCode: string;
     conditionalBtnExampleLinkLandCode: string;
@@ -44,6 +52,7 @@ export interface QueryResultItem {
     testAsyncFlowReqLinkPacCode: string;
     testConditionalAsyncFlowReqLinkPacCode: string;
 }
+
 export interface QueryRequest {
 
     pageNumber: number;
@@ -52,6 +61,7 @@ export interface QueryRequest {
     OrderByDescending: boolean;
     ForceErrorMessage: string;
 }
+
 export interface QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -65,6 +75,7 @@ export interface QueryResult {
     appVersion: string;
     request: string;
 }
+
 export class QueryResultItemInstance implements QueryResultItem {
     fieldOnePlantListLinkLandCode: string;
     conditionalBtnExampleLinkLandCode: string;
@@ -83,6 +94,7 @@ export class QueryResultItemInstance implements QueryResultItem {
         this.testConditionalAsyncFlowReqLinkPacCode = '00000000-0000-0000-0000-000000000000';
     }
 }
+
 export class QueryRequestInstance implements QueryRequest {
 
     pageNumber: number;
@@ -90,6 +102,7 @@ export class QueryRequestInstance implements QueryRequest {
     OrderByColumnName: string;
     OrderByDescending: boolean;
     ForceErrorMessage: string;
+
     constructor() {
 
         this.pageNumber = 1;
@@ -99,6 +112,7 @@ export class QueryRequestInstance implements QueryRequest {
         this.ForceErrorMessage = '';
     }
 }
+
 export class QueryResultInstance implements QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -111,6 +125,7 @@ export class QueryResultInstance implements QueryResult {
     message: string;
     appVersion: string;
     request: string;
+
     constructor() {
         this.pageNumber = 1;
         this.items = [];
@@ -125,6 +140,7 @@ export class QueryResultInstance implements QueryResult {
         this.request = '';
     }
 }
+
 export class QueryResultTestInstance implements QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -137,6 +153,7 @@ export class QueryResultTestInstance implements QueryResult {
     message: string;
     appVersion: string;
     request: string;
+
     constructor() {
         this.pageNumber = 1;
         this.items = [];
@@ -149,9 +166,11 @@ export class QueryResultTestInstance implements QueryResult {
         this.message = '';
         this.appVersion = '';
         this.request = '';
+
         this.items.push(new QueryResultItemInstance())
     }
 }
+
 export interface EnhancedQueryResultItem extends QueryResultItem {
   rowKey: string;
   rowNumber: number;

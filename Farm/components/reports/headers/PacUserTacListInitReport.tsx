@@ -6,11 +6,13 @@ import React, {
 } from "react";
 import { Text, View, StyleSheet } from 'react-native';
 import * as InitReportService from "../services/init/PacUserTacListInitReport";
+
 export interface HeaderPacUserTacListProps {
   name: string;
   isHeaderVisible: boolean;
   initData: InitReportService.InitResultInstance
 }
+
 const HeaderPacUserTacList: FC<HeaderPacUserTacListProps> = ({
   name,
   isHeaderVisible=false,
@@ -18,18 +20,22 @@ const HeaderPacUserTacList: FC<HeaderPacUserTacListProps> = ({
 }): ReactElement | null => {
 
   if(!isHeaderVisible) return null;
+
   return (
     <View testID={name}>
 
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   horizontalStack: {
     flexDirection: 'row', // Aligns children horizontally
     alignItems: 'center', // Center items vertically in the row
     marginBottom: 8,
+
   }
 });
+
 export default HeaderPacUserTacList;
 

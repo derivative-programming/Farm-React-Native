@@ -1,10 +1,13 @@
 import React, { FC, ReactElement, useState } from "react";
 import * as ReportService from "../../services/PacUserTriStateFilterList";
+
 import * as ReportColumnDisplay from "./columns";
 import * as AsyncServices from "../../../services";
+
 import * as ReportInput from "../../input-fields";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";
 import { ActivityIndicator, FlatList, Text, View, StyleSheet } from "react-native";
+
 export interface ReportGridPacUserTriStateFilterListProps {
   name: string;
   contextCode: string;
@@ -42,6 +45,8 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
   const initialCheckedIndexes: string[] = [];
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
   const { logClick } = useAnalyticsDB();
+  const componentName = "ReportGridPacUserTriStateFilterList";
+
   const handleRowSelectCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -58,6 +63,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
       setCheckedIndexes(newList);
     }
   };
+
   const onSelectAllRows = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       logClick("ReportGridPacUserTriStateFilterList","selectAllRows","");
@@ -74,6 +80,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
 
   console.log("items count...");
   console.log(items.length);
+
   return (
     <View testID={name}>
       {!false ? (
@@ -139,6 +146,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
     //       isEnabled={true}
     //     />
     //   </div>
+
     //   <Table
     //     className="report-list-table"
     //     striped
@@ -158,6 +166,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
     //             onChange={(e) => onSelectAllRows(e)}
     //           />
     //         </th>
+
     //       </tr>
     //     </thead>
     //     <tbody>
@@ -176,6 +185,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
     //                   }}
     //                 />
     //               </td>
+
     //             </tr>
     //           );
     //         })
@@ -194,6 +204,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
     //       )}
     //     </tbody>
     //   </Table>
+
     //   <div
     //     className="d-flex justify-content-center justify-content-md-end w-100 mb-3 mb-md-0"
     //     hidden={!showExport}
@@ -209,6 +220,7 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
     // </div>
   );
 };
+
 const styles = StyleSheet.create({
   card: {
     padding: 10,

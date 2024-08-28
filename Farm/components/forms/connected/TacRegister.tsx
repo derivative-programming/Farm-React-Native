@@ -22,12 +22,15 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
+
 export interface FormProps {
   tacCode:string;
   name?: string;
   showProcessingAnimationOnInit?: boolean;
 }
+
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 export const FormConnectedTacRegister: FC<FormProps> = ({
   tacCode = "00000000-0000-0000-0000-000000000000",
   name = "formConnectedTacRegister",
@@ -44,25 +47,35 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   const initHeaderErrors: string[] = [];
   const [headerErrors, setHeaderErrors] = useState(initHeaderErrors);
   const { logClick } = useAnalyticsDB();
+
   const navigation = useNavigation<ScreenNavigationProp>();
+
   let lastApiSubmission: any = {
     request: new FormService.SubmitResultInstance(),
     response: new FormService.SubmitRequestInstance(),
   };
   const isInitializedRef = useRef(false);
+
   const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
+
   const validationSchema = FormValidation.buildValidationSchema();
+
   const authContext = useContext(AuthContext);
-  console.log('form ctrl initial values...');
-  console.log(initialValues);
+
+  // console.log('form ctrl initial values...');
+  // console.log(initialValues);
+
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
+
     if (!response.success) {
       setHeaderErrors(["An unexpected error occurred."]);
       return;
     }
+
     setInitPageResponse({ ...response });
   };
+
   const handleValidate = async (values: FormService.SubmitRequest) => {
     let errors: any = {};
     if (!lastApiSubmission.response.success) {
@@ -82,6 +95,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     }
     return errors;
   };
+
   const submitClick = async (
     values: FormService.SubmitRequest,
     actions: FormikHelpers<FormService.SubmitRequest>
@@ -98,8 +112,10 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
         request: { ...values },
         response: { ...response },
       };
-      console.log('form ctrl submit values and results...');
-      console.log(lastApiSubmission);
+
+      // console.log('form ctrl submit values and results...');
+      // console.log(lastApiSubmission);
+
       if (!response.success) {
         setHeaderErrors(FormService.getValidationErrors("", response));
         Object.entries(new FormService.SubmitRequestInstance()).forEach(
@@ -134,6 +150,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   const submitButtonNavigateTo = () => {
     navigateTo("TacFarmDashboard", "tacCode");
   };
+
   useEffect(() => {
     if (isInitializedRef.current) {
       return;
@@ -143,10 +160,12 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       .then((response) => handleInit(response))
       .finally(() => {setInitForm(false)});
   }, []);
+
   useEffect(() => {
     const newInitalValues = FormService.buildSubmitRequest(initPageResponse);
     setInitialValues({ ...newInitalValues });
   }, [initPageResponse]);
+
   const navigateTo = (page: string, codeName: string) => {
     console.log('navigateTo...');
     console.log('page...' + page);
@@ -164,17 +183,20 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
+
   return (
-    <View style={styles.container}>
+
+    <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
         <Text style={styles.titleText} testID="page-title-text">Create your account</Text>
-        <Text style={styles.introText} testID="page-intro-text">A Couple Details Then We're Off!</Text>
+        <Text style={styles.introText} testID="page-intro-text">A Couple Details Then We Are Off!</Text>
+
         <HeaderTacRegister
           name="headerTacRegister"
           initData={initPageResponse}
           isHeaderVisible={false}
         />
-        <ScrollView style={styles.scrollView}>
+        <ScrollView>
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
@@ -242,6 +264,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -250,22 +273,22 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
-  },
-  scrollView: {
-    // flex: 1,
-    // paddingVertical: 20, // equivalent to py="5"  
+
   },
   titleText: {
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
     textAlign: 'center', // Center the text
+
   },
   introText: {
     fontSize: theme.fonts.mediumSize,
     marginBottom: 8,
     color: theme.Colors.text,
+
   },
 });
+
 export default FormConnectedTacRegister;
 

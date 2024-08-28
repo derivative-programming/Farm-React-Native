@@ -5,6 +5,7 @@ import React, {
   useState,
 } from "react";
 import { Button, Accordion,  View } from 'react-native';
+
 import { Formik, FormikHelpers } from "formik";
 import * as ReportService from "../services/PlantUserDetails";
 import { AuthContext } from "../../../context/authContext";
@@ -12,6 +13,7 @@ import * as ReportInput from "../input-fields";
 import * as Lookups from "../lookups";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export interface ReportFilterPlantUserDetailsProps {
   name: string;
   initialQuery: ReportService.QueryRequest;
@@ -19,6 +21,7 @@ export interface ReportFilterPlantUserDetailsProps {
   hidden?: boolean;
   isCollapsible?: boolean;
 }
+
 const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
   name,
   initialQuery,
@@ -29,15 +32,21 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
   const [initialValues, setInitialValues] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
   const { logClick } = useAnalyticsDB();
+
   // console.log('filter ctrl initialQuery...');
   // console.log(initialQuery);
   // console.log('filter ctrl initialValues...');
   // console.log(initialValues);
+
   const validationSchema = ReportService.buildValidationSchema();
+
   const isFiltersVisibleDefault = false;// await AsyncStorage.getItem("isFiltersVisible");
   const defaultAccordianKey = (isFiltersVisibleDefault === "true" ? "0" : "-1");
+
   const authContext = useContext(AuthContext);
+
   let headerErrors: string[] = [];
+
   const submitButtonPress = async (
     values: ReportService.QueryRequest,
     actions: FormikHelpers<ReportService.QueryRequest>
@@ -52,10 +61,12 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
       setLoading(false);
     }
   };
+
   const resetButtonPress = () => {
     logClick("ReportFilterPlantUserDetails","refresh","");
     setInitialValues({ ...initialQuery });
   };
+
   const onAccordianHeaderClick = async () => {
     logClick("ReportFilterPlantUserDetails","accordianClick","");
     const isFiltersVisible = await AsyncStorage.getItem("isFiltersVisible");
@@ -72,6 +83,7 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
       await AsyncStorage.setItem("isFiltersVisible","true")
     }
   }
+
   return (
     <View className="mt-3 w-100" hidden={hidden}>
       <Accordion defaultActiveKey={defaultAccordianKey} alwaysOpen={!isCollapsible}>
@@ -109,12 +121,14 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
                             <Spinner
                               as="span"
                               animation="border"
+
                               role="status"
                               aria-hidden="true"
                               className="spinner-button"
                             />)
                           }
                           <span className="sr-only">Search</span>
+
                         </Button>
                         <Button
                           className="ms-2 mt-3"
@@ -137,5 +151,6 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
     </View>
   );
 };
+
 export default ReportFilterPlantUserDetails;
 

@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ReportFilterPacUserDateGreaterThanFilterList from "../filters/PacUserDateGreaterThanFilterList";
 import { ReportGridPacUserDateGreaterThanFilterList } from "../visualization/grid/PacUserDateGreaterThanFilterList";
@@ -25,9 +25,11 @@ import * as theme from '../../../constants/theme'
 import Icon from 'react-native-vector-icons/Ionicons';
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 export interface ReportProps {
   pacCode:string;
 }
+
 export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = ({
   pacCode = "00000000-0000-0000-0000-000000000000"
 }): ReactElement => {
@@ -50,6 +52,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
   const [refreshing, setRefreshing] = useState(false);
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
+
   const isRefreshButtonHidden = false;
   const isPagingAvailable = true;
   const isExportButtonsHidden = false;
@@ -57,26 +60,36 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
   const isFilterSectionCollapsable = true;
   const isBreadcrumbSectionHidden = false;
   const isButtonDropDownAllowed = true;
+
   const navigation = useNavigation<ScreenNavigationProp>();
+
   const contextCode: string = pacCode ?? "00000000-0000-0000-0000-000000000000";
+
   const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
+
   // console.log('report ctrl pacCode...' + pacCode);
+
   // console.log('report ctrl initial values...');
   // console.log(initialValues);
+
   const handleInit = (responseFull: any) => {
     const response: InitReportService.InitResult = responseFull.data;
+
     if (!response.success) {
       return;
     }
     setInitPageResponse({ ...response });
   };
+
   const handleQueryResults = (responseFull: any) => {
     const queryResult: ReportService.QueryResult = responseFull.data;
+
     console.log('report ctrl query results...');
     console.log('success:' + queryResult.success);
     console.log('pageNumber:' + queryResult.pageNumber);
     console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
     console.log('total count:' + queryResult.recordsTotal);
+
     if (!queryResult.success) {
       return;
     }
@@ -97,31 +110,38 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       setItems([...items, ...enhancedItems]);
     }
   };
+
   const handleExportQueryResults = (responseFull: any) => {
     const queryResult: ReportService.QueryResult = responseFull.data;
+
     if (!queryResult.success) {
       return;
     }
   };
+
   const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","search","");
     setQuery({ ...queryRequest });
   };
+
   const onPageSelection = async (pageNumber: number) => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","selectPage",pageNumber.toString());
     setQuery({ ...query, pageNumber: pageNumber });
   };
+
   const onPageSizeChange = async (pageSize: number) => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","pageSizeChange",pageSize.toString());
     await AsyncStorage.setItem("pageSize",pageSize.toString());
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
+
   const onNavigateTo = (page: string,targetContextCode:string) => {
     console.log('onNavigateTo...');
     console.log('page...' + page);
     console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
+
   const navigateTo = (page: string, codeName: string) => {
     console.log('navigateTo...');
     console.log('page...' + page);
@@ -139,10 +159,12 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
+
   const onRefreshRequest = async () => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","refresh","");
     setQuery({ ...query });
   };
+
   const onSort = async (columnName: string) => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","sort",columnName);
     let orderByDescending = false;
@@ -155,6 +177,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       OrderByDescending: orderByDescending,
     });
   };
+
   const onExport = async () => {
     await logClick("ReportConnectedPacUserDateGreaterThanFilterList","export","");
     if(isProcessing){
@@ -162,6 +185,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     }
     setExportQuery({ ...query });
   };
+
   useEffect(() => {
     if (isInitializedRef.current) {
       return;
@@ -171,10 +195,12 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       handleInit(response)
     );
   }, []);
+
   useEffect(() => {
     const newInitalValues = ReportService.buildQueryRequest(initPageResponse);
     setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
   }, [initPageResponse]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
@@ -186,11 +212,15 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
           setQuery({ ...initialValues });
       }
     };
+
     fetchData();
   }, [initialValues]);
+
   useEffect(() => {
+
     console.log('report ctrl query...');
     console.log(query);
+
     if(query.pageNumber == 1) {
       setRefreshing(true);
       setLoadingMore(false);
@@ -198,6 +228,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       setRefreshing(false);
       setLoadingMore(true);
     }
+
     setIsProcessing(true);
     ReportService.submitRequest(query, contextCode).then((response) =>
       handleQueryResults(response)
@@ -208,6 +239,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       setLoadingMore(false);
     });
   }, [query]);
+
   useEffect(() => {
     if (!isInitializedRef.current) {
       return;
@@ -228,14 +260,17 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     })
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]);
+
   const onRefresh = () => {
     onPageSelection(1);
   };
+
   const onEndReached = () => {
     if (!loadingMore) {
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -246,13 +281,17 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
 
       </View>
       <View style={styles.formContainer}>
+
         <Text style={styles.introText} testID="page-intro-text"></Text>
+
         <HeaderPacUserDateGreaterThanFilterList
           name="headerPacUserDateGreaterThanFilterList"
           initData={initPageResponse}
           isHeaderVisible={false}
         />
-{/*        <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
+
+{/*
+        <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
           <View className="d-flex flex-column flex-md-row">
             <View className="mb-2 mb-md-0">
 
@@ -260,6 +299,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
           </View>
         </View>
          */}
+
         {/* <ReportFilterPacUserDateGreaterThanFilterList
           name="reportConnectedPacUserDateGreaterThanFilterList-filter"
           initialQuery={initialValues}
@@ -291,6 +331,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -298,6 +339,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   safeArea: {
+
   },
   header: {
       flexDirection: 'row', // Arrange items in a row
@@ -315,18 +357,22 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
+
   },
   titleText: {
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
     textAlign: 'center', // Center the text
+
   },
   introText: {
     fontSize: theme.fonts.mediumSize,
     marginBottom: 8,
     color: theme.Colors.text,
+
   },
 });
+
 export default ReportConnectedPacUserDateGreaterThanFilterList;
 

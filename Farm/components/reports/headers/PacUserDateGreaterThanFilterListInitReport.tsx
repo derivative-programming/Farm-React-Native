@@ -6,11 +6,13 @@ import React, {
 } from "react";
 import { Text, View, StyleSheet } from 'react-native';
 import * as InitReportService from "../services/init/PacUserDateGreaterThanFilterListInitReport";
+
 export interface HeaderPacUserDateGreaterThanFilterListProps {
   name: string;
   isHeaderVisible: boolean;
   initData: InitReportService.InitResultInstance
 }
+
 const HeaderPacUserDateGreaterThanFilterList: FC<HeaderPacUserDateGreaterThanFilterListProps> = ({
   name,
   isHeaderVisible=false,
@@ -18,18 +20,22 @@ const HeaderPacUserDateGreaterThanFilterList: FC<HeaderPacUserDateGreaterThanFil
 }): ReactElement | null => {
 
   if(!isHeaderVisible) return null;
+
   return (
     <View testID={name}>
 
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   horizontalStack: {
     flexDirection: 'row', // Aligns children horizontally
     alignItems: 'center', // Center items vertically in the row
     marginBottom: 8,
+
   }
 });
+
 export default HeaderPacUserDateGreaterThanFilterList;
 

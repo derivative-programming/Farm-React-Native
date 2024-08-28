@@ -8,16 +8,23 @@ import ScreenHeader from '../components/header/ScreenHeader';
 import { useNavigation } from '@react-navigation/native';
 import * as theme from '../constants/theme'
 import { ReportConnectedPacUserDateGreaterThanFilterList } from '../components/reports/connected';
+
 type PacUserDateGreaterThanFilterListScreenRouteProp = RouteProp<RootStackParamList, 'PacUserDateGreaterThanFilterList'>;
 type PacUserDateGreaterThanFilterListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'PacUserDateGreaterThanFilterList'>;
+
 type PacUserDateGreaterThanFilterListScreenProps = {
   route: PacUserDateGreaterThanFilterListScreenRouteProp;
   navigation: PacUserDateGreaterThanFilterListScreenNavigationProp;
 };
+
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 const PacUserDateGreaterThanFilterListScreen: React.FC<PacUserDateGreaterThanFilterListScreenProps> = ({ route }) => {
+
   const pacCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
+
   const navigation = useNavigation<ScreenNavigationProp>();
+
   return (
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -30,13 +37,16 @@ const PacUserDateGreaterThanFilterListScreen: React.FC<PacUserDateGreaterThanFil
       </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.Colors.background,
   },
   safeArea: {
+
   },
 });
+
 export default PacUserDateGreaterThanFilterListScreen;
 

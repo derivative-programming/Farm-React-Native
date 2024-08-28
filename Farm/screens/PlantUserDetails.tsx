@@ -8,16 +8,23 @@ import { ScreenBackButton } from '../components/ScreenBackButton';
 import { useNavigation } from '@react-navigation/native';
 import * as theme from '../constants/theme'
 import { ReportConnectedPlantUserDetails } from '../components/reports/connected';
+
 type PlantUserDetailsScreenRouteProp = RouteProp<RootStackParamList, 'PlantUserDetails'>;
 type PlantUserDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'PlantUserDetails'>;
+
 type PlantUserDetailsScreenProps = {
   route: PlantUserDetailsScreenRouteProp;
   navigation: PlantUserDetailsScreenNavigationProp;
 };
+
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 const PlantUserDetailsScreen: React.FC<PlantUserDetailsScreenProps> = ({ route }) => {
+
   const plantCode = route.params?.code ?? '00000000-0000-0000-0000-000000000000';
+
   const navigation = useNavigation<ScreenNavigationProp>();
+
   return (
       <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -30,13 +37,16 @@ const PlantUserDetailsScreen: React.FC<PlantUserDetailsScreenProps> = ({ route }
       </KeyboardAvoidingView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.Colors.background,
   },
   safeArea: {
+
   },
 });
+
 export default PlantUserDetailsScreen;
 

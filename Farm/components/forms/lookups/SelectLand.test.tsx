@@ -8,7 +8,7 @@ import {
   fireEvent,
   waitFor,
 } from "@testing-library/react-native";
-import FormSelectLand from "./SelectLand";  
+import FormSelectLand from "./SelectLand";
 import { Formik } from "formik";
 
 import '@testing-library/jest-dom';
@@ -25,9 +25,9 @@ describe("FormSelectLand Component", () => {
           validationSchema={validationSchema}
           onSubmit={async (values,actions) => {}}>
           {(props) => (
-               
+
                 <FormSelectLand label="Test Label" name="testName" />
-                
+
           )}
       </Formik>
     );
@@ -37,7 +37,8 @@ describe("FormSelectLand Component", () => {
   afterEach(cleanup);
 
   it("renders correctly", async () => {
-    expect(screen.getByTestId("testName")).toBeInTheDocument();
+    expect(screen.getByTestId("testName")).toBeTruthy();
   });
- 
+
 });
+

@@ -6,11 +6,13 @@ import React, {
 } from "react";
 import { Text, View, StyleSheet } from 'react-native';
 import * as InitReportService from "../services/init/PacUserRoleListInitReport";
+
 export interface HeaderPacUserRoleListProps {
   name: string;
   isHeaderVisible: boolean;
   initData: InitReportService.InitResultInstance
 }
+
 const HeaderPacUserRoleList: FC<HeaderPacUserRoleListProps> = ({
   name,
   isHeaderVisible=false,
@@ -18,18 +20,22 @@ const HeaderPacUserRoleList: FC<HeaderPacUserRoleListProps> = ({
 }): ReactElement | null => {
 
   if(!isHeaderVisible) return null;
+
   return (
     <View testID={name}>
 
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   horizontalStack: {
     flexDirection: 'row', // Aligns children horizontally
     alignItems: 'center', // Center items vertically in the row
     marginBottom: 8,
+
   }
 });
+
 export default HeaderPacUserRoleList;
 

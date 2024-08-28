@@ -1,9 +1,9 @@
-import React, { FC, ReactElement, useState,useEffect } from "react"; 
- 
+import React, { FC, ReactElement, useState,useEffect } from "react";
+
 import * as PacUserRoleListService from "../../lookups/services/Role";
 import {useField } from 'formik';
 import { FormInputSelect,FormInputSelectOption } from "../input-fields/InputSelect";
-   
+
 export interface FormSelectRoleProps {
     name: string
     label: string
@@ -20,37 +20,38 @@ export const FormSelectRole: FC<FormSelectRoleProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
-  }): ReactElement => { 
-    const [field, meta, helpers] = useField(name); 
-    
+  }): ReactElement => {
+    const [field, meta, helpers] = useField(name);
+
     const [roles, setRoles] = useState<FormInputSelectOption[]>([])
 
-    const initList = (response:any) => {  
+    const initList = (response:any) => {
 
-        if(response && 
+        if(response &&
             response.data &&
             response.data.items )
         {
-            const data:PacUserRoleListService.QueryResult = response.data; 
+            const data:PacUserRoleListService.QueryResult = response.data;
             const roles = data.items.map(({ roleCode, roleName }) => ({ label: roleName, value:roleCode }));
 
-            setRoles(roles); 
-        } 
-    } 
+            setRoles(roles);
+        }
+    }
 
     useEffect(() => {
         PacUserRoleListService.submitRequest()
         .then((response) => initList(response));
-    },[]); 
+    },[]);
 
-    return ( 
-        <FormInputSelect 
-            label={label} 
+    return (
+        <FormInputSelect
+            label={label}
             name={name}
             options={roles}
             isVisible={isVisible}
             />
-         
+
     );
 };
 export default FormSelectRole;
+
