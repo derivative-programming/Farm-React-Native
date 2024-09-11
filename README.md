@@ -15,6 +15,8 @@ then in vscode:
 - cd Farm
 - npx expo start 
     or 'npx expo start --tunnel', if that doesnt work
+        need ngrok installed
+        execute 'ngrok http 19000'
 - scan qr code on mobile device 
 
 or start a virtual device in android studio and select 'a' for open android. 

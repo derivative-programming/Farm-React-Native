@@ -9,8 +9,13 @@ const AuthProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
-    console.log("Set header Api-Key..." + token);
-    apiInstance.defaults.headers.common["Api-Key"] = token;
+    if(token){
+      console.log("Set header Api-Key..." + token);
+      apiInstance.defaults.headers.common["Api-Key"] = token;
+    } else{
+      console.log("Set header Api-Key...''");
+      apiInstance.defaults.headers.common["Api-Key"] = "";
+    }
   }, [token]);
 
   const onToken = (token) => { 

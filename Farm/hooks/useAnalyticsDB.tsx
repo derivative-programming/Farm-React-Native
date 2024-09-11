@@ -149,8 +149,20 @@ function useAnalyticsDB() {
   const logInternetConnectionRegained = () => { 
     logEvent("logInternetConnectionRegained"); 
   }
+  
+  const logError = (error:string) => {
+    console.log('logError ' + error);
+    const eventData = { 
+      messageType: "error", 
+      controlName: error,  
+      sourceObjectName: "", 
+      param1: "",  
+      description: "", 
+    }
+    addDB(eventData);
+  }
 
   return { db, getIsRowDB, clearDB, addDB, logClick, logInternetConnectionLost, logInternetConnectionRegained,
-    logInitStartEvent,logInitCompleteEvent };
+    logInitStartEvent,logInitCompleteEvent, logError, logEvent };
 }
 export default useAnalyticsDB;

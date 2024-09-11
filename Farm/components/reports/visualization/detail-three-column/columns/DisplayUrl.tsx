@@ -29,7 +29,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
   const labelName = groupName +'-label';
 
   let url = value;
-  if(!linkText.toLowerCase().startsWith("http"))
+  if(!url.toLowerCase().startsWith("http"))
   {
     url = "https://" + url;
   }

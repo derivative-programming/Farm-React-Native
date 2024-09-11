@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
+import NetInfo from "@react-native-community/netinfo";
 
 function useNavigatorOnline() {
-  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+  const [isOnline, setIsOnline] = useState<boolean>(true); // Default is true for initialization
 
   useEffect(() => {
-    function handleOnlineStatus() { 
-      setIsOnline(window.navigator.onLine);
-    }
+    // Subscribe to network state updates
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setIsOnline(state.isConnected && state.isInternetReachable);
+    });
 
-    window.addEventListener("online", handleOnlineStatus);
-    window.addEventListener("offline", handleOnlineStatus);
-
+    // Unsubscribe when the component unmounts
     return () => {
-      window.removeEventListener("online", handleOnlineStatus);
-      window.removeEventListener("offline", handleOnlineStatus);
+      unsubscribe();
     };
   }, []);
 
   return isOnline;
 }
-export default useNavigatorOnline
+
+export default useNavigatorOnline;
