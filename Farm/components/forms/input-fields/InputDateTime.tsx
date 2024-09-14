@@ -4,6 +4,7 @@ import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormLabel } from "./InputLabel";
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import * as theme from '../../../constants/theme';
 
 export interface FormInputDateTimeProps {
   name: string
@@ -12,6 +13,8 @@ export interface FormInputDateTimeProps {
   autoFocus?: boolean
   disabled?: boolean
   isVisible?: boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
 
 export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
@@ -21,6 +24,8 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
   const [show, setShow] = useState(false);
@@ -45,7 +50,7 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
 
   return ( 
     <View style={styles.container}>
-      <FormLabel text={label} name={`${name}-label`} />
+      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
       <TouchableOpacity 
         onPress={() => setShow(true)} 
         style={[styles.button, disabled && styles.disabledButton]}
@@ -72,6 +77,11 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
       {isInvalid && (
         <Text style={styles.errorText} testID={`${name}-error`}>{meta.error}</Text>
       )}
+      {detailText.length > 0 && (
+        <Text style={styles.detailText}> 
+          {detailText}
+        </Text>
+      )}
     </View>
   );
 };
@@ -89,5 +99,11 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
 });

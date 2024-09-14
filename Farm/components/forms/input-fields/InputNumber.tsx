@@ -13,6 +13,8 @@ export interface FormInputNumberProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
    
 export const FormInputNumber: FC<FormInputNumberProps> = ({
@@ -22,6 +24,8 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
 
@@ -33,7 +37,7 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
 
   return ( 
     <View style={styles.container}>
-        <FormLabel text={label} name={name + '-label'}/>
+        <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
         <TextInput
           style={[styles.input, disabled && styles.disabledInput]}
           keyboardType="numeric"
@@ -48,6 +52,11 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
         />
         {isInvalid && (
           <Text style={styles.errorText}>{meta.error}</Text>
+        )}
+        {detailText.length > 0 && (
+          <Text style={styles.detailText}> 
+            {detailText}
+          </Text>
         )}
     </View>
   );
@@ -82,6 +91,12 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 8,    
     
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
   
 });

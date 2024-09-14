@@ -12,6 +12,8 @@ export interface FormInputMoneyProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
    
 export const FormInputMoney: FC<FormInputMoneyProps> = ({
@@ -21,6 +23,8 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
 
@@ -32,7 +36,7 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
 
   return ( 
     <View style={styles.container}>
-        <FormLabel text={label} name={name + '-label'}/>
+      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
         <View style={styles.horizontalStack}>
           <Text style={styles.prefix}>$</Text> 
           <TextInput
@@ -50,6 +54,11 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
         </View>
         {isInvalid && (
           <Text style={styles.errorText}>{meta.error}</Text>
+        )}
+        {detailText.length > 0 && (
+          <Text style={styles.detailText}> 
+            {detailText}
+          </Text>
         )}
     </View>
   );
@@ -91,6 +100,12 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 8,    
     
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
   
 });

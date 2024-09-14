@@ -10,6 +10,8 @@ export interface FormInputCheckboxProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
    
 export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
@@ -19,6 +21,8 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta, helpers] = useField(name);  
 

@@ -11,6 +11,8 @@ export interface FormSelectFlavorProps {
     autoFocus?:boolean
     disabled?: boolean
     isVisible?:boolean
+    isRequired?: boolean;
+    detailText?: string; 
   }
 
 export const FormSelectFlavor: FC<FormSelectFlavorProps> = ({
@@ -20,6 +22,8 @@ export const FormSelectFlavor: FC<FormSelectFlavorProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
+    isRequired = false,
+    detailText = '', 
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 
@@ -49,6 +53,8 @@ export const FormSelectFlavor: FC<FormSelectFlavorProps> = ({
             name={name}
             options={flavors}
             isVisible={isVisible}
+            isRequired={isRequired}
+            detailText={detailText}
             />
 
     );

@@ -15,6 +15,8 @@ export interface FormInputSelectProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
 
 export interface FormInputSelectOption {
@@ -30,6 +32,8 @@ export const FormInputSelect: FC<FormInputSelectProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta, helpers] = useField(name); 
 
@@ -41,7 +45,7 @@ export const FormInputSelect: FC<FormInputSelectProps> = ({
 
   return ( 
     <View style={styles.container}>
-      <FormLabel text={label} name={name + '-label'}/>
+      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} /> 
       <Picker
         selectedValue={field.value}
         onValueChange={(itemValue) => field.onChange(name)(itemValue)}
@@ -57,6 +61,11 @@ export const FormInputSelect: FC<FormInputSelectProps> = ({
       </Picker>
       {isInvalid && (
         <Text style={styles.errorText}>{meta.error}</Text>
+      )}
+      {detailText.length > 0 && (
+        <Text style={styles.detailText}> 
+          {detailText}
+        </Text>
       )}
     </View>
   );
@@ -84,6 +93,12 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 8,    
     
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
   
 });

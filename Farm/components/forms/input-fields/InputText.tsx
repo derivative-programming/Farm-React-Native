@@ -12,6 +12,8 @@ export interface FormInputTextProps {
   autoFocus?:boolean
   disabled?: boolean
   isVisible?:boolean
+  isRequired?: boolean;
+  detailText?: string; 
 }
     
 export const FormInputText: FC<FormInputTextProps> = ({
@@ -21,6 +23,8 @@ export const FormInputText: FC<FormInputTextProps> = ({
   autoFocus = false,
   disabled = false,
   isVisible = true,
+  isRequired = false,
+  detailText = '', 
 }): ReactElement | null => {
   const [field, meta] = useField(name);  
   
@@ -30,7 +34,7 @@ export const FormInputText: FC<FormInputTextProps> = ({
       
   return ( 
   <View style={styles.container}>
-    <FormLabel text={label} name={name + '-label'}/>
+    <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
     <TextInput
       style={[styles.input, disabled && styles.disabledInput]}
       placeholder={placeholder}
@@ -44,6 +48,11 @@ export const FormInputText: FC<FormInputTextProps> = ({
     />
     {isInvalid && (
       <Text style={styles.errorText}>{meta.error}</Text>
+    )}
+    {detailText.length > 0 && (
+      <Text style={styles.detailText}> 
+        {detailText}
+      </Text>
     )}
   </View>
   );
@@ -79,6 +88,12 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 8,    
     
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
   
 });

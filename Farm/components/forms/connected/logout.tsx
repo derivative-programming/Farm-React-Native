@@ -37,12 +37,13 @@ export const Logout: FC<FormProps> = ({
   
   const handleLogout = async () => {
     await AnalyticsService.stop();
-    authContext.setToken("");
-    authContext.setRoles("");
+    authContext.clearSession();
+    // authContext.setToken("");
+    // authContext.setRoles("");
 
-    await AsyncStorage.setItem("@token","");
-    await AsyncStorage.setItem("customerCode","");
-    await AsyncStorage.setItem("email","");
+    // await AsyncStorage.setItem("@token","");
+    // await AsyncStorage.setItem("customerCode","");
+    // await AsyncStorage.setItem("email","");
 
     // Replace with the name of your login route
     navigation.navigate('TacLogin', { code: '00000000-0000-0000-0000-000000000000' });
