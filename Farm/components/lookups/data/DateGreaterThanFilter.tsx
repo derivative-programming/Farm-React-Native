@@ -1,11 +1,10 @@
-import { useEffect,useState} from "react";  
 import * as PacUserDateGreaterThanFilterListService from "../services/DateGreaterThanFilter";
 
 export const getDateGreaterThanFilters= () => {
     let items:PacUserDateGreaterThanFilterListService.QueryResultItem[] = []
 
     const getItems = async() => {
-        const response:any  = PacUserDateGreaterThanFilterListService.submitRequest(); 
+        const response:PacUserDateGreaterThanFilterListService.ResponseFull  = await PacUserDateGreaterThanFilterListService.submitRequest(); 
 
         if(response && response.data)
         {

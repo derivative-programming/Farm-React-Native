@@ -4,26 +4,26 @@
 
   export const submitRequest = ():Promise<ResponseFull> => {
     return apiCall({
-      url: '/pac-user-role-list/00000000-0000-0000-0000-000000000000?pageNumber=1&itemCountPerPage=100&orderByColumnName=roleDisplayOrder&orderByDescending=false',
+      url: '/pac-user-dyna-flow-type-list/00000000-0000-0000-0000-000000000000?pageNumber=1&itemCountPerPage=100&orderByColumnName=dynaFlowTypeDisplayOrder&orderByDescending=false',
       method: "get"
     });
   };
 
 export interface QueryResultItem {
 
-    roleCode: string;
+    dynaFlowTypeCode: string;
 
-    role: number;
+    dynaFlowTypePriorityLevel: number;
 
-    roleDescription: string;
+    dynaFlowTypeDescription: string;
 
-    roleDisplayOrder: number;
+    dynaFlowTypeDisplayOrder: number;
 
-    roleIsActive: boolean;
+    dynaFlowTypeIsActive: boolean;
 
-    roleLookupEnumName: string;
+    dynaFlowTypeLookupEnumName: string;
 
-    roleName: string;
+    dynaFlowTypeName: string;
 }
 
 export interface QueryRequest {
@@ -96,35 +96,35 @@ export class InitValidationErrorInstance implements InitValidationError {
 
 export class QueryResultItemInstance implements QueryResultItem {
 
-    roleCode: string;
+    dynaFlowTypeCode: string;
 
-    role: number;
+    dynaFlowTypePriorityLevel: number;
 
-    roleDescription: string;
+    dynaFlowTypeDescription: string;
 
-    roleDisplayOrder: number;
+    dynaFlowTypeDisplayOrder: number;
 
-    roleIsActive: boolean;
+    dynaFlowTypeIsActive: boolean;
 
-    roleLookupEnumName: string;
+    dynaFlowTypeLookupEnumName: string;
 
-    roleName: string;
+    dynaFlowTypeName: string;
 
     constructor() {
 
-        this.roleCode = '00000000-0000-0000-0000-000000000000';
+        this.dynaFlowTypeCode = '00000000-0000-0000-0000-000000000000';
 
-        this.role = 0;
+        this.dynaFlowTypePriorityLevel = 0;
 
-        this.roleDescription = '';
+        this.dynaFlowTypeDescription = '';
 
-        this.roleDisplayOrder = 0;
+        this.dynaFlowTypeDisplayOrder = 0;
 
-        this.roleIsActive = false;
+        this.dynaFlowTypeIsActive = false;
 
-        this.roleLookupEnumName = '';
+        this.dynaFlowTypeLookupEnumName = '';
 
-        this.roleName = '';
+        this.dynaFlowTypeName = '';
     }
 }
 

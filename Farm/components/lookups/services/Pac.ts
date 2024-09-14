@@ -4,26 +4,26 @@
 
   export const submitRequest = ():Promise<ResponseFull> => {
     return apiCall({
-      url: '/pac-user-role-list/00000000-0000-0000-0000-000000000000?pageNumber=1&itemCountPerPage=100&orderByColumnName=roleDisplayOrder&orderByDescending=false',
+      url: '/pac-user-pac-list/00000000-0000-0000-0000-000000000000?pageNumber=1&itemCountPerPage=100&orderByColumnName=pacDisplayOrder&orderByDescending=false',
       method: "get"
     });
   };
 
 export interface QueryResultItem {
 
-    roleCode: string;
+    pacCode: string;
 
-    role: number;
+    pac: number;
 
-    roleDescription: string;
+    pacDescription: string;
 
-    roleDisplayOrder: number;
+    pacDisplayOrder: number;
 
-    roleIsActive: boolean;
+    pacIsActive: boolean;
 
-    roleLookupEnumName: string;
+    pacLookupEnumName: string;
 
-    roleName: string;
+    pacName: string;
 }
 
 export interface QueryRequest {
@@ -96,35 +96,35 @@ export class InitValidationErrorInstance implements InitValidationError {
 
 export class QueryResultItemInstance implements QueryResultItem {
 
-    roleCode: string;
+    pacCode: string;
 
-    role: number;
+    pac: number;
 
-    roleDescription: string;
+    pacDescription: string;
 
-    roleDisplayOrder: number;
+    pacDisplayOrder: number;
 
-    roleIsActive: boolean;
+    pacIsActive: boolean;
 
-    roleLookupEnumName: string;
+    pacLookupEnumName: string;
 
-    roleName: string;
+    pacName: string;
 
     constructor() {
 
-        this.roleCode = '00000000-0000-0000-0000-000000000000';
+        this.pacCode = '00000000-0000-0000-0000-000000000000';
 
-        this.role = 0;
+        this.pac = 0;
 
-        this.roleDescription = '';
+        this.pacDescription = '';
 
-        this.roleDisplayOrder = 0;
+        this.pacDisplayOrder = 0;
 
-        this.roleIsActive = false;
+        this.pacIsActive = false;
 
-        this.roleLookupEnumName = '';
+        this.pacLookupEnumName = '';
 
-        this.roleName = '';
+        this.pacName = '';
     }
 }
 
