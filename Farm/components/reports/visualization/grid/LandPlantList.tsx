@@ -46,6 +46,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
   const { logClick } = useAnalyticsDB();  
   const componentName = "ReportGridLandPlantList";
+  const contextValueName = "landCode";
+  const contextValue = contextCode;
 
   const handleRowSelectCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -407,9 +409,10 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               rowIndex={item.rowNumber}
               buttonText="Update"
               isButtonCallToAction={false}
-              onClick={() => {
+              value={item.updateLinkPlantCode}
+              onPress={() => {
                 logClick(componentName,"updateLinkPlantCode","");
-                onNavigateTo("/plant-user-details/" + item.updateLinkPlantCode)
+                onNavigateTo("PlantUserDetails", item.updateLinkPlantCode)
               }}
               isVisible={false} 
             />
@@ -419,7 +422,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               buttonText="Delete"
               isButtonCallToAction={false}
               isVisible={true} 
-              onClick={() =>
+              value={item.deleteAsyncButtonLinkPlantCode}
+              onPress={() =>
                 {
                   logClick(componentName,"deleteAsyncButtonLinkPlantCode","");
                   const data: AsyncServices.PlantUserDeleteRequest = AsyncServices.buildPlantUserDeleteRequest();
@@ -439,9 +443,10 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               buttonText="Details"
               isButtonCallToAction={true}
               isVisible={true} 
-              onClick={() => {
+              value={item.detailsLinkPlantCode}
+              onPress={() => {
                 logClick(componentName,"detailsLinkPlantCode","");
-                onNavigateTo("/plant-user-details/" + item.detailsLinkPlantCode);
+                onNavigateTo("PlantUserDetails", item.detailsLinkPlantCode);
               }}
             />
 
@@ -450,7 +455,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               buttonText="Test File Download"
               isButtonCallToAction={false}
               isVisible={true} 
-              onClick={() =>
+              value={item.testFileDownloadLinkPacCode}
+              onPress={() =>
                 {
                   logClick(componentName,"testFileDownloadLinkPacCode","");
                   const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = AsyncServices.buildPacUserTestAsyncFileDownloadRequest();
@@ -467,7 +473,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               isButtonCallToAction={false}
               isVisible={true} 
               conditionallyVisible={item.isEditAllowed}  
-              onClick={() =>
+              value={item.testConditionalFileDownloadLinkPacCode}
+              onPress={() =>
                 {
                   logClick(componentName,"testConditionalFileDownloadLinkPacCode","");
                   const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = AsyncServices.buildPacUserTestAsyncFileDownloadRequest();
@@ -483,7 +490,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               buttonText="Test Async Flow Req"
               isButtonCallToAction={false}
               isVisible={true} 
-              onClick={() =>
+              value={item.testAsyncFlowReqLinkPacCode}
+              onPress={() =>
                 {
                   logClick(componentName,"testAsyncFlowReqLinkPacCode","");
                   const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
@@ -503,7 +511,8 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               isButtonCallToAction={false}
               isVisible={true} 
               conditionallyVisible={item.isEditAllowed}  
-              onClick={() =>
+              value={item.testConditionalAsyncFlowReqLinkPacCode}
+              onPress={() =>
                 {
                   logClick(componentName,"testConditionalAsyncFlowReqLinkPacCode","");
                   const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
@@ -523,9 +532,10 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               isButtonCallToAction={true}
               isVisible={true} 
               conditionallyVisible={item.isEditAllowed}  
-              onClick={() => {
+              value={item.conditionalBtnExampleLinkPlantCode}
+              onPress={() => {
                 logClick(componentName,"conditionalBtnExampleLinkPlantCode","");
-                onNavigateTo("/plant-user-details/" + item.conditionalBtnExampleLinkPlantCode);
+                onNavigateTo("PlantUserDetails", item.conditionalBtnExampleLinkPlantCode);
               }}
             />
 {/* ENDSET */}
