@@ -270,6 +270,14 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                       label="Some Secure Var Char Val"
                       isVisible={true}
                     />
+                    <InputFields.FormInputTextArea name="requestSomeLongVarCharVal"
+                      label="Some Long Var Char Val"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputTextArea name="requestSomeLongNVarCharVal"
+                      label="Some Long N Var Char Val"
+                      isVisible={true}
+                    /> 
                     <InputFields.FormInputTextArea name="requestSomeTextVal"
                       label="Some Text Val"
                       isVisible={true}
@@ -284,6 +292,10 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
                     />
                     <InputFields.FormInputFile name="requestSampleImageUploadFile"
                       label="Sample Image Upload"
+                      isVisible={true}
+                    />
+                    <InputFields.FormInputText name="someImageUrlVal"
+                      label="Some Image Url" 
                       isVisible={true}
                     />
                 </>

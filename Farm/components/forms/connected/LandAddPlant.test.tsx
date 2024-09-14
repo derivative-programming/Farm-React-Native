@@ -92,10 +92,13 @@ describe("LandAddPlant Component", () => {
     expect(screen.getByTestId("requestSomeMoneyVal")).toBeTruthy();
     expect(screen.getByTestId("requestSomeNVarCharVal")).toBeTruthy();
     expect(screen.getByTestId("requestSomeVarCharVal")).toBeTruthy();
+    expect(screen.getByTestId("requestSomeLongVarCharVal")).toBeTruthy();
+    expect(screen.getByTestId("requestSomeLongNVarCharVal")).toBeTruthy();
     expect(screen.getByTestId("requestSomeTextVal")).toBeTruthy();
     expect(screen.getByTestId("requestSomePhoneNumber")).toBeTruthy();
     expect(screen.getByTestId("requestSomeEmailAddress")).toBeTruthy();
     expect(screen.getByTestId("requestSampleImageUploadFile")).toBeTruthy();
+    expect(screen.getByTestId("someImageUrlVal")).toBeTruthy();
 
     
     expect(screen.getByTestId("submit-button")).toBeTruthy();
