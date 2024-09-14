@@ -61,9 +61,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   const validationSchema = FormValidation.buildValidationSchema();
 
   const authContext = useContext(AuthContext);
-
-  // console.log('form ctrl initial values...');
-  // console.log(initialValues);
+ 
 
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
@@ -74,6 +72,9 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     }
 
     setInitPageResponse({ ...response });
+    console.log('Services.TacRegister.handleInit success');
+    console.log('form ctrl initial values...');
+    console.log(response);
   };
 
   const handleValidate = async (values: FormService.SubmitRequest) => {
@@ -130,11 +131,12 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
         return;
       }
 
-      authContext.setToken(response.apiKey);
-      authContext.setRoles(response.roleNameCSVList);
-      await AsyncStorage.setItem("@token", response.apiKey);
-      await AsyncStorage.setItem("customerCode", response.customerCode);
-      await AsyncStorage.setItem("email", response.email);
+      authContext.startSession(response);
+      // authContext.setToken(response.apiKey);
+      // authContext.setRoles(response.roleNameCSVList);
+      // await AsyncStorage.setItem("@token", response.apiKey);
+      // await AsyncStorage.setItem("customerCode", response.customerCode);
+      // await AsyncStorage.setItem("email", response.email);
       // await AnalyticsService.start();
 
       actions.setSubmitting(false);

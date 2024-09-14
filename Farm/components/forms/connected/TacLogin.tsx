@@ -58,9 +58,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   const validationSchema = FormValidation.buildValidationSchema();
 
   const authContext = useContext(AuthContext); 
-
-  console.log('form ctrl initial values...');
-  console.log(initialValues);
+ 
 
 
   // let headerErrors: string[] = [];
@@ -74,6 +72,8 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
 
     setInitialValues({ ...FormService.buildSubmitRequest(initFormResponse) }); 
     console.log('Services.TacLogin.handleInit success');
+    console.log('form ctrl initial values...');
+    console.log(initFormResponse);
   };
 
   const handleValidate = async (values: FormService.SubmitRequest) => {
@@ -126,11 +126,12 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       }
       {/*//GENTrainingBlock[caseGetApiKey]Start*/}
       {/*//GENLearn[isLoginPage=true]Start*/}
-      authContext.setToken(response.apiKey);
-      authContext.setRoles(response.roleNameCSVList);
-      await AsyncStorage.setItem("@token", response.apiKey);
-      await AsyncStorage.setItem("customerCode", response.customerCode);
-      await AsyncStorage.setItem("email", response.email);
+      authContext.startSession(response);
+      // authContext.setToken(response.apiKey);
+      // authContext.setRoles(response.roleNameCSVList);
+      // await AsyncStorage.setItem("@token", response.apiKey);
+      // await AsyncStorage.setItem("customerCode", response.customerCode);
+      // await AsyncStorage.setItem("email", response.email);
       // await AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 

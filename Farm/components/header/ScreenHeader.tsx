@@ -35,11 +35,13 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   const onLogout = async () => {
     await logClick("Header","logOut","");
     await AnalyticsService.stop();
-    authContext.setToken("");
-    authContext.setRoles("");
-    await AsyncStorage.setItem("@token", "");
-    await AsyncStorage.setItem("customerCode","");
-    await AsyncStorage.setItem("email", "");
+    
+    authContext.clearSession();
+    // authContext.setToken("");
+    // authContext.setRoles("");
+    // await AsyncStorage.setItem("@token", "");
+    // await AsyncStorage.setItem("customerCode","");
+    // await AsyncStorage.setItem("email", "");
     await onLogin();
   };
 

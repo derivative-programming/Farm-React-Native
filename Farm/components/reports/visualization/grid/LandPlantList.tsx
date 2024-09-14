@@ -290,7 +290,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
             />
  
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testFileDownloadLinkPacCode"
-              rowIndex={index}
+              rowIndex={item.rowNumber}
               buttonText="Test File Download"
               value={item.testFileDownloadLinkPacCode}
               isButtonCallToAction={false}
@@ -314,7 +314,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalFileDownloadLinkPacCode"
-              rowIndex={index}
+              rowIndex={item.rowNumber}
               buttonText="Test Conditional File Download"
               isButtonCallToAction={false}
               isVisible={true}
@@ -339,7 +339,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testAsyncFlowReqLinkPacCode"
-              rowIndex={index}
+              rowIndex={item.rowNumber}
               buttonText="Test Async Flow Req"
               isButtonCallToAction={false}
               isVisible={true}
@@ -354,7 +354,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalAsyncFlowReqLinkPacCode"
-              rowIndex={index}
+              rowIndex={item.rowNumber}
               buttonText="Test Conditional Async Flow Req"
               isButtonCallToAction={false}
               isVisible={true}
@@ -370,7 +370,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="conditionalBtnExampleLinkPlantCode"
-              rowIndex={index}
+              rowIndex={item.rowNumber}
               buttonText="Conditional Btn Example"
               isButtonCallToAction={true}
               isVisible={true}
