@@ -16,6 +16,10 @@
         "reportButton.calculatedIsDestinationContextObjectNameSet", 
         "reportButton.isVisible",
         "reportButton.isButtonCallToAction",
-        "reportButton.isEnabled"
+        "reportButton.isEnabled", 
+        "reportColumn.calculatedIsAddedIntoExport", 
+        "reportColumn.isFilterAvailable", 
+        "reportColumn.isJoinedToLeftColumn", 
+        "reportColumn.isJoinedToRightColumn"
     ]
 }

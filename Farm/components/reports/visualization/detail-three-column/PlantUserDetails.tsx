@@ -149,6 +149,25 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     isVisible={true}
                 />
 
+ 
+                <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isImageUrlAvailable"
+                    label="N Var Char As Url"
+                    isChecked={item.isImageUrlAvailable}
+                    isVisible={false}
+                />
+      
+                <ReportColumnDisplay.ReportColumnDisplayImageUrl forColumn="someImageUrlVal"
+                    label="Some Image Url Val"
+                    value={item.someImageUrlVal}
+                    isVisible={true} 
+                />
+      
+                <ReportColumnDisplay.ReportColumnDisplayImageUrl forColumn="someConditionalImageUrlVal"
+                    label="Some Conditional Image Url Val"
+                    value={item.someConditionalImageUrlVal}
+                    isVisible={true}
+                    conditionallyVisible={item.isImageUrlAvailable}  
+                />
 
                 <ReportColumnDisplay.ReportColumnDisplayButton forColumn="updateButtonTextLinkPlantCode"
                     buttonText="Update Button Text"

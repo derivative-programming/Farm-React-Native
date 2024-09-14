@@ -2,7 +2,8 @@
     "templateType":"report", 
     "dimension" :{
         "name":"PlantUserDetails",
-        "calculatedIsPage":"true"
+        "calculatedIsPage":"true",
+        "visualizationType": "DetailThreeColumn"
     },
     "ignoreDimensionPropertyList": [ 
         "reportColumn.calculatedIsConditionalSqlLogicAvailable",
@@ -12,6 +13,8 @@
         "reportColumn.calculatedIsMinWidthAvailable",
         "reportButton.calculatedIsDestinationContextObjectTheOwnerObject", 
         "reportButton.calculatedIsDestinationContextObjectNameSet", 
-        "reportColumn.calculatedIsSourceObjectAvailable"
+        "reportColumn.calculatedIsSourceObjectAvailable", 
+        "reportColumn.calculatedIsAddedIntoExport", 
+        "reportColumn.isFilterAvailable"
     ]
 }

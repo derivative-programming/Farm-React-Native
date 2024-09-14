@@ -130,148 +130,305 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
           <View style={styles.card}> 
 {/* ENDSET */}
             {/* PlantCode */}
-            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someIntVal"
-              rowIndex={item.rowNumber}
-              value={item.someIntVal}
-              label="Int Val"
-              isVisible={true}
-            />
-            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someBigIntVal"
-              rowIndex={item.rowNumber}
-              value={item.someBigIntVal}
-              label="Big Int Val"
-              isVisible={true}
-            />
-            <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="someBitVal"
-              rowIndex={item.rowNumber}
-              isChecked={item.someBitVal}
-              label="Bit Val"
-              isVisible={true}
-            />
+            
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isEditAllowed"
               rowIndex={item.rowNumber}
               isChecked={item.isEditAllowed}
+              isVisible={true} 
               label="Edit Allowed"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someIntVal"
+              rowIndex={item.rowNumber}
+              value={item.someIntVal}
+              isVisible={true} 
+              label="Int Val"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someConditionalIntVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalIntVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Int Val"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someBigIntVal"
+              rowIndex={item.rowNumber}
+              value={item.someBigIntVal}
+              isVisible={true} 
+              label="Big Int Val"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someConditionalBigIntVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalBigIntVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Big Int Val"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="someBitVal"
+              rowIndex={item.rowNumber}
+              isChecked={item.someBitVal}
+              isVisible={true} 
+              label="Bit Val"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="someConditionalBitVal"
+              rowIndex={item.rowNumber}
+              isChecked={item.someConditionalBitVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Bit Val"
+            />
+
 
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isDeleteAllowed"
               rowIndex={item.rowNumber}
               isChecked={item.isDeleteAllowed}
+              isVisible={true} 
               label="Delete Allowed"
-              isVisible={true}
             />
+
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someFloatVal"
               rowIndex={item.rowNumber}
               value={item.someFloatVal}
+              isVisible={true} 
               label="Float Val"
-              isVisible={true}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someConditionalFloatVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalFloatVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Float Val"
             />
 
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someDecimalVal"
               rowIndex={item.rowNumber}
               value={item.someDecimalVal}
+              isVisible={true} 
               label="Decimal Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someConditionalDecimalVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalDecimalVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Decimal Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayDateTime forColumn="someUTCDateTimeVal"
               rowIndex={item.rowNumber}
               value={item.someUTCDateTimeVal}
+              isVisible={true} 
               label="Date Time Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayDateTime forColumn="someConditionalUTCDateTimeVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalUTCDateTimeVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Date Time Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayDate forColumn="someDateVal"
               rowIndex={item.rowNumber}
               value={item.someDateVal}
+              isVisible={true} 
               label="Date Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayDate forColumn="someConditionalDateVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalDateVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Date Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayMoney forColumn="someMoneyVal"
               rowIndex={item.rowNumber}
               value={item.someMoneyVal}
+              isVisible={true} 
               label="Money Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayMoney forColumn="someConditionalMoneyVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalMoneyVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Money Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="someNVarCharVal"
               rowIndex={item.rowNumber}
               value={item.someNVarCharVal}
+              isVisible={true} 
               label="N Var Char Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayText forColumn="someConditionalNVarCharVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalNVarCharVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional N Var Char Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="someVarCharVal"
               rowIndex={item.rowNumber}
               value={item.someVarCharVal}
+              isVisible={true} 
               label="Var Char Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayText forColumn="someConditionalVarCharVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalVarCharVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Var Char Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="someTextVal"
               rowIndex={item.rowNumber}
               value={item.someTextVal}
+              isVisible={true} 
               label="Text Val"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayText forColumn="someConditionalTextVal"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalTextVal}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Text Val"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="somePhoneNumber"
               rowIndex={item.rowNumber}
               value={item.somePhoneNumber}
+              isVisible={true} 
               label="Phone Number"
-              isVisible={true}
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayPhoneNumber forColumn="someConditionalPhoneNumber"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalPhoneNumber}
+              isVisible={true}  
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Phone Number"
             />
 
             <ReportColumnDisplay.ReportColumnDisplayEmail forColumn="someEmailAddress"
               rowIndex={item.rowNumber}
               value={item.someEmailAddress}
+              isVisible={true} 
               label="Email Address"
-              isVisible={true}
             />
+
+            <ReportColumnDisplay.ReportColumnDisplayEmail forColumn="someConditionalEmailAddress"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalEmailAddress}
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional Email Address"
+            />
+
+
+            <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isImageUrlAvailable"
+              rowIndex={item.rowNumber}
+              isChecked={item.isImageUrlAvailable}
+              isVisible={false} 
+              label="Is Image Url Available"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayImageUrl forColumn="someImageUrlVal"
+              rowIndex={item.rowNumber}
+              value={item.someImageUrlVal}
+              isVisible={true} 
+              label="Image Url"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayImageUrl forColumn="someConditionalImageUrl"
+              rowIndex={item.rowNumber}
+              value={item.someConditionalImageUrl}
+              isVisible={true} 
+              conditionallyVisible={item.isImageUrlAvailable}  
+              label="Conditional Image Url"
+            />
+
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
               rowIndex={item.rowNumber}
               value={item.flavorName}
+              isVisible={true} 
               label="Flavor Name"
-              isVisible={true}
             />
+
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorCode"
               rowIndex={item.rowNumber}
               value={item.flavorCode}
+              isVisible={false} 
               label="flavor Code"
-              isVisible={false}
             />
-            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="SomeIntConditionalOnDeletable"
+
+            <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="someIntConditionalOnDeletable"
               rowIndex={item.rowNumber}
               value={item.someIntConditionalOnDeletable}
+              isVisible={true} 
+              conditionallyVisible={item.isDeleteAllowed}  
               label="Int Conditional"
-              conditionallyVisible={item.isDeleteAllowed} 
             />
-            <ReportColumnDisplay.ReportColumnDisplayUrl forColumn="NVarCharAsUrl"
+
+            <ReportColumnDisplay.ReportColumnDisplayUrl forColumn="nVarCharAsUrl"
               rowIndex={item.rowNumber}
               value={item.nVarCharAsUrl}
-              label="N Var Char As Url"
               linkText="Click Here"
-              isVisible={true}
+              isVisible={true} 
+              label="N Var Char As Url"
+            />
+
+            <ReportColumnDisplay.ReportColumnDisplayUrl forColumn="nVarCharConditionalAsUrl"
+              rowIndex={item.rowNumber}
+              value={item.nVarCharConditionalAsUrl}
+              linkText="Click Here"
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              label="Conditional N Var Char As Url"
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="updateLinkPlantCode"
               rowIndex={item.rowNumber}
-              value={item.updateLinkPlantCode}
               buttonText="Update"
               isButtonCallToAction={false}
-              onPress={() => {
-                logClick("ReportGridLandPlantList","updateLinkPlantCode","");
-                onNavigateTo("PlantUserDetails", item.updateLinkPlantCode)
+              onClick={() => {
+                logClick(componentName,"updateLinkPlantCode","");
+                onNavigateTo("/plant-user-details/" + item.updateLinkPlantCode)
               }}
-              isVisible={false}
+              isVisible={false} 
             />
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="deleteAsyncButtonLinkPlantCode"
               rowIndex={item.rowNumber}
-              value={item.deleteAsyncButtonLinkPlantCode}
               buttonText="Delete"
               isButtonCallToAction={false}
-              isVisible={true}
-              onPress={() =>
+              isVisible={true} 
+              onClick={() =>
                 {
-                  logClick("ReportGridLandPlantList","deleteAsyncButtonLinkPlantCode","");
-                  const data: any = {};
-                  AsyncServices.PlantUserDeleteSubmitRequest(data, item.deleteAsyncButtonLinkPlantCode).then((response) =>
+                  logClick(componentName,"deleteAsyncButtonLinkPlantCode","");
+                  const data: AsyncServices.PlantUserDeleteRequest = AsyncServices.buildPlantUserDeleteRequest();
+
+                  if (Object.hasOwn(data, contextValueName)) {
+                    data[contextValueName] = contextValue;
+                  }
+
+                  AsyncServices.PlantUserDeleteSubmitRequest(data, item.deleteAsyncButtonLinkPlantCode).then(() =>
                   onRefreshRequest()
                 )
               }}
@@ -279,36 +436,27 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
 
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="detailsLinkPlantCode"
               rowIndex={item.rowNumber}
-              value={item.detailsLinkPlantCode}
               buttonText="Details"
               isButtonCallToAction={true}
-              isVisible={true}
-              onPress={() => {
-                logClick("ReportGridLandPlantList","detailsLinkPlantCode","");
-                onNavigateTo("PlantUserDetails", item.detailsLinkPlantCode);
+              isVisible={true} 
+              onClick={() => {
+                logClick(componentName,"detailsLinkPlantCode","");
+                onNavigateTo("/plant-user-details/" + item.detailsLinkPlantCode);
               }}
             />
- 
+
             <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testFileDownloadLinkPacCode"
               rowIndex={item.rowNumber}
               buttonText="Test File Download"
-              value={item.testFileDownloadLinkPacCode}
               isButtonCallToAction={false}
-              isVisible={true}
-              onPress={() =>
+              isVisible={true} 
+              onClick={() =>
                 {
                   logClick(componentName,"testFileDownloadLinkPacCode","");
-                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = {};
+                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = AsyncServices.buildPacUserTestAsyncFileDownloadRequest();
                   AsyncServices.PacUserTestAsyncFileDownloadSubmitRequest(data, item.testFileDownloadLinkPacCode)
                   .then((response) => {
-                      //handleExportQueryResults(response);  //NOSONAR
-                      const blob = new Blob([response.data], { type: "text/csv" });
-                      const url = URL.createObjectURL(blob);
-                      const link = document.createElement('a');
-                      link.href = url;
-                      link.setAttribute('download', componentName + '-' + uuidv4() + '.csv');
-                      document.body.appendChild(link);
-                      link.click();
+                    viewFileDownload(response);
                   }).then(() => onRefreshRequest())
                 }}
             />
@@ -317,23 +465,15 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               rowIndex={item.rowNumber}
               buttonText="Test Conditional File Download"
               isButtonCallToAction={false}
-              isVisible={true}
-              conditionallyVisible={item.isEditAllowed} 
-              value={item.testConditionalFileDownloadLinkPacCode}
-              onPress={() =>
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              onClick={() =>
                 {
                   logClick(componentName,"testConditionalFileDownloadLinkPacCode","");
-                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = {};
+                  const data: AsyncServices.PacUserTestAsyncFileDownloadRequest = AsyncServices.buildPacUserTestAsyncFileDownloadRequest();
                   AsyncServices.PacUserTestAsyncFileDownloadSubmitRequest(data, item.testConditionalFileDownloadLinkPacCode)
                   .then((response) => {
-                      //handleExportQueryResults(response);  //NOSONAR
-                      const blob = new Blob([response.data], { type: "text/csv" });
-                      const url = URL.createObjectURL(blob);
-                      const link = document.createElement('a');
-                      link.href = url;
-                      link.setAttribute('download', componentName + '-' + uuidv4() + '.csv');
-                      document.body.appendChild(link);
-                      link.click();
+                    viewFileDownload(response);
                   }).then(() => onRefreshRequest())
                 }}
             />
@@ -342,12 +482,16 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               rowIndex={item.rowNumber}
               buttonText="Test Async Flow Req"
               isButtonCallToAction={false}
-              isVisible={true}
-              value={item.testAsyncFlowReqLinkPacCode}
-              onPress={() =>
+              isVisible={true} 
+              onClick={() =>
                 {
                   logClick(componentName,"testAsyncFlowReqLinkPacCode","");
-                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = {};
+                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
+                          
+                  if (Object.hasOwn(data, contextValueName)) {
+                    data[contextValueName] = contextValue;
+                  }
+
                   AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testAsyncFlowReqLinkPacCode).then(() =>
                   onRefreshRequest())
                 }}
@@ -357,13 +501,17 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               rowIndex={item.rowNumber}
               buttonText="Test Conditional Async Flow Req"
               isButtonCallToAction={false}
-              isVisible={true}
-              conditionallyVisible={item.isEditAllowed} 
-              value={item.testConditionalAsyncFlowReqLinkPacCode}
-              onPress={() =>
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              onClick={() =>
                 {
                   logClick(componentName,"testConditionalAsyncFlowReqLinkPacCode","");
-                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = {};
+                  const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
+                    
+                  if (Object.hasOwn(data, contextValueName)) {
+                    data[contextValueName] = contextValue;
+                  }
+                  
                   AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testConditionalAsyncFlowReqLinkPacCode).then(() =>
                   onRefreshRequest())
                 }}
@@ -373,12 +521,11 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
               rowIndex={item.rowNumber}
               buttonText="Conditional Btn Example"
               isButtonCallToAction={true}
-              isVisible={true}
-              conditionallyVisible={item.isEditAllowed} 
-              value={item.conditionalBtnExampleLinkPlantCode}
-              onPress={() => {
-                logClick(componentName,"conditionalBtnExampleLinkPlantCode",""); 
-                onNavigateTo("PlantUserDetails", item.conditionalBtnExampleLinkPlantCode)
+              isVisible={true} 
+              conditionallyVisible={item.isEditAllowed}  
+              onClick={() => {
+                logClick(componentName,"conditionalBtnExampleLinkPlantCode","");
+                onNavigateTo("/plant-user-details/" + item.conditionalBtnExampleLinkPlantCode);
               }}
             />
 {/* ENDSET */}
