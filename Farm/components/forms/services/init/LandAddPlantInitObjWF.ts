@@ -1,6 +1,11 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 export interface InitRequest {
     
+}
+
+export interface ResponseFull {
+    data: InitResult;
 }
 
 export interface InitResult {
@@ -33,11 +38,17 @@ export interface InitResult {
  
     requestSomeVarCharVal: string;
  
+    requestSomeLongVarCharVal: string;
+ 
+    requestSomeLongNVarCharVal: string;
+ 
     requestSomeTextVal: string;
  
     requestSomePhoneNumber: string;
  
     requestSomeEmailAddress: string;
+ 
+    someImageUrlVal: string;
  
     landName: string;
  
@@ -85,11 +96,17 @@ export class InitResultInstance implements InitResult {
  
     requestSomeVarCharVal: string;
  
+    requestSomeLongVarCharVal: string;
+ 
+    requestSomeLongNVarCharVal: string;
+ 
     requestSomeTextVal: string;
  
     requestSomePhoneNumber: string;
  
     requestSomeEmailAddress: string;
+ 
+    someImageUrlVal: string;
  
     landName: string;
  
@@ -129,11 +146,17 @@ export class InitResultInstance implements InitResult {
  
         this.requestSomeVarCharVal = '';
  
+        this.requestSomeLongVarCharVal = '';
+ 
+        this.requestSomeLongNVarCharVal = '';
+ 
         this.requestSomeTextVal = '';
  
         this.requestSomePhoneNumber = '';
  
         this.requestSomeEmailAddress = '';
+ 
+        this.someImageUrlVal = '';
 
         this.landName = '';
  

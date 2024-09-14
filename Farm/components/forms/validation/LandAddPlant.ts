@@ -31,6 +31,10 @@ export const buildValidationSchema = () => {
         ,
         requestSomeVarCharVal: Yup.string()
         ,
+        requestSomeLongVarCharVal: Yup.string()
+        ,
+        requestSomeLongNVarCharVal: Yup.string()
+        ,
         requestSomeTextVal: Yup.string()
         ,
         requestSomePhoneNumber: Yup.string()
@@ -38,6 +42,8 @@ export const buildValidationSchema = () => {
         requestSomeEmailAddress: Yup.string()
         , 
         requestSampleImageUploadFile: Yup.string()
+        , 
+        someImageUrlVal: Yup.string()
         , 
       });
 

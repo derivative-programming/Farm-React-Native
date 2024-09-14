@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Yup from "yup";
 import * as ReportInit  from "./init/LandPlantListInitReport"; 
-  import { apiCall } from "../../../apiConfig/apiCall"; 
+import { apiCall } from "../../../apiConfig/apiCall"; 
    
-export const submitRequest = (data:any, landCode:string) => {
+export const submitRequest = (data:QueryRequest, landCode:string) => {
     return apiCall({
       url:  "/land-plant-list/" + landCode,
       method: "get",
@@ -10,7 +11,7 @@ export const submitRequest = (data:any, landCode:string) => {
     });     
   }; 
   
-export const submitCSVRequest = (data:any, landCode:string) => {
+export const submitCSVRequest = (data:QueryRequest, landCode:string) => {
   console.log('csv request');
     return apiCall({
       url:  "/land-plant-list/" + landCode + "/to-csv",
@@ -30,64 +31,71 @@ export const submitCSVRequest = (data:any, landCode:string) => {
 
   
 export const buildQueryRequest = (initResult:ReportInit.InitResult) => {
-    let result:QueryRequest = new QueryRequestInstance();
+  const result:QueryRequest = new QueryRequestInstance();
     
-    result.flavorCode = initResult.flavorCode; 
-    result.someIntVal = initResult.someIntVal;
-    result.someBigIntVal = initResult.someBigIntVal;
-    result.someBitVal = initResult.someBitVal;
-    result.isEditAllowed = initResult.isEditAllowed;
-    result.isDeleteAllowed = initResult.isDeleteAllowed;
-    result.someFloatVal = initResult.someFloatVal;
-    result.someDecimalVal = initResult.someDecimalVal;
+//endset
+    result.flavorFilterCode = initResult.flavorFilterCode; 
+    result.someFilterIntVal = initResult.someFilterIntVal;
+    result.someFilterBigIntVal = initResult.someFilterBigIntVal;
+    result.someFilterBitVal = initResult.someFilterBitVal;
+    result.isFilterEditAllowed = initResult.isFilterEditAllowed;
+    result.isFilterDeleteAllowed = initResult.isFilterDeleteAllowed;
+    result.someFilterFloatVal = initResult.someFilterFloatVal;
+    result.someFilterDecimalVal = initResult.someFilterDecimalVal;
     result.someMinUTCDateTimeVal = initResult.someMinUTCDateTimeVal;
     result.someMinDateVal = initResult.someMinDateVal;
-    result.someMoneyVal = initResult.someMoneyVal;
-    result.someNVarCharVal = initResult.someNVarCharVal;
-    result.someVarCharVal = initResult.someVarCharVal;
-    result.someTextVal = initResult.someTextVal;
-    result.somePhoneNumber = initResult.somePhoneNumber;
-    result.someEmailAddress = initResult.someEmailAddress; 
+    result.someFilterMoneyVal = initResult.someFilterMoneyVal;
+    result.someFilterNVarCharVal = initResult.someFilterNVarCharVal;
+    result.someFilterVarCharVal = initResult.someFilterVarCharVal;
+    result.someFilterTextVal = initResult.someFilterTextVal;
+    result.someFilterPhoneNumber = initResult.someFilterPhoneNumber;
+    result.someFilterEmailAddress = initResult.someFilterEmailAddress; 
+    result.someFilterUniqueIdentifier = initResult.someFilterUniqueIdentifier; 
+//endset
     
     return result;
 }
 
 export const buildValidationSchema = () => {
     
+//endset
     const validationSchema  = Yup.object().shape({
-        flavorCode: Yup.string()
+        flavorFilterCode: Yup.string()
         ,
-        someIntVal: Yup.number().required('Please enter a Some Int Val')
+        someFilterIntVal: Yup.number().required('Please enter a Some Int Val')
         ,
-        someBigIntVal: Yup.number().required('Please enter a Some Big Int Val')
+        someFilterBigIntVal: Yup.number().required('Please enter a Some Big Int Val')
         ,
-        someBitVal: Yup.boolean().required('Please enter a Some Bit Val')
+        someFilterBitVal: Yup.boolean().required('Please enter a Some Bit Val')
         ,
-        isEditAllowed: Yup.boolean().required('Please enter a Is Edit Allowed')
+        isFilterEditAllowed: Yup.boolean().required('Please enter a Is Edit Allowed')
         ,
-        isDeleteAllowed: Yup.boolean().required('Please enter a Is Delete Allowed')
+        isFilterDeleteAllowed: Yup.boolean().required('Please enter a Is Delete Allowed')
         ,
-        someFloatVal: Yup.number().required('Please enter a Some Float Val')
+        someFilterFloatVal: Yup.number().required('Please enter a Some Float Val')
         ,
-        someDecimalVal: Yup.number().required('Please enter a Some Decimal Val')
+        someFilterDecimalVal: Yup.number().required('Please enter a Some Decimal Val')
         ,
         someMinUTCDateTimeVal: Yup.mixed().required('Please enter a Some Min UTC Date Time Val')
         ,
         someMinDateVal: Yup.mixed().required('Please enter a Some Min Date Val')
         ,
-        someMoneyVal: Yup.number().required('Please enter a Some Money Val')
+        someFilterMoneyVal: Yup.number().required('Please enter a Some Money Val')
         ,
-        someNVarCharVal: Yup.string()
+        someFilterNVarCharVal: Yup.string()
         ,
-        someVarCharVal: Yup.string()
+        someFilterVarCharVal: Yup.string()
         ,
-        someTextVal: Yup.string()
+        someFilterTextVal: Yup.string()
         ,
-        somePhoneNumber: Yup.string()
+        someFilterPhoneNumber: Yup.string()
         ,
-        someEmailAddress: Yup.string()
+        someFilterEmailAddress: Yup.string()
+        ,
+        someFilterUniqueIdentifier: Yup.string()
         ,  
       });
+//endset
       
     return validationSchema;
 }
@@ -98,9 +106,15 @@ export interface QueryResultItem {
  
     someIntVal: number;
  
+    someConditionalIntVal: number;
+ 
     someBigIntVal: number;
  
+    someConditionalBigIntVal: number;
+ 
     someBitVal: boolean;
+ 
+    someConditionalBitVal: boolean;
  
     isEditAllowed: boolean;
  
@@ -108,23 +122,49 @@ export interface QueryResultItem {
  
     someFloatVal: number;
  
+    someConditionalFloatVal: number;
+ 
     someDecimalVal: number;
+ 
+    someConditionalDecimalVal: number;
  
     someUTCDateTimeVal: string;
  
+    someConditionalUTCDateTimeVal: string;
+ 
     someDateVal: string;
+ 
+    someConditionalDateVal: string;
  
     someMoneyVal: number;
  
+    someConditionalMoneyVal: number;
+ 
     someNVarCharVal: string;
+ 
+    someConditionalNVarCharVal: string;
  
     someVarCharVal: string;
  
+    someConditionalVarCharVal: string;
+ 
     someTextVal: string;
+ 
+    someConditionalTextVal: string;
  
     somePhoneNumber: string;
  
+    someConditionalPhoneNumber: string;
+ 
     someEmailAddress: string;
+ 
+    someConditionalEmailAddress: string;
+ 
+    isImageUrlAvailable: boolean;
+ 
+    someImageUrlVal: string;
+ 
+    someConditionalImageUrl: string;
  
     flavorName: string;
  
@@ -133,6 +173,8 @@ export interface QueryResultItem {
     someIntConditionalOnDeletable:number; 
  
     nVarCharAsUrl: string;
+ 
+    nVarCharConditionalAsUrl: string;
  
     updateLinkPlantCode: string;
  
@@ -148,37 +190,41 @@ export interface QueryResultItem {
 
 export interface QueryRequest {
  
-    someIntVal: number;
+//endset
+    someFilterIntVal: number;
  
-    someBigIntVal: number;
+    someFilterBigIntVal: number;
  
-    someBitVal: boolean;
+    someFilterBitVal: boolean;
  
-    isEditAllowed: boolean;
+    isFilterEditAllowed: boolean;
  
-    isDeleteAllowed: boolean;
+    isFilterDeleteAllowed: boolean;
  
-    someFloatVal: number;
+    someFilterFloatVal: number;
  
-    someDecimalVal: number;
+    someFilterDecimalVal: number;
  
     someMinUTCDateTimeVal: string;
  
     someMinDateVal: string;
  
-    someMoneyVal: number;
+    someFilterMoneyVal: number;
  
-    someNVarCharVal: string;
+    someFilterNVarCharVal: string;
  
-    someVarCharVal: string;
+    someFilterVarCharVal: string;
  
-    someTextVal: string;
+    someFilterTextVal: string;
  
-    somePhoneNumber: string;
+    someFilterPhoneNumber: string;
  
-    someEmailAddress: string;
+    someFilterEmailAddress: string;
  
-    flavorCode: string;
+    someFilterUniqueIdentifier: string;
+ 
+    flavorFilterCode: string;
+//endset
     pageNumber: number;
     ItemCountPerPage: number;
     OrderByColumnName: string;
@@ -187,6 +233,9 @@ export interface QueryRequest {
 }
 
 
+export interface ResponseFull {
+  data: QueryResult;
+}
 export interface QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -212,9 +261,15 @@ export class QueryResultItemInstance implements QueryResultItem {
  
     someIntVal: number;
  
+    someConditionalIntVal: number;
+ 
     someBigIntVal: number;
  
+    someConditionalBigIntVal: number;
+ 
     someBitVal: boolean;
+ 
+    someConditionalBitVal: boolean;
  
     isEditAllowed: boolean;
  
@@ -222,31 +277,59 @@ export class QueryResultItemInstance implements QueryResultItem {
  
     someFloatVal: number;
  
+    someConditionalFloatVal: number;
+ 
     someDecimalVal: number;
+ 
+    someConditionalDecimalVal: number;
  
     someUTCDateTimeVal: string;
  
+    someConditionalUTCDateTimeVal: string;
+ 
     someDateVal: string;
+ 
+    someConditionalDateVal: string;
  
     someMoneyVal: number;
  
+    someConditionalMoneyVal: number;
+ 
     someNVarCharVal: string;
+ 
+    someConditionalNVarCharVal: string;
  
     someVarCharVal: string;
  
+    someConditionalVarCharVal: string;
+ 
     someTextVal: string;
+ 
+    someConditionalTextVal: string;
  
     somePhoneNumber: string;
  
+    someConditionalPhoneNumber: string;
+ 
     someEmailAddress: string;
+ 
+    someConditionalEmailAddress: string;
+ 
+    isImageUrlAvailable: boolean;
+ 
+    someImageUrlVal: string;
+ 
+    someConditionalImageUrl: string;
  
     flavorName: string;
  
     flavorCode: string;
- 
-    someIntConditionalOnDeletable: number;
+
+    someIntConditionalOnDeletable:number; 
  
     nVarCharAsUrl: string;
+ 
+    nVarCharConditionalAsUrl: string;
  
     updateLinkPlantCode: string;
  
@@ -259,16 +342,22 @@ export class QueryResultItemInstance implements QueryResultItem {
     testConditionalAsyncFlowReqLinkPacCode: string;
     conditionalBtnExampleLinkPlantCode: string;
 
-
     constructor() {
  
+//endset
         this.plantCode = '00000000-0000-0000-0000-000000000000';
  
         this.someIntVal = 0;
  
+        this.someConditionalIntVal = 0;
+ 
         this.someBigIntVal = 0;
  
+        this.someConditionalBigIntVal = 0;
+ 
         this.someBitVal = false;
+ 
+        this.someConditionalBitVal = false;
  
         this.isEditAllowed = false;
  
@@ -276,23 +365,49 @@ export class QueryResultItemInstance implements QueryResultItem {
  
         this.someFloatVal = 0;
  
+        this.someConditionalFloatVal = 0;
+ 
         this.someDecimalVal = 0;
+ 
+        this.someConditionalDecimalVal = 0;
  
         this.someUTCDateTimeVal = '1753-01-01T00:00:00Z'
  
+        this.someConditionalUTCDateTimeVal = '1753-01-01T00:00:00Z'
+ 
         this.someDateVal = '1753-01-01T00:00:00Z';
+ 
+        this.someConditionalDateVal = '1753-01-01T00:00:00Z';
  
         this.someMoneyVal = 0.0;
  
+        this.someConditionalMoneyVal = 0.0;
+ 
         this.someNVarCharVal = '';
+ 
+        this.someConditionalNVarCharVal = '';
  
         this.someVarCharVal = '';
  
+        this.someConditionalVarCharVal = '';
+ 
         this.someTextVal = '';
+ 
+        this.someConditionalTextVal = '';
  
         this.somePhoneNumber = '';
  
+        this.someConditionalPhoneNumber = '';
+ 
         this.someEmailAddress = '';
+ 
+        this.someConditionalEmailAddress = '';
+ 
+        this.isImageUrlAvailable = false;
+ 
+        this.someImageUrlVal = '';
+ 
+        this.someConditionalImageUrl = '';
  
         this.flavorName = '';
  
@@ -302,53 +417,60 @@ export class QueryResultItemInstance implements QueryResultItem {
  
         this.nVarCharAsUrl = '';
  
+        this.nVarCharConditionalAsUrl = '';
+ 
         this.updateLinkPlantCode = '00000000-0000-0000-0000-000000000000';
  
         this.deleteAsyncButtonLinkPlantCode = '00000000-0000-0000-0000-000000000000';
  
-        this.detailsLinkPlantCode = '00000000-0000-0000-0000-000000000000';  
+        this.detailsLinkPlantCode = '00000000-0000-0000-0000-000000000000'; 
         this.testFileDownloadLinkPacCode = '00000000-0000-0000-0000-000000000000';
         this.testConditionalFileDownloadLinkPacCode = '00000000-0000-0000-0000-000000000000';
         this.testAsyncFlowReqLinkPacCode = '00000000-0000-0000-0000-000000000000';
         this.testConditionalAsyncFlowReqLinkPacCode = '00000000-0000-0000-0000-000000000000';  
         this.conditionalBtnExampleLinkPlantCode = '00000000-0000-0000-0000-000000000000';  
+//endset
     }
 }
 
 
 export class QueryRequestInstance implements QueryRequest {
  
-    someIntVal: number; 
+//endset
+    someFilterIntVal: number; 
  
-    someBigIntVal: number; 
+    someFilterBigIntVal: number; 
  
-    someBitVal: boolean; 
+    someFilterBitVal: boolean; 
  
-    isEditAllowed: boolean; 
+    isFilterEditAllowed: boolean; 
  
-    isDeleteAllowed: boolean; 
+    isFilterDeleteAllowed: boolean; 
  
-    someFloatVal: number; 
+    someFilterFloatVal: number; 
  
-    someDecimalVal: number; 
+    someFilterDecimalVal: number; 
  
     someMinUTCDateTimeVal: string; 
  
     someMinDateVal: string; 
  
-    someMoneyVal: number; 
+    someFilterMoneyVal: number; 
  
-    someNVarCharVal: string; 
+    someFilterNVarCharVal: string; 
  
-    someVarCharVal: string; 
+    someFilterVarCharVal: string; 
  
-    someTextVal: string; 
+    someFilterTextVal: string; 
  
-    somePhoneNumber: string; 
+    someFilterPhoneNumber: string; 
  
-    someEmailAddress: string; 
+    someFilterEmailAddress: string; 
  
-    flavorCode: string;   
+    someFilterUniqueIdentifier: string; 
+ 
+    flavorFilterCode: string;   
+//endset
     pageNumber: number;
     ItemCountPerPage: number;
     OrderByColumnName: string;
@@ -357,37 +479,41 @@ export class QueryRequestInstance implements QueryRequest {
 
     constructor() {
  
-        this.someIntVal = 0;
+//endset
+        this.someFilterIntVal = 0;
  
-        this.someBigIntVal = 0;
+        this.someFilterBigIntVal = 0;
  
-        this.someBitVal = false;
+        this.someFilterBitVal = false;
  
-        this.isEditAllowed = false;
+        this.isFilterEditAllowed = false;
  
-        this.isDeleteAllowed = false;
+        this.isFilterDeleteAllowed = false;
  
-        this.someFloatVal = 0;
+        this.someFilterFloatVal = 0;
  
-        this.someDecimalVal = 0;
+        this.someFilterDecimalVal = 0;
  
         this.someMinUTCDateTimeVal = '1753-01-01T00:00:00Z'
  
         this.someMinDateVal = '1753-01-01T00:00:00Z';
  
-        this.someMoneyVal = 0.0;
+        this.someFilterMoneyVal = 0.0;
  
-        this.someNVarCharVal = '';
+        this.someFilterNVarCharVal = '';
  
-        this.someVarCharVal = '';
+        this.someFilterVarCharVal = '';
  
-        this.someTextVal = '';
+        this.someFilterTextVal = '';
  
-        this.somePhoneNumber = '';
+        this.someFilterPhoneNumber = '';
  
-        this.someEmailAddress = '';
+        this.someFilterEmailAddress = '';
  
-        this.flavorCode = '00000000-0000-0000-0000-000000000000';
+        this.someFilterUniqueIdentifier = '00000000-0000-0000-0000-000000000000';
+ 
+        this.flavorFilterCode = '00000000-0000-0000-0000-000000000000';
+//endset
         this.pageNumber = 1;
         this.ItemCountPerPage = 10;
         this.OrderByColumnName = '';
@@ -456,8 +582,3 @@ export class QueryResultTestInstance implements QueryResult {
     }
 }
 
-
-export interface EnhancedQueryResultItem extends QueryResultItem {
-  rowKey: string;
-  rowNumber: number;
-}
