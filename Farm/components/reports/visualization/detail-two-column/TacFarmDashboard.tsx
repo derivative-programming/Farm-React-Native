@@ -2,7 +2,9 @@ import React, { FC, ReactElement } from "react";
 import * as ReportService from "../../services/TacFarmDashboard";   
 import { View } from 'react-native';
 import * as ReportColumnDisplay from "./columns";
+import * as AsyncServices from "../../../services"; // NOSONAR
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB"; 
+import { v4 as uuidv4 } from "uuid";
 
 export interface ReportDetailTwoColTacFarmDashboardProps {
     name: string

@@ -1,5 +1,7 @@
 import React, { FC, ReactElement, useState } from "react";  
 import * as ReportService from "../../services/LandPlantList";
+import uuid  from 'react-native-uuid';
+import RNFS from 'react-native-fs';
 
 import * as ReportColumnDisplay from "./columns";
 import * as AsyncServices from "../../../services";
@@ -119,6 +121,37 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
       contextCode
     ).then((response) => onRefreshRequest());
   }; 
+
+
+  const viewFileDownload = async (response: any) => {
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = uuid.v4() + '.csv';
+
+    if (contentDisposition) {
+      // Attempt to extract the filename*= value first, then fallback to filename=
+      const filenameMatch = contentDisposition.match(/filename\*?=['"]?([^;'"]+)/);
+      if (filenameMatch && filenameMatch[1]) {
+        filename = decodeURIComponent(filenameMatch[1].replace(/UTF-8''/, ''));
+      }
+    }
+
+    // Get the content type or default to "text/csv"
+    const contentType = response.headers['content-type'] || 'text/csv';
+
+    // Define the file path for saving
+    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+    try {
+      // Write the response data to the file
+      await RNFS.writeFile(path, response.data, 'utf8');
+      console.log(`File downloaded to: ${path}`);
+      
+      // Optionally open the file using FileViewer or any other viewer.
+      // FileViewer.open(path); // Uncomment this line if you want to open the file immediately
+    } catch (err) {
+      console.error('File download error:', err);
+    }
+  };
 
   console.log("items count...");
   console.log(items.length);
@@ -429,7 +462,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                   const data: AsyncServices.PlantUserDeleteRequest = AsyncServices.buildPlantUserDeleteRequest();
 
                   if (Object.hasOwn(data, contextValueName)) {
-                    data[contextValueName] = contextValue;
+                    (data as any)[contextValueName] = contextValue;
                   }
 
                   AsyncServices.PlantUserDeleteSubmitRequest(data, item.deleteAsyncButtonLinkPlantCode).then(() =>
@@ -497,7 +530,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                   const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
                           
                   if (Object.hasOwn(data, contextValueName)) {
-                    data[contextValueName] = contextValue;
+                    (data as any)[contextValueName] = contextValue;
                   }
 
                   AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testAsyncFlowReqLinkPacCode).then(() =>
@@ -518,7 +551,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
                   const data: AsyncServices.PacUserTestAsyncFlowReqRequest = AsyncServices.buildPacUserTestAsyncFlowReqRequest();
                     
                   if (Object.hasOwn(data, contextValueName)) {
-                    data[contextValueName] = contextValue;
+                    (data as any)[contextValueName] = contextValue;
                   }
                   
                   AsyncServices.PacUserTestAsyncFlowReqSubmitRequest(data, item.testConditionalAsyncFlowReqLinkPacCode).then(() =>

@@ -39,11 +39,11 @@ export const ReportColumnDisplayButton: FC<ReportColumnDisplayButtonProps> = ({
 
   const isProcessing = false;
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   return (
     <View style={styles.container}>
-      {isVisible && (
+      {displayValue && (
         <TouchableOpacity
           onPress={onPress}
           style={[styles.button,

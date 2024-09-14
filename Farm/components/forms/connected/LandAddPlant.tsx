@@ -56,10 +56,14 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   };
   const isInitializedRef = useRef(false);
  
+  let lastApiSubmissionRequest = new FormService.SubmitRequestInstance();
+  let lastApiSubmissionResponse = new FormService.SubmitResultInstance(); 
   
   const contextCode: string = landCode ?? "00000000-0000-0000-0000-000000000000";
 
   const validationSchema = FormValidation.buildValidationSchema();
+  
+  const isAutoSubmit = false;
 
   const authContext = useContext(AuthContext); 
 
@@ -145,6 +149,34 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
     }
   };
 
+  
+  const autoSubmit = async (
+    values: FormService.SubmitRequest
+  ) => {
+    try {  
+      const responseFull: FormService.ResponseFull = await FormService.submitForm(
+        values,
+        contextCode
+      );
+      const response: FormService.SubmitResult = responseFull.data;
+      lastApiSubmissionRequest = { ...values };
+      lastApiSubmissionResponse = { ...response };
+      if (!response.success) {
+        //click cancel
+      } else {
+        //possible relogin
+        //GENIF[isLoginPage=true]Start
+        authContext.startSession(response); 
+        AnalyticsService.start();
+        //GENIF[isLoginPage=true]End
+      }
+    } catch (error) {
+      //click cancel
+    }  
+    
+    //GENINCLUDEFILE[GENVALPascalName.autosubmit.include.*]
+  };
+
   const submitButtonNavigateTo = () => {
     navigateTo("LandPlantList", "landCode");
   };
@@ -160,8 +192,19 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
   }, []);
 
   useEffect(() => {
+    if(initPageResponse === null){
+      return;
+    }
     const newInitalValues = FormService.buildSubmitRequest(initPageResponse);
+    //GENIF[isAutoSubmit=true]Start
+    if(isAutoSubmit){
+      autoSubmit(newInitalValues);
+    }
+    //GENIF[isAutoSubmit=true]End
+    //GENIF[isAutoSubmit=false]Start
     setInitialValues({ ...newInitalValues });
+    //GENIF[isAutoSubmit=false]End
+     
   }, [initPageResponse]);
 
   const navigateTo = (page: string, codeName: string) => {
