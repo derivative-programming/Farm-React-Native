@@ -2,21 +2,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { apiCall } from "../../apiConfig/apiCall";
 
-  export const PlantUserPropertyRandomUpdateSubmitRequest = (data:PlantUserPropertyRandomUpdateRequest, plantCode:string) => {
+  export const CustomerBuildTempApiKeySubmitRequest = (data:CustomerBuildTempApiKeyRequest, customerCode:string) => {
     return apiCall({
-      url: "/plant-user-property-random-update/" + plantCode,
+      url: "/customer-build-temp-api-key/" + customerCode,
       method: "post",
       data
     });
   };
 
-  export const buildPlantUserPropertyRandomUpdateRequest = () => {
-    const result:PlantUserPropertyRandomUpdateRequest = new SubmitRequestInstance();
+  export const buildCustomerBuildTempApiKeyRequest = () => {
+    const result:CustomerBuildTempApiKeyRequest = new SubmitRequestInstance();
 
       return result;
   }
 
-export interface PlantUserPropertyRandomUpdateRequest {
+export interface CustomerBuildTempApiKeyRequest {
 
 }
 export interface ResponseFull {
@@ -36,7 +36,7 @@ export interface SubmitValidationError {
 
 }
 
-export class SubmitRequestInstance implements PlantUserPropertyRandomUpdateRequest {
+export class SubmitRequestInstance implements CustomerBuildTempApiKeyRequest {
 
     constructor() {  // create a new instance of the class
 

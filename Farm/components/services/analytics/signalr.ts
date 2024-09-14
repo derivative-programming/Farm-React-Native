@@ -1,43 +1,27 @@
 import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import urlParse from 'url-parse';
+import config from '../../../config';
 
-let connection: any = null;
-export const startConnection = async () => { 
-    console.log("Signalr startConnection...")
-    const connectionId = await AsyncStorage.getItem("customerCode");
+let connection: HubConnection | null = null;
+
+export const startConnection = () => { 
+    const connectionId = localStorage.getItem("customerCode");
     if (connectionId) {
-        const customUrl = new urlParse('https://dp-farm-pageapi.azurewebsites.net/analytics-hub');
-        const url = 'https://dp-farm-pageapi.azurewebsites.net/analytics-hub'; 
-        console.log("Signalr startConnection building connection...");
-        
-        try {
-            const pathname = customUrl.pathname;
-            console.log("Pathname..." + pathname);
-            connection = new HubConnectionBuilder()
-            .withUrl(url, {
+        const url = new URL(config.apiBaseUrl +'/analytics-hub');
+        connection = new HubConnectionBuilder()
+            .withUrl(url.toString(), {
                 transport: HttpTransportType.WebSockets,
             })
             .withAutomaticReconnect()
             .build();
-        } catch (error) {
-            console.error("Connection failed to build:", error);
-        }
  
-        try {
-            console.log("Signalr startConnection connection.start()...");
-            await connection.start(); // Use await here too
-            connection.invoke('SetConnectionId', connectionId);
-            console.log("Signalr startConnection completed");
-        } catch (error) {
-            console.error("Connection failed to start:", error);
-        }
-        // connection.start()
-        // .then( () => { 
-        //     connection.invoke('SetConnectionId', connectionId); 
-        // }); 
+        connection.start()
+        .then( () => { 
+            if (connection) {
+                connection.invoke('SetConnectionId', connectionId); 
+            }
+        }); 
  
-        connection.on('ReceiveMessage', (user: any, message: any) => {
+        connection.on('ReceiveMessage', (user: string, message: string) => {
             console.log(message);
         });
 
@@ -45,37 +29,32 @@ export const startConnection = async () => {
     }
 } 
 
-export const stopConnection = async () => { 
-    console.log("Signalr stopConnection...")
+export const stopConnection = (): Promise<void> => { 
     if (connection) {
         return connection.stop();
     }
+    return Promise.resolve();
 }
 
-export const reconnectOnRefresh = async () => {
-    console.log("Signalr reconnectOnRefresh...")
+export const reconnectOnRefresh = () => {
     window.addEventListener('beforeunload', () => {
         stopConnection()
-            .then(async () => {
-                await startConnection();
+            .then(() => {
+                startConnection();
             })
-            .catch((error: any) => console.error(error));
+            .catch((error: Error) => console.error(error));
     });
 }
 
-export const reconnectWhenOnline = async () => {
-    console.log("Signalr reconnectWhenOnline...")
-    window.addEventListener('online', async () => {
-        await startConnection();
+export const reconnectWhenOnline = () => {
+    window.addEventListener('online', () => {
+        startConnection();
     });
 } 
 
 export const CollectDataFromClient = async(data:string) => {  
-    console.log("Signalr CollectDataFromClient...")
     if (connection && connection.state == HubConnectionState.Connected) { 
-        connection.invoke('CollectDataFromClient', data);
-
-        return;
+        await connection.invoke('CollectDataFromClient', data); 
     }
 }
  

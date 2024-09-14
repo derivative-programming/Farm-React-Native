@@ -9,7 +9,7 @@ export interface ResponseFull {
 }
 
 export interface InitResult {
-    customerCode: string;
+    tacCode: string;
     success: boolean;
     message: string;
     validationErrors: InitValidationError[];
@@ -22,13 +22,13 @@ export interface InitValidationError {
 }
 
 export class InitResultInstance implements InitResult {
-    customerCode: string;
+    tacCode: string;
     success: boolean;
     message: string;
     validationErrors: InitValidationError[];
 
     constructor() {
-        this.customerCode = '00000000-0000-0000-0000-000000000000';
+        this.tacCode = '00000000-0000-0000-0000-000000000000';
         this.success = false;
         this.message = '';
         this.validationErrors =  [];

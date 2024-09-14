@@ -2,21 +2,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { apiCall } from "../../apiConfig/apiCall";
 
-  export const PlantUserPropertyRandomUpdateSubmitRequest = (data:PlantUserPropertyRandomUpdateRequest, plantCode:string) => {
+  export const PacUserTestAsyncFileDownloadSubmitRequest = (data:PacUserTestAsyncFileDownloadRequest, pacCode:string) => {
     return apiCall({
-      url: "/plant-user-property-random-update/" + plantCode,
+      url: "/pac-user-test-async-file-download/" + pacCode,
       method: "post",
       data
     });
   };
 
-  export const buildPlantUserPropertyRandomUpdateRequest = () => {
-    const result:PlantUserPropertyRandomUpdateRequest = new SubmitRequestInstance();
+  export const buildPacUserTestAsyncFileDownloadRequest = () => {
+    const result:PacUserTestAsyncFileDownloadRequest = new SubmitRequestInstance();
 
       return result;
   }
 
-export interface PlantUserPropertyRandomUpdateRequest {
+export interface PacUserTestAsyncFileDownloadRequest {
 
 }
 export interface ResponseFull {
@@ -36,7 +36,7 @@ export interface SubmitValidationError {
 
 }
 
-export class SubmitRequestInstance implements PlantUserPropertyRandomUpdateRequest {
+export class SubmitRequestInstance implements PacUserTestAsyncFileDownloadRequest {
 
     constructor() {  // create a new instance of the class
 

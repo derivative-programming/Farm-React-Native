@@ -1,7 +1,11 @@
-
+/* eslint-disable @typescript-eslint/no-empty-interface */
 
 export interface InitRequest {
 
+}
+
+export interface ResponseFull {
+    data: InitResult;
 }
 
 export interface InitResult {

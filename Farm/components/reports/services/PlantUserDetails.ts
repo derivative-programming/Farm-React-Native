@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Yup from "yup";
 import * as ReportInit  from "./init/PlantUserDetailsInitReport";
-  import { apiCall } from "../../../apiConfig/apiCall";
+import { apiCall } from "../../../apiConfig/apiCall";
 
-export const submitRequest = (data:any, plantCode:string) => {
+export const submitRequest = (data:QueryRequest, plantCode:string) => {
     return apiCall({
       url:  "/plant-user-details/" + plantCode,
       method: "get",
@@ -10,7 +11,7 @@ export const submitRequest = (data:any, plantCode:string) => {
     });
   };
 
-export const submitCSVRequest = (data:any, plantCode:string) => {
+export const submitCSVRequest = (data:QueryRequest, plantCode:string) => {
   console.log('csv request');
     return apiCall({
       url:  "/plant-user-details/" + plantCode + "/to-csv",
@@ -29,16 +30,18 @@ export const submitCSVRequest = (data:any, plantCode:string) => {
   };
 
 export const buildQueryRequest = (initResult:ReportInit.InitResult) => {
-    let result:QueryRequest = new QueryRequestInstance();
+  const result:QueryRequest = new QueryRequestInstance();
 
     return result;
 }
 
 export const buildValidationSchema = () => {
 
+//endset
     const validationSchema  = Yup.object().shape({
 
       });
+//endset
 
     return validationSchema;
 }
@@ -72,6 +75,9 @@ export interface QueryResultItem {
     testAsyncFlowReqLinkPacCode: string;
     testConditionalAsyncFlowReqLinkPacCode: string;
     conditionalBtnExampleLinkTacCode: string;
+    someImageUrlVal: string;
+    isImageUrlAvailable: boolean;
+    someConditionalImageUrlVal: string;
 }
 
 export interface QueryRequest {
@@ -83,6 +89,9 @@ export interface QueryRequest {
     ForceErrorMessage: string;
 }
 
+export interface ResponseFull {
+  data: QueryResult;
+}
 export interface QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -126,6 +135,9 @@ export class QueryResultItemInstance implements QueryResultItem {
     testAsyncFlowReqLinkPacCode: string;
     testConditionalAsyncFlowReqLinkPacCode: string;
     conditionalBtnExampleLinkTacCode: string;
+    someImageUrlVal: string;
+    isImageUrlAvailable: boolean;
+    someConditionalImageUrlVal: string;
     constructor() {
         this.flavorName = '';
         this.isDeleteAllowed = false;
@@ -142,6 +154,7 @@ export class QueryResultItemInstance implements QueryResultItem {
         this.someNVarCharVal = '';
         this.somePhoneNumber = '';
         this.someTextVal = '';
+//endset
         this.someUniqueidentifierVal = '00000000-0000-0000-0000-000000000000';
         this.someUTCDateTimeVal = '1753-01-01T00:00:00Z'
         this.someVarCharVal = '';
@@ -155,6 +168,9 @@ export class QueryResultItemInstance implements QueryResultItem {
         this.testAsyncFlowReqLinkPacCode = '00000000-0000-0000-0000-000000000000';
         this.testConditionalAsyncFlowReqLinkPacCode = '00000000-0000-0000-0000-000000000000';
         this.conditionalBtnExampleLinkTacCode = '00000000-0000-0000-0000-000000000000';
+        this.someImageUrlVal = '';
+        this.isImageUrlAvailable = false;
+        this.someConditionalImageUrlVal = '';
     }
 }
 
@@ -232,10 +248,5 @@ export class QueryResultTestInstance implements QueryResult {
 
         this.items.push(new QueryResultItemInstance())
     }
-}
-
-export interface EnhancedQueryResultItem extends QueryResultItem {
-  rowKey: string;
-  rowNumber: number;
 }
 

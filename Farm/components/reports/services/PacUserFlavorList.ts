@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as Yup from "yup";
 import * as ReportInit  from "./init/PacUserFlavorListInitReport";
-  import { apiCall } from "../../../apiConfig/apiCall";
+import { apiCall } from "../../../apiConfig/apiCall";
 
-export const submitRequest = (data:any, pacCode:string) => {
+export const submitRequest = (data:QueryRequest, pacCode:string) => {
     return apiCall({
       url:  "/pac-user-flavor-list/" + pacCode,
       method: "get",
@@ -10,7 +11,7 @@ export const submitRequest = (data:any, pacCode:string) => {
     });
   };
 
-export const submitCSVRequest = (data:any, pacCode:string) => {
+export const submitCSVRequest = (data:QueryRequest, pacCode:string) => {
   console.log('csv request');
     return apiCall({
       url:  "/pac-user-flavor-list/" + pacCode + "/to-csv",
@@ -29,16 +30,18 @@ export const submitCSVRequest = (data:any, pacCode:string) => {
   };
 
 export const buildQueryRequest = (initResult:ReportInit.InitResult) => {
-    let result:QueryRequest = new QueryRequestInstance();
+  const result:QueryRequest = new QueryRequestInstance();
 
     return result;
 }
 
 export const buildValidationSchema = () => {
 
+//endset
     const validationSchema  = Yup.object().shape({
 
       });
+//endset
 
     return validationSchema;
 }
@@ -62,6 +65,9 @@ export interface QueryRequest {
     ForceErrorMessage: string;
 }
 
+export interface ResponseFull {
+  data: QueryResult;
+}
 export interface QueryResult {
     pageNumber: number;
     items: QueryResultItem[];
@@ -85,6 +91,7 @@ export class QueryResultItemInstance implements QueryResultItem {
     flavorName: string;
     pacName: string;
     constructor() {
+//endset
         this.flavorCode = '00000000-0000-0000-0000-000000000000';
         this.flavorDescription = '';
         this.flavorDisplayOrder = 0;
@@ -169,10 +176,5 @@ export class QueryResultTestInstance implements QueryResult {
 
         this.items.push(new QueryResultItemInstance())
     }
-}
-
-export interface EnhancedQueryResultItem extends QueryResultItem {
-  rowKey: string;
-  rowNumber: number;
 }
 

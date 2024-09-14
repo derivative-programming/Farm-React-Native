@@ -2,21 +2,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { apiCall } from "../../apiConfig/apiCall";
 
-  export const PlantUserPropertyRandomUpdateSubmitRequest = (data:PlantUserPropertyRandomUpdateRequest, plantCode:string) => {
+  export const ErrorLogConfigResolveErrorLogSubmitRequest = (data:ErrorLogConfigResolveErrorLogRequest, errorLogCode:string) => {
     return apiCall({
-      url: "/plant-user-property-random-update/" + plantCode,
+      url: "/error-log-config-resolve-error-log/" + errorLogCode,
       method: "post",
       data
     });
   };
 
-  export const buildPlantUserPropertyRandomUpdateRequest = () => {
-    const result:PlantUserPropertyRandomUpdateRequest = new SubmitRequestInstance();
+  export const buildErrorLogConfigResolveErrorLogRequest = () => {
+    const result:ErrorLogConfigResolveErrorLogRequest = new SubmitRequestInstance();
 
       return result;
   }
 
-export interface PlantUserPropertyRandomUpdateRequest {
+export interface ErrorLogConfigResolveErrorLogRequest {
 
 }
 export interface ResponseFull {
@@ -36,7 +36,7 @@ export interface SubmitValidationError {
 
 }
 
-export class SubmitRequestInstance implements PlantUserPropertyRandomUpdateRequest {
+export class SubmitRequestInstance implements ErrorLogConfigResolveErrorLogRequest {
 
     constructor() {  // create a new instance of the class
 

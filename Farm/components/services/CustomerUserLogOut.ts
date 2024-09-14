@@ -1,23 +1,30 @@
-
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { apiCall } from "../../apiConfig/apiCall";
-   
-  
-  export const CustomerUserLogOutSubmitRequest = (data:any, customerCode:string) => {
+
+  export const CustomerUserLogOutSubmitRequest = (data:CustomerUserLogOutRequest, customerCode:string) => {
     return apiCall({
-      url: "/plant-user-delete/" + customerCode,
+      url: "/customer-user-log-out/" + customerCode,
       method: "post",
       data
     });
   };
 
-  
+  export const buildCustomerUserLogOutRequest = () => {
+    const result:CustomerUserLogOutRequest = new SubmitRequestInstance();
 
-export interface SubmitRequest {
-    
+      return result;
+  }
+
+export interface CustomerUserLogOutRequest {
+
+}
+export interface ResponseFull {
+    data: SubmitResult;
 }
 
 export interface SubmitResult {
-    
+
     success: boolean;
     message: string;
     validationErrors: SubmitValidationError[];
@@ -29,31 +36,26 @@ export interface SubmitValidationError {
 
 }
 
+export class SubmitRequestInstance implements CustomerUserLogOutRequest {
 
-export class SubmitRequestInstance implements SubmitRequest {
-    
+    constructor() {  // create a new instance of the class
 
-    constructor() {
-        
     }
 }
 
-
 export class SubmitResultInstance implements SubmitResult {
-    
+
     success: boolean;
     message: string;
     validationErrors: SubmitValidationError[];
 
     constructor() {
-        
+
         this.success = false;
         this.message = '';
         this.validationErrors = [];
     }
 }
-
-
 
 export class SubmitValidationErrorInstance implements SubmitValidationError {
     property: string;
@@ -65,57 +67,3 @@ export class SubmitValidationErrorInstance implements SubmitValidationError {
     }
 }
 
-
-
-
-
-export interface InitRequest {
-    
-}
-
-export interface InitResult {
- 
-    tacCode: string;
-    success: boolean;
-    message: string;
-    validationErrors: InitValidationError[];
-}
-
-export interface InitValidationError {
-    property: string;
-    message: string;
-
-}
- 
-
-
-export class InitResultInstance implements InitResult {
- 
-    tacCode: string;
-    success: boolean;
-    message: string;
-    validationErrors: InitValidationError[];
-
-    constructor() {
- 
-        this.tacCode = '00000000-0000-0000-0000-000000000000';
-        this.success = false;
-        this.message = '';
-        this.validationErrors =  [];
-    }
-}
-
-
-
-export class InitValidationErrorInstance implements InitValidationError {
-    property: string;
-    message: string;
-
-    constructor() { 
-        this.property = '';
-        this.message = ''; 
-    }
-}
-
-
- 

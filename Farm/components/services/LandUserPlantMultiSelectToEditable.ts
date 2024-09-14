@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { apiCall } from "../../apiConfig/apiCall";
    
   
    
   
-  export const LandUserPlantMultiSelectToEditableSubmitRequest = (data:any, landCode:string) => { 
+  export const LandUserPlantMultiSelectToEditableSubmitRequest = (data:LandUserPlantMultiSelectToEditableRequest, landCode:string) => { 
     return apiCall({
       url: "/land-user-plant-multi-select-to-editable/" + landCode,
       method: "post",
@@ -11,8 +13,19 @@ import { apiCall } from "../../apiConfig/apiCall";
     });
   }; 
 
-export interface SubmitRequest {
-    plantCodeListCsv:string
+  export const buildLandUserPlantMultiSelectToEditableRequest = () => {
+    const result:LandUserPlantMultiSelectToEditableRequest = new SubmitRequestInstance();
+  
+      return result;
+  }
+
+export interface LandUserPlantMultiSelectToEditableRequest {
+    plantCodeListCsv:string;
+    
+    landCode:string;
+}
+export interface ResponseFull {
+    data: SubmitResult;
 }
 
 export interface SubmitResult {
@@ -29,13 +42,17 @@ export interface SubmitValidationError {
 }
 
 
-export class SubmitRequestInstance implements SubmitRequest {
+export class SubmitRequestInstance implements LandUserPlantMultiSelectToEditableRequest {
 
-    plantCodeListCsv:string 
+    plantCodeListCsv:string;
+    
+    landCode:string;
 
-    constructor() {
-        
-        this.plantCodeListCsv = ''
+    constructor() {  // create a new instance of the class
+ 
+        this.plantCodeListCsv = '' 
+ 
+        this.landCode = '00000000-0000-0000-0000-000000000000' 
     }
 }
 
