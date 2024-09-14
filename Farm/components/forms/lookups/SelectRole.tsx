@@ -11,6 +11,8 @@ export interface FormSelectRoleProps {
     autoFocus?:boolean
     disabled?: boolean
     isVisible?:boolean
+    isRequired?: boolean;
+    detailText?: string;
   }
 
 export const FormSelectRole: FC<FormSelectRoleProps> = ({
@@ -20,6 +22,8 @@ export const FormSelectRole: FC<FormSelectRoleProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
+    isRequired = false,
+    detailText = '',
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 
@@ -49,6 +53,8 @@ export const FormSelectRole: FC<FormSelectRoleProps> = ({
             name={name}
             options={roles}
             isVisible={isVisible}
+            isRequired={isRequired}
+            detailText={detailText}
             />
 
     );

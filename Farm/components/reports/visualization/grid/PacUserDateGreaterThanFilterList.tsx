@@ -1,5 +1,7 @@
 import React, { FC, ReactElement, useState } from "react";
 import * as ReportService from "../../services/PacUserDateGreaterThanFilterList";
+import uuid  from 'react-native-uuid';
+import RNFS from 'react-native-fs';
 
 import * as ReportColumnDisplay from "./columns";
 import * as AsyncServices from "../../../services";
@@ -46,6 +48,8 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
   const { logClick } = useAnalyticsDB();
   const componentName = "ReportGridPacUserDateGreaterThanFilterList";
+  const contextValueName = "pacCode";
+  const contextValue = contextCode;
 
   const handleRowSelectCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -78,6 +82,36 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
     }
   };
 
+  const viewFileDownload = async (response: any) => {
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = uuid.v4() + '.csv';
+
+    if (contentDisposition) {
+      // Attempt to extract the filename*= value first, then fallback to filename=
+      const filenameMatch = contentDisposition.match(/filename\*?=['"]?([^;'"]+)/);
+      if (filenameMatch && filenameMatch[1]) {
+        filename = decodeURIComponent(filenameMatch[1].replace(/UTF-8''/, ''));
+      }
+    }
+
+    // Get the content type or default to "text/csv"
+    const contentType = response.headers['content-type'] || 'text/csv';
+
+    // Define the file path for saving
+    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+
+    try {
+      // Write the response data to the file
+      await RNFS.writeFile(path, response.data, 'utf8');
+      console.log(`File downloaded to: ${path}`);
+
+      // Optionally open the file using FileViewer or any other viewer.
+      // FileViewer.open(path); // Uncomment this line if you want to open the file immediately
+    } catch (err) {
+      console.error('File download error:', err);
+    }
+  };
+
   console.log("items count...");
   console.log(items.length);
 
@@ -89,41 +123,47 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
         renderItem={({ item }) =>
           <View style={styles.card}>
 {/* ENDSET */}
+            <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterCode"
+              rowIndex={item.rowNumber}
+              value={item.dateGreaterThanFilterCode}
+              isVisible={true}
+              label="dateGreaterThanFilter Code"
+            />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="dateGreaterThanFilterDayCount"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDayCount}
-              label="Day Count"
               isVisible={true}
+              label="Day Count"
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterDescription"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDescription}
-              label="Description"
               isVisible={true}
+              label="Description"
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="dateGreaterThanFilterDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDisplayOrder}
-              label="Display Order"
               isVisible={true}
+              label="Display Order"
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="dateGreaterThanFilterIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.dateGreaterThanFilterIsActive}
-              label="Is Active"
               isVisible={true}
+              label="Is Active"
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterLookupEnumName}
-              label="Lookup Enum Name"
               isVisible={true}
+              label="Lookup Enum Name"
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterName"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterName}
-              label="Name"
               isVisible={true}
+              label="Name"
             />
 {/* ENDSET */}
           </View>}

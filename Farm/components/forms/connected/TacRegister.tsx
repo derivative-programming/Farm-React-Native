@@ -56,12 +56,19 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   };
   const isInitializedRef = useRef(false);
 
+  let lastApiSubmissionRequest = new FormService.SubmitRequestInstance();
+  let lastApiSubmissionResponse = new FormService.SubmitResultInstance();
+
   const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
 
   const validationSchema = FormValidation.buildValidationSchema();
 
+  const isAutoSubmit = false;
+
   const authContext = useContext(AuthContext);
- 
+
+  // console.log('form ctrl initial values...');
+  // console.log(initialValues);
 
   const handleInit = (responseFull: any) => {
     const response: InitFormService.InitResult = responseFull.data;
@@ -72,9 +79,6 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     }
 
     setInitPageResponse({ ...response });
-    console.log('Services.TacRegister.handleInit success');
-    console.log('form ctrl initial values...');
-    console.log(response);
   };
 
   const handleValidate = async (values: FormService.SubmitRequest) => {
@@ -149,6 +153,34 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       setLoading(false);
     }
   };
+
+  const autoSubmit = async (
+    values: FormService.SubmitRequest
+  ) => {
+    try {
+      const responseFull: FormService.ResponseFull = await FormService.submitForm(
+        values,
+        contextCode
+      );
+      const response: FormService.SubmitResult = responseFull.data;
+      lastApiSubmissionRequest = { ...values };
+      lastApiSubmissionResponse = { ...response };
+      if (!response.success) {
+        //click cancel
+      } else {
+        //possible relogin
+
+        authContext.startSession(response);
+        AnalyticsService.start();
+
+      }
+    } catch (error) {
+      //click cancel
+    }
+
+    submitNavigateTo("tac-farm-dashboard","tacCode");
+
+  };
   const submitButtonNavigateTo = () => {
     navigateTo("TacFarmDashboard", "tacCode");
   };
@@ -164,8 +196,13 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
   }, []);
 
   useEffect(() => {
+    if(initPageResponse === null){
+      return;
+    }
     const newInitalValues = FormService.buildSubmitRequest(initPageResponse);
+
     setInitialValues({ ...newInitalValues });
+
   }, [initPageResponse]);
 
   const navigateTo = (page: string, codeName: string) => {
@@ -221,22 +258,32 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
                     <InputFields.FormInputEmail name="email"
                       label="Email"
                       isVisible={true}
+                      isRequired={true}
+                      detailText=""
                     />
                     <InputFields.FormInputPassword name="password"
                       label="Password"
                       isVisible={true}
+                      isRequired={true}
+                      detailText=""
                     />
                     <InputFields.FormInputPassword name="confirmPassword"
                       label="Confirm Password"
                       isVisible={true}
+                      isRequired={true}
+                      detailText=""
                     />
                     <InputFields.FormInputText name="firstName"
                       label="First Name"
                       isVisible={true}
+                      isRequired={true}
+                      detailText=""
                     />
                     <InputFields.FormInputText name="lastName"
                       label="Last Name"
                       isVisible={true}
+                      isRequired={true}
+                      detailText=""
                     />
                 </>
               }

@@ -11,6 +11,8 @@ export interface FormSelectDynaFlowTypeProps {
     autoFocus?:boolean
     disabled?: boolean
     isVisible?:boolean
+    isRequired?: boolean;
+    detailText?: string;
   }
 
 export const FormSelectDynaFlowType: FC<FormSelectDynaFlowTypeProps> = ({
@@ -20,6 +22,8 @@ export const FormSelectDynaFlowType: FC<FormSelectDynaFlowTypeProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
+    isRequired = false,
+    detailText = '',
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 
@@ -49,6 +53,8 @@ export const FormSelectDynaFlowType: FC<FormSelectDynaFlowTypeProps> = ({
             name={name}
             options={dynaFlowTypes}
             isVisible={isVisible}
+            isRequired={isRequired}
+            detailText={detailText}
             />
 
     );

@@ -9,6 +9,7 @@ import {
 import ReportConnectedTacFarmDashboard from "./TacFarmDashboard";
 import * as ReportService from "../services/TacFarmDashboard";
 import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
+import * as flavorCodeService from "../../lookups/services/Flavor"
 
 import '@testing-library/jest-dom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,6 +31,7 @@ jest.mock('@react-navigation/native', () => ({
 
 const mockReportInitService = jest.spyOn(ReportService, "initPage");
 const mockReportService = jest.spyOn(ReportService, "submitRequest");
+const mockFlavorCodeService =  jest.spyOn(flavorCodeService, "submitRequest");
 
 describe("TacFarmDashboard Connected Report Component", () => {
   // render the TacFarmDashboard component
@@ -37,6 +39,10 @@ describe("TacFarmDashboard Connected Report Component", () => {
     await AsyncStorage.setItem("@token", "sampleToken");
     mockReportInitService.mockResolvedValue({
       data: new InitReportService.InitResultInstance(),
+    });
+
+    mockFlavorCodeService.mockResolvedValue({
+      data: new flavorCodeService.QueryResultTestInstance(),
     });
 
     mockReportService.mockResolvedValue({

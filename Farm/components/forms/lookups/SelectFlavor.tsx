@@ -12,7 +12,7 @@ export interface FormSelectFlavorProps {
     disabled?: boolean
     isVisible?:boolean
     isRequired?: boolean;
-    detailText?: string; 
+    detailText?: string;
   }
 
 export const FormSelectFlavor: FC<FormSelectFlavorProps> = ({
@@ -23,7 +23,7 @@ export const FormSelectFlavor: FC<FormSelectFlavorProps> = ({
     disabled = false,
     isVisible = true,
     isRequired = false,
-    detailText = '', 
+    detailText = '',
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 

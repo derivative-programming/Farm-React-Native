@@ -3,7 +3,7 @@ import config from '../../../config';
 
 let connection: HubConnection | null = null;
 
-export const startConnection = () => { 
+export const startConnection = () => {
     const connectionId = localStorage.getItem("customerCode");
     if (connectionId) {
         const url = new URL(config.apiBaseUrl +'/analytics-hub');
@@ -13,23 +13,22 @@ export const startConnection = () => {
             })
             .withAutomaticReconnect()
             .build();
- 
+
         connection.start()
-        .then( () => { 
+        .then( () => {
             if (connection) {
-                connection.invoke('SetConnectionId', connectionId); 
+                connection.invoke('SetConnectionId', connectionId);
             }
-        }); 
- 
+        });
+
         connection.on('ReceiveMessage', (user: string, message: string) => {
             console.log(message);
         });
 
-
     }
-} 
+}
 
-export const stopConnection = (): Promise<void> => { 
+export const stopConnection = (): Promise<void> => {
     if (connection) {
         return connection.stop();
     }
@@ -50,11 +49,11 @@ export const reconnectWhenOnline = () => {
     window.addEventListener('online', () => {
         startConnection();
     });
-} 
+}
 
-export const CollectDataFromClient = async(data:string) => {  
-    if (connection && connection.state == HubConnectionState.Connected) { 
-        await connection.invoke('CollectDataFromClient', data); 
+export const CollectDataFromClient = async(data:string) => {
+    if (connection && connection.state == HubConnectionState.Connected) {
+        await connection.invoke('CollectDataFromClient', data);
     }
 }
  

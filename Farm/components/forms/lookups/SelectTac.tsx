@@ -11,6 +11,8 @@ export interface FormSelectTacProps {
     autoFocus?:boolean
     disabled?: boolean
     isVisible?:boolean
+    isRequired?: boolean;
+    detailText?: string;
   }
 
 export const FormSelectTac: FC<FormSelectTacProps> = ({
@@ -20,6 +22,8 @@ export const FormSelectTac: FC<FormSelectTacProps> = ({
     autoFocus = false,
     disabled = false,
     isVisible = true,
+    isRequired = false,
+    detailText = '',
   }): ReactElement => {
     const [field, meta, helpers] = useField(name);
 
@@ -49,6 +53,8 @@ export const FormSelectTac: FC<FormSelectTacProps> = ({
             name={name}
             options={tacs}
             isVisible={isVisible}
+            isRequired={isRequired}
+            detailText={detailText}
             />
 
     );
