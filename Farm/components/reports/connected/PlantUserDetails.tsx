@@ -5,27 +5,27 @@ import React, {
     useState,
     useEffect,
     useRef,
-  } from "react";
-  import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-  import { useNavigation } from '@react-navigation/native';
-  import * as ReportService from "../services/PlantUserDetails";
-  import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
-  import HeaderPlantUserDetails from "../headers/PlantUserDetailsInitReport";
-  import * as ReportInput from "../input-fields";
-  import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
-  import uuid from 'react-native-uuid';
-  import { StackNavigationProp } from "@react-navigation/stack";
-  import RootStackParamList from "../../../screens/rootStackParamList";
-  import AsyncStorage from '@react-native-async-storage/async-storage';
-  import * as theme from '../../../constants/theme'
-  import Icon from 'react-native-vector-icons/Ionicons';
-  import { ScreenBackButton } from "../../ScreenBackButton";
-  import { ScreenAddButton } from "../../ScreenAddButton";  
-  //GENTrainingBlock[visualizationTypeImports]Start
-  //GENLearn[visualizationType=DetailThreeColumn]Start 
-  import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
-  //GENLearn[visualizationType=DetailThreeColumn]End
-  //GENTrainingBlock[visualizationTypeImports]End
+} from "react";
+import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import * as ReportService from "../services/PlantUserDetails";
+import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
+import HeaderPlantUserDetails from "../headers/PlantUserDetailsInitReport";
+import * as ReportInput from "../input-fields";
+import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
+import uuid from 'react-native-uuid';
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
+import { ScreenBackButton } from "../../ScreenBackButton";
+import { ScreenAddButton } from "../../ScreenAddButton";  
+import Icon from 'react-native-vector-icons/Ionicons';
+//GENTrainingBlock[visualizationTypeImports]Start
+//GENLearn[visualizationType=DetailThreeColumn]Start 
+import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
+//GENLearn[visualizationType=DetailThreeColumn]End
+//GENTrainingBlock[visualizationTypeImports]End
   
   
   type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -57,12 +57,14 @@ import React, {
       
     //GENTrainingBlock[visualizationTypeInit]Start
     //GENLearn[visualizationType=DetailThreeColumn]Start
+    //
     //GENLearn[visualizationType=DetailThreeColumn]End
     //GENTrainingBlock[visualizationTypeInit]End
 
 
     //GENTrainingBlock[visualizationTypeFuncs]Start
     //GENLearn[visualizationType=DetailThreeColumn]Start
+    //
     //GENLearn[visualizationType=DetailThreeColumn]End
     //GENTrainingBlock[visualizationTypeFuncs]End
 

@@ -1,31 +1,31 @@
 import React, {
-    FC,
-    ReactElement,
-    useContext,
-    useState,
-    useEffect,
-    useRef,
-  } from "react";
-  import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
-  import { useNavigation } from '@react-navigation/native';
-  import * as ReportService from "../services/TacFarmDashboard";
-  import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
-  import HeaderTacFarmDashboard from "../headers/TacFarmDashboardInitReport";
-  import * as ReportInput from "../input-fields";
-  import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
-  import uuid from 'react-native-uuid';
-  import { StackNavigationProp } from "@react-navigation/stack";
-  import RootStackParamList from "../../../screens/rootStackParamList";
-  import AsyncStorage from '@react-native-async-storage/async-storage';
-  import * as theme from '../../../constants/theme'
-  import Icon from 'react-native-vector-icons/Ionicons';
-  import { ScreenBackButton } from "../../ScreenBackButton";
-  import { ScreenAddButton } from "../../ScreenAddButton";  
-  //GENTrainingBlock[visualizationTypeImports]Start
-  //GENLearn[visualizationType=DetailTwoColumn]Start 
-  import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-column/TacFarmDashboard";
-  //GENLearn[visualizationType=DetailTwoColumn]End
-  //GENTrainingBlock[visualizationTypeImports]End
+  FC,
+  ReactElement,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import * as ReportService from "../services/TacFarmDashboard";
+import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
+import HeaderTacFarmDashboard from "../headers/TacFarmDashboardInitReport";
+import * as ReportInput from "../input-fields";
+import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
+import uuid from 'react-native-uuid';
+import { StackNavigationProp } from "@react-navigation/stack";
+import RootStackParamList from "../../../screens/rootStackParamList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as theme from '../../../constants/theme'
+import { ScreenBackButton } from "../../ScreenBackButton";
+import { ScreenAddButton } from "../../ScreenAddButton";  
+import Icon from 'react-native-vector-icons/Ionicons';
+//GENTrainingBlock[visualizationTypeImports]Start
+//GENLearn[visualizationType=DetailTwoColumn]Start 
+import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-column/TacFarmDashboard";
+//GENLearn[visualizationType=DetailTwoColumn]End
+//GENTrainingBlock[visualizationTypeImports]End
   
   type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
   export interface ReportProps {
@@ -56,12 +56,14 @@ import React, {
 
     //GENTrainingBlock[visualizationTypeInit]Start
     //GENLearn[visualizationType=DetailTwoColumn]Start
+    //
     //GENLearn[visualizationType=DetailTwoColumn]End
     //GENTrainingBlock[visualizationTypeInit]End
 
 
     //GENTrainingBlock[visualizationTypeFuncs]Start
     //GENLearn[visualizationType=DetailTwoColumn]Start
+    //
     //GENLearn[visualizationType=DetailTwoColumn]End
     //GENTrainingBlock[visualizationTypeFuncs]End
 
