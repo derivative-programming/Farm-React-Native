@@ -1,6 +1,6 @@
 //GENLOOPObjectStart
 //GENTrainingBlock[a]Start
-//GENLearn[modelType=object,name=Plant]Start 
+//GENLearn[modelType=object,name=Land]Start 
 //GENLOOPObjectWorkflowStart
 //GENTrainingBlock[b]Start
 //GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]Start 
@@ -8,7 +8,7 @@ export const LAND_ADD_PLANT = 'LandAddPlant'
 //GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]End
 //GENTrainingBlock[b]End
 //GENLOOPObjectWorkflowEnd
-//GENLearn[modelType=object,name=Plant]End 
+//GENLearn[modelType=object,name=Land]End 
 export const TAC_LOGIN = 'TacLogin'
 export const TAC_REGISTER = 'TacRegister'
 //GENTrainingBlock[a]End

@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vroche1972.Farm"
+      "package": "com.vroche1972.DemoApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
