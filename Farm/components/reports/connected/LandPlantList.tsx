@@ -7,12 +7,10 @@ import React, {
   useRef,
 } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'; 
-import { useNavigation } from '@react-navigation/native';
-import ReportFilterLandPlantList from "../filters/LandPlantList";
-import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
+import { useNavigation } from '@react-navigation/native'; 
 import { ReportDetailThreeColLandPlantList } from "../visualization/detail-three-column/LandPlantList";
 import { ReportDetailTwoColLandPlantList } from "../visualization/detail-two-column/LandPlantList";
-import * as ReportService from "../services/LandPlantList";
+import * as LandPlantListReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
 import HeaderLandPlantList from "../headers/LandPlantListInitReport";
 import * as ReportInput from "../input-fields"; 
@@ -25,6 +23,13 @@ import * as theme from '../../../constants/theme'
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { ScreenBackButton } from "../../ScreenBackButton";
 import { ScreenAddButton } from "../../ScreenAddButton";  
+//GENTrainingBlock[visualizationTypeImports]Start
+//GENLearn[visualizationType=Grid]Start
+import ReportFilterLandPlantList from "../filters/LandPlantList";
+import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
+import { v4 as uuidv4 } from "uuid";
+//GENLearn[visualizationType=Grid]End
+//GENTrainingBlock[visualizationTypeImports]End
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
  
@@ -35,47 +40,38 @@ export interface ReportProps {
 export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   landCode = "00000000-0000-0000-0000-000000000000" 
 }): ReactElement => {
-  const [items, setItems] = useState<ReportService.EnhancedQueryResultItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [initPageResponse, setInitPageResponse] = useState(
-    new InitReportService.InitResultInstance()
-  );
-  const [queryResult, setQueryResult] = useState(
-    new ReportService.QueryResultInstance()
-  );
-  const [query, setQuery] = useState(new ReportService.QueryRequestInstance());
-  const [exportQuery, setExportQuery] = useState(new ReportService.QueryRequestInstance());
-  const [initialValues, setInitialValues] = useState(
-    new ReportService.QueryRequestInstance()
-  );
+  const isFilterPersistant  = false;
+
+  const [items, setItems] = useState<LandPlantListReportService.EnhancedQueryResultItem[]>([]);
+  const [isProcessing, setIsProcessing] = useState(false); 
+  const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
+ 
+  
+  const [queryResult, setQueryResult] = useState<LandPlantListReportService.QueryResult | null>(null);
+ 
+  const [query, setQuery] = useState<LandPlantListReportService.QueryRequest | null>(null);
+ 
+  const [initialQuery, setInitialQuery] = useState<LandPlantListReportService.QueryRequest | null>(null);
+
+  const [displayItem, setDisplayItem] = useState<LandPlantListReportService.QueryResultItem | null>(null);
+  
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
+  //GENTrainingBlock[visualizationTypeInit]Start
+  //GENLearn[visualizationType=Grid]Start
+    const [exportQuery, setExportQuery] = useState(new LandPlantListReportService.QueryRequestInstance());
+  //GENLearn[visualizationType=Grid]End
+  //GENTrainingBlock[visualizationTypeInit]End
 
-  const isRefreshButtonHidden = false;
-  const isPagingAvailable = true;
-  const isExportButtonsHidden = false;
-  const isFilterSectionHidden = false;
-  const isFilterSectionCollapsable = true;
-  const isBreadcrumbSectionHidden = false;
-  const isButtonDropDownAllowed = false;
-
-  const navigation = useNavigation<ScreenNavigationProp>();
-  
-  
+  const navigation = useNavigation<ScreenNavigationProp>(); 
   const contextCode: string = landCode ?? "00000000-0000-0000-0000-000000000000";
-  
-  const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
 
-  // console.log('report ctrl landCode...' + landCode);
+ 
 
-  // console.log('report ctrl initial values...');
-  // console.log(initialValues);
-
-  const handleInit = (responseFull: any) => {
+  const handleInit = (responseFull: InitReportService.ResponseFull) => {
     const response: InitReportService.InitResult = responseFull.data;
 
     if (!response.success) {
@@ -84,14 +80,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setInitPageResponse({ ...response });
   };
 
-  const handleQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
- 
-    console.log('report ctrl query results...');
-    console.log('success:' + queryResult.success);
-    console.log('pageNumber:' + queryResult.pageNumber);
-    console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
-    console.log('total count:' + queryResult.recordsTotal);
+  const handleQueryResults = (responseFull: LandPlantListReportService.ResponseFull) => {
+    const queryResult: LandPlantListReportService.QueryResult = responseFull.data;
 
     if (!queryResult.success) {
       return;
@@ -113,30 +103,6 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       setItems([...items, ...enhancedItems]); 
     }
   };
-  
-  const handleExportQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
-
-    if (!queryResult.success) {
-      return;
-    } 
-  };
-
-  const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
-    await logClick("ReportConnectedLandPlantList","search","");
-    setQuery({ ...queryRequest });
-  };
-
-  const onPageSelection = async (pageNumber: number) => {
-    await logClick("ReportConnectedLandPlantList","selectPage",pageNumber.toString());
-    setQuery({ ...query, pageNumber: pageNumber });
-  };
-
-  const onPageSizeChange = async (pageSize: number) => {
-    await logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
-    await AsyncStorage.setItem("pageSize",pageSize.toString());
-    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
-  };
 
   const onNavigateTo = (page: string,targetContextCode:string) => { 
     console.log('onNavigateTo...');
@@ -145,11 +111,120 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
+  const onRefreshRequest = () => {
+    logClick("ReportConnectedLandPlantList","refresh","");
+
+    const cleanrQueryRequest = new LandPlantListReportService.QueryRequestInstance();
+    cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery(cleanrQueryRequest);
+  };
+
+
+  useEffect(() => { 
+    if (isInitializedRef.current) { 
+      return;
+    } 
+    isInitializedRef.current = true;
+    LandPlantListReportService.initPage(contextCode).then((response) =>
+      handleInit(response)
+    );
+  }, []);
+
+  useEffect(() => { 
+    if(initPageResponse === null){
+      return;
+    }
+    
+    const loadAsyncData = async () => {
+      let queryRequest = LandPlantListReportService.buildQueryRequest(initPageResponse);  
+  
+      // Check if persistence is enabled and if there is a saved filter
+      if (isFilterPersistant) {
+        const savedFilter = await AsyncStorage.getItem("LandPlantListFilter"); 
+  
+        if (savedFilter) { 
+          const parsedFilter = JSON.parse(savedFilter);
+   
+          queryRequest = { ...queryRequest, ...parsedFilter };
+        }
+      }  
+      setInitialQuery({ ...queryRequest });
+    };
+
+    loadAsyncData();
+
+  }, [initPageResponse]);
+
+  useEffect(() => { 
+    if(initialQuery === null){
+      return;
+    }
+    const loadAsyncData = async () => {
+      if (JSON.stringify(initialQuery) !== JSON.stringify(query)) { 
+        const pageSize = await AsyncStorage.getItem("pageSize");
+        if(pageSize !== null)
+        { 
+          initialQuery.ItemCountPerPage = parseInt(pageSize);
+        } 
+        setQuery({ ...initialQuery });
+      }
+    };
+
+    loadAsyncData();
+    
+  }, [initialQuery]);
+
+  useEffect(() => {  
+    if(query === null){
+      return;
+    }
+    
+    console.log('report ctrl query...');
+    console.log(query);
+ 
+    if(query.pageNumber == 1) {
+      setRefreshing(true);
+      setLoadingMore(false);
+    } else {
+      setRefreshing(false);
+      setLoadingMore(true);
+    } 
+
+    
+    setIsProcessing(true);
+    LandPlantListReportService.submitRequest(query, contextCode).then((response) =>
+      handleQueryResults(response)
+    )
+    .finally(() => {
+      setIsProcessing(false); 
+      setRefreshing(false);
+      setLoadingMore(false);
+    });
+  }, [query]);
+  
+  useEffect(() => {  
+    if(queryResult === null){
+      return;
+    }
+    if(queryResult.items === null){
+      return;
+    }
+ 
+    const item = queryResult.items.length > 0 ?  queryResult.items[0] : new LandPlantListReportService.QueryResultItemInstance();
+    
+    setDisplayItem({...item})
+  }, [queryResult]);
+  
   const navigateTo = (page: string, codeName: string) => { 
     console.log('navigateTo...');
     console.log('page...' + page);
     console.log('codeName...' + codeName);
-    let targetContextCode = contextCode;
+    let targetContextCode = contextCode; 
+    if(initPageResponse === null){
+      return;
+    } 
     Object.entries(initPageResponse).forEach(([key, value]) => {
       if (key === codeName) {
         if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
@@ -158,18 +233,65 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           return;
         }
       }
-    });  
+    });
     console.log('targetContextCode...' + targetContextCode);
-    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode }); 
   };
 
-  const onRefreshRequest = async () => {
-    await logClick("ReportConnectedLandPlantList","refresh","");
-    setQuery({ ...query });
+  const isBreadcrumbSectionHidden = false;
+  //GENTrainingBlock[visualizationTypeFuncs]Start
+  //GENLearn[visualizationType=Grid]Start
+  const isRefreshButtonHidden = false;
+  const isPagingAvailable = true;
+  const isExportButtonsHidden = false;
+  const isFilterSectionHidden = false;
+  const isFilterSectionCollapsable = true;
+   
+
+  const onSubmit = async (queryRequest: LandPlantListReportService.QueryRequest) => {
+    logClick("ReportConnectedLandPlantList","search","");
+    
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("LandPlantListFilter",JSON.stringify(queryRequest)); 
+    }
+     
+    queryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    queryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    queryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery({ ...queryRequest });
   };
 
-  const onSort = async (columnName: string) => { 
-    await logClick("ReportConnectedLandPlantList","sort",columnName);
+  const onFilterReset = async () => {
+    logClick("ReportConnectedLandPlantList","reset filter","");
+    const clearQuery = new LandPlantListReportService.QueryRequestInstance();
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("LandPlantListFilter",JSON.stringify(clearQuery));
+    }
+    setInitialQuery({...clearQuery});
+  };
+
+  const onPageSelection = (pageNumber: number) => {
+    logClick("ReportConnectedLandPlantList","selectPage",pageNumber.toString());
+    if(query === null){
+      return;
+    }
+    setQuery({ ...query, pageNumber: pageNumber });
+  };
+
+  const onPageSizeChange = async (pageSize: number) => {
+    logClick("ReportConnectedLandPlantList","pageSizeChange",pageSize.toString());  
+    if(query === null){
+      return;
+    }
+    await AsyncStorage.setItem("pageSize",pageSize.toString());
+    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
+  };
+
+  const onSort = (columnName: string) => { 
+    logClick("ReportConnectedLandPlantList","sort",columnName);
+    if(query === null){
+      return;
+    }
     let orderByDescending = false;
     if (query.OrderByColumnName === columnName) {
       orderByDescending = !query.OrderByDescending;
@@ -182,88 +304,54 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   
-  const onExport = async () => {   
-    await logClick("ReportConnectedLandPlantList","export","");
+  const onExport = () => {   
+    logClick("ReportConnectedLandPlantList","export","");
+    if(query === null){
+      return;
+    }
     if(isProcessing){
       return;
     } 
     setExportQuery({ ...query });
   };
+  
+  const handleExportQueryResults = (responseFull: LandPlantListReportService.ResponseFull) => { // NOSONAR
+    const queryResult: LandPlantListReportService.QueryResult = responseFull.data;
 
-  useEffect(() => {
-    if (isInitializedRef.current) {
+    if (!queryResult.success) {
       return;
-    }
-    isInitializedRef.current = true;
-    ReportService.initPage(contextCode).then((response) =>
-      handleInit(response)
-    );
-  }, []);
-
-  useEffect(() => {
-    const newInitalValues = ReportService.buildQueryRequest(initPageResponse); 
-    setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
-  }, [initPageResponse]);
-
-  useEffect(() => { 
-    const fetchData = async () => {
-      if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
-          // Use await for AsyncStorage
-          let pageSize = await AsyncStorage.getItem("pageSize");
-          if (pageSize !== null) {
-              initialValues.ItemCountPerPage = parseInt(pageSize);
-          }
-          setQuery({ ...initialValues });
-      }
-    };
- 
-    fetchData();
-  }, [initialValues]);
-
-  useEffect(() => { 
-
-    console.log('report ctrl query...');
-    console.log(query);
- 
-    if(query.pageNumber == 1) {
-      setRefreshing(true);
-      setLoadingMore(false);
-    } else {
-      setRefreshing(false);
-      setLoadingMore(true);
     } 
-
-    setIsProcessing(true);
-    ReportService.submitRequest(query, contextCode).then((response) =>
-      handleQueryResults(response)
-    )
-    .finally(() => {
-      setIsProcessing(false); 
-      setRefreshing(false);
-      setLoadingMore(false);
-    });
-  }, [query]);
+  };
   
   useEffect(() => {   
     if (!isInitializedRef.current) {
       return;
     } 
+    if(query === null){
+      return;
+    }
+    if(queryResult === null){
+      return;
+    }
     if(!queryResult.success){
       return;
     }
     setIsProcessing(true); 
-    ReportService.submitCSVRequest(query, contextCode).then((response) => { 
-      //handleExportQueryResults(response);
+    LandPlantListReportService.submitCSVRequest(query, contextCode).then((response) => { 
+      //handleExportQueryResults(response);  //NOSONAR
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = URL.createObjectURL(blob);  
       const link = document.createElement('a');
-      // link.href = url;
-      link.setAttribute('download', 'LandPlantList-' + uuid.v4() + '.csv');
+      link.href = url;
+      link.setAttribute('download', 'LandPlantList-' + uuidv4() + '.csv');
       document.body.appendChild(link);
       link.click();
     })
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]);
+
+  //GENLearn[visualizationType=Grid]End
+  //GENTrainingBlock[visualizationTypeFuncs]End
 
   
   const onRefresh = () => {
@@ -271,7 +359,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   const onEndReached = () => {
-    if (!loadingMore) {
+    if (queryResult && !loadingMore) {
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
@@ -308,11 +396,13 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
         <Text style={styles.introText} testID="page-intro-text">A list of plants on the land</Text> 
         
 
-        <HeaderLandPlantList  
-          name="headerLandPlantList"
-          initData={initPageResponse}
-          isHeaderVisible={true}
-        />
+        {initPageResponse && (
+          <HeaderLandPlantList  
+            name="headerLandPlantList"
+            initData={initPageResponse}
+            isHeaderVisible={true}
+          />
+        )}
 
 {/* 
           
@@ -345,23 +435,44 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
         {/*//GENTrainingBlock[visualizationType]Start*/}
         {/*//GENLearn[visualizationType=Grid]Start*/}
-        <ReportGridLandPlantList
-          isSortDescending={queryResult.orderByDescending}
-          items={items}
-          name="reportConnectedLandPlantList-table"
-          contextCode={contextCode}
-          onSort={onSort}
-          onExport={onExport}
-          onNavigateTo={onNavigateTo}
-          onRefreshRequest={onRefreshRequest}
-          sortedColumnName={queryResult.orderByColumnName}
-          currentPage={queryResult.pageNumber}  
-          pageSize={queryResult.itemCountPerPage}
-          totalItemCount={queryResult.recordsTotal}   
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          onEndReached={onEndReached}
-        />  
+        {queryResult && (
+          <ReportGridLandPlantList
+            isSortDescending={queryResult.orderByDescending}
+            items={items}
+            name="reportConnectedLandPlantList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={queryResult.orderByColumnName}
+            currentPage={queryResult.pageNumber}  
+            pageSize={queryResult.itemCountPerPage}
+            totalItemCount={queryResult.recordsTotal}   
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />  
+        )}
+        {!queryResult && (
+          <ReportGridLandPlantList
+            isSortDescending={false}
+            items={[]}
+            name="reportConnectedLandPlantList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={""}
+            currentPage={1}
+            pageSize={10}
+            totalItemCount={0}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />  
+        )}
         {/*//GENLearn[visualizationType=Grid]End*/}
         {/*//GENTrainingBlock[visualizationType]End*/}
 

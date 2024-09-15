@@ -28,7 +28,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   else
       console.log('App bar not auth menu');
   
-  const title = "DemoApp"
+  const title = "Simple Api"
 
   const { logClick } = useAnalyticsDB();
 
