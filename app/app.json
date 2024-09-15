@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Farm",
-    "slug": "Farm",
+    "name": "DemoApp",
+    "slug": "DemoApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e2c3c108-9caf-45c4-a0c5-98dd1b5ced62"
+        "projectId": "aa79b9dc-ddd4-4d6a-b51e-4e328228e0b1"
       }
     }
   }
