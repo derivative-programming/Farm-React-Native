@@ -15,10 +15,10 @@ import * as ReportInput from "../input-fields";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
+import { ScreenBackButton } from "../../ScreenBackButton";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
-import { ScreenBackButton } from "../../ScreenBackButton";
 import { ScreenAddButton } from "../../ScreenAddButton";  
 import Icon from 'react-native-vector-icons/Ionicons'; 
 //GENTrainingBlock[visualizationTypeImports]Start
