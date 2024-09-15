@@ -8,18 +8,17 @@ import React, {
 } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as ReportService from "../services/PlantUserDetails";
+import * as PlantUserDetailsReportService from "../services/PlantUserDetails";
 import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
 import HeaderPlantUserDetails from "../headers/PlantUserDetailsInitReport";
 import * as ReportInput from "../input-fields";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
+import { ScreenBackButton } from "../../ScreenBackButton";
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
-import { ScreenBackButton } from "../../ScreenBackButton";
-import { ScreenAddButton } from "../../ScreenAddButton";  
 import Icon from 'react-native-vector-icons/Ionicons';
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=DetailThreeColumn]Start 
@@ -35,26 +34,26 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
   export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     plantCode = "00000000-0000-0000-0000-000000000000"
   }): ReactElement => {
-    const [items, setItems] = useState<ReportService.EnhancedQueryResultItem[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
+    const isFilterPersistant  = false;
+  
+    const [items, setItems] = useState<PlantUserDetailsReportService.EnhancedQueryResultItem[]>([]);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [initPageResponse, setInitPageResponse] = useState(
-      new InitReportService.InitResultInstance()
-    );
-    const [queryResult, setQueryResult] = useState(
-      new ReportService.QueryResultInstance()
-    );
-    const [query, setQuery] = useState(new ReportService.QueryRequestInstance());
-    const [exportQuery, setExportQuery] = useState(new ReportService.QueryRequestInstance());
-    const [initialValues, setInitialValues] = useState(
-      new ReportService.QueryRequestInstance()
-    );
+    const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
+  
+    const [queryResult, setQueryResult] = useState<PlantUserDetailsReportService.QueryResult | null>(null);
+  
+    const [query, setQuery] = useState<PlantUserDetailsReportService.QueryRequest | null>(null);
+  
+    const [initialQuery, setInitialQuery] = useState<PlantUserDetailsReportService.QueryRequest | null>(null);
+  
+    const [displayItem, setDisplayItem] = useState<PlantUserDetailsReportService.QueryResultItem | null>(null);
+  
     const [loadingMore, setLoadingMore] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+  
     const isInitializedRef = useRef(false);
     const { logClick } = useAnalyticsDB();
-      
+   
     //GENTrainingBlock[visualizationTypeInit]Start
     //GENLearn[visualizationType=DetailThreeColumn]Start
     //
@@ -68,33 +67,22 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
     //GENLearn[visualizationType=DetailThreeColumn]End
     //GENTrainingBlock[visualizationTypeFuncs]End
 
-    const isRefreshButtonHidden = true;
-    const isPagingAvailable = false;
-    const isExportButtonsHidden = true;
-    const isFilterSectionHidden = true;
-    const isFilterSectionCollapsable = false;
-    const isBreadcrumbSectionHidden = false;
-    const isButtonDropDownAllowed = true;
+  
     const navigation = useNavigation<ScreenNavigationProp>();
     const contextCode: string = plantCode ?? "00000000-0000-0000-0000-000000000000";
-    const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
-    // console.log('report ctrl plantCode...' + plantCode);
-    // console.log('report ctrl initial values...');
-    // console.log(initialValues);
-    const handleInit = (responseFull: any) => {
+  
+    const handleInit = (responseFull: InitReportService.ResponseFull) => {
       const response: InitReportService.InitResult = responseFull.data;
+  
       if (!response.success) {
         return;
       }
       setInitPageResponse({ ...response });
     };
-    const handleQueryResults = (responseFull: any) => {
-      const queryResult: ReportService.QueryResult = responseFull.data;
-      console.log('report ctrl query results...');
-      console.log('success:' + queryResult.success);
-      console.log('pageNumber:' + queryResult.pageNumber);
-      console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
-      console.log('total count:' + queryResult.recordsTotal);
+  
+    const handleQueryResults = (responseFull: PlantUserDetailsReportService.ResponseFull) => {
+      const queryResult: PlantUserDetailsReportService.QueryResult = responseFull.data;
+  
       if (!queryResult.success) {
         return;
       }
@@ -115,36 +103,126 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
         setItems([...items, ...enhancedItems]);
       }
     };
-    const handleExportQueryResults = (responseFull: any) => {
-      const queryResult: ReportService.QueryResult = responseFull.data;
-      if (!queryResult.success) {
-        return;
-      }
-    };
-    const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
-      await logClick("ReportConnectedPlantUserDetails","search","");
-      setQuery({ ...queryRequest });
-    };
-    const onPageSelection = async (pageNumber: number) => {
-      await logClick("ReportConnectedPlantUserDetails","selectPage",pageNumber.toString());
-      setQuery({ ...query, pageNumber: pageNumber });
-    };
-    const onPageSizeChange = async (pageSize: number) => {
-      await logClick("ReportConnectedPlantUserDetails","pageSizeChange",pageSize.toString());
-      await AsyncStorage.setItem("pageSize",pageSize.toString());
-      setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
-    };
+  
     const onNavigateTo = (page: string,targetContextCode:string) => {
       console.log('onNavigateTo...');
       console.log('page...' + page);
       console.log('targetContextCode...' + targetContextCode);
       navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     };
+  
+    const onRefreshRequest = () => {
+      logClick("ReportConnectedPlantUserDetails","refresh","");
+  
+      const cleanrQueryRequest = new PlantUserDetailsReportService.QueryRequestInstance();
+      cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+      cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+      cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+      setQuery(cleanrQueryRequest);
+    };
+  
+    useEffect(() => {
+      if (isInitializedRef.current) {
+        return;
+      }
+      isInitializedRef.current = true;
+      PlantUserDetailsReportService.initPage(contextCode).then((response) =>
+        handleInit(response)
+      );
+    }, []);
+  
+    useEffect(() => {
+      if(initPageResponse === null){
+        return;
+      }
+  
+      const loadAsyncData = async () => {
+        let queryRequest = PlantUserDetailsReportService.buildQueryRequest(initPageResponse);
+  
+        // Check if persistence is enabled and if there is a saved filter
+        if (isFilterPersistant) {
+          const savedFilter = await AsyncStorage.getItem("PlantUserDetailsFilter");
+  
+          if (savedFilter) {
+            const parsedFilter = JSON.parse(savedFilter);
+  
+            queryRequest = { ...queryRequest, ...parsedFilter };
+          }
+        }
+        setInitialQuery({ ...queryRequest });
+      };
+  
+      loadAsyncData();
+  
+    }, [initPageResponse]);
+  
+    useEffect(() => {
+      if(initialQuery === null){
+        return;
+      }
+      const loadAsyncData = async () => {
+        if (JSON.stringify(initialQuery) !== JSON.stringify(query)) {
+          const pageSize = await AsyncStorage.getItem("pageSize");
+          if(pageSize !== null)
+          {
+            initialQuery.ItemCountPerPage = parseInt(pageSize);
+          }
+          setQuery({ ...initialQuery });
+        }
+      };
+  
+      loadAsyncData();
+  
+    }, [initialQuery]);
+  
+    useEffect(() => {
+      if(query === null){
+        return;
+      }
+  
+      console.log('report ctrl query...');
+      console.log(query);
+  
+      if(query.pageNumber == 1) {
+        setRefreshing(true);
+        setLoadingMore(false);
+      } else {
+        setRefreshing(false);
+        setLoadingMore(true);
+      }
+  
+      setIsProcessing(true);
+      PlantUserDetailsReportService.submitRequest(query, contextCode).then((response) =>
+        handleQueryResults(response)
+      )
+      .finally(() => {
+        setIsProcessing(false);
+        setRefreshing(false);
+        setLoadingMore(false);
+      });
+    }, [query]);
+  
+    useEffect(() => {
+      if(queryResult === null){
+        return;
+      }
+      if(queryResult.items === null){
+        return;
+      }
+  
+      const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PlantUserDetailsReportService.QueryResultItemInstance();
+  
+      setDisplayItem({...item})
+    }, [queryResult]);
+  
     const navigateTo = (page: string, codeName: string) => {
       console.log('navigateTo...');
       console.log('page...' + page);
       console.log('codeName...' + codeName);
       let targetContextCode = contextCode;
+      if(initPageResponse === null){
+        return;
+      }
       Object.entries(initPageResponse).forEach(([key, value]) => {
         if (key === codeName) {
           if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
@@ -157,103 +235,9 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       console.log('targetContextCode...' + targetContextCode);
       navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
     };
-    const onRefreshRequest = async () => {
-      await logClick("ReportConnectedPlantUserDetails","refresh","");
-      setQuery({ ...query });
-    };
-    const onSort = async (columnName: string) => {
-      await logClick("ReportConnectedPlantUserDetails","sort",columnName);
-      let orderByDescending = false;
-      if (query.OrderByColumnName === columnName) {
-        orderByDescending = !query.OrderByDescending;
-      }
-      setQuery({
-        ...query,
-        OrderByColumnName: columnName,
-        OrderByDescending: orderByDescending,
-      });
-    };
-    const onExport = async () => {
-      await logClick("ReportConnectedPlantUserDetails","export","");
-      if(isProcessing){
-        return;
-      }
-      setExportQuery({ ...query });
-    };
-    useEffect(() => {
-      if (isInitializedRef.current) {
-        return;
-      }
-      isInitializedRef.current = true;
-      ReportService.initPage(contextCode).then((response) =>
-        handleInit(response)
-      );
-    }, []);
-    useEffect(() => {
-      const newInitalValues = ReportService.buildQueryRequest(initPageResponse);
-      setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
-    }, [initPageResponse]);
-    useEffect(() => {
-      const fetchData = async () => {
-        if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
-            // Use await for AsyncStorage
-            let pageSize = await AsyncStorage.getItem("pageSize");
-            if (pageSize !== null) {
-                initialValues.ItemCountPerPage = parseInt(pageSize);
-            }
-            setQuery({ ...initialValues });
-        }
-      };
-      fetchData();
-    }, [initialValues]);
-    useEffect(() => {
-      console.log('report ctrl query...');
-      console.log(query);
-      if(query.pageNumber == 1) {
-        setRefreshing(true);
-        setLoadingMore(false);
-      } else {
-        setRefreshing(false);
-        setLoadingMore(true);
-      }
-      setIsProcessing(true);
-      ReportService.submitRequest(query, contextCode).then((response) =>
-        handleQueryResults(response)
-      )
-      .finally(() => {
-        setIsProcessing(false);
-        setRefreshing(false);
-        setLoadingMore(false);
-      });
-    }, [query]);
-    useEffect(() => {
-      if (!isInitializedRef.current) {
-        return;
-      }
-      if(!queryResult.success){
-        return;
-      }
-      setIsProcessing(true);
-      ReportService.submitCSVRequest(query, contextCode).then((response) => {
-        //handleExportQueryResults(response);
-        const blob = new Blob([response.data], { type: "text/csv" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        // link.href = url;
-        link.setAttribute('download', 'PlantUserDetails-' + uuid.v4() + '.csv');
-        document.body.appendChild(link);
-        link.click();
-      })
-      .finally(() => {setIsProcessing(false);});
-    }, [exportQuery]);
-    const onRefresh = () => {
-      onPageSelection(1);
-    };
-    const onEndReached = () => {
-      if (!loadingMore) {
-        onPageSelection(queryResult.pageNumber + 1);
-      }
-    };
+  
+    const isBreadcrumbSectionHidden = false;
+
     return (
       
       <View style={styles.container}>
@@ -274,21 +258,26 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
         </View>
         <View style={styles.formContainer}>
           <Text style={styles.introText} testID="page-intro-text">Plant Details page intro text</Text>
-          <HeaderPlantUserDetails
-            name="headerPlantUserDetails"
-            initData={initPageResponse}
-            isHeaderVisible={false}
-          />
+          
+          {initPageResponse && (
+            <HeaderPlantUserDetails
+              name="headerPlantUserDetails"
+              initData={initPageResponse}
+              isHeaderVisible={false}
+            />
+          )}
           {/*//GENTrainingBlock[visualizationType]Start*/}
           {/*//GENLearn[visualizationType=DetailThreeColumn]Start*/}
           <ScrollView>
-            <ReportDetailThreeColPlantUserDetails 
-                item= {displayItem}
-                name="reportConnectedPlantUserDetails-table" 
-                onNavigateTo={onNavigateTo} 
-                onRefreshRequest={onRefreshRequest}
-                showProcessing={isProcessing}
-            /> 
+            {displayItem && (
+              <ReportDetailThreeColPlantUserDetails 
+                  item= {displayItem}
+                  name="reportConnectedPlantUserDetails-table" 
+                  onNavigateTo={onNavigateTo} 
+                  onRefreshRequest={onRefreshRequest}
+                  showProcessing={isProcessing}
+              /> 
+            )}
           </ScrollView>
           {/*//GENLearn[visualizationType=DetailThreeColumn]End*/}
           {/*//GENTrainingBlock[visualizationType]End*/}

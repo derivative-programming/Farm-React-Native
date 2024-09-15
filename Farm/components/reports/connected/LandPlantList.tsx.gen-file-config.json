@@ -9,6 +9,7 @@
         "reportButton.calculatedIsDestinationContextObjectNameSet", 
         "reportButton.isButtonCallToAction",  
         "reportButton.isEnabled", 
+        "reportButton.isVisible", 
         "reportButton.calculatedIsButtonBadgePropertyAvailable", 
         "reportButton.isButtonBadgeVisible",  
         "reportButton.calculatedIsDestinationBackBtnDataSet",
