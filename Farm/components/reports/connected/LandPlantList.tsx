@@ -8,8 +8,6 @@ import React, {
 } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native'; 
-import { ReportDetailThreeColLandPlantList } from "../visualization/detail-three-column/LandPlantList";
-import { ReportDetailTwoColLandPlantList } from "../visualization/detail-two-column/LandPlantList";
 import * as LandPlantListReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
 import HeaderLandPlantList from "../headers/LandPlantListInitReport";
@@ -173,7 +171,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     };
 
     loadAsyncData();
-    
+
   }, [initialQuery]);
 
   useEffect(() => {  

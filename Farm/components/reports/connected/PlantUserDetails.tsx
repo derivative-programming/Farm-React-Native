@@ -8,10 +8,6 @@ import React, {
   } from "react";
   import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
   import { useNavigation } from '@react-navigation/native';
-  import ReportFilterPlantUserDetails from "../filters/PlantUserDetails";
-  import { ReportGridPlantUserDetails } from "../visualization/grid/PlantUserDetails";
-  import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
-  import { ReportDetailTwoColPlantUserDetails } from "../visualization/detail-two-column/PlantUserDetails";
   import * as ReportService from "../services/PlantUserDetails";
   import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
   import HeaderPlantUserDetails from "../headers/PlantUserDetailsInitReport";
@@ -27,6 +23,7 @@ import React, {
   import { ScreenAddButton } from "../../ScreenAddButton";  
   //GENTrainingBlock[visualizationTypeImports]Start
   //GENLearn[visualizationType=DetailThreeColumn]Start 
+  import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
   //GENLearn[visualizationType=DetailThreeColumn]End
   //GENTrainingBlock[visualizationTypeImports]End
   

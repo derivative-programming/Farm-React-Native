@@ -8,10 +8,6 @@ import React, {
   } from "react";
   import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
   import { useNavigation } from '@react-navigation/native';
-  import ReportFilterTacFarmDashboard from "../filters/TacFarmDashboard";
-  import { ReportGridTacFarmDashboard } from "../visualization/grid/TacFarmDashboard";
-  import { ReportDetailThreeColTacFarmDashboard } from "../visualization/detail-three-column/TacFarmDashboard";
-  import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-column/TacFarmDashboard";
   import * as ReportService from "../services/TacFarmDashboard";
   import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
   import HeaderTacFarmDashboard from "../headers/TacFarmDashboardInitReport";
@@ -27,6 +23,7 @@ import React, {
   import { ScreenAddButton } from "../../ScreenAddButton";  
   //GENTrainingBlock[visualizationTypeImports]Start
   //GENLearn[visualizationType=DetailTwoColumn]Start 
+  import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-column/TacFarmDashboard";
   //GENLearn[visualizationType=DetailTwoColumn]End
   //GENTrainingBlock[visualizationTypeImports]End
   
