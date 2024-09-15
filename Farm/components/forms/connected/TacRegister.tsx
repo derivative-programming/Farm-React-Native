@@ -126,12 +126,6 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       }
 
       authContext.startSession(response);
-      // authContext.setToken(response.apiKey);
-      // authContext.setRoles(response.roleNameCSVList);
-      // await AsyncStorage.setItem("@token", response.apiKey);
-      // await AsyncStorage.setItem("customerCode", response.customerCode);
-      // await AsyncStorage.setItem("email", response.email);
-      // await AnalyticsService.start();
 
       actions.setSubmitting(false);
       actions.resetForm();

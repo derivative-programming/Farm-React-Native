@@ -8,21 +8,23 @@ import React, {
 } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ReportFilterPacUserRoleList from "../filters/PacUserRoleList";
-import { ReportGridPacUserRoleList } from "../visualization/grid/PacUserRoleList";
-import { ReportDetailThreeColPacUserRoleList } from "../visualization/detail-three-column/PacUserRoleList";
-import { ReportDetailTwoColPacUserRoleList } from "../visualization/detail-two-column/PacUserRoleList";
-import * as ReportService from "../services/PacUserRoleList";
+import * as PacUserRoleListReportService from "../services/PacUserRoleList";
 import * as InitReportService from "../services/init/PacUserRoleListInitReport";
 import HeaderPacUserRoleList from "../headers/PacUserRoleListInitReport";
 import * as ReportInput from "../input-fields";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
+
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
+
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import ReportFilterPacUserRoleList from "../filters/PacUserRoleList";
+import { ReportGridPacUserRoleList } from "../visualization/grid/PacUserRoleList";
+import { v4 as uuidv4 } from "uuid";
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -33,46 +35,32 @@ export interface ReportProps {
 export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   pacCode = "00000000-0000-0000-0000-000000000000"
 }): ReactElement => {
-  const [items, setItems] = useState<ReportService.EnhancedQueryResultItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const isFilterPersistant  = false;
+
+  const [items, setItems] = useState<PacUserRoleListReportService.EnhancedQueryResultItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [initPageResponse, setInitPageResponse] = useState(
-    new InitReportService.InitResultInstance()
-  );
-  const [queryResult, setQueryResult] = useState(
-    new ReportService.QueryResultInstance()
-  );
-  const [query, setQuery] = useState(new ReportService.QueryRequestInstance());
-  const [exportQuery, setExportQuery] = useState(new ReportService.QueryRequestInstance());
-  const [initialValues, setInitialValues] = useState(
-    new ReportService.QueryRequestInstance()
-  );
+  const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
+
+  const [queryResult, setQueryResult] = useState<PacUserRoleListReportService.QueryResult | null>(null);
+
+  const [query, setQuery] = useState<PacUserRoleListReportService.QueryRequest | null>(null);
+
+  const [initialQuery, setInitialQuery] = useState<PacUserRoleListReportService.QueryRequest | null>(null);
+
+  const [displayItem, setDisplayItem] = useState<PacUserRoleListReportService.QueryResultItem | null>(null);
+
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
 
-  const isRefreshButtonHidden = false;
-  const isPagingAvailable = true;
-  const isExportButtonsHidden = false;
-  const isFilterSectionHidden = false;
-  const isFilterSectionCollapsable = true;
-  const isBreadcrumbSectionHidden = false;
-  const isButtonDropDownAllowed = true;
+    const [exportQuery, setExportQuery] = useState(new PacUserRoleListReportService.QueryRequestInstance());
 
   const navigation = useNavigation<ScreenNavigationProp>();
-
   const contextCode: string = pacCode ?? "00000000-0000-0000-0000-000000000000";
 
-  const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
-
-  // console.log('report ctrl pacCode...' + pacCode);
-
-  // console.log('report ctrl initial values...');
-  // console.log(initialValues);
-
-  const handleInit = (responseFull: any) => {
+  const handleInit = (responseFull: InitReportService.ResponseFull) => {
     const response: InitReportService.InitResult = responseFull.data;
 
     if (!response.success) {
@@ -81,14 +69,8 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     setInitPageResponse({ ...response });
   };
 
-  const handleQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
-
-    console.log('report ctrl query results...');
-    console.log('success:' + queryResult.success);
-    console.log('pageNumber:' + queryResult.pageNumber);
-    console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
-    console.log('total count:' + queryResult.recordsTotal);
+  const handleQueryResults = (responseFull: PacUserRoleListReportService.ResponseFull) => {
+    const queryResult: PacUserRoleListReportService.QueryResult = responseFull.data;
 
     if (!queryResult.success) {
       return;
@@ -111,30 +93,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     }
   };
 
-  const handleExportQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
-
-    if (!queryResult.success) {
-      return;
-    }
-  };
-
-  const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
-    await logClick("ReportConnectedPacUserRoleList","search","");
-    setQuery({ ...queryRequest });
-  };
-
-  const onPageSelection = async (pageNumber: number) => {
-    await logClick("ReportConnectedPacUserRoleList","selectPage",pageNumber.toString());
-    setQuery({ ...query, pageNumber: pageNumber });
-  };
-
-  const onPageSizeChange = async (pageSize: number) => {
-    await logClick("ReportConnectedPacUserRoleList","pageSizeChange",pageSize.toString());
-    await AsyncStorage.setItem("pageSize",pageSize.toString());
-    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
-  };
-
   const onNavigateTo = (page: string,targetContextCode:string) => {
     console.log('onNavigateTo...');
     console.log('page...' + page);
@@ -142,48 +100,14 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
-  const navigateTo = (page: string, codeName: string) => {
-    console.log('navigateTo...');
-    console.log('page...' + page);
-    console.log('codeName...' + codeName);
-    let targetContextCode = contextCode;
-    Object.entries(initPageResponse).forEach(([key, value]) => {
-      if (key === codeName) {
-        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
-          targetContextCode = value;
-        } else {
-          return;
-        }
-      }
-    });
-    console.log('targetContextCode...' + targetContextCode);
-    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
-  };
+  const onRefreshRequest = () => {
+    logClick("ReportConnectedPacUserRoleList","refresh","");
 
-  const onRefreshRequest = async () => {
-    await logClick("ReportConnectedPacUserRoleList","refresh","");
-    setQuery({ ...query });
-  };
-
-  const onSort = async (columnName: string) => {
-    await logClick("ReportConnectedPacUserRoleList","sort",columnName);
-    let orderByDescending = false;
-    if (query.OrderByColumnName === columnName) {
-      orderByDescending = !query.OrderByDescending;
-    }
-    setQuery({
-      ...query,
-      OrderByColumnName: columnName,
-      OrderByDescending: orderByDescending,
-    });
-  };
-
-  const onExport = async () => {
-    await logClick("ReportConnectedPacUserRoleList","export","");
-    if(isProcessing){
-      return;
-    }
-    setExportQuery({ ...query });
+    const cleanrQueryRequest = new PacUserRoleListReportService.QueryRequestInstance();
+    cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery(cleanrQueryRequest);
   };
 
   useEffect(() => {
@@ -191,32 +115,59 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
       return;
     }
     isInitializedRef.current = true;
-    ReportService.initPage(contextCode).then((response) =>
+    PacUserRoleListReportService.initPage(contextCode).then((response) =>
       handleInit(response)
     );
   }, []);
 
   useEffect(() => {
-    const newInitalValues = ReportService.buildQueryRequest(initPageResponse);
-    setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
+    if(initPageResponse === null){
+      return;
+    }
+
+    const loadAsyncData = async () => {
+      let queryRequest = PacUserRoleListReportService.buildQueryRequest(initPageResponse);
+
+      // Check if persistence is enabled and if there is a saved filter
+      if (isFilterPersistant) {
+        const savedFilter = await AsyncStorage.getItem("PacUserRoleListFilter");
+
+        if (savedFilter) {
+          const parsedFilter = JSON.parse(savedFilter);
+
+          queryRequest = { ...queryRequest, ...parsedFilter };
+        }
+      }
+      setInitialQuery({ ...queryRequest });
+    };
+
+    loadAsyncData();
+
   }, [initPageResponse]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
-          // Use await for AsyncStorage
-          let pageSize = await AsyncStorage.getItem("pageSize");
-          if (pageSize !== null) {
-              initialValues.ItemCountPerPage = parseInt(pageSize);
-          }
-          setQuery({ ...initialValues });
+    if(initialQuery === null){
+      return;
+    }
+    const loadAsyncData = async () => {
+      if (JSON.stringify(initialQuery) !== JSON.stringify(query)) {
+        const pageSize = await AsyncStorage.getItem("pageSize");
+        if(pageSize !== null)
+        {
+          initialQuery.ItemCountPerPage = parseInt(pageSize);
+        }
+        setQuery({ ...initialQuery });
       }
     };
 
-    fetchData();
-  }, [initialValues]);
+    loadAsyncData();
+
+  }, [initialQuery]);
 
   useEffect(() => {
+    if(query === null){
+      return;
+    }
 
     console.log('report ctrl query...');
     console.log(query);
@@ -230,7 +181,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     }
 
     setIsProcessing(true);
-    ReportService.submitRequest(query, contextCode).then((response) =>
+    PacUserRoleListReportService.submitRequest(query, contextCode).then((response) =>
       handleQueryResults(response)
     )
     .finally(() => {
@@ -241,20 +192,142 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   }, [query]);
 
   useEffect(() => {
+    if(queryResult === null){
+      return;
+    }
+    if(queryResult.items === null){
+      return;
+    }
+
+    const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PacUserRoleListReportService.QueryResultItemInstance();
+
+    setDisplayItem({...item})
+  }, [queryResult]);
+
+  const navigateTo = (page: string, codeName: string) => {
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
+    let targetContextCode = contextCode;
+    if(initPageResponse === null){
+      return;
+    }
+    Object.entries(initPageResponse).forEach(([key, value]) => {
+      if (key === codeName) {
+        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+          targetContextCode = value;
+        } else {
+          return;
+        }
+      }
+    });
+    console.log('targetContextCode...' + targetContextCode);
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+
+  const isBreadcrumbSectionHidden = false;
+
+  const isRefreshButtonHidden = false;
+  const isPagingAvailable = true;
+  const isExportButtonsHidden = false;
+  const isFilterSectionHidden = false;
+  const isFilterSectionCollapsable = true;
+
+  const onSubmit = async (queryRequest: PacUserRoleListReportService.QueryRequest) => {
+    logClick("ReportConnectedPacUserRoleList","search","");
+
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("PacUserRoleListFilter",JSON.stringify(queryRequest));
+    }
+
+    queryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    queryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    queryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery({ ...queryRequest });
+  };
+
+  const onFilterReset = async () => {
+    logClick("ReportConnectedPacUserRoleList","reset filter","");
+    const clearQuery = new PacUserRoleListReportService.QueryRequestInstance();
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("PacUserRoleListFilter",JSON.stringify(clearQuery));
+    }
+    setInitialQuery({...clearQuery});
+  };
+
+  const onPageSelection = (pageNumber: number) => {
+    logClick("ReportConnectedPacUserRoleList","selectPage",pageNumber.toString());
+    if(query === null){
+      return;
+    }
+    setQuery({ ...query, pageNumber: pageNumber });
+  };
+
+  const onPageSizeChange = async (pageSize: number) => {
+    logClick("ReportConnectedPacUserRoleList","pageSizeChange",pageSize.toString());
+    if(query === null){
+      return;
+    }
+    await AsyncStorage.setItem("pageSize",pageSize.toString());
+    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
+  };
+
+  const onSort = (columnName: string) => {
+    logClick("ReportConnectedPacUserRoleList","sort",columnName);
+    if(query === null){
+      return;
+    }
+    let orderByDescending = false;
+    if (query.OrderByColumnName === columnName) {
+      orderByDescending = !query.OrderByDescending;
+    }
+    setQuery({
+      ...query,
+      OrderByColumnName: columnName,
+      OrderByDescending: orderByDescending,
+    });
+  };
+
+  const onExport = () => {
+    logClick("ReportConnectedPacUserRoleList","export","");
+    if(query === null){
+      return;
+    }
+    if(isProcessing){
+      return;
+    }
+    setExportQuery({ ...query });
+  };
+
+  const handleExportQueryResults = (responseFull: PacUserRoleListReportService.ResponseFull) => { // NOSONAR
+    const queryResult: PacUserRoleListReportService.QueryResult = responseFull.data;
+
+    if (!queryResult.success) {
+      return;
+    }
+  };
+
+  useEffect(() => {
     if (!isInitializedRef.current) {
+      return;
+    }
+    if(query === null){
+      return;
+    }
+    if(queryResult === null){
       return;
     }
     if(!queryResult.success){
       return;
     }
     setIsProcessing(true);
-    ReportService.submitCSVRequest(query, contextCode).then((response) => {
-      //handleExportQueryResults(response);
+    PacUserRoleListReportService.submitCSVRequest(query, contextCode).then((response) => {
+      //handleExportQueryResults(response);  //NOSONAR
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      // link.href = url;
-      link.setAttribute('download', 'PacUserRoleList-' + uuid.v4() + '.csv');
+      link.href = url;
+      link.setAttribute('download', 'PacUserRoleList-' + uuidv4() + '.csv');
       document.body.appendChild(link);
       link.click();
     })
@@ -266,7 +339,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   };
 
   const onEndReached = () => {
-    if (!loadingMore) {
+    if (queryResult && !loadingMore) {
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
@@ -284,11 +357,13 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
 
         <Text style={styles.introText} testID="page-intro-text"></Text>
 
-        <HeaderPacUserRoleList
-          name="headerPacUserRoleList"
-          initData={initPageResponse}
-          isHeaderVisible={false}
-        />
+        {initPageResponse && (
+          <HeaderPacUserRoleList
+            name="headerPacUserRoleList"
+            initData={initPageResponse}
+            isHeaderVisible={false}
+          />
+        )}
 
 {/*
         <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
@@ -309,23 +384,44 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
         />
         */}
 
-        <ReportGridPacUserRoleList
-          isSortDescending={queryResult.orderByDescending}
-          items={items}
-          name="reportConnectedPacUserRoleList-table"
-          contextCode={contextCode}
-          onSort={onSort}
-          onExport={onExport}
-          onNavigateTo={onNavigateTo}
-          onRefreshRequest={onRefreshRequest}
-          sortedColumnName={queryResult.orderByColumnName}
-          currentPage={queryResult.pageNumber}
-          pageSize={queryResult.itemCountPerPage}
-          totalItemCount={queryResult.recordsTotal}
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          onEndReached={onEndReached}
-        />
+        {queryResult && (
+          <ReportGridPacUserRoleList
+            isSortDescending={queryResult.orderByDescending}
+            items={items}
+            name="reportConnectedPacUserRoleList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={queryResult.orderByColumnName}
+            currentPage={queryResult.pageNumber}
+            pageSize={queryResult.itemCountPerPage}
+            totalItemCount={queryResult.recordsTotal}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />
+        )}
+        {!queryResult && (
+          <ReportGridPacUserRoleList
+            isSortDescending={false}
+            items={[]}
+            name="reportConnectedPacUserRoleList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={""}
+            currentPage={1}
+            pageSize={10}
+            totalItemCount={0}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />
+        )}
 
         </View>
     </View>

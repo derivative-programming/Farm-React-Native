@@ -8,21 +8,23 @@ import React, {
 } from "react";
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ReportFilterPacUserDateGreaterThanFilterList from "../filters/PacUserDateGreaterThanFilterList";
-import { ReportGridPacUserDateGreaterThanFilterList } from "../visualization/grid/PacUserDateGreaterThanFilterList";
-import { ReportDetailThreeColPacUserDateGreaterThanFilterList } from "../visualization/detail-three-column/PacUserDateGreaterThanFilterList";
-import { ReportDetailTwoColPacUserDateGreaterThanFilterList } from "../visualization/detail-two-column/PacUserDateGreaterThanFilterList";
-import * as ReportService from "../services/PacUserDateGreaterThanFilterList";
+import * as PacUserDateGreaterThanFilterListReportService from "../services/PacUserDateGreaterThanFilterList";
 import * as InitReportService from "../services/init/PacUserDateGreaterThanFilterListInitReport";
 import HeaderPacUserDateGreaterThanFilterList from "../headers/PacUserDateGreaterThanFilterListInitReport";
 import * as ReportInput from "../input-fields";
 import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import uuid from 'react-native-uuid';
 import { StackNavigationProp } from "@react-navigation/stack";
+
 import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
+
 import Icon from 'react-native-vector-icons/Ionicons';
+
+import ReportFilterPacUserDateGreaterThanFilterList from "../filters/PacUserDateGreaterThanFilterList";
+import { ReportGridPacUserDateGreaterThanFilterList } from "../visualization/grid/PacUserDateGreaterThanFilterList";
+import { v4 as uuidv4 } from "uuid";
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -33,46 +35,32 @@ export interface ReportProps {
 export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = ({
   pacCode = "00000000-0000-0000-0000-000000000000"
 }): ReactElement => {
-  const [items, setItems] = useState<ReportService.EnhancedQueryResultItem[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const isFilterPersistant  = false;
+
+  const [items, setItems] = useState<PacUserDateGreaterThanFilterListReportService.EnhancedQueryResultItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [initPageResponse, setInitPageResponse] = useState(
-    new InitReportService.InitResultInstance()
-  );
-  const [queryResult, setQueryResult] = useState(
-    new ReportService.QueryResultInstance()
-  );
-  const [query, setQuery] = useState(new ReportService.QueryRequestInstance());
-  const [exportQuery, setExportQuery] = useState(new ReportService.QueryRequestInstance());
-  const [initialValues, setInitialValues] = useState(
-    new ReportService.QueryRequestInstance()
-  );
+  const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
+
+  const [queryResult, setQueryResult] = useState<PacUserDateGreaterThanFilterListReportService.QueryResult | null>(null);
+
+  const [query, setQuery] = useState<PacUserDateGreaterThanFilterListReportService.QueryRequest | null>(null);
+
+  const [initialQuery, setInitialQuery] = useState<PacUserDateGreaterThanFilterListReportService.QueryRequest | null>(null);
+
+  const [displayItem, setDisplayItem] = useState<PacUserDateGreaterThanFilterListReportService.QueryResultItem | null>(null);
+
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
 
-  const isRefreshButtonHidden = false;
-  const isPagingAvailable = true;
-  const isExportButtonsHidden = false;
-  const isFilterSectionHidden = false;
-  const isFilterSectionCollapsable = true;
-  const isBreadcrumbSectionHidden = false;
-  const isButtonDropDownAllowed = true;
+    const [exportQuery, setExportQuery] = useState(new PacUserDateGreaterThanFilterListReportService.QueryRequestInstance());
 
   const navigation = useNavigation<ScreenNavigationProp>();
-
   const contextCode: string = pacCode ?? "00000000-0000-0000-0000-000000000000";
 
-  const displayItem:ReportService.QueryResultItem = queryResult.items.length > 0 ?  queryResult.items[0] : new ReportService.QueryResultItemInstance();
-
-  // console.log('report ctrl pacCode...' + pacCode);
-
-  // console.log('report ctrl initial values...');
-  // console.log(initialValues);
-
-  const handleInit = (responseFull: any) => {
+  const handleInit = (responseFull: InitReportService.ResponseFull) => {
     const response: InitReportService.InitResult = responseFull.data;
 
     if (!response.success) {
@@ -81,14 +69,8 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     setInitPageResponse({ ...response });
   };
 
-  const handleQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
-
-    console.log('report ctrl query results...');
-    console.log('success:' + queryResult.success);
-    console.log('pageNumber:' + queryResult.pageNumber);
-    console.log('itemCountPerPage:' + queryResult.itemCountPerPage);
-    console.log('total count:' + queryResult.recordsTotal);
+  const handleQueryResults = (responseFull: PacUserDateGreaterThanFilterListReportService.ResponseFull) => {
+    const queryResult: PacUserDateGreaterThanFilterListReportService.QueryResult = responseFull.data;
 
     if (!queryResult.success) {
       return;
@@ -111,30 +93,6 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     }
   };
 
-  const handleExportQueryResults = (responseFull: any) => {
-    const queryResult: ReportService.QueryResult = responseFull.data;
-
-    if (!queryResult.success) {
-      return;
-    }
-  };
-
-  const onSubmit = async (queryRequest: ReportService.QueryRequest) => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","search","");
-    setQuery({ ...queryRequest });
-  };
-
-  const onPageSelection = async (pageNumber: number) => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","selectPage",pageNumber.toString());
-    setQuery({ ...query, pageNumber: pageNumber });
-  };
-
-  const onPageSizeChange = async (pageSize: number) => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","pageSizeChange",pageSize.toString());
-    await AsyncStorage.setItem("pageSize",pageSize.toString());
-    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
-  };
-
   const onNavigateTo = (page: string,targetContextCode:string) => {
     console.log('onNavigateTo...');
     console.log('page...' + page);
@@ -142,48 +100,14 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
-  const navigateTo = (page: string, codeName: string) => {
-    console.log('navigateTo...');
-    console.log('page...' + page);
-    console.log('codeName...' + codeName);
-    let targetContextCode = contextCode;
-    Object.entries(initPageResponse).forEach(([key, value]) => {
-      if (key === codeName) {
-        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
-          targetContextCode = value;
-        } else {
-          return;
-        }
-      }
-    });
-    console.log('targetContextCode...' + targetContextCode);
-    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
-  };
+  const onRefreshRequest = () => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","refresh","");
 
-  const onRefreshRequest = async () => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","refresh","");
-    setQuery({ ...query });
-  };
-
-  const onSort = async (columnName: string) => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","sort",columnName);
-    let orderByDescending = false;
-    if (query.OrderByColumnName === columnName) {
-      orderByDescending = !query.OrderByDescending;
-    }
-    setQuery({
-      ...query,
-      OrderByColumnName: columnName,
-      OrderByDescending: orderByDescending,
-    });
-  };
-
-  const onExport = async () => {
-    await logClick("ReportConnectedPacUserDateGreaterThanFilterList","export","");
-    if(isProcessing){
-      return;
-    }
-    setExportQuery({ ...query });
+    const cleanrQueryRequest = new PacUserDateGreaterThanFilterListReportService.QueryRequestInstance();
+    cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery(cleanrQueryRequest);
   };
 
   useEffect(() => {
@@ -191,32 +115,59 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       return;
     }
     isInitializedRef.current = true;
-    ReportService.initPage(contextCode).then((response) =>
+    PacUserDateGreaterThanFilterListReportService.initPage(contextCode).then((response) =>
       handleInit(response)
     );
   }, []);
 
   useEffect(() => {
-    const newInitalValues = ReportService.buildQueryRequest(initPageResponse);
-    setInitialValues({ ...newInitalValues, ItemCountPerPage: pageSize });
+    if(initPageResponse === null){
+      return;
+    }
+
+    const loadAsyncData = async () => {
+      let queryRequest = PacUserDateGreaterThanFilterListReportService.buildQueryRequest(initPageResponse);
+
+      // Check if persistence is enabled and if there is a saved filter
+      if (isFilterPersistant) {
+        const savedFilter = await AsyncStorage.getItem("PacUserDateGreaterThanFilterListFilter");
+
+        if (savedFilter) {
+          const parsedFilter = JSON.parse(savedFilter);
+
+          queryRequest = { ...queryRequest, ...parsedFilter };
+        }
+      }
+      setInitialQuery({ ...queryRequest });
+    };
+
+    loadAsyncData();
+
   }, [initPageResponse]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (JSON.stringify(initialValues) !== JSON.stringify(query)) {
-          // Use await for AsyncStorage
-          let pageSize = await AsyncStorage.getItem("pageSize");
-          if (pageSize !== null) {
-              initialValues.ItemCountPerPage = parseInt(pageSize);
-          }
-          setQuery({ ...initialValues });
+    if(initialQuery === null){
+      return;
+    }
+    const loadAsyncData = async () => {
+      if (JSON.stringify(initialQuery) !== JSON.stringify(query)) {
+        const pageSize = await AsyncStorage.getItem("pageSize");
+        if(pageSize !== null)
+        {
+          initialQuery.ItemCountPerPage = parseInt(pageSize);
+        }
+        setQuery({ ...initialQuery });
       }
     };
 
-    fetchData();
-  }, [initialValues]);
+    loadAsyncData();
+
+  }, [initialQuery]);
 
   useEffect(() => {
+    if(query === null){
+      return;
+    }
 
     console.log('report ctrl query...');
     console.log(query);
@@ -230,7 +181,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     }
 
     setIsProcessing(true);
-    ReportService.submitRequest(query, contextCode).then((response) =>
+    PacUserDateGreaterThanFilterListReportService.submitRequest(query, contextCode).then((response) =>
       handleQueryResults(response)
     )
     .finally(() => {
@@ -241,20 +192,142 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
   }, [query]);
 
   useEffect(() => {
+    if(queryResult === null){
+      return;
+    }
+    if(queryResult.items === null){
+      return;
+    }
+
+    const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PacUserDateGreaterThanFilterListReportService.QueryResultItemInstance();
+
+    setDisplayItem({...item})
+  }, [queryResult]);
+
+  const navigateTo = (page: string, codeName: string) => {
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
+    let targetContextCode = contextCode;
+    if(initPageResponse === null){
+      return;
+    }
+    Object.entries(initPageResponse).forEach(([key, value]) => {
+      if (key === codeName) {
+        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+          targetContextCode = value;
+        } else {
+          return;
+        }
+      }
+    });
+    console.log('targetContextCode...' + targetContextCode);
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+
+  const isBreadcrumbSectionHidden = false;
+
+  const isRefreshButtonHidden = false;
+  const isPagingAvailable = true;
+  const isExportButtonsHidden = false;
+  const isFilterSectionHidden = false;
+  const isFilterSectionCollapsable = true;
+
+  const onSubmit = async (queryRequest: PacUserDateGreaterThanFilterListReportService.QueryRequest) => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","search","");
+
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("PacUserDateGreaterThanFilterListFilter",JSON.stringify(queryRequest));
+    }
+
+    queryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    queryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    queryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery({ ...queryRequest });
+  };
+
+  const onFilterReset = async () => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","reset filter","");
+    const clearQuery = new PacUserDateGreaterThanFilterListReportService.QueryRequestInstance();
+    if(isFilterPersistant ){
+      await AsyncStorage.setItem("PacUserDateGreaterThanFilterListFilter",JSON.stringify(clearQuery));
+    }
+    setInitialQuery({...clearQuery});
+  };
+
+  const onPageSelection = (pageNumber: number) => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","selectPage",pageNumber.toString());
+    if(query === null){
+      return;
+    }
+    setQuery({ ...query, pageNumber: pageNumber });
+  };
+
+  const onPageSizeChange = async (pageSize: number) => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","pageSizeChange",pageSize.toString());
+    if(query === null){
+      return;
+    }
+    await AsyncStorage.setItem("pageSize",pageSize.toString());
+    setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
+  };
+
+  const onSort = (columnName: string) => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","sort",columnName);
+    if(query === null){
+      return;
+    }
+    let orderByDescending = false;
+    if (query.OrderByColumnName === columnName) {
+      orderByDescending = !query.OrderByDescending;
+    }
+    setQuery({
+      ...query,
+      OrderByColumnName: columnName,
+      OrderByDescending: orderByDescending,
+    });
+  };
+
+  const onExport = () => {
+    logClick("ReportConnectedPacUserDateGreaterThanFilterList","export","");
+    if(query === null){
+      return;
+    }
+    if(isProcessing){
+      return;
+    }
+    setExportQuery({ ...query });
+  };
+
+  const handleExportQueryResults = (responseFull: PacUserDateGreaterThanFilterListReportService.ResponseFull) => { // NOSONAR
+    const queryResult: PacUserDateGreaterThanFilterListReportService.QueryResult = responseFull.data;
+
+    if (!queryResult.success) {
+      return;
+    }
+  };
+
+  useEffect(() => {
     if (!isInitializedRef.current) {
+      return;
+    }
+    if(query === null){
+      return;
+    }
+    if(queryResult === null){
       return;
     }
     if(!queryResult.success){
       return;
     }
     setIsProcessing(true);
-    ReportService.submitCSVRequest(query, contextCode).then((response) => {
-      //handleExportQueryResults(response);
+    PacUserDateGreaterThanFilterListReportService.submitCSVRequest(query, contextCode).then((response) => {
+      //handleExportQueryResults(response);  //NOSONAR
       const blob = new Blob([response.data], { type: "text/csv" });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
-      // link.href = url;
-      link.setAttribute('download', 'PacUserDateGreaterThanFilterList-' + uuid.v4() + '.csv');
+      link.href = url;
+      link.setAttribute('download', 'PacUserDateGreaterThanFilterList-' + uuidv4() + '.csv');
       document.body.appendChild(link);
       link.click();
     })
@@ -266,7 +339,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
   };
 
   const onEndReached = () => {
-    if (!loadingMore) {
+    if (queryResult && !loadingMore) {
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
@@ -284,11 +357,13 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
 
         <Text style={styles.introText} testID="page-intro-text"></Text>
 
-        <HeaderPacUserDateGreaterThanFilterList
-          name="headerPacUserDateGreaterThanFilterList"
-          initData={initPageResponse}
-          isHeaderVisible={false}
-        />
+        {initPageResponse && (
+          <HeaderPacUserDateGreaterThanFilterList
+            name="headerPacUserDateGreaterThanFilterList"
+            initData={initPageResponse}
+            isHeaderVisible={false}
+          />
+        )}
 
 {/*
         <View className="col-12 d-flex flex-column flex-md-row justify-content-between">
@@ -309,23 +384,44 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
         />
         */}
 
-        <ReportGridPacUserDateGreaterThanFilterList
-          isSortDescending={queryResult.orderByDescending}
-          items={items}
-          name="reportConnectedPacUserDateGreaterThanFilterList-table"
-          contextCode={contextCode}
-          onSort={onSort}
-          onExport={onExport}
-          onNavigateTo={onNavigateTo}
-          onRefreshRequest={onRefreshRequest}
-          sortedColumnName={queryResult.orderByColumnName}
-          currentPage={queryResult.pageNumber}
-          pageSize={queryResult.itemCountPerPage}
-          totalItemCount={queryResult.recordsTotal}
-          onRefresh={onRefresh}
-          refreshing={refreshing}
-          onEndReached={onEndReached}
-        />
+        {queryResult && (
+          <ReportGridPacUserDateGreaterThanFilterList
+            isSortDescending={queryResult.orderByDescending}
+            items={items}
+            name="reportConnectedPacUserDateGreaterThanFilterList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={queryResult.orderByColumnName}
+            currentPage={queryResult.pageNumber}
+            pageSize={queryResult.itemCountPerPage}
+            totalItemCount={queryResult.recordsTotal}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />
+        )}
+        {!queryResult && (
+          <ReportGridPacUserDateGreaterThanFilterList
+            isSortDescending={false}
+            items={[]}
+            name="reportConnectedPacUserDateGreaterThanFilterList-table"
+            contextCode={contextCode}
+            onSort={onSort}
+            onExport={onExport}
+            onNavigateTo={onNavigateTo}
+            onRefreshRequest={onRefreshRequest}
+            sortedColumnName={""}
+            currentPage={1}
+            pageSize={10}
+            totalItemCount={0}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
+            onEndReached={onEndReached}
+          />
+        )}
 
         </View>
     </View>
