@@ -6,27 +6,32 @@ import React, {
   useRef,
   useState,
 } from "react";
-import {   View, Text, ActivityIndicator, TouchableOpacity,StyleSheet, ScrollView } from 'react-native'; 
+import { Formik, FormikHelpers } from "formik";
 import { useNavigation } from '@react-navigation/native';
-import { Formik, FormikHelpers } from "formik";  
-import * as FormService from "../services/TacLogin";
-import * as FormValidation from "../validation/TacLogin";
+import * as TacLoginFormService from "../services/TacLogin";
+import * as TacLoginFormValidation from "../validation/TacLogin";
 import * as InitFormService from "../services/init/TacLoginInitObjWF";
-import { AuthContext } from "../../../context/authContext"; 
-import useAnalyticsDB from "../../../hooks/useAnalyticsDB"; 
+import HeaderTacLogin from "../headers/TacLoginInitObjWF";
+import { AuthContext } from "../../../context/authContext";
+import * as InputFields from "../input-fields";
+import * as Lookups from "../lookups";
+import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
 import * as AnalyticsService from "../../services/analyticsService";
+import { Text,  StyleSheet, View, ActivityIndicator, TouchableOpacity, ScrollView } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import RootStackParamList from "../../../screens/rootStackParamList";
-import * as RouteNames from '../../../constants/routeNames';
-import * as InputFields from "../input-fields";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
-
+import SpinnerComponent from "../../SpinnerComponent";
 
 export interface FormProps {
-  tacCode: string;
+  tacCode:string;
   name?: string;
   showProcessingAnimationOnInit?: boolean;
+}
+
+interface FormErrors {
+  [key: string]: string;
 }
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
@@ -36,59 +41,55 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
   name = "formConnectedTacLogin",
   showProcessingAnimationOnInit = true,
 }): ReactElement => {
-  const [initialValues, setInitialValues] = useState(
-    new FormService.SubmitRequestInstance()
-  );
+  const [initPageResponse, setInitPageResponse] = useState<InitFormService.InitResult | null>(null);
+  const [initialValues, setInitialValues] = useState<TacLoginFormService.SubmitRequest | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [initForm, setInitForm] = useState(showProcessingAnimationOnInit);
   const initHeaderErrors: string[] = [];
   const [headerErrors, setHeaderErrors] = useState(initHeaderErrors);
-  let lastApiSubmission: any = {
-    request: new FormService.SubmitResultInstance(),
-    response: new FormService.SubmitRequestInstance(),
-  };
-  const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
-  
 
   const navigation = useNavigation<ScreenNavigationProp>();
-  
+
+  let lastApiSubmissionRequest = new TacLoginFormService.SubmitRequestInstance();
+  let lastApiSubmissionResponse = new TacLoginFormService.SubmitResultInstance();
+  const isInitializedRef = useRef(false);
+
   const contextCode: string = tacCode ?? "00000000-0000-0000-0000-000000000000";
+  const contextObjectName = "tac";
 
-  const validationSchema = FormValidation.buildValidationSchema();
+  const isAutoSubmit = false;
 
-  const authContext = useContext(AuthContext); 
- 
+  const validationSchema = TacLoginFormValidation.buildValidationSchema();
 
+  const authContext = useContext(AuthContext);  // NOSONAR
 
-  // let headerErrors: string[] = [];
+  const handleInit = (responseFull: InitFormService.ResponseFull) => {
+    const response: InitFormService.InitResult = responseFull.data;
 
-  const handleInit = (responseFull: any) => {
-    const initFormResponse: InitFormService.InitResult = responseFull.data;
-
-    if (!initFormResponse.success) {
+    if (!response.success) {
+      setHeaderErrors(["An unexpected error occurred."]);
       return;
     }
 
-    setInitialValues({ ...FormService.buildSubmitRequest(initFormResponse) }); 
-    console.log('Services.TacLogin.handleInit success');
-    console.log('form ctrl initial values...');
-    console.log(initFormResponse);
+    setInitPageResponse({ ...response });
   };
 
-  const handleValidate = async (values: FormService.SubmitRequest) => {
-    let errors: any = {};
-    if (!lastApiSubmission.response.success) {
-      setHeaderErrors(FormService.getValidationErrors(
+  const handleValidate = async (values: TacLoginFormService.SubmitRequest) => {
+    const errors: FormErrors  = {};
+    if (!lastApiSubmissionResponse.success) {
+      setHeaderErrors(TacLoginFormService.getValidationErrors(
         "",
-        lastApiSubmission.response
+        lastApiSubmissionResponse
       ));
       Object.entries(values).forEach(([key, value]) => {
-        const fieldErrors: string = FormService.getValidationErrors(
+        const fieldErrors: string = TacLoginFormService.getValidationErrors(
           key,
-          lastApiSubmission.response
+          lastApiSubmissionResponse
         ).join(",");
-        if (fieldErrors.length > 0 && value === lastApiSubmission.request[key]) {
+        const requestKey = key as unknown as keyof TacLoginFormService.SubmitRequest;
+        if (fieldErrors.length > 0 && value === lastApiSubmissionRequest[requestKey]) {
           errors[key] = fieldErrors;
         }
       });
@@ -96,48 +97,41 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     return errors;
   };
 
-  const submitButtonPress = async (
-    values: FormService.SubmitRequest,
-    actions: FormikHelpers<FormService.SubmitRequest>
+  const submitClick = async (
+    values: TacLoginFormService.SubmitRequest,
+    actions: FormikHelpers<TacLoginFormService.SubmitRequest>
   ) => {
     try {
       setLoading(true);
-      await logClick("FormConnectedTacLogin","submit","");
-      const responseFull: any = await FormService.submitForm(values,contextCode);
-      const response: FormService.SubmitResult = responseFull.data;
-      lastApiSubmission = {
-        request: { ...values },
-        response: { ...response },
-      };
-      
-      console.log('form ctrl submit values and results...');
-      console.log(lastApiSubmission);
-
+      logClick("FormConnectedTacLogin","submit","");
+      const responseFull: TacLoginFormService.ResponseFull = await TacLoginFormService.submitForm(
+        values,
+        contextCode
+      );
+      const response: TacLoginFormService.SubmitResult = responseFull.data;
+      lastApiSubmissionRequest = { ...values };
+      lastApiSubmissionResponse = { ...response };
       if (!response.success) {
-        setHeaderErrors(FormService.getValidationErrors("", response));
-        Object.entries(new FormService.SubmitRequestInstance()).forEach(
-          ([key, value]) =>
-            actions.setFieldError(
+        setHeaderErrors(TacLoginFormService.getValidationErrors("", response));
+        Object.entries(new TacLoginFormService.SubmitRequestInstance()).forEach(
+          ([key]) => {
+            const fieldErrors: string = TacLoginFormService.getValidationErrors(
               key,
-              FormService.getValidationErrors(key, response).join(",")
-            )
+              response
+            ).join(",");
+            actions.setFieldError(key, fieldErrors);
+          }
         );
         return;
       }
       {/*//GENTrainingBlock[caseGetApiKey]Start*/}
       {/*//GENLearn[isLoginPage=true]Start*/}
       authContext.startSession(response);
-      // authContext.setToken(response.apiKey);
-      // authContext.setRoles(response.roleNameCSVList);
-      // await AsyncStorage.setItem("@token", response.apiKey);
-      // await AsyncStorage.setItem("customerCode", response.customerCode);
-      // await AsyncStorage.setItem("email", response.email);
-      // await AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
       actions.setSubmitting(false);
       actions.resetForm();
-      navigation.navigate(RouteNames.TAC_FARM_DASHBOARD, { code: "00000000-0000-0000-0000-000000000000" });
+      submitNavigateTo("TacFarmDashboard","tacCode"); //submitButton
     } catch (error) {
       actions.setSubmitting(false);
     }
@@ -146,77 +140,183 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
     }
   };
 
-  const registerButtonPress = async () => {
-    await logClick("FormConnectedTacLogin","otherButton",""); 
-    navigation.navigate(RouteNames.TAC_REGISTER, { code: "00000000-0000-0000-0000-000000000000" });
+  const autoSubmit = async (
+    values: TacLoginFormService.SubmitRequest
+  ) => {
+    try {
+      const responseFull: TacLoginFormService.ResponseFull = await TacLoginFormService.submitForm(
+        values,
+        contextCode
+      );
+      const response: TacLoginFormService.SubmitResult = responseFull.data;
+      lastApiSubmissionRequest = { ...values };
+      lastApiSubmissionResponse = { ...response };
+      if (!response.success) {
+        //click cancel
+      } else {
+        //possible relogin
+
+        authContext.startSession(response);
+        AnalyticsService.start();
+
+      }
+    } catch (error) {
+      //click cancel
+    }
+
+    submitNavigateTo("tac-farm-dashboard","tacCode");
+
   };
 
   useEffect(() => {
     if (isInitializedRef.current) {
       return;
     }
-    isInitializedRef.current = true; 
-    FormService.initForm(contextCode)
+    isInitializedRef.current = true;
+    TacLoginFormService.initForm(contextCode)
       .then((response) => handleInit(response))
       .finally(() => {setInitForm(false)});
   }, []);
 
+  useEffect(() => {
+    if(initPageResponse === null){
+      return;
+    }
+    const newInitalValues = TacLoginFormService.buildSubmitRequest(initPageResponse);
+
+    setInitialValues({ ...newInitalValues });
+
+  }, [initPageResponse]);
+
+  useEffect(() => {
+
+  }, [initForm]);
+
+  useEffect(() => {
+  }, [initialValues]);
+
+  const submitNavigateTo = (page:string, codeName:string) => {
+    console.log('submitNavigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
+    let targetContextCode = "00000000-0000-0000-0000-000000000000";
+    if(codeName == contextObjectName + "Code")
+    {
+      targetContextCode = contextCode;
+    }
+    if(initPageResponse !== null){
+      Object.entries(initPageResponse).forEach(([key, value]) => {
+        if (key === codeName) {
+          if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+            targetContextCode = value;
+          }
+        }
+      });
+    }
+    Object.entries(lastApiSubmissionResponse).forEach(([key, value]) => {
+      if (key === codeName) {
+        if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+          targetContextCode = value;
+        }
+      }
+    });
+    console.log('targetContextCode...' + targetContextCode);
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+  const navigateTo = (page: string, codeName: string) => {
+    console.log('navigateTo...');
+    console.log('page...' + page);
+    console.log('codeName...' + codeName);
+    let targetContextCode = contextCode;
+    if(initPageResponse !== null){
+      Object.entries(initPageResponse).forEach(([key, value]) => {
+        if (key === codeName) {
+          if (value !== "" && value !== "00000000-0000-0000-0000-000000000000") {
+            targetContextCode = value;
+          } else {
+            return;
+          }
+        }
+      });
+    }
+    console.log('targetContextCode...' + targetContextCode);
+    navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+
   return (
-    
-    <View style={styles.container}>
+
+    <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText}>Log In</Text>
-        <Text style={styles.introText}>Please enter your email and password.</Text>
+        <Text style={styles.titleText} testID="page-title-text">Log In</Text>
+        <Text style={styles.introText} testID="page-intro-text">Please enter your email and password.</Text>
+
+        {initPageResponse && (
+          <HeaderTacLogin
+            name="headerTacLogin"
+            initData={initPageResponse}
+            isHeaderVisible={false}
+          />
+        )}
+
+        {!initialValues && (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )}
         <ScrollView>
-        <Formik
-          enableReinitialize={true}
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={async (values, actions) => {
-            await submitButtonPress(values, actions);
-            actions.setSubmitting(false); // Turn off submitting state
-          }}
-        >
-          {({ handleSubmit, handleReset, isSubmitting }) => (
-            <View>
-              {initForm && showProcessingAnimationOnInit ?
-                <ActivityIndicator size="large" color="#0000ff" />
-                :
-                <>
-                  <InputFields.ErrorDisplay
-                      name="headerErrors"
-                      errorArray={headerErrors}
-                    />
-                    <InputFields.FormInputEmail name="email"
-                      label="Email"
-                      isVisible={true}
-                    />
-                    <InputFields.FormInputPassword name="password"
-                      label="Password"
-                      isVisible={true}
-                    />
-                </>
-              } 
-              <InputFields.FormInputButton name="submit-button"
-                buttonText="OK Button Text"
-                onPress={() => handleSubmit()}
-                isButtonCallToAction={true}
-                isVisible={true}
-                isEnabled={!isSubmitting}
-                isProcessing={isSubmitting}
-              />
-              <InputFields.FormInputButton name="other-button"
-                buttonText="Register"
-                onPress={async () => {
-                  await logClick("FormConnectedTacLogin","otherButton","");
-                  await registerButtonPress();
-                }}
-                isButtonCallToAction={false}
-                isVisible={true}
-              />
-            </View>
+          {initialValues && (
+            <Formik
+              enableReinitialize={true}
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values, actions) => {
+                await submitClick(values, actions);
+                actions.setSubmitting(false); // Turn off submitting state
+              }}
+            >
+              {({ handleSubmit, handleReset, isSubmitting }) => (
+                <View>
+                  {initForm && showProcessingAnimationOnInit ?
+                    <ActivityIndicator size="large" color="#0000ff" />
+                    :
+                    <>
+                      <InputFields.ErrorDisplay
+                          name="headerErrors"
+                          errorArray={headerErrors}
+                        />
+                        <InputFields.FormInputEmail name="email"
+                          label="Email"
+                          isVisible={true}
+                          isRequired={true}
+                          detailText=""
+                        />
+                        <InputFields.FormInputPassword name="password"
+                          label="Password"
+                          isVisible={true}
+                          isRequired={true}
+                          detailText=""
+                        />
+                    </>
+                  }
+                  <InputFields.FormInputButton name="submit-button"
+                    buttonText="Log In"
+                    onPress={() => handleSubmit()}
+                    isButtonCallToAction={true}
+                    isVisible={true}
+                    isEnabled={!isSubmitting}
+                    isProcessing={isSubmitting}
+                  />
+                  <InputFields.FormInputButton name="other-button"
+                    buttonText="Register"
+                    onPress={async () => {
+                      await logClick("FormConnectedTacLogin","otherButton","");
+                      navigateTo("TacRegister", "tacCode");
+                    }}
+                    isButtonCallToAction={false}
+                    isVisible={true}
+                  />
+                </View>
+              )}
+            </Formik>
           )}
-        </Formik>
         </ScrollView>
       </View>
     </View>
@@ -227,33 +327,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 20, // equivalent to py="5"
-    alignItems: 'center' 
+    alignItems: 'center'
   },
   formContainer: {
     width: '90%',
-    
+
   },
   titleText: {
-    fontSize: theme.fonts.largeSize, 
-    marginBottom: 8,          
+    fontSize: theme.fonts.largeSize,
+    marginBottom: 8,
     color: theme.Colors.text,
     textAlign: 'center', // Center the text
-    
+
   },
   introText: {
-    fontSize: theme.fonts.mediumSize, 
-    marginBottom: 8,    
+    fontSize: theme.fonts.mediumSize,
+    marginBottom: 8,
     color: theme.Colors.text,
-    
+
   },
-  button: {
-    marginTop: 12, // equivalent to mt="3" 
-  },
-  buttonText: { 
-  },
-  buttonDisabled: {
-    
-  }
 });
 
 export default FormConnectedTacLogin;
+
