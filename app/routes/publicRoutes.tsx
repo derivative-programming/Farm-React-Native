@@ -19,9 +19,9 @@ const PublicRoute = () => {
         {/*//GENLearn[modelType=object,name=Land]Start*/}
         {/*//GENLOOPReportStart*/}
         {/*//GENTrainingBlock[d2]Start*/}
-        {/*//GENLearn[modelType=report,name=LandPlantList]Start*/}
+        {/*//GENLearn[modelType=report,name=LandPlantList,isAuthorizationRequired=false]Start*/}
             <Stack.Screen name={RouteNames.LAND_PLANT_LIST} component={Screens.LandPlantListScreen} /> 
-        {/*//GENLearn[modelType=report,name=LandPlantList]End*/}
+        {/*//GENLearn[modelType=report,name=LandPlantList,isAuthorizationRequired=false]End*/}
         {/*//GENTrainingBlock[d2]End*/}
         {/*//GENLOOPReportEnd*/}
         {/*//GENLearn[modelType=object,name=Land]End*/} 
@@ -49,9 +49,9 @@ const PublicRoute = () => {
         {/*//GENLearn[modelType=object,name=Land]Start*/}
         {/*//GENLOOPObjectWorkflowStart*/}
         {/*//GENTrainingBlock[b2]Start*/}
-        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]Start*/}
+        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true,isAuthorizationRequired=false]Start*/}
             <Stack.Screen name={RouteNames.LAND_ADD_PLANT} component={Screens.LandAddPlantScreen} /> 
-        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]End*/}
+        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true,isAuthorizationRequired=false]End*/}
         {/*//GENTrainingBlock[b2]End*/}
         {/*//GENLOOPObjectWorkflowEnd*/}
         {/*//GENLearn[modelType=object,name=Land]End*/} 

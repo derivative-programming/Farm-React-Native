@@ -3,9 +3,9 @@
 //GENLearn[modelType=object,name=Plant]Start 
 //GENLOOPObjectWorkflowStart
 //GENTrainingBlock[b]Start
-//GENLearn[modelType=objectWorkflow,name=LandAddPlant,isPage=false,calculatedIsApiEndpointCreated=true]Start 
+//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]Start 
 export const LAND_ADD_PLANT = 'LandAddPlant'
-//GENLearn[modelType=objectWorkflow,name=LandAddPlant,isPage=false,calculatedIsApiEndpointCreated=true]End
+//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]End
 //GENTrainingBlock[b]End
 //GENLOOPObjectWorkflowEnd
 //GENLearn[modelType=object,name=Plant]End 

@@ -9,7 +9,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const AuthenticatedRoute = () => {
   return (
-    <Stack.Navigator initialRouteName={RouteNames.TAC_FARM_DASHBOARD} 
+    <Stack.Navigator initialRouteName={RouteNames.TAC_LOGIN} 
         screenOptions={{ 
         headerShown: false
         }}> 
@@ -19,9 +19,9 @@ const AuthenticatedRoute = () => {
         {/*//GENLearn[modelType=object,name=Land]Start*/}
         {/*//GENLOOPReportStart*/}
         {/*//GENTrainingBlock[d2]Start*/}
-        {/*//GENLearn[modelType=report,name=LandPlantList,isAuthorizationRequired=false]Start*/}
+        {/*//GENLearn[modelType=report,name=LandPlantList]Start*/}
             <Stack.Screen name={RouteNames.LAND_PLANT_LIST} component={Screens.LandPlantListScreen} /> 
-        {/*//GENLearn[modelType=report,name=LandPlantList,isAuthorizationRequired=false]End*/}
+        {/*//GENLearn[modelType=report,name=LandPlantList]End*/}
         {/*//GENTrainingBlock[d2]End*/}
         {/*//GENLOOPReportEnd*/}
         {/*//GENLearn[modelType=object,name=Land]End*/} 
@@ -49,9 +49,9 @@ const AuthenticatedRoute = () => {
         {/*//GENLearn[modelType=object,name=Land]Start*/}
         {/*//GENLOOPObjectWorkflowStart*/}
         {/*//GENTrainingBlock[b2]Start*/}
-        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true,isAuthorizationRequired=false]Start*/}
+        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]Start*/}
             <Stack.Screen name={RouteNames.LAND_ADD_PLANT} component={Screens.LandAddPlantScreen} /> 
-        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true,isAuthorizationRequired=false]End*/}
+        {/*//GENLearn[modelType=objectWorkflow,name=LandAddPlant,calculatedIsPage=true]End*/}
         {/*//GENTrainingBlock[b2]End*/}
         {/*//GENLOOPObjectWorkflowEnd*/}
         {/*//GENLearn[modelType=object,name=Land]End*/} 
