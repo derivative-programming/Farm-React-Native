@@ -98,7 +98,7 @@ export const ReportGridPacUserRoleList: FC<ReportGridPacUserRoleListProps> = ({
     const contentType = response.headers['content-type'] || 'text/csv';
 
     // Define the file path for saving
-    const path = "";//`${RNFS.DocumentDirectoryPath}/${filename}`;
+    const path = "";//"";//`${RNFS.DocumentDirectoryPath}/${filename}`;
 
     try {
       // Write the response data to the file
