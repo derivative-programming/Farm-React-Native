@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useState } from "react";
 import * as ReportService from "../../services/PacUserDateGreaterThanFilterList";
 import uuid  from 'react-native-uuid';
-import RNFS from 'react-native-fs';
+//import RNFS from 'react-native-fs';
 
 import * as ReportColumnDisplay from "./columns";
 import * as AsyncServices from "../../../services";
@@ -98,11 +98,11 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
     const contentType = response.headers['content-type'] || 'text/csv';
 
     // Define the file path for saving
-    const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+    const path = "";//`${RNFS.DocumentDirectoryPath}/${filename}`;
 
     try {
       // Write the response data to the file
-      await RNFS.writeFile(path, response.data, 'utf8');
+      //await RNFS.writeFile(path, response.data, 'utf8');
       console.log(`File downloaded to: ${path}`);
 
       // Optionally open the file using FileViewer or any other viewer.
