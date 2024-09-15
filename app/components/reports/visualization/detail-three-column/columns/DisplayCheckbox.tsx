@@ -52,11 +52,11 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
 
   },
   checkbox: {
-    marginBottom: 20,  
+    marginBottom: 20,
 
   },
 });

@@ -67,7 +67,7 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',  
+    flexDirection: 'column',
 
   },
 });

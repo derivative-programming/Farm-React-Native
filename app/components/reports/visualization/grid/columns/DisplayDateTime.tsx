@@ -69,7 +69,7 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',  
+    flexDirection: 'column',
 
   },
 });

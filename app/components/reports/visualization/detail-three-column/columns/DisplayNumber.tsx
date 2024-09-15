@@ -63,7 +63,7 @@ export const ReportColumnDisplayNumber: FC<ReportColumnDisplayNumberProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
     // justifyContent: 'space-between',
     // alignItems: 'center'
 

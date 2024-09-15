@@ -245,7 +245,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
 
     <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText} testID="page-title-text">Create your account</Text>
+        <Text style={styles.titleText} testID="page-title-text">Create your account </Text>
         <Text style={styles.introText} testID="page-intro-text">A Couple Details Then We Are Off!</Text>
 
         {initPageResponse && (

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,      // Space below the label before the next element
     flex: 1,
     marginRight: 10,
-    textDecorationLine: 'underline', 
+    textDecorationLine: 'underline',
     // fontWeight: 'bold',   // Optional: bold font weight to make it stand out
     // textTransform: 'uppercase', // Optional: uppercase letters for emphasis
   },

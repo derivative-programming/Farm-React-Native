@@ -79,7 +79,7 @@ export const ReportColumnDisplayPhoneNumber: FC<ReportColumnDisplayPhoneNumberPr
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
 
   },
 });

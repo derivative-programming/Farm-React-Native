@@ -58,11 +58,11 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
 
   },
   link: {
-    marginBottom: 20,  
+    marginBottom: 20,
 
   },
 });

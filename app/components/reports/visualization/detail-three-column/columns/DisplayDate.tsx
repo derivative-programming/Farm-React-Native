@@ -70,7 +70,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column', 
+    flexDirection: 'column',
 
   },
 });
