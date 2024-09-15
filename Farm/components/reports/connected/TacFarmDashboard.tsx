@@ -25,6 +25,10 @@ import React, {
   import Icon from 'react-native-vector-icons/Ionicons';
   import { ScreenBackButton } from "../../ScreenBackButton";
   import { ScreenAddButton } from "../../ScreenAddButton";  
+  //GENTrainingBlock[visualizationTypeImports]Start
+  //GENLearn[visualizationType=DetailTwoColumn]Start 
+  //GENLearn[visualizationType=DetailTwoColumn]End
+  //GENTrainingBlock[visualizationTypeImports]End
   
   type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
   export interface ReportProps {
@@ -52,6 +56,18 @@ import React, {
     const [refreshing, setRefreshing] = useState(false);
     const isInitializedRef = useRef(false);
     const { logClick } = useAnalyticsDB();
+
+    //GENTrainingBlock[visualizationTypeInit]Start
+    //GENLearn[visualizationType=DetailTwoColumn]Start
+    //GENLearn[visualizationType=DetailTwoColumn]End
+    //GENTrainingBlock[visualizationTypeInit]End
+
+
+    //GENTrainingBlock[visualizationTypeFuncs]Start
+    //GENLearn[visualizationType=DetailTwoColumn]Start
+    //GENLearn[visualizationType=DetailTwoColumn]End
+    //GENTrainingBlock[visualizationTypeFuncs]End
+
     const isRefreshButtonHidden = true;
     const isPagingAvailable = false;
     const isExportButtonsHidden = true;
