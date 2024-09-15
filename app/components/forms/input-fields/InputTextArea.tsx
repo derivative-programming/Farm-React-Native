@@ -38,7 +38,7 @@ export const FormInputTextArea: FC<FormInputTextAreaProps> = ({
   return (  
 
     <View style={styles.container}>
-      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
+      <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
       <TextInput
         style={[styles.textArea, disabled && styles.disabledTextArea]}
         multiline={true}

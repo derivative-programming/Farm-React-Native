@@ -28,12 +28,12 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 
   const displayValue = (isVisible && conditionallyVisible);
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   if(isChecked === null || !displayValue){
     return (
     <View data-testid={groupName}>
-      <ReportColumnDisplayLabel name={labelName} text={label}  />
+      <ReportColumnDisplayLabel name={labelName} text={label}   />
     </View>
     );
   } else {
@@ -52,7 +52,7 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column',  
 
   },
 });

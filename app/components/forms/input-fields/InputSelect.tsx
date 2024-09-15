@@ -45,7 +45,7 @@ export const FormInputSelect: FC<FormInputSelectProps> = ({
 
   return ( 
     <View style={styles.container}>
-      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} /> 
+      <FormLabel text={label} name={name + '-label'} isRequired={isRequired} /> 
       <Picker
         selectedValue={field.value}
         onValueChange={(itemValue) => field.onChange(name)(itemValue)}

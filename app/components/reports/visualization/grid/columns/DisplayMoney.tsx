@@ -55,7 +55,7 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
     return result;
   }
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   return (
     <View data-testid={groupName} style={styles.container}>
@@ -67,7 +67,7 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column',  
 
   },
 });

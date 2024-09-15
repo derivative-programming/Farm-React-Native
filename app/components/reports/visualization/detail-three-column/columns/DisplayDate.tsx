@@ -58,7 +58,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
     return result;
   }
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   return (
     <View data-testid={groupName} style={styles.container}>
@@ -70,7 +70,7 @@ export const ReportColumnDisplayDate: FC<ReportColumnDisplayDateProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column', 
 
   },
 });

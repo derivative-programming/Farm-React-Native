@@ -20,7 +20,7 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
   const displayValue = (isVisible && conditionallyVisible);
   const isComponentVisible = isVisible ;
 
-  if (!isComponentVisible) return null;
+  if (!displayValue) return null;
 
   const formatImageUrl = () => {
     let result = "";

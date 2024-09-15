@@ -29,9 +29,10 @@ const styles = StyleSheet.create({
   label: {
     fontSize: theme.fonts.mediumSize,         // Medium font size for clear readability
     color: '#333',        // A dark color for contrast, but not too harsh
-    marginBottom: 8,      // Space below the label before the next element
+    marginBottom: 5,      // Space below the label before the next element
     flex: 1,
     marginRight: 10,
+    textDecorationLine: 'underline', 
     // fontWeight: 'bold',   // Optional: bold font weight to make it stand out
     // textTransform: 'uppercase', // Optional: uppercase letters for emphasis
   },

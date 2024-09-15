@@ -67,11 +67,11 @@ export const ReportColumnDisplayPhoneNumber: FC<ReportColumnDisplayPhoneNumberPr
     return value
   }
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   return (
     <View data-testid={groupName} style={styles.container}>
-      <ReportColumnDisplayLabel name={labelName} text={label}  />
+      <ReportColumnDisplayLabel name={labelName} text={label} />
       <ReportColumnDisplayValue name={valueName} text={formatPhoneNumber()} />
     </View>
   );
@@ -79,7 +79,7 @@ export const ReportColumnDisplayPhoneNumber: FC<ReportColumnDisplayPhoneNumberPr
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column',  
 
   },
 });

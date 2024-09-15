@@ -37,7 +37,7 @@ export const FormInputEmail: FC<FormInputEmailProps> = ({
 
   return ( 
   <View style={styles.container} testID={name + '-group'}>
-    <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
+    <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
     <TextInput
       style={[styles.input, disabled && styles.disabledInput]}
       keyboardType="email-address"

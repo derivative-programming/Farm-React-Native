@@ -36,7 +36,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
   const displayValue = (isVisible && conditionallyVisible);
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   const handlePress = () => {
     Linking.openURL(url); // Make sure the URL is valid
@@ -46,7 +46,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
     <View testID={groupName} style={styles.container}>
       <ReportColumnDisplayLabel name={labelName} text={label}  />
       {displayValue && (
-        <Pressable onPress={handlePress}>
+        <Pressable onPress={handlePress} style={styles.link}>
           <Text /* Add styling to replicate the look of a link */>
             {linkText}
           </Text>
@@ -58,7 +58,11 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column', 
+
+  },
+  link: {
+    marginBottom: 20,  
 
   },
 });

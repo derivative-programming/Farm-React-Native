@@ -13,7 +13,7 @@ export const Colors = {
   };
 
 export const fonts = {
-  smallSize: 8,
+  smallSize: 12,
   mediumSize: 16,
   largeSize: 24,
 }

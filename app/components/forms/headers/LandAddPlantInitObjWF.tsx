@@ -27,7 +27,7 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
     <View testID={name}>
       {landNameHeaderIsVisible && (
         <View style={styles.horizontalStack}>
-          <Text>Land Name</Text>
+          <Text>Land Name: </Text> 
           <Text>{initData.landName}</Text>
         </View>
       )}

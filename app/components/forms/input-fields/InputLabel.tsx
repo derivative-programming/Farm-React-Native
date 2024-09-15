@@ -8,12 +8,14 @@ export interface FormLabelProps {
   name?: string
   text: string  
   isVisible?:boolean  
+  isRequired?:boolean  
 }
    
 export const FormLabel: FC<FormLabelProps> = ({
   name = "",
   text= "", 
   isVisible = true,  
+  isRequired = false,  
 }): ReactElement | null => { 
    
   if(!isVisible) return null;
@@ -23,6 +25,7 @@ export const FormLabel: FC<FormLabelProps> = ({
       style={styles.label} 
       testID={name}>
       {text}
+      {isRequired && <Text style={{ color: 'red' }}> *</Text>}
     </Text>
   );
 };

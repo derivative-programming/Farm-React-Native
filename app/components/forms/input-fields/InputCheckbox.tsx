@@ -2,6 +2,7 @@ import React, { FC, ReactElement } from "react";
 import {useField } from 'formik'; 
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { FormLabel } from "./InputLabel";
+import * as theme from '../../../constants/theme'
    
 export interface FormInputCheckboxProps {
   name: string
@@ -50,6 +51,11 @@ export const FormInputCheckbox: FC<FormInputCheckboxProps> = ({
     {meta.touched && meta.error && (
       <Text style={styles.errorText}>{meta.error}</Text>
     )}
+    {detailText.length > 0 && (
+      <Text style={styles.detailText}> 
+        {detailText}
+      </Text>
+    )}
   </View>
   );
 };
@@ -62,11 +68,17 @@ const styles = StyleSheet.create({
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 8, // Add space between the switch and the label 
+    marginLeft: 0, // Add space between the switch and the label 
   }, 
   errorText: {
     color: 'red',
     marginBottom: 8,     
+  },
+  detailText: {
+    color: '#6c757d',  
+    fontSize: theme.fonts.smallSize,
+    marginTop: -10,  // Adjust spacing as needed
+    marginBottom: 10,
   },
   
 });

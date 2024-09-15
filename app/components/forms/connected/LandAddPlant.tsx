@@ -251,8 +251,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
     
     <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
-        <Text style={styles.titleText} testID="page-title-text">Add Plant</Text>
-        <Text style={styles.introText} testID="page-intro-text">Add plant intro text.</Text>
+        <Text style={styles.titleText} testID="page-title-text">Add Plant Add plant form title text</Text>
+        <Text style={styles.introText} testID="page-intro-text">Add plant intro text.Add plant form intro text</Text>
 
         {initPageResponse && (
           <HeaderLandAddPlant

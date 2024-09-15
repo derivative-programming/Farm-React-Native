@@ -47,7 +47,7 @@ export const ReportColumnDisplayEmail: FC<ReportColumnDisplayEmailProps> = ({
     return value;
   }
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   return (
     <View data-testid={groupName} style={styles.container}>
@@ -59,7 +59,7 @@ export const ReportColumnDisplayEmail: FC<ReportColumnDisplayEmailProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column', 
 
   },
 });

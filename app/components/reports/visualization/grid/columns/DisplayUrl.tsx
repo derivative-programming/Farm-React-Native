@@ -36,7 +36,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
   const displayValue = (isVisible && conditionallyVisible);
 
-  if (!isVisible) return null;
+  if (!displayValue) return null;
 
   const handlePress = () => {
     Linking.openURL(url); // Make sure the URL is valid
@@ -58,7 +58,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', // Aligns children horizontally
+    flexDirection: 'column',  
 
   },
 });

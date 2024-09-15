@@ -37,7 +37,7 @@ export const FormInputNumber: FC<FormInputNumberProps> = ({
 
   return ( 
     <View style={styles.container}>
-        <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
+        <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
         <TextInput
           style={[styles.input, disabled && styles.disabledInput]}
           keyboardType="numeric"

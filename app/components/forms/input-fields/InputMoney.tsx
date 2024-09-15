@@ -36,7 +36,7 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
 
   return ( 
     <View style={styles.container}>
-      <FormLabel text={`${label}${isRequired ? ' *' : ''}`} name={name + '-label'} />
+      <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
         <View style={styles.horizontalStack}>
           <Text style={styles.prefix}>$</Text> 
           <TextInput
