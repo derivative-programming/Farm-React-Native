@@ -112,9 +112,6 @@ export const ReportGridPacUserRoleList: FC<ReportGridPacUserRoleListProps> = ({
     }
   };
 
-  console.log("items count...");
-  console.log(items.length);
-
   return (
     <View testID={name} style={styles.view}>
       {!false ? (

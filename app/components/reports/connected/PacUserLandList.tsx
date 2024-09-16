@@ -5,7 +5,9 @@ import React, {
   useState,
   useEffect,
   useRef,
+  useCallback
 } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PacUserLandListReportService from "../services/PacUserLandList";
@@ -66,6 +68,7 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
     if (!response.success) {
       return;
     }
+    console.log('initPageResponse...',response);
     setInitPageResponse({ ...response });
   };
 
@@ -111,14 +114,27 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
   };
 
   useEffect(() => {
-    if (isInitializedRef.current) {
-      return;
-    }
-    isInitializedRef.current = true;
-    PacUserLandListReportService.initPage(contextCode).then((response) =>
-      handleInit(response)
-    );
+    // if (isInitializedRef.current) {
+    //   return;
+    // }
+    // console.log('useEffect []...');
+    // isInitializedRef.current = true;
+    // PacUserLandListReportService.initPage(contextCode).then((response) =>
+    //   handleInit(response)
+    // );
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      // if (!isInitializedRef.current) {
+      //   return;
+      // }
+      console.log('useFocusEffect...');
+      PacUserLandListReportService.initPage(contextCode).then((response) =>
+        handleInit(response)
+      );
+    }, [])
+  );
 
   useEffect(() => {
     if(initPageResponse === null){

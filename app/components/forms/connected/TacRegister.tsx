@@ -5,7 +5,9 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useCallback
 } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import { Formik, FormikHelpers } from "formik";
 import { useNavigation } from '@react-navigation/native';
 import * as TacRegisterFormService from "../services/TacRegister";
@@ -73,6 +75,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       return;
     }
 
+    console.log('initPageResponse...',response);
     setInitPageResponse({ ...response });
   };
 
@@ -162,19 +165,32 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       //click cancel
     }
 
-    submitNavigateTo("tac-farm-dashboard","tacCode");
+    submitNavigateTo("TacFarmDashboard","tacCode");
 
   };
 
   useEffect(() => {
-    if (isInitializedRef.current) {
-      return;
-    }
-    isInitializedRef.current = true;
-    TacRegisterFormService.initForm(contextCode)
-      .then((response) => handleInit(response))
-      .finally(() => {setInitForm(false)});
+    // if (isInitializedRef.current) {
+    //   return;
+    // }
+    // console.log('useEffect []...');
+    // isInitializedRef.current = true;
+    // TacRegisterFormService.initForm(contextCode)
+    //   .then((response) => handleInit(response))
+    //   .finally(() => {setInitForm(false)});
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      // if (!isInitializedRef.current) {
+      //   return;
+      // }
+      console.log('useFocusEffect...');
+      TacRegisterFormService.initForm(contextCode)
+        .then((response) => handleInit(response))
+        .finally(() => {setInitForm(false)});
+    }, [])
+  );
 
   useEffect(() => {
     if(initPageResponse === null){
