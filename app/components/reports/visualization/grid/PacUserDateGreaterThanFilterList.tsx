@@ -116,10 +116,11 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
   console.log(items.length);
 
   return (
-    <View testID={name}>
+    <View testID={name} style={styles.view}>
       {!false ? (
       <FlatList
         data={items}
+        style={styles.flatlist}
         renderItem={({ item }) =>
           <View style={styles.card}>
 {/* ENDSET */}
@@ -172,17 +173,24 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
         refreshing={refreshing}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.25} // Adjust as needed
+        contentContainerStyle={{ flexGrow: 1 }}
       />
       ) : (
         <ActivityIndicator />
       )}
     </View>
- 
   );
 };
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+  },
+  flatlist: {
+    flexGrow: 1,
+  },
   card: {
+    flex: 1,
     padding: 10,
     margin: 10,
     backgroundColor: '#fff',
