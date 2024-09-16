@@ -458,6 +458,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
+    flex: 1,
     
   },
   titleText: {

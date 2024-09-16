@@ -77,39 +77,7 @@ export const FormInputFile: FC<FormInputFileProps> = ({
     // });
   };
       
-  return (
-  //   <div className="" hidden={!isVisible}>
-  //     <Form.Group controlId={name} className="mb-2 text-start">
-  //         <Form.Label data-testid={name + '-label'}
-  //           size="sm">{label}</Form.Label>
-  //         <Form.Control
-  //           // ref={inputRef}
-  //           data-testid={name}
-  //           type="file" 
-  //          // placeholder={placeholder}
-  //           name={field.name}
-  //           //value={field.value}
-  //           onBlur={field.onBlur} 
-  //           onChange={(e) => uploadImage(e)}
-  //           disabled={disabled}
-  //           autoFocus={autoFocus}
-  //           isInvalid={isInvalid} 
-  //           size="sm"
-  //         />
-  //         <Form.Control.Feedback className="text-start" type="invalid">{meta.error}</Form.Control.Feedback>
-  //     </Form.Group> 
-  // </div>
-    // <VStack space={2} width="100%">
-    //   <FormControl isInvalid={isInvalid} isDisabled={disabled}>
-    //     <FormControl.Label>{label}</FormControl.Label>
-    //     <Button onPress={handleFileSelection} isDisabled={disabled}>
-    //       Upload File
-    //     </Button>
-    //     {isInvalid && (
-    //       <Text color="red.500">{meta.error}</Text>
-    //     )}
-    //   </FormControl>
-    // </VStack>
+  return ( 
     <View style={styles.container} testID={name}>
       <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
       <TouchableOpacity 

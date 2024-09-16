@@ -157,10 +157,11 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
   console.log(items.length);
 
   return (
-    <View testID={name} style={styles.container}>
+    <View testID={name} style={styles.view}>
       {!false ? (
       <FlatList
         data={items}
+        style={styles.flatlist}
         renderItem={({ item }) => 
           <View style={styles.card}> 
 {/* ENDSET */}
@@ -578,110 +579,21 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
         refreshing={refreshing}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.25} // Adjust as needed  
+        contentContainerStyle={{ flexGrow: 1 }}
       />
       ) : (
         <ActivityIndicator />
       )}
-    </View>
-    // <div data-testid={name} className="w-100 mt-3">
-    //   <div className="d-flex w-100 justify-content-left">
-    //     <ReportInput.ReportInputButton name="multSelectButtonToEditable"
-    //       onPress={() => onMultSelectButtonToEditableClick()}
-    //       buttonText="To Editable"
-    //       className="mb-3 me-2"
-    //       isButtonCallToAction={false}
-    //       isVisible={true}
-    //       isEnabled={true}
-    //     />
-    //     <ReportInput.ReportInputButton name="multSelectButtonToNotEditable"
-    //       onPress={() => onMultSelectButtonToNotEditableClick()}
-    //       buttonText="To Not Editable"
-    //       className="mb-3 me-2"
-    //       isButtonCallToAction={false}
-    //       isVisible={true}
-    //       isEnabled={true}
-    //     />
-    //   </div>
-
-    //   <Table
-    //     className="report-list-table"
-    //     striped
-    //     //bordered 
-    //     hover
-    //     responsive
-    //     size="sm"
-    //   >
-    //     <thead>
-    //       <tr>
-    //         <th id="plantCode-header">
-    //           {" "}
-    //           <Form.Check
-    //             type="checkbox"
-    //             id="plantCode-select-all-rows-checkbox"
-    //             name="plantCode-select-all-rows-checkbox"
-    //             onChange={(e) => onSelectAllRows(e)}
-    //           />
-    //         </th>
-
-    
-    //       </tr>
-    //     </thead>
-    //     <tbody> 
-    //       {items && !showProcessing && items.length ? (
-    //         items.map((item: ReportService.QueryResultItem, index) => {
-    //           return (
-    //             <tr key={index.toString()}>
-    //               <td data-testid={"plantCodeColumn-" + index}>
-    //                 <Form.Check
-    //                   type="checkbox"
-    //                   id={"row-select-" + index}
-    //                   name={"row-select-" + index}
-    //                   checked={checkedIndexes.includes(index.toString())}
-    //                   onChange={(e) => {
-    //                     handleRowSelectCheckboxChange(e, index, item.plantCode);
-    //                   }}
-    //                 />
-    //               </td> 
-    
-    //             </tr>
-    //           );
-    //         })
-    //       ) : (showProcessing ?  
-    //         <tr>
-    //           <td colSpan={100}>
-    //             <div className="text-center  bg-secondary bg-opacity-25">
-    //             <Spinner animation="border" className="mt-2 mb-2" />
-    //           </div>
-    //         </td>
-    //         </tr>  
-    //         :  
-    //         <tr>
-    //           <td colSpan={100}>No rows returned text</td>
-    //         </tr> 
-    //       )}
-    //     </tbody>
-    //   </Table>
- 
-    //   <div
-    //     className="d-flex justify-content-center justify-content-md-end w-100 mb-3 mb-md-0"
-    //     hidden={!showExport}
-    //   >
-    //     <Button data-testidid="export-button"
-    //       onPress={() => onExport()}
-    //       className='me-md-2'
-    //       size="sm"
-    //       variant="outline">
-    //       Export
-    //     </Button>
-    //   </div>
-    // </div>
+    </View> 
   );
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    // paddingVertical: 20, // equivalent to py="5"
-    // alignItems: 'center'
+  view: { 
+    flex: 1, 
+  },
+  flatlist: { 
+    flexGrow: 1, 
   },
   card: {
     flex: 1,
