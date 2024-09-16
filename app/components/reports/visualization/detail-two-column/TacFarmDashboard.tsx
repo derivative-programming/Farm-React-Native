@@ -55,8 +55,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                 }} 
             /> 
              
-            <ReportColumnDisplay.ReportColumnDisplayButton 
-                forColumn="testFileDownloadLinkPacCode" 
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testFileDownloadLinkPacCode" 
                 value={item.testFileDownloadLinkPacCode}
                 buttonText="Test File Download"
                 isButtonCallToAction={true} 
@@ -79,8 +78,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                     .then(() => onRefreshRequest())
                 }} 
             /> 
-            <ReportColumnDisplay.ReportColumnDisplayButton 
-                forColumn="testConditionalFileDownloadLinkPacCode" 
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalFileDownloadLinkPacCode" 
                 value={item.testConditionalFileDownloadLinkPacCode}
                 buttonText="Test Conditional File Download"
                 isButtonCallToAction={true} 
@@ -103,8 +101,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                     }).then(() => onRefreshRequest())
                 }} 
             /> 
-            <ReportColumnDisplay.ReportColumnDisplayButton 
-                forColumn="testAsyncFlowReqLinkPacCode" 
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testAsyncFlowReqLinkPacCode" 
                 value={item.testAsyncFlowReqLinkPacCode}
                 buttonText="Test Async Flow Req"
                 isButtonCallToAction={true} 
@@ -117,8 +114,7 @@ export const ReportDetailTwoColTacFarmDashboard: FC<ReportDetailTwoColTacFarmDas
                     onRefreshRequest())
                 }} 
             /> 
-            <ReportColumnDisplay.ReportColumnDisplayButton 
-                forColumn="testConditionalAsyncFlowReqLinkPacCode" 
+            <ReportColumnDisplay.ReportColumnDisplayButton forColumn="testConditionalAsyncFlowReqLinkPacCode" 
                 value={item.testConditionalAsyncFlowReqLinkPacCode}
                 buttonText="Test Conditional Async Flow Req"
                 isButtonCallToAction={true} 

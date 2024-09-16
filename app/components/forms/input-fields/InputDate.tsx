@@ -67,7 +67,7 @@ export const FormInputDate: FC<FormInputDateProps> = ({
       disabled={disabled}
     >
       <Text testID={name}>
-        {selectedDateTimeLocal.format("YYYY-MM-DD") || placeholder}
+        {selectedDateTimeLocal.format("M/D/YYYY") || placeholder}
       </Text>
     </TouchableOpacity>
 

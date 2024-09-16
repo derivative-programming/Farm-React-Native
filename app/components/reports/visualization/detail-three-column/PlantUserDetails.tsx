@@ -1,9 +1,10 @@
 import React, { FC, ReactElement } from "react";
-import { ActivityIndicator,  View } from 'react-native';
+import { ActivityIndicator,  View, StyleSheet } from 'react-native';
 import * as ReportService from "../../services/PlantUserDetails"; 
 import * as AsyncServices from "../../../services";
 import * as ReportColumnDisplay from "./columns";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";  
+import uuid  from 'react-native-uuid';
 
 export interface ReportDetailThreeColPlantUserDetailsProps {
     name: string
@@ -23,11 +24,11 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
     const componentName = "ReportDetailThreeColPlantUserDetails";
     
     return (
-        <View testID={name} > 
+        <View testID={name} style={styles.container}> 
         { showProcessing ? 
             
             <ActivityIndicator />
-            : <View>
+            : <View style={styles.container}>
                 <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
                     label="Flavor Name"
                     value={item.flavorName}
@@ -221,7 +222,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                                 const url = URL.createObjectURL(blob);
                                 const link = document.createElement('a');
                                 link.href = url;
-                                link.setAttribute('download', 'ReportDetailThreeColPlantUserDetails-' + uuidv4() + '.csv');
+                                link.setAttribute('download', 'ReportDetailThreeColPlantUserDetails-' + uuid.v4() + '.csv');
                                 document.body.appendChild(link);
                                 link.click();
                             })
@@ -245,7 +246,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                                 const url = URL.createObjectURL(blob);
                                 const link = document.createElement('a');
                                 link.href = url;
-                                link.setAttribute('download', 'ReportDetailThreeColPlantUserDetails-' + uuidv4() + '.csv');
+                                link.setAttribute('download', 'ReportDetailThreeColPlantUserDetails-' + uuid.v4() + '.csv');
                                 document.body.appendChild(link);
                                 link.click();
                             })
@@ -296,3 +297,11 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
         </View>
     );
 }; 
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      // paddingVertical: 20, // equivalent to py="5"
+      // alignItems: 'center'
+    },
+  });

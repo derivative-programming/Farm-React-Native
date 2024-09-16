@@ -157,7 +157,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
   console.log(items.length);
 
   return (
-    <View testID={name}>
+    <View testID={name} style={styles.container}>
       {!false ? (
       <FlatList
         data={items}
@@ -679,7 +679,12 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
 };
 
 const styles = StyleSheet.create({
+  container: { 
+    // paddingVertical: 20, // equivalent to py="5"
+    // alignItems: 'center'
+  },
   card: {
+    flex: 1,
     padding: 10,
     margin: 10,
     backgroundColor: '#fff',

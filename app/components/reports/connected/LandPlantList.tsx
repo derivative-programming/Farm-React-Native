@@ -346,11 +346,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       link.click();
     })
     .finally(() => {setIsProcessing(false);});
-  }, [exportQuery]);
-
-  //GENLearn[visualizationType=Grid]End
-  //GENTrainingBlock[visualizationTypeFuncs]End
-
+  }, [exportQuery]); 
   
   const onRefresh = () => {
     onPageSelection(1);
@@ -361,6 +357,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
+  //GENLearn[visualizationType=Grid]End
+  //GENTrainingBlock[visualizationTypeFuncs]End
+
 
   return (
     <View style={styles.container}> 

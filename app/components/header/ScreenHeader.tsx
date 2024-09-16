@@ -57,6 +57,10 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     await logClick("Header","profile",""); 
     navigation.navigate("CustomerUserUpdateProfile" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
   };
+  const onChangePassword = async () => {
+    await logClick("Header","changePassword",""); 
+    navigation.navigate("CustomerUserUpdatePassword" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
+  };
   const onAdminDashboard = async () => {
     await logClick("Header","admin","");
     navigation.navigate("CustomerAdminDashboard" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
@@ -90,6 +94,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
                   <>
                     <MenuOption value={1} onSelect={async () => await onDashboard()} text="Dashboard" /> 
                     <MenuOption value={2} onSelect={async () => await onProfile()} text="Profile" /> 
+                    <MenuOption value={3} onSelect={async () => await onChangePassword()} text="Change Password" /> 
                   </>
                 )}
                 
