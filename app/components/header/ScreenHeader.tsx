@@ -49,6 +49,10 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     await logClick("Header","login",""); 
     navigation.navigate(RouteNames.TAC_LOGIN, { code: "00000000-0000-0000-0000-000000000000" });
   };
+  const onForgotPassword = async () => {
+    await logClick("Header","forgotPassword",""); 
+    navigation.navigate("TacForgotPassword" as keyof RootStackParamList, { code: "00000000-0000-0000-0000-000000000000" });
+  };
   const onDashboard = async () => {
     await logClick("Header","dashboard","");
     navigation.navigate(RouteNames.TAC_FARM_DASHBOARD, { code: "00000000-0000-0000-0000-000000000000" });
@@ -101,17 +105,17 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
                 {authContext && authContext.token && authContext.roles.includes('Admin') === true && (
                   //admin users
                   <>
-                    <MenuOption value={3} onSelect={async () => await onAdminDashboard()} text="Admin" /> 
+                    <MenuOption value={4} onSelect={async () => await onAdminDashboard()} text="Admin" /> 
                   </>
                 )}
                 
                 {authContext && authContext.token && authContext.roles.includes('Config') === true && (
                   //config users
                   <>
-                    <MenuOption value={4} onSelect={async () => await onConfigDashboard()} text="Config" /> 
+                    <MenuOption value={5} onSelect={async () => await onConfigDashboard()} text="Config" /> 
                   </>
                 )}
-                <MenuOption value={5} onSelect={async () => await onLogout()} text="Logout" 
+                <MenuOption value={6} onSelect={async () => await onLogout()} text="Logout" 
                customStyles={optionStyles} /> 
               </>
             ) 
@@ -119,9 +123,11 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
             (
               //not autenticated
               <>
-                <MenuOption value={6} onSelect={async () => await onLogin()} text="Login" 
+                <MenuOption value={7} onSelect={async () => await onLogin()} text="Login" 
                customStyles={optionStyles} /> 
-                <MenuOption value={7} onSelect={async () => await onRegister()} text="Register"  
+               <MenuOption value={8} onSelect={async () => await onForgotPassword()} text="Forgot Password"  
+              customStyles={optionStyles} /> 
+                <MenuOption value={9} onSelect={async () => await onRegister()} text="Register"  
                customStyles={optionStyles} /> 
               </>
             )}
