@@ -153,9 +153,6 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
     }
   };
 
-  console.log("items count...");
-  console.log(items.length);
-
   return (
     <View testID={name} style={styles.view}>
       {!false ? (

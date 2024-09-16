@@ -5,7 +5,9 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useCallback
 } from "react";  
+import { useFocusEffect } from '@react-navigation/native';
 import { Formik, FormikHelpers } from "formik";
 import { useNavigation } from '@react-navigation/native';
 import * as LandAddPlantFormService from "../services/LandAddPlant";
@@ -73,6 +75,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
       return;
     }
 
+    console.log('initPageResponse...',response);
     setInitPageResponse({ ...response }); 
   };
 
@@ -168,14 +171,27 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
 
 
   useEffect(() => {
-    if (isInitializedRef.current) {
-      return;
-    }
-    isInitializedRef.current = true;
-    LandAddPlantFormService.initForm(contextCode)
-      .then((response) => handleInit(response)) 
-      .finally(() => {setInitForm(false)});
+    // if (isInitializedRef.current) {
+    //   return;
+    // }
+    // console.log('useEffect []...');
+    // isInitializedRef.current = true;
+    // LandAddPlantFormService.initForm(contextCode)
+    //   .then((response) => handleInit(response)) 
+    //   .finally(() => {setInitForm(false)});
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      // if (!isInitializedRef.current) { 
+      //   return;
+      // } 
+      console.log('useFocusEffect...');
+      LandAddPlantFormService.initForm(contextCode)
+        .then((response) => handleInit(response)) 
+        .finally(() => {setInitForm(false)});
+    }, [])
+  );
 
   useEffect(() => {
     if(initPageResponse === null){

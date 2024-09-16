@@ -22,11 +22,6 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
 }): ReactElement => { 
   const authContext = useContext(AuthContext);
   const navigation = useNavigation<ScreenNavigationProp>();
-
-  if(authContext && authContext.token)
-    console.log('App bar auth menu');
-  else
-      console.log('App bar not auth menu');
   
   const title = "Simple Api"
 
@@ -36,12 +31,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
     await logClick("Header","logOut","");
     await AnalyticsService.stop();
     
-    authContext.clearSession();
-    // authContext.setToken("");
-    // authContext.setRoles("");
-    // await AsyncStorage.setItem("@token", "");
-    // await AsyncStorage.setItem("customerCode","");
-    // await AsyncStorage.setItem("email", "");
+    authContext.clearSession(); 
     await onLogin();
   };
 

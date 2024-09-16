@@ -31,12 +31,7 @@ const ReportFilterLandPlantList: FC<ReportFilterLandPlantListProps> = ({
 }): ReactElement => {
   const [initialValues, setInitialValues] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
-  const { logClick } = useAnalyticsDB();
-
-  // console.log('filter ctrl initialQuery...');
-  // console.log(initialQuery); 
-  // console.log('filter ctrl initialValues...');
-  // console.log(initialValues); 
+  const { logClick } = useAnalyticsDB(); 
 
   const validationSchema = ReportService.buildValidationSchema();
  

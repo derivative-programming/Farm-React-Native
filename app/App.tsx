@@ -9,11 +9,7 @@ import PublicRoute from "./routes/publicRoutes";
 
 const App: React.FC = (): React.ReactElement => {
   const authValue = useContext(AuthContext);
-
-  console.log("authValue...")
-  console.log(authValue)
-  console.log("authValue.token...")
-  console.log(authValue.token)
+ 
   return (  
     <MenuProvider
       customStyles={{ menuProviderWrapper: styles.menuProviderWrapper }}
