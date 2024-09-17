@@ -29,6 +29,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
             
             <ActivityIndicator />
             : <View style={styles.container}>
+{/*//endset*/}
                 <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
                     label="Flavor Name"
                     value={item.flavorName}
@@ -149,7 +150,6 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     linkText="Click Here"
                     isVisible={true}
                 />
-
  
                 <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="isImageUrlAvailable"
                     label="N Var Char As Url"
@@ -170,6 +170,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                     conditionallyVisible={item.isImageUrlAvailable}  
                 />
 
+{/*//endset*/}
                 <ReportColumnDisplay.ReportColumnDisplayButton forColumn="updateButtonTextLinkPlantCode"
                     buttonText="Update Button Text"
                     value={item.updateButtonTextLinkPlantCode}
@@ -292,6 +293,7 @@ export const ReportDetailThreeColPlantUserDetails: FC<ReportDetailThreeColPlantU
                         onNavigateTo("TacFarmDashboard",item.conditionalBtnExampleLinkTacCode)
                     }}
                 />
+{/*//endset*/}
             </View>
         }
         </View>

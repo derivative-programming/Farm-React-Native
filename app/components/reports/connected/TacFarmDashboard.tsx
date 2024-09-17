@@ -5,8 +5,10 @@ import React, {
   useState,
   useEffect,
   useRef,
-} from "react";
-import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+  useCallback
+} from "react";  
+import { useFocusEffect } from '@react-navigation/native';
+import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as TacFarmDashboardReportService from "../services/TacFarmDashboard";
 import * as InitReportService from "../services/init/TacFarmDashboardInitReport";
@@ -97,7 +99,7 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
       console.log('currentPage:' + queryResult.pageNumber);
       if(queryResult.pageNumber == 1) {
         console.log('set items page 1');
-        setItems(enhancedItems);
+        setItems({...enhancedItems});
       }
       else{
         console.log('set items page ' + queryResult.pageNumber);
@@ -119,18 +121,30 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
       cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
       cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
       cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
-      setQuery(cleanrQueryRequest);
+      setQuery({...cleanrQueryRequest});
     };
   
     useEffect(() => {
-      if (isInitializedRef.current) {
-        return;
-      }
-      isInitializedRef.current = true;
-      TacFarmDashboardReportService.initPage(contextCode).then((response) =>
-        handleInit(response)
-      );
+      // if (isInitializedRef.current) {
+      //   return;
+      // }
+      // isInitializedRef.current = true;
+      // TacFarmDashboardReportService.initPage(contextCode).then((response) =>
+      //   handleInit(response)
+      // );
     }, []);
+  
+    useFocusEffect(
+      useCallback(() => {
+        // if (!isInitializedRef.current) { 
+        //   return;
+        // } 
+        console.log('useFocusEffect...');
+        TacFarmDashboardReportService.initPage(contextCode).then((response) =>
+          handleInit(response)
+        );
+      }, [])
+    );
   
     useEffect(() => {
       if(initPageResponse === null){
@@ -161,15 +175,13 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
       if(initialQuery === null){
         return;
       }
-      const loadAsyncData = async () => {
-        if (JSON.stringify(initialQuery) !== JSON.stringify(query)) {
-          const pageSize = await AsyncStorage.getItem("pageSize");
-          if(pageSize !== null)
-          {
-            initialQuery.ItemCountPerPage = parseInt(pageSize);
-          }
-          setQuery({ ...initialQuery });
+      const loadAsyncData = async () => { 
+        const pageSize = await AsyncStorage.getItem("pageSize");
+        if(pageSize !== null)
+        {
+          initialQuery.ItemCountPerPage = parseInt(pageSize);
         }
+        setQuery({ ...initialQuery }); 
       };
   
       loadAsyncData();
@@ -276,16 +288,19 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
           {/*//GENTrainingBlock[visualizationType]Start*/}
           {/*//GENLearn[visualizationType=DetailTwoColumn]Start*/}
           
-          <ScrollView>
-            {displayItem && (
-              <ReportDetailTwoColTacFarmDashboard 
-                  item={displayItem}
-                  name="reportConnectedTacFarmDashboard-table" 
-                  onNavigateTo={onNavigateTo} 
-                  onRefreshRequest={onRefreshRequest}
-              /> 
-            )}
-          </ScrollView>
+          {!displayItem && (
+            <ActivityIndicator size="large" color="#0000ff" />
+          )}
+          {displayItem && (
+            <ScrollView>
+                <ReportDetailTwoColTacFarmDashboard 
+                    item={displayItem}
+                    name="reportConnectedTacFarmDashboard-table" 
+                    onNavigateTo={onNavigateTo} 
+                    onRefreshRequest={onRefreshRequest}
+                /> 
+            </ScrollView>
+          )}
           {/*//GENLearn[visualizationType=DetailTwoColumn]End*/}
           {/*//GENTrainingBlock[visualizationType]End*/} 
             

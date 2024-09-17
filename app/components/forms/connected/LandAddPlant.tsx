@@ -157,6 +157,10 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
         //click cancel
       } else {
         //possible relogin
+        //GENIF[isLogoutPage=true]Start
+        await AnalyticsService.stop();
+        authContext.clearSession();  
+        //GENIF[isLogoutPage=true]End
         //GENIF[isLoginPage=true]Start
         authContext.startSession(response); 
         AnalyticsService.start();
@@ -461,6 +465,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
             </Formik>
           )}
         </ScrollView>
+        <Text style={styles.introText} testID="page-footer-text">Add plant form footer text</Text> 
       </View>
     </View>
   );

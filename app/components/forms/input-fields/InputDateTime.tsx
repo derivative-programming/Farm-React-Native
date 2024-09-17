@@ -41,7 +41,21 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   
   if (!isVisible) return null;
 
+  // const onChange = (event: any, selectedDate?: Date) => {
+  //   setShow(false);
+  //   if (selectedDate) {
+  //     helpers.setValue(moment(selectedDate).utc().format("YYYY-MM-DDTHH:mm:ss"));
+  //   }
+  // };
   const onChange = (event: any, selectedDate?: Date) => {
+    console.log('onChange event', event);
+    if (event.type === "dismissed") {
+      console.log('dismissed');
+      console.log('selectedDate', selectedDate);
+      setShow(false);
+      return; // Do nothing if dismissed
+    }
+    
     setShow(false);
     if (selectedDate) {
       helpers.setValue(moment(selectedDate).utc().format("YYYY-MM-DDTHH:mm:ss"));

@@ -1,12 +1,14 @@
 import React, {
-    FC,
-    ReactElement,
-    useContext,
-    useState,
-    useEffect,
-    useRef,
-} from "react";
-import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+  FC,
+  ReactElement,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback
+} from "react";  
+import { useFocusEffect } from '@react-navigation/native';
+import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PlantUserDetailsReportService from "../services/PlantUserDetails";
 import * as InitReportService from "../services/init/PlantUserDetailsInitReport";
@@ -96,7 +98,7 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       console.log('currentPage:' + queryResult.pageNumber);
       if(queryResult.pageNumber == 1) {
         console.log('set items page 1');
-        setItems(enhancedItems);
+        setItems({...enhancedItems});
       }
       else{
         console.log('set items page ' + queryResult.pageNumber);
@@ -118,18 +120,30 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
       cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
       cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
-      setQuery(cleanrQueryRequest);
+      setQuery({...cleanrQueryRequest});
     };
   
     useEffect(() => {
-      if (isInitializedRef.current) {
-        return;
-      }
-      isInitializedRef.current = true;
-      PlantUserDetailsReportService.initPage(contextCode).then((response) =>
-        handleInit(response)
-      );
-    }, []);
+      // if (isInitializedRef.current) {
+      //   return;
+      // }
+      // isInitializedRef.current = true;
+      // PlantUserDetailsReportService.initPage(contextCode).then((response) =>
+      //   handleInit(response)
+      // );
+    }, []); 
+  
+    useFocusEffect(
+      useCallback(() => {
+        // if (!isInitializedRef.current) { 
+        //   return;
+        // } 
+        console.log('useFocusEffect...');
+        PlantUserDetailsReportService.initPage(contextCode).then((response) =>
+          handleInit(response)
+        );
+      }, [])
+    );
   
     useEffect(() => {
       if(initPageResponse === null){
@@ -160,15 +174,13 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       if(initialQuery === null){
         return;
       }
-      const loadAsyncData = async () => {
-        if (JSON.stringify(initialQuery) !== JSON.stringify(query)) {
-          const pageSize = await AsyncStorage.getItem("pageSize");
-          if(pageSize !== null)
-          {
-            initialQuery.ItemCountPerPage = parseInt(pageSize);
-          }
-          setQuery({ ...initialQuery });
+      const loadAsyncData = async () => { 
+        const pageSize = await AsyncStorage.getItem("pageSize");
+        if(pageSize !== null)
+        {
+          initialQuery.ItemCountPerPage = parseInt(pageSize);
         }
+        setQuery({ ...initialQuery }); 
       };
   
       loadAsyncData();
@@ -268,17 +280,20 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
           )}
           {/*//GENTrainingBlock[visualizationType]Start*/}
           {/*//GENLearn[visualizationType=DetailThreeColumn]Start*/}
-          <ScrollView>
-            {displayItem && (
-              <ReportDetailThreeColPlantUserDetails 
-                  item= {displayItem}
-                  name="reportConnectedPlantUserDetails-table" 
-                  onNavigateTo={onNavigateTo} 
-                  onRefreshRequest={onRefreshRequest}
-                  showProcessing={isProcessing}
-              /> 
-            )}
-          </ScrollView>
+          {!displayItem && (
+            <ActivityIndicator size="large" color="#0000ff" />
+          )}
+          {displayItem && (
+            <ScrollView>
+                <ReportDetailThreeColPlantUserDetails 
+                    item= {displayItem}
+                    name="reportConnectedPlantUserDetails-table" 
+                    onNavigateTo={onNavigateTo} 
+                    onRefreshRequest={onRefreshRequest}
+                    showProcessing={isProcessing}
+                /> 
+            </ScrollView>
+          )}
           {/*//GENLearn[visualizationType=DetailThreeColumn]End*/}
           {/*//GENTrainingBlock[visualizationType]End*/}
       

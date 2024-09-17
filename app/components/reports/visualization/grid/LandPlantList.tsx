@@ -155,7 +155,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
 
   return (
     <View testID={name} style={styles.view}>
-      {!false ? (
+      {!refreshing ? (
       <FlatList
         data={items}
         style={styles.flatlist}
@@ -579,7 +579,7 @@ export const ReportGridLandPlantList: FC<ReportGridLandPlantListProps> = ({
         contentContainerStyle={{ flexGrow: 1 }}
       />
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicator  size="large" color="#0000ff" />
       )}
     </View> 
   );

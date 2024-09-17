@@ -8,7 +8,7 @@ import React, {
   useCallback
 } from "react";  
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'; 
+import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native'; 
 import * as LandPlantListReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
@@ -97,7 +97,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     console.log('currentPage:' + queryResult.pageNumber);
     if(queryResult.pageNumber == 1) {
       console.log('set items page 1');
-      setItems(enhancedItems);
+      setItems({...enhancedItems});
     }
     else{
       console.log('set items page ' + queryResult.pageNumber);
@@ -119,7 +119,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
     cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
     cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
-    setQuery(cleanrQueryRequest);
+    setQuery({...cleanrQueryRequest});
   };
 
 
@@ -175,15 +175,13 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if(initialQuery === null){
       return;
     }
-    const loadAsyncData = async () => {
-      if (JSON.stringify(initialQuery) !== JSON.stringify(query)) { 
-        const pageSize = await AsyncStorage.getItem("pageSize");
-        if(pageSize !== null)
-        { 
-          initialQuery.ItemCountPerPage = parseInt(pageSize);
-        } 
-        setQuery({ ...initialQuery });
-      }
+    const loadAsyncData = async () => { 
+      const pageSize = await AsyncStorage.getItem("pageSize");
+      if(pageSize !== null)
+      { 
+        initialQuery.ItemCountPerPage = parseInt(pageSize);
+      } 
+      setQuery({ ...initialQuery }); 
     };
 
     loadAsyncData();
@@ -415,36 +413,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             initData={initPageResponse}
             isHeaderVisible={true}
           />
-        )}
-
-{/* 
-          
-        <View className="col-12 d-flex flex-column flex-md-row justify-content-between"> 
-          <View className="d-flex flex-column flex-md-row">
-            <View className="mb-2 mb-md-0">
-              <ReportInput.ReportInputButton name="otherAddButton"
-                onPress={async () => {
-                  await logClick("ReportConnectedLandPlantList","otherAddButton","");
-                  navigateTo("LandAddPlant", "landCode");
-                }}
-                buttonText="Other Add Button"
-                isButtonCallToAction={false}
-                isVisible={true}
-                isEnabled={true}
-              />
-            </View> 
-          </View>
-        </View> 
-         */}
-        
-        {/* <ReportFilterLandPlantList
-          name="reportConnectedLandPlantList-filter"
-          initialQuery={initialValues}
-          onSubmit={onSubmit}
-          isCollapsible={isFilterSectionCollapsable}
-          hidden={isFilterSectionHidden} 
-        /> 
-        */} 
+        )} 
 
         {/*//GENTrainingBlock[visualizationType]Start*/}
         {/*//GENLearn[visualizationType=Grid]Start*/}
