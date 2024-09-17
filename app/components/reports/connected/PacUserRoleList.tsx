@@ -26,7 +26,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import ReportFilterPacUserRoleList from "../filters/PacUserRoleList";
 import { ReportGridPacUserRoleList } from "../visualization/grid/PacUserRoleList";
-import { v4 as uuidv4 } from "uuid";
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -74,7 +73,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
 
   const handleQueryResults = (responseFull: PacUserRoleListReportService.ResponseFull) => {
     const queryResult: PacUserRoleListReportService.QueryResult = responseFull.data;
-
+    console.log('handleQueryResults...');
     if (!queryResult.success) {
       return;
     }
@@ -88,7 +87,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     console.log('currentPage:' + queryResult.pageNumber);
     if(queryResult.pageNumber == 1) {
       console.log('set items page 1');
-      setItems({...enhancedItems});
+      setItems([...enhancedItems]);
     }
     else{
       console.log('set items page ' + queryResult.pageNumber);
@@ -104,16 +103,18 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   };
 
   const onRefreshRequest = () => {
+    console.log('onRefreshRequest...');
     logClick("ReportConnectedPacUserRoleList","refresh","");
 
-    const cleanrQueryRequest = new PacUserRoleListReportService.QueryRequestInstance();
-    cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
-    cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
-    cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
-    setQuery({...cleanrQueryRequest});
+    const cleanQueryRequest = new PacUserRoleListReportService.QueryRequestInstance();
+    cleanQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    cleanQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    cleanQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery({...cleanQueryRequest});
   };
 
   useEffect(() => {
+    console.log('useEffect []...');
     // if (isInitializedRef.current) {
     //   return;
     // }
@@ -140,7 +141,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(initPageResponse === null){
       return;
     }
-
+    console.log('useEffect initPageResponse...');
     const loadAsyncData = async () => {
       let queryRequest = PacUserRoleListReportService.buildQueryRequest(initPageResponse);
 
@@ -165,6 +166,8 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(initialQuery === null){
       return;
     }
+
+    console.log('useEffect initialQuery...');
     const loadAsyncData = async () => {
       const pageSize = await AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
@@ -212,6 +215,7 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(queryResult.items === null){
       return;
     }
+    console.log('useEffect queryResult...');
 
     const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PacUserRoleListReportService.QueryResultItemInstance();
 
@@ -322,9 +326,9 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   };
 
   useEffect(() => {
-    if (!isInitializedRef.current) {
-      return;
-    }
+    // if (!isInitializedRef.current) {
+    //   return;
+    // }
     if(query === null){
       return;
     }
@@ -337,23 +341,25 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     setIsProcessing(true);
     PacUserRoleListReportService.submitCSVRequest(query, contextCode).then((response) => {
       //handleExportQueryResults(response);  //NOSONAR
-      const blob = new Blob([response.data], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'PacUserRoleList-' + uuidv4() + '.csv');
-      document.body.appendChild(link);
-      link.click();
+      // const blob = new Blob([response.data], { type: "text/csv" });
+      // const url = URL.createObjectURL(blob);
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.setAttribute('download', 'PacUserRoleList-' + uuid.v4() + '.csv');
+      // document.body.appendChild(link);
+      // link.click();
     })
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]);
 
   const onRefresh = () => {
+    console.log('onRefresh...');
     onPageSelection(1);
   };
 
   const onEndReached = () => {
     if (queryResult && !loadingMore) {
+      console.log('onEndReached...');
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
