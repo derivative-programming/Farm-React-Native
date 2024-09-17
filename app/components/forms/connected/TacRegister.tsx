@@ -129,6 +129,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
       }
 
       authContext.startSession(response);
+      AnalyticsService.start();
 
       actions.setSubmitting(false);
       actions.resetForm();
@@ -351,6 +352,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
             </Formik>
           )}
         </ScrollView>
+        <Text style={styles.introText} testID="page-footer-text"></Text>
       </View>
     </View>
   );

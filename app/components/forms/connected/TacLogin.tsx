@@ -127,6 +127,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       {/*//GENTrainingBlock[caseGetApiKey]Start*/}
       {/*//GENLearn[isLoginPage=true]Start*/}
       authContext.startSession(response);
+      AnalyticsService.start();
       {/*//GENLearn[isLoginPage=true]End*/}
       {/*//GENTrainingBlock[caseGetApiKey]End*/} 
       actions.setSubmitting(false);
