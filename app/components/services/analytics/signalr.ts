@@ -1,12 +1,14 @@
 import { HttpTransportType, HubConnection, HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
 import config from '../../../config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo'; // For detecting online status
 
 let connection: HubConnection | null = null;
 
-export const startConnection = () => {
-    const connectionId = localStorage.getItem("customerCode");
+export const startConnection = async () => {
+    const connectionId = await AsyncStorage.getItem("customerCode");
     if (connectionId) {
-        const url = new URL(config.apiBaseUrl +'/analytics-hub');
+        const url = new URL(config.apiBaseUrl + '/analytics-hub');
         connection = new HubConnectionBuilder()
             .withUrl(url.toString(), {
                 transport: HttpTransportType.WebSockets,
@@ -15,7 +17,7 @@ export const startConnection = () => {
             .build();
 
         connection.start()
-        .then( () => {
+        .then(() => {
             if (connection) {
                 connection.invoke('SetConnectionId', connectionId);
             }
@@ -24,7 +26,6 @@ export const startConnection = () => {
         connection.on('ReceiveMessage', (user: string, message: string) => {
             console.log(message);
         });
-
     }
 }
 
@@ -35,25 +36,18 @@ export const stopConnection = (): Promise<void> => {
     return Promise.resolve();
 }
 
-export const reconnectOnRefresh = () => {
-    window.addEventListener('beforeunload', () => {
-        stopConnection()
-            .then(() => {
-                startConnection();
-            })
-            .catch((error: Error) => console.error(error));
-    });
-}
-
+// Replace window event listener with React Native's NetInfo for reconnections
 export const reconnectWhenOnline = () => {
-    window.addEventListener('online', () => {
-        startConnection();
+    NetInfo.addEventListener(state => {
+        if (state.isConnected) {
+            startConnection();
+        }
     });
 }
 
-export const CollectDataFromClient = async(data:string) => {
-    if (connection && connection.state == HubConnectionState.Connected) {
+// For data collection, similar logic
+export const CollectDataFromClient = async (data: string) => {
+    if (connection && connection.state === HubConnectionState.Connected) {
         await connection.invoke('CollectDataFromClient', data);
     }
 }
- 

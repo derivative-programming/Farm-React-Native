@@ -26,8 +26,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
 import ReportFilterLandPlantList from "../filters/LandPlantList";
-import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList";
-import { v4 as uuidv4 } from "uuid";
+import { ReportGridLandPlantList } from "../visualization/grid/LandPlantList"; 
 //GENLearn[visualizationType=Grid]End
 //GENTrainingBlock[visualizationTypeImports]End
 
@@ -83,7 +82,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
   const handleQueryResults = (responseFull: LandPlantListReportService.ResponseFull) => {
     const queryResult: LandPlantListReportService.QueryResult = responseFull.data;
-
+    console.log('handleQueryResults...');
     if (!queryResult.success) {
       return;
     }
@@ -97,7 +96,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     console.log('currentPage:' + queryResult.pageNumber);
     if(queryResult.pageNumber == 1) {
       console.log('set items page 1');
-      setItems({...enhancedItems});
+      setItems([...enhancedItems]);
     }
     else{
       console.log('set items page ' + queryResult.pageNumber);
@@ -113,17 +112,19 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   const onRefreshRequest = () => {
+    console.log('onRefreshRequest...');
     logClick("ReportConnectedLandPlantList","refresh","");
 
-    const cleanrQueryRequest = new LandPlantListReportService.QueryRequestInstance();
-    cleanrQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
-    cleanrQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
-    cleanrQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
-    setQuery({...cleanrQueryRequest});
+    const cleanQueryRequest = new LandPlantListReportService.QueryRequestInstance();
+    cleanQueryRequest.ItemCountPerPage = query?.ItemCountPerPage ?? 10;
+    cleanQueryRequest.OrderByColumnName = query?.OrderByColumnName ?? "";
+    cleanQueryRequest.OrderByDescending = query?.OrderByDescending ?? false;
+    setQuery({...cleanQueryRequest});
   };
 
 
   useEffect(() => { 
+    console.log('useEffect []...');
     // if (isInitializedRef.current) { 
     //   return;
     // } 
@@ -150,7 +151,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if(initPageResponse === null){
       return;
     }
-    
+    console.log('useEffect initPageResponse...');
     const loadAsyncData = async () => {
       let queryRequest = LandPlantListReportService.buildQueryRequest(initPageResponse);  
   
@@ -175,6 +176,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if(initialQuery === null){
       return;
     }
+    
+    console.log('useEffect initialQuery...');
     const loadAsyncData = async () => { 
       const pageSize = await AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
@@ -223,6 +226,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if(queryResult.items === null){
       return;
     }
+    console.log('useEffect queryResult...');
  
     const item = queryResult.items.length > 0 ?  queryResult.items[0] : new LandPlantListReportService.QueryResultItemInstance();
     
@@ -336,9 +340,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
   
   useEffect(() => {   
-    if (!isInitializedRef.current) {
-      return;
-    } 
+    // if (!isInitializedRef.current) {
+    //   return;
+    // } 
     if(query === null){
       return;
     }
@@ -351,23 +355,25 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setIsProcessing(true); 
     LandPlantListReportService.submitCSVRequest(query, contextCode).then((response) => { 
       //handleExportQueryResults(response);  //NOSONAR
-      const blob = new Blob([response.data], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);  
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'LandPlantList-' + uuidv4() + '.csv');
-      document.body.appendChild(link);
-      link.click();
+      // const blob = new Blob([response.data], { type: "text/csv" });
+      // const url = URL.createObjectURL(blob);  
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.setAttribute('download', 'LandPlantList-' + uuid.v4() + '.csv');
+      // document.body.appendChild(link);
+      // link.click();
     })
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]); 
   
   const onRefresh = () => {
+    console.log('onRefresh...');
     onPageSelection(1);
   };
 
   const onEndReached = () => {
     if (queryResult && !loadingMore) {
+      console.log('onEndReached...');
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
@@ -379,8 +385,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     <View style={styles.container}> 
       <View style={styles.header}>
           <ScreenBackButton name="back-button"
-            onPress={async () => {
-              await logClick("ReportConnectedLandPlantList","back","");
+            onPress={ () => {
+              logClick("ReportConnectedLandPlantList","back","");
               navigateTo("TacFarmDashboard", "tacCode");
             }}
             buttonText="Farm Dashboard" 
@@ -393,8 +399,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           </View>
           
           <ScreenAddButton name="add-button"
-            onPress={async () => {
-              await logClick("ReportConnectedLandPlantList","add","");
+            onPress={ () => {
+              logClick("ReportConnectedLandPlantList","add","");
               navigateTo("LandAddPlant", "landCode");
             }}
             buttonText="Add A Plant" 

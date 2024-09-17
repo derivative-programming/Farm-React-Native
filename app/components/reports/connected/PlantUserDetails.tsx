@@ -98,7 +98,7 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       console.log('currentPage:' + queryResult.pageNumber);
       if(queryResult.pageNumber == 1) {
         console.log('set items page 1');
-        setItems({...enhancedItems});
+        setItems([...enhancedItems]);
       }
       else{
         console.log('set items page ' + queryResult.pageNumber);
@@ -255,8 +255,8 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
       <View style={styles.container}>
         <View style={styles.header}>
             <ScreenBackButton name="back-button"
-              onPress={async () => {
-                await logClick("ReportConnectedPlantUserDetails","back","");
+              onPress={ () => {
+                logClick("ReportConnectedPlantUserDetails","back","");
                 navigateTo("LandPlantList", "landCode");
               }}
               buttonText="Plant List"

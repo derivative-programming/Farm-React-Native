@@ -1,10 +1,13 @@
 
-import { reconnectOnRefresh, reconnectWhenOnline, startConnection, stopConnection, CollectDataFromClient } from "./analytics/signalr";
+import { reconnectWhenOnline, startConnection, stopConnection, CollectDataFromClient } from "./analytics/signalr";
 
 export const start = () => {
-    startConnection();
-    reconnectOnRefresh();   
-    reconnectWhenOnline(); 
+    try {
+        startConnection(); 
+        reconnectWhenOnline(); 
+    } catch (error) {
+        console.log(error);
+    }
 }
 export const stop = () => {
     stopConnection();

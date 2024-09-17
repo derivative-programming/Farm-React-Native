@@ -99,7 +99,7 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
       console.log('currentPage:' + queryResult.pageNumber);
       if(queryResult.pageNumber == 1) {
         console.log('set items page 1');
-        setItems({...enhancedItems});
+        setItems([...enhancedItems]);
       }
       else{
         console.log('set items page ' + queryResult.pageNumber);
@@ -254,8 +254,8 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
       <View style={styles.container}>
         <View style={styles.header}>
             <ScreenBackButton name="back-button"
-              onPress={async () => {
-                await logClick("ReportConnectedTacFarmDashboard","back","");
+              onPress={ () => {
+                logClick("ReportConnectedTacFarmDashboard","back","");
                 navigateTo("", "");
               }}
               buttonText=""
@@ -266,8 +266,8 @@ import { ReportDetailTwoColTacFarmDashboard } from "../visualization/detail-two-
                 <Text style={styles.titleText} testID="page-title-text">Farm Dashboard</Text>
             </View>
             <ScreenAddButton name="add-button"
-              onPress={async () => {
-                await logClick("ReportConnectedList","add","");
+              onPress={ () => {
+                logClick("ReportConnectedList","add","");
                 navigateTo("", "");
               }}
               buttonText=""

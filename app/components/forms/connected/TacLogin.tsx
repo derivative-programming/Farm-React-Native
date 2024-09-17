@@ -134,6 +134,7 @@ export const FormConnectedTacLogin: FC<FormProps> = ({
       actions.resetForm();
       submitNavigateTo("TacFarmDashboard","tacCode"); //submitButton
     } catch (error) {
+      console.error("Error submitting form", error);
       actions.setSubmitting(false);
     }
     finally {
