@@ -24,8 +24,7 @@ export const submitCSVRequest = (data:QueryRequest, tacCode:string) => {
     const data = {};
     return apiCall({
       url: "/tac-farm-dashboard/" + tacCode + '/init',
-      method: "get",
-      data
+      method: "get"
     });
   };
 

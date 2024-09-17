@@ -8,8 +8,7 @@ export const initForm = (landCode:string) => {
   const data ={}; 
   return apiCall({
       url: "/land-add-plant/" + landCode + '/init',
-      method: "get" ,
-      data
+      method: "get" 
   });
 }; 
 

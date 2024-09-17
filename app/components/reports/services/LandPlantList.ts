@@ -24,8 +24,7 @@ export const submitCSVRequest = (data:QueryRequest, landCode:string) => {
     const data = {};
     return apiCall({
       url: "/land-plant-list/" + landCode + '/init',
-      method: "get",
-      data
+      method: "get"
     });
   };
 

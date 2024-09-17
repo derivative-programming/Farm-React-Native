@@ -7,8 +7,7 @@ export const initForm = (tacCode:string) => {
   const data ={};
   return apiCall({
       url: "/tac-login/" + tacCode + '/init',
-      method: "get" ,
-      data
+      method: "get" 
   });
 };
 
