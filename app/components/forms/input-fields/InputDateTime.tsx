@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormLabel } from "./InputLabel";
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as theme from '../../../constants/theme';
+import { DetailsText } from "./DetailText";
 
 export interface FormInputDateTimeProps {
   name: string
@@ -92,9 +93,7 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
         <Text style={styles.errorText} testID={`${name}-error`}>{meta.error}</Text>
       )}
       {detailText.length > 0 && (
-        <Text style={styles.detailText}> 
-          {detailText}
-        </Text>
+        <DetailsText content={detailText} />
       )}
     </View>
   );
@@ -113,11 +112,5 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 8,    
-  },
-  detailText: {
-    color: '#6c757d',  
-    fontSize: theme.fonts.smallSize,
-    marginTop: -10,  // Adjust spacing as needed
-    marginBottom: 10,
-  },
+  }, 
 });

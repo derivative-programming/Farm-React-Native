@@ -4,6 +4,7 @@ import {useField } from 'formik';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { FormLabel } from "./InputLabel";
 import * as theme from '../../../constants/theme'
+import { DetailsText } from "./DetailText";
    
 export interface FormInputTextProps {
   name: string
@@ -50,9 +51,7 @@ export const FormInputText: FC<FormInputTextProps> = ({
       <Text style={styles.errorText}>{meta.error}</Text>
     )}
     {detailText.length > 0 && (
-      <Text style={styles.detailText}> 
-        {detailText}
-      </Text>
+      <DetailsText content={detailText} />
     )}
   </View>
   );
@@ -88,12 +87,6 @@ const styles = StyleSheet.create({
     color: 'red',
     marginBottom: 8,    
     
-  },
-  detailText: {
-    color: '#6c757d',  
-    fontSize: theme.fonts.smallSize,
-    marginTop: -10,  // Adjust spacing as needed
-    marginBottom: 10,
-  },
+  }, 
   
 });
