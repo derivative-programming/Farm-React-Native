@@ -24,8 +24,7 @@ export const submitCSVRequest = (data:QueryRequest, plantCode:string) => {
     const data = {};
     return apiCall({
       url: "/plant-user-details/" + plantCode + '/init',
-      method: "get",
-      data
+      method: "get"
     });
   };
 

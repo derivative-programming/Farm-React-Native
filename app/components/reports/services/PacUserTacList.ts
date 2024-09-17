@@ -24,8 +24,7 @@ export const submitCSVRequest = (data:QueryRequest, pacCode:string) => {
     const data = {};
     return apiCall({
       url: "/pac-user-tac-list/" + pacCode + '/init',
-      method: "get",
-      data
+      method: "get"
     });
   };
 
