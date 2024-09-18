@@ -466,27 +466,23 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
 
           {/*//GENIF[visualizationType=Grid]Start*/} 
-          {queryResult && (
-            <>
-              <SortControl
-                onSortChange={onSortChange}
-                availableColumns={availableColumns.filter(col => col.isVisible && col.label !== '')}
-                initialSortColumn={queryResult.orderByColumnName}
-                initialSortDirection={queryResult.orderByDescending ? "desc" : "asc"}
-              /> 
-            </>
+          {queryResult && ( 
+            <SortControl
+              onSortChange={onSortChange}
+              availableColumns={availableColumns.filter(col => col.isVisible && col.label !== '')}
+              initialSortColumn={queryResult.orderByColumnName}
+              initialSortDirection={queryResult.orderByDescending ? "desc" : "asc"}
+            />  
           )}
-          {initialQuery && (
-            <>  
-              <ReportFilterLandPlantList
-                name="reportConnectedLandPlantList-filter"
-                initialQuery={initialQuery}
-                onSubmit={onSubmit}
-                // onReset={onFilterReset}
-                // isCollapsible={isFilterSectionCollapsable}
-                hidden={isFilterSectionHidden} 
-              />
-            </>
+          {initialQuery && ( 
+            <ReportFilterLandPlantList
+              name="reportConnectedLandPlantList-filter"
+              initialQuery={initialQuery}
+              onSubmit={onSubmit}
+              // onReset={onFilterReset}
+              // isCollapsible={isFilterSectionCollapsable}
+              hidden={isFilterSectionHidden} 
+            /> 
           )}
           {/*//GENIF[visualizationType=Grid]End*/}
  
@@ -524,6 +520,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                 buttonBadgeValue={initPageResponse?.someFilterIntVal}
                 //GENIF[calculatedIsButtonBadgePropertyAvailable=true]End
               />  
+              
             </MenuOptions>
           </Menu>
           )} 

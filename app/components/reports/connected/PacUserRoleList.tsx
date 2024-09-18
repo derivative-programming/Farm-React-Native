@@ -25,6 +25,7 @@ import * as theme from '../../../constants/theme'
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import SortControl from '../input-fields/SortControl';
 
 import ReportFilterPacUserRoleList from "../filters/PacUserRoleList";
 import { ReportGridPacUserRoleList } from "../visualization/grid/PacUserRoleList";
@@ -69,13 +70,11 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if (!response.success) {
       return;
     }
-    console.log('initPageResponse...',response);
     setInitPageResponse({ ...response });
   };
 
   const handleQueryResults = (responseFull: PacUserRoleListReportService.ResponseFull) => {
     const queryResult: PacUserRoleListReportService.QueryResult = responseFull.data;
-    console.log('handleQueryResults...');
     if (!queryResult.success) {
       return;
     }
@@ -86,26 +85,20 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
       rowKey: uuid.v4().toString(), // Add a UUID to each item
       rowNumber: currentItemCount + index
     }));
-    console.log('currentPage:' + queryResult.pageNumber);
+
     if(queryResult.pageNumber == 1) {
-      console.log('set items page 1');
       setItems([...enhancedItems]);
     }
     else{
-      console.log('set items page ' + queryResult.pageNumber);
       setItems([...items, ...enhancedItems]);
     }
   };
 
   const onNavigateTo = (page: string,targetContextCode:string) => {
-    console.log('onNavigateTo...');
-    console.log('page...' + page);
-    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
   const onRefreshRequest = () => {
-    console.log('onRefreshRequest...');
     logClick("ReportConnectedPacUserRoleList","refresh","");
 
     const cleanQueryRequest = new PacUserRoleListReportService.QueryRequestInstance();
@@ -116,23 +109,10 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   };
 
   useEffect(() => {
-    console.log('useEffect []...');
-    // if (isInitializedRef.current) {
-    //   return;
-    // }
-    // console.log('useEffect []...');
-    // isInitializedRef.current = true;
-    // PacUserRoleListReportService.initPage(contextCode).then((response) =>
-    //   handleInit(response)
-    // );
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      // if (!isInitializedRef.current) {
-      //   return;
-      // }
-      console.log('useFocusEffect...');
       PacUserRoleListReportService.initPage(contextCode).then((response) =>
         handleInit(response)
       );
@@ -143,7 +123,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(initPageResponse === null){
       return;
     }
-    console.log('useEffect initPageResponse...');
     const loadAsyncData = async () => {
       let queryRequest = PacUserRoleListReportService.buildQueryRequest(initPageResponse);
 
@@ -169,7 +148,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
       return;
     }
 
-    console.log('useEffect initialQuery...');
     const loadAsyncData = async () => {
       const pageSize = await AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
@@ -187,9 +165,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(query === null){
       return;
     }
-
-    console.log('report ctrl query...');
-    console.log(query);
 
     if(query.pageNumber == 1) {
       setRefreshing(true);
@@ -217,7 +192,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     if(queryResult.items === null){
       return;
     }
-    console.log('useEffect queryResult...');
 
     const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PacUserRoleListReportService.QueryResultItemInstance();
 
@@ -225,9 +199,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   }, [queryResult]);
 
   const navigateTo = (page: string, codeName: string) => {
-    console.log('navigateTo...');
-    console.log('page...' + page);
-    console.log('codeName...' + codeName);
     let targetContextCode = contextCode;
     if(initPageResponse === null){
       return;
@@ -241,7 +212,6 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
         }
       }
     });
-    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
@@ -296,6 +266,21 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
+  const onSortChange = (columnName: string, sortDirection: 'asc' | 'desc') => {
+    logClick("ReportConnectedPacUserRoleList","sort",columnName);
+    if(query === null){
+      return;
+    }
+    let orderByDescending = false;
+    if (sortDirection === "desc") {
+      orderByDescending = true;
+    }
+    setQuery({
+      ...query,
+      OrderByColumnName: columnName,
+      OrderByDescending: orderByDescending,
+    });
+  };
   const onSort = (columnName: string) => {
     logClick("ReportConnectedPacUserRoleList","sort",columnName);
     if(query === null){
@@ -359,23 +344,25 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
   }, [exportQuery]);
 
   const onRefresh = () => {
-    console.log('onRefresh...');
     onPageSelection(1);
   };
 
   const onEndReached = () => {
     if (queryResult && !loadingMore) {
-      console.log('onEndReached...');
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
-
-  const onBreadcrumbDropdownPress = () => {
-
-  };
+  const availableColumns = [
+    { label: 'Description', value: 'roleDescription', isVisible: true },
+  ];
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+          <View style={styles.titleContainer}>
+              <Text style={styles.titleText} testID="page-title-text">Pac User Role List Report</Text>
+          </View>
+      </View>
       <View style={styles.header}>
 
           {!isBreadcrumbSectionHidden && calculatedIsBreadcrumbButtonAvailable && (
@@ -394,9 +381,17 @@ export const ReportConnectedPacUserRoleList: FC<ReportProps> = ({
           )}
 
           <View style={styles.titleContainer}>
-              <Text style={styles.titleText} testID="page-title-text">Pac User Role List Report</Text>
+              <Text style={styles.titleText}></Text>
           </View>
 
+          {queryResult && (
+            <SortControl
+              onSortChange={onSortChange}
+              availableColumns={availableColumns.filter(col => col.isVisible && col.label !== '')}
+              initialSortColumn={queryResult.orderByColumnName}
+              initialSortDirection={queryResult.orderByDescending ? "desc" : "asc"}
+            />
+          )}
           {initialQuery && (
             <ReportFilterPacUserRoleList
               name="reportConnectedPacUserRoleList-filter"
@@ -494,7 +489,7 @@ const optionStyles = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20, // equivalent to py="5"
+    paddingVertical: 5, // equivalent to py="5"
     alignItems: 'center'
   },
   safeArea: {
