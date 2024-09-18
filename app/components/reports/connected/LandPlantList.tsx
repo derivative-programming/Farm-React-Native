@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import { ScreenAddButton } from "../../ScreenAddButton";  
 import Icon from 'react-native-vector-icons/Ionicons'; 
+import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
@@ -441,13 +442,20 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
               />
             </MenuTrigger>
             <MenuOptions customStyles={styles.menuOptions}> 
-              <MenuOption value="otherAddButton"
+              <CustomMenuOption value="otherAddButton"
                 onSelect={async () => {
                   logClick("ReportConnectedLandPlantList","otherAddButton","");
                   navigateTo("LandAddPlant", "landCode");
                 }} 
-                text="Other Add Button" 
-                customStyles={optionStyles} />  
+                text="Other Add Button"  
+                isButtonCallToAction={false}
+                isVisible={true}
+                isEnabled={true}
+                isButtonBadgeVisible={false} 
+                //GENIF[calculatedIsButtonBadgePropertyAvailable=true]Start
+                buttonBadgeValue={initPageResponse?.someFilterIntVal}
+                //GENIF[calculatedIsButtonBadgePropertyAvailable=true]End
+              />  
             </MenuOptions>
           </Menu> 
           
