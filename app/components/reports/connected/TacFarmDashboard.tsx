@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import { ScreenAddButton } from "../../ScreenAddButton";
 import Icon from 'react-native-vector-icons/Ionicons';
+import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=DetailTwoColumn]Start 
@@ -260,6 +261,10 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
   };
 
   const isBreadcrumbSectionHidden = false;
+  const calculatedIsOtherButtonAvailable = false;
+  const calculatedIsBackButtonAvailable = true;
+  const calculatedIsMultiSelectProcessingButtonAvailable = false;
+  const calculatedIsBreadcrumbButtonAvailable = true;
 
     //
 
@@ -279,7 +284,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
             isVisible={false}
             isEnabled={true}
           />
-          {!isBreadcrumbSectionHidden && (
+          {!isBreadcrumbSectionHidden && calculatedIsBreadcrumbButtonAvailable && (
             <Menu>
               <MenuTrigger>
                 <Icon
@@ -297,6 +302,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
           <View style={styles.titleContainer}>
               <Text style={styles.titleText} testID="page-title-text">Farm Dashboard</Text>
           </View>
+
           <ScreenAddButton name="add-button"
             onPress={ () => {
               logClick("ReportConnectedList","add","");
@@ -307,6 +313,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
             isEnabled={true}
           />
 
+          {calculatedIsOtherButtonAvailable && (
           <Menu>
             <MenuTrigger>
               <Icon
@@ -319,6 +326,7 @@ export const ReportConnectedTacFarmDashboard: FC<ReportProps> = ({
 
             </MenuOptions>
           </Menu>
+          )}
 
       </View>
       <View style={styles.formContainer}>

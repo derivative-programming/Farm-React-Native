@@ -23,13 +23,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=DetailThreeColumn]Start 
 import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
 //GENLearn[visualizationType=DetailThreeColumn]End
 //GENTrainingBlock[visualizationTypeImports]End
- 
+
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
 export interface ReportProps {
@@ -259,6 +260,10 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
   };
 
   const isBreadcrumbSectionHidden = false;
+  const calculatedIsOtherButtonAvailable = false;
+  const calculatedIsBackButtonAvailable = true;
+  const calculatedIsMultiSelectProcessingButtonAvailable = false;
+  const calculatedIsBreadcrumbButtonAvailable = true;
 
     //
 
@@ -278,7 +283,7 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
             isVisible={true}
             isEnabled={true}
           />
-          {!isBreadcrumbSectionHidden && (
+          {!isBreadcrumbSectionHidden && calculatedIsBreadcrumbButtonAvailable && (
             <Menu>
               <MenuTrigger>
                 <Icon
@@ -288,20 +293,28 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                 />
               </MenuTrigger>
               <MenuOptions customStyles={styles.menuOptions}>
-                <MenuOption value="tacFarmDashboardBreadcrumb"
+                <CustomMenuOption value="tacFarmDashboardBreadcrumb"
                   onSelect={async () => {
                     logClick("ReportConnectedPlantUserDetails","tacFarmDashboardBreadcrumb","");
                     navigateTo("TacFarmDashboard", "tacCode");
                   }}
                   text="Farm Dashboard"
-                  customStyles={optionStyles} />
-                <MenuOption value="landPlantListBreadcrumb"
+                  isButtonCallToAction={false}
+                  isVisible={true}
+                  isEnabled={true}
+                  isButtonBadgeVisible={false}
+                />
+                <CustomMenuOption value="landPlantListBreadcrumb"
                   onSelect={async () => {
                     logClick("ReportConnectedPlantUserDetails","landPlantListBreadcrumb","");
                     navigateTo("LandPlantList", "landCode");
                   }}
                   text="Plant List"
-                  customStyles={optionStyles} />
+                  isButtonCallToAction={false}
+                  isVisible={true}
+                  isEnabled={true}
+                  isButtonBadgeVisible={false}
+                />
               </MenuOptions>
             </Menu>
           )}
@@ -310,6 +323,7 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
               <Text style={styles.titleText} testID="page-title-text">Plant Details</Text>
           </View>
 
+          {calculatedIsOtherButtonAvailable && (
           <Menu>
             <MenuTrigger>
               <Icon
@@ -322,6 +336,7 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
 
             </MenuOptions>
           </Menu>
+          )}
 
       </View>
       <View style={styles.formContainer}>
@@ -382,8 +397,7 @@ const styles = StyleSheet.create({
   header: {
       flexDirection: 'row', // Arrange items in a row
       alignItems: 'center', // Align items vertically in the center
-    justifyContent: 'space-between', // Distribute space between items
-    paddingHorizontal: 10, // Add padding as needed
+      // Add padding, margin, or any other styling as needed
   },
   backButton: {
       paddingLeft: 10,
@@ -394,8 +408,7 @@ const styles = StyleSheet.create({
   titleContainer: {
       flex: 1, // Take the remaining space in the row
       justifyContent: 'center', // Center the title horizontally in the remaining space
-      alignItems: 'center', // Center the text in the middle of the available space
-    },
+  },
   placeholder: {
       width: 35, // Adjust to match the width of your back button
       // Height, padding, or any other styling to match the back button
