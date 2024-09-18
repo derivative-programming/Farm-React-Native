@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
 
 export interface ReportColumnDisplayImageUrlProps {
   forColumn: string;
@@ -36,19 +36,30 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
     return value;
   };
 
-  const formattedUrl = formatImageUrl();
+  const formattedUrl = formatImageUrl(); 
+
+  const handleOpenInBrowser = () => {
+    if (formattedUrl) {
+      Linking.openURL(formattedUrl).catch(err => 
+        console.error("Failed to open URL:", err)
+      );
+    }
+  };
 
   return (
     <View style={styles.container} testID={forColumn}>
       <View style={styles.content}>
         <Text style={styles.label} testID={forColumn + '-header'}>{label}</Text>
+
+
+        
         {formattedUrl ? (
-          <TouchableOpacity onPress={() => { /* Handle linking if necessary */ }}>
+          <TouchableOpacity onPress={handleOpenInBrowser}>
             <Image
-              source={{ uri: formattedUrl }}
+              source={{uri: formattedUrl  }}
               style={styles.image}
               resizeMode="contain"
-            />
+            /> 
           </TouchableOpacity>
         ) : (
           <Text>No Image Available</Text>
@@ -62,19 +73,23 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginVertical: 10,
+    flex: 1
   },
   content: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    flex: 1
   },
   label: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     textDecorationLine: 'underline',
     marginBottom: 5,
   },
   image: {
-    maxHeight: 100,
-    maxWidth: 200,
-    backgroundColor: '#f0f0f0', // Placeholder background if the image doesn't load
+    maxHeight: 200,
+    maxWidth: 400, 
+    resizeMode: 'contain', 
+    minWidth: 200,        
+    minHeight: 200,       
   },
 });

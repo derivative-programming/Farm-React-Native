@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
 
 export interface ReportColumnDisplayImageUrlProps {
   forColumn: string;
@@ -31,9 +31,17 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
 
   if (!isComponentVisible) return null;
 
+  const handleOpenInBrowser = () => {
+    if (value) {
+      Linking.openURL(value).catch(err => 
+        console.error("Failed to open URL:", err)
+      );
+    }
+  };
+
   return (
     <View style={styles.container} testID={groupName}>
-      <TouchableOpacity onPress={() => { /* Handle linking if necessary */ }}>
+      <TouchableOpacity onPress={handleOpenInBrowser}>
         {value ? (
           <Image
             source={{ uri: value }}
@@ -56,8 +64,10 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   image: {
-    maxHeight: 100,
-    maxWidth: 200,
+    maxHeight: 200,
+    maxWidth: 400,
+    minWidth: 200,        
+    minHeight: 200,       
     backgroundColor: '#f0f0f0', // Placeholder background color
   },
 });

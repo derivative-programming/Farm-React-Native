@@ -63,22 +63,21 @@ export const FormInputMoney: FC<FormInputMoneyProps> = ({
   );
 };
    
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    
   }, 
   horizontalStack: {
     flexDirection: 'row', // Aligns children horizontally
     alignItems: 'center', // Center items vertically in the row 
   },
   prefix: {
-    // Styling for the prefix text
+    fontSize: theme.fonts.mediumSize, // Ensure the font size matches the input
+    paddingRight: 8, // Add space between the $ and the input
+    color: '#333',
   },
   input: {
-    // Styling for the TextInput
-    width: '100%',
+    flex: 1, // Ensure the input takes up the remaining space
     fontSize: theme.fonts.mediumSize,
     padding: 12,
     borderWidth: 1,
@@ -89,16 +88,10 @@ const styles = StyleSheet.create({
     marginBottom: 15, // Space below the input for spacing in forms
   },
   disabledInput: {
-    // Styling for the disabled TextInput
-    // backgroundColor: '#f7f7f7',
-    // color: '#c7c7c7',
-    // borderColor: '#e7e7e7',
     opacity: 0.5,
   },
   errorText: {
     color: 'red',
     marginBottom: 8,    
-    
   }, 
-  
 });

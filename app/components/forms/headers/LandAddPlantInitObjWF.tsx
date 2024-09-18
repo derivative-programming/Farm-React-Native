@@ -29,8 +29,7 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
         <View style={styles.horizontalStack}>
           <Text>Land Name: </Text> 
           <Text>{initData.landName}</Text>
-        </View>
-      )}
+        </View>)}
     </View>
   );
 };

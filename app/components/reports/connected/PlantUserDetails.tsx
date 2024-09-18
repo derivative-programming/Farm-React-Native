@@ -266,6 +266,7 @@ import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-th
             <View style={styles.titleContainer}>
                 <Text style={styles.titleText} testID="page-title-text">Plant Details</Text>
             </View>
+            <View style={styles.placeholder} /> 
   
         </View>
         <View style={styles.formContainer}>
@@ -307,25 +308,22 @@ const styles = StyleSheet.create({
     paddingVertical: 20, // equivalent to py="5"
     alignItems: 'center'
   },
-  safeArea: {
-  },
   header: {
-      flexDirection: 'row', // Arrange items in a row
-      alignItems: 'center', // Align items vertically in the center
-      // Add padding, margin, or any other styling as needed
+    flexDirection: 'row', // Arrange items in a row
+    alignItems: 'center', // Align items vertically in the center
+    justifyContent: 'space-between', // Distribute space between items
+    paddingHorizontal: 10, // Add padding as needed
   },
   backButton: {
-      paddingLeft: 10,
-      // alignSelf: 'flex-start', // Align button to the left
-      // flexDirection: 'row',
+    paddingLeft: 10,
   },
   titleContainer: {
-      flex: 1, // Take the remaining space in the row
-      justifyContent: 'center', // Center the title horizontally in the remaining space
+    flex: 1, // Take the remaining space in the row
+    justifyContent: 'center', // Center the title horizontally
+    alignItems: 'center', // Center the text in the middle of the available space
   },
   placeholder: {
-      width: 35, // Adjust to match the width of your back button
-      // Height, padding, or any other styling to match the back button
+    width: 35, // Adjust this to match the width of your back button
   },
   formContainer: {
     width: '90%',
