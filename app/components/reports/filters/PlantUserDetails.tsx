@@ -1,18 +1,22 @@
-import React, {
-  FC,
-  ReactElement,
-  useContext,
-  useState,
-} from "react";
-import { Button, Accordion,  View } from 'react-native';
-
-import { Formik, FormikHelpers } from "formik";
-import * as ReportService from "../services/PlantUserDetails";
-import { AuthContext } from "../../../context/authContext";
-import * as ReportInput from "../input-fields";
-import * as Lookups from "../lookups";
-import useAnalyticsDB from "../../../hooks/useAnalyticsDB";
+import React, { FC, ReactElement, useContext, useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+  ScrollView,
+  Modal,
+} from 'react-native';
+import { Formik, FormikHelpers } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicons from 'react-native-vector-icons/Ionicons'; // Importing Ionicons
+
+import * as ReportService from '../services/PlantUserDetails';
+import { AuthContext } from '../../../context/authContext';
+import * as ReportInput from '../input-fields';
+import * as Lookups from '../lookups';
+import useAnalyticsDB from '../../../hooks/useAnalyticsDB';
 
 export interface ReportFilterPlantUserDetailsProps {
   name: string;
@@ -31,16 +35,12 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
 }): ReactElement => {
   const [initialValues, setInitialValues] = useState(initialQuery);
   const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const { logClick } = useAnalyticsDB();
 
   const validationSchema = ReportService.buildValidationSchema();
 
-  const isFiltersVisibleDefault = false;// await AsyncStorage.getItem("isFiltersVisible");
-  const defaultAccordianKey = (isFiltersVisibleDefault === "true" ? "0" : "-1");
-
   const authContext = useContext(AuthContext);
-
-  let headerErrors: string[] = [];
 
   const submitButtonPress = async (
     values: ReportService.QueryRequest,
@@ -48,203 +48,166 @@ const ReportFilterPlantUserDetails: FC<ReportFilterPlantUserDetailsProps> = ({
   ) => {
     try {
       setLoading(true);
-      logClick("ReportFilterPlantUserDetails","submit","");
+      logClick('ReportFilterPlantUserDetails', 'submit', '');
       onSubmit(values);
-    }
-    finally {
+      setModalVisible(false); // Close modal after submitting
+    } finally {
       actions.setSubmitting(false);
       setLoading(false);
     }
   };
 
   const resetButtonPress = () => {
-    logClick("ReportFilterPlantUserDetails","refresh","");
+    logClick('ReportFilterPlantUserDetails', 'refresh', '');
     setInitialValues({ ...initialQuery });
   };
 
-  const onAccordianHeaderClick = async () => {
-    logClick("ReportFilterPlantUserDetails","accordianClick","");
-    const isFiltersVisible = await AsyncStorage.getItem("isFiltersVisible");
-    if(isFiltersVisible === null)
-    {
-      await AsyncStorage.setItem("isFiltersVisible","true")
-    }
-    if(isFiltersVisible === "true")
-    {
-      await AsyncStorage.setItem("isFiltersVisible","false")
-    }
-    if(isFiltersVisible === "false")
-    {
-      await AsyncStorage.setItem("isFiltersVisible","true")
-    }
+  const onFilterIconPress = () => {
+    setModalVisible(true);
+    logClick('ReportFilterPlantUserDetails', 'filterIconClick', '');
+  };
+
+  if (hidden) {
+    return null;
   }
 
   return (
-    <View className="mt-3 w-100" hidden={hidden}>
-      <Accordion defaultActiveKey={defaultAccordianKey} alwaysOpen={!isCollapsible}>
-        <Accordion.Item eventKey="0">
-          <Accordion.Header onPress={onAccordianHeaderClick}
-            testID={name + '-header'}>Filters</Accordion.Header>
-          <Accordion.Body>
-            <Formik
-              enableReinitialize={true}
-              initialValues={initialQuery}
-              validationSchema={validationSchema}
-              onSubmit={async (values, actions) => {
-                await submitButtonPress(values, actions);
-              }}
+    <View style={styles.container}>
+      {/* Filter Icon */}
+      <TouchableOpacity onPress={onFilterIconPress} style={styles.filterIcon}>
+        <Ionicons name="filter" size={24} color="black" />
+      </TouchableOpacity>
+
+      {/* Modal */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          {/* Modal Header */}
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>Filters</Text>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.closeButton}
             >
-              {(props) => (
-                <Form
-                  name={name}
-                  testID={name}
-                  onReset={props.handleReset}
-                  onSubmit={props.handleSubmit}
-                >
-                  <Row>
-                    <Col xl="3" lg="4" md="6" xs="12" id="flavorCode">
-                      <Lookups.ReportSelectFlavor
-                        name="flavorCode"
-                        label="Select A Flavor"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someIntVal">
-                      <ReportInput.ReportInputNumber
-                        name="someIntVal"
-                        label="Some Int Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someBigIntVal">
-                      <ReportInput.ReportInputNumber
-                        name="someBigIntVal"
-                        label="Some Big Int Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someFloatVal">
-                      <ReportInput.ReportInputNumber
-                        name="someFloatVal"
-                        label="Some Float Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someBitVal">
-                      <ReportInput.ReportInputCheckbox
-                        name="someBitVal"
-                        label="Some Bit Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="isEditAllowed">
-                      <ReportInput.ReportInputCheckbox
-                        name="isEditAllowed"
-                        label="Is Edit Allowed"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="isDeleteAllowed">
-                      <ReportInput.ReportInputCheckbox
-                        name="isDeleteAllowed"
-                        label="Is Delete Allowed"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someDecimalVal">
-                      <ReportInput.ReportInputNumber
-                        name="someDecimalVal"
-                        label="Some Decimal Val"
-                      />
-                    </Col>
-                    <Col  id="someMinUTCDateTimeVal"
-                      xl="3" lg="4"
-                      md="6"
-                      xs="12"
-                    >
-                      <ReportInput.ReportInputDateTime
-                        name="someMinUTCDateTimeVal"
-                        label="Some Min UTC Date Time Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someMinDateVal">
-                      <ReportInput.ReportInputDate
-                        name="someMinDateVal"
-                        label="Some Min Date Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someMoneyVal">
-                      <ReportInput.ReportInputMoney
-                        name="someMoneyVal"
-                        label="Some Money Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someNVarCharVal">
-                      <ReportInput.ReportInputText
-                        name="someNVarCharVal"
-                        label="Some N Var Char Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someVarCharVal">
-                      <ReportInput.ReportInputText
-                        name="someVarCharVal"
-                        label="Some Var Char Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someTextVal">
-                      <ReportInput.ReportInputText
-                        name="someTextVal"
-                        label="Some Text Val"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="somePhoneNumber">
-                      <ReportInput.ReportInputText
-                        name="somePhoneNumber"
-                        label="Some Phone Number"
-                      />
-                    </Col>
-                    <Col xl="3" lg="4" md="6" xs="12" id="someEmailAddress">
-                      <ReportInput.ReportInputEmail
-                        name="someEmailAddress"
-                        label="Some Email Address"
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xl="12" >
-                      <View className="d-flex h-100 align-items-end justify-content-end">
-                        <Button
-                          type="submit"
-                          className="ms-2 mt-3"
-                          testID="submit-button"
-                        >
-                          {loading && (
-                            <Spinner
-                              as="span"
-                              animation="border"
+              <Ionicons name="close" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
 
-                              role="status"
-                              aria-hidden="true"
-                              className="spinner-button"
-                            />)
-                          }
-                          <span className="sr-only">Search</span>
+          {/* Formik Form */}
+          <Formik
+            enableReinitialize={true}
+            initialValues={initialQuery}
+            validationSchema={validationSchema}
+            onSubmit={async (values, actions) => {
+              await submitButtonPress(values, actions);
+            }}
+          >
+            {(props) => (
+              <View style={styles.formContainer}>
+                <ScrollView>
+                  <View style={styles.formRow}>
 
-                        </Button>
-                        <Button
-                          className="ms-2 mt-3"
-                          type="reset"
-                          onPress={() => props.resetForm() as any}
-                          variant="outline"
-                          testID="reset"
-                        >
-                          Reset
-                        </Button>
-                      </View>
-                    </Col>
-                  </Row>
-                </ Form>
-              )}
-            </Formik>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
+                  </View>
+                  {/* Include other form fields here */}
+                </ScrollView>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={props.handleSubmit as any}
+                    testID="submit-button"
+                  >
+                    {loading && (
+                      <ActivityIndicator
+                        size="small"
+                        style={styles.activityIndicator}
+                      />
+                    )}
+                    <Text style={styles.buttonText}>Search</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.button, styles.resetButton]}
+                    onPress={() => props.resetForm()}
+                    testID="reset"
+                  >
+                    <Text style={styles.buttonText}>Reset</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+        </View>
+      </Modal>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 10,
+    // width: '100%',
+  },
+  filterIcon: {
+    alignSelf: 'flex-end',
+    marginRight: 15,
+    marginBottom: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 15,
+    backgroundColor: '#fff',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  closeButton: {
+    padding: 5,
+  },
+  formContainer: {
+    flex: 1,
+    marginTop: 20,
+  },
+  formRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 10,
+  },
+  formCol: {
+    width: '50%', // Adjust as needed
+    padding: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  button: {
+    marginLeft: 5,
+    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 5,
+  },
+  resetButton: {
+    backgroundColor: '#6c757d',
+  },
+  buttonText: {
+    color: '#fff',
+  },
+  activityIndicator: {
+    marginRight: 5,
+  },
+});
 
 export default ReportFilterPlantUserDetails;
 

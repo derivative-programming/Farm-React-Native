@@ -246,6 +246,10 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
   };
 
   const isBreadcrumbSectionHidden = false;
+  const calculatedIsOtherButtonAvailable = false;
+
+  const calculatedIsMultiSelectProcessingButtonAvailable = false;
+  const calculatedIsBreadcrumbButtonAvailable = false;
 
   const isRefreshButtonHidden = false;
   const isPagingAvailable = true;
@@ -374,7 +378,7 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
     <View style={styles.container}>
       <View style={styles.header}>
 
-          {!isBreadcrumbSectionHidden && (
+          {!isBreadcrumbSectionHidden && calculatedIsBreadcrumbButtonAvailable && (
             <Menu>
               <MenuTrigger>
                 <Icon
@@ -393,6 +397,18 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
               <Text style={styles.titleText} testID="page-title-text">Pac User Tac List Report</Text>
           </View>
 
+          {initialQuery && (
+            <ReportFilterPacUserTacList
+              name="reportConnectedPacUserTacList-filter"
+              initialQuery={initialQuery}
+              onSubmit={onSubmit}
+              // onReset={onFilterReset}
+              // isCollapsible={isFilterSectionCollapsable}
+              hidden={isFilterSectionHidden}
+            />
+          )}
+
+          {calculatedIsOtherButtonAvailable && (
           <Menu>
             <MenuTrigger>
               <Icon
@@ -405,6 +421,7 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
 
             </MenuOptions>
           </Menu>
+          )}
 
       </View>
       <View style={styles.formContainer}>
