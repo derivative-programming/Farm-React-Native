@@ -430,6 +430,20 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           <View style={styles.titleContainer}>
               <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
           </View>
+
+
+          {/*//GENIF[visualizationType=Grid]Start*/}
+          {initialQuery && (
+            <ReportFilterLandPlantList
+              name="reportConnectedLandPlantList-filter"
+              initialQuery={initialQuery}
+              onSubmit={onSubmit}
+              // onReset={onFilterReset}
+              // isCollapsible={isFilterSectionCollapsable}
+              hidden={isFilterSectionHidden} 
+            />
+          )}
+          {/*//GENIF[visualizationType=Grid]End*/}
  
           <ScreenAddButton name="add-button"
             onPress={ () => {
