@@ -33,7 +33,7 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
 
   const handleOpenInBrowser = () => {
     if (value) {
-      Linking.openURL(value).catch(err => 
+      Linking.openURL(value).catch(err =>
         console.error("Failed to open URL:", err)
       );
     }
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   image: {
     maxHeight: 200,
     maxWidth: 400,
-    minWidth: 200,        
-    minHeight: 200,       
+    minWidth: 200,
+    minHeight: 200,
     backgroundColor: '#f0f0f0', // Placeholder background color
   },
 });

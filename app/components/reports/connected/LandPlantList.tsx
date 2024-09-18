@@ -8,7 +8,7 @@ import React, {
   useCallback
 } from "react";  
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'; 
+import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView, Platform } from 'react-native'; 
 import { useNavigation } from '@react-navigation/native'; 
 import * as LandPlantListReportService from "../services/LandPlantList";
 import * as InitReportService from "../services/init/LandPlantListInitReport";
@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import { ScreenAddButton } from "../../ScreenAddButton";  
 import Icon from 'react-native-vector-icons/Ionicons'; 
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
 import ReportFilterLandPlantList from "../filters/LandPlantList";
@@ -380,6 +381,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   //GENLearn[visualizationType=Grid]End
   //GENTrainingBlock[visualizationTypeFuncs]End
 
+  const onBreadcrumbDropdownPress = () => {
+    
+  };
 
   return (
     <View style={styles.container}> 
@@ -393,11 +397,31 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             isVisible={true}
             isEnabled={true} 
           /> 
+          {!isBreadcrumbSectionHidden && (
+            <Menu>
+              <MenuTrigger> 
+                <Icon
+                  name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                  size={24}
+                  color="#000"
+                />
+              </MenuTrigger>
+              <MenuOptions customStyles={styles.menuOptions}> 
+                <MenuOption value="tacFarmDashboardBreadcrumb"
+                  onSelect={async () => {
+                    logClick("ReportConnectedLandPlantList","tacFarmDashboardBreadcrumb","");
+                    navigateTo("TacFarmDashboard", "tacCode");
+                  }} 
+                  text="Farm Dashboard" 
+                  customStyles={optionStyles} />  
+              </MenuOptions>
+            </Menu> 
+          )}
 
           <View style={styles.titleContainer}>
               <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
           </View>
-          
+
           <ScreenAddButton name="add-button"
             onPress={ () => {
               logClick("ReportConnectedLandPlantList","add","");
@@ -407,6 +431,26 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             isVisible={true}
             isEnabled={true}
           /> 
+          
+          <Menu>
+            <MenuTrigger> 
+              <Icon
+                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                size={24}
+                color="#000"
+              />
+            </MenuTrigger>
+            <MenuOptions customStyles={styles.menuOptions}> 
+              <MenuOption value="otherAddButton"
+                onSelect={async () => {
+                  logClick("ReportConnectedLandPlantList","otherAddButton","");
+                  navigateTo("LandAddPlant", "landCode");
+                }} 
+                text="Other Add Button" 
+                customStyles={optionStyles} />  
+            </MenuOptions>
+          </Menu> 
+          
       </View>
       <View style={styles.formContainer}>
        
@@ -469,6 +513,18 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   );
 };
 
+const optionStyles = {
+  optionWrapper: {
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  optionText: {
+    color: 'blue',
+  },
+  // Add more styles as needed
+};
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -516,6 +572,14 @@ const styles = StyleSheet.create({
     color: theme.Colors.text,
     
   }, 
+  dropdownButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  menuOptions: {
+    // padding: 10,
+    // backgroundColor: 'white',
+  },
 });
 
 

@@ -8,7 +8,7 @@ import React, {
   useCallback
 } from "react";
 import { useFocusEffect } from '@react-navigation/native';
-import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { Button, View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, SafeAreaView, ScrollView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as PacUserTriStateFilterListReportService from "../services/PacUserTriStateFilterList";
 import * as InitReportService from "../services/init/PacUserTriStateFilterListInitReport";
@@ -23,6 +23,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 
 import ReportFilterPacUserTriStateFilterList from "../filters/PacUserTriStateFilterList";
 import { ReportGridPacUserTriStateFilterList } from "../visualization/grid/PacUserTriStateFilterList";
@@ -364,13 +365,45 @@ export const ReportConnectedPacUserTriStateFilterList: FC<ReportProps> = ({
     }
   };
 
+  const onBreadcrumbDropdownPress = () => {
+
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
 
+          {!isBreadcrumbSectionHidden && (
+            <Menu>
+              <MenuTrigger>
+                <Icon
+                  name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                  size={24}
+                  color="#000"
+                />
+              </MenuTrigger>
+              <MenuOptions customStyles={styles.menuOptions}>
+
+              </MenuOptions>
+            </Menu>
+          )}
+
           <View style={styles.titleContainer}>
               <Text style={styles.titleText} testID="page-title-text">Pac User Tri State Filter List Report</Text>
           </View>
+
+          <Menu>
+            <MenuTrigger>
+              <Icon
+                name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
+                size={24}
+                color="#000"
+              />
+            </MenuTrigger>
+            <MenuOptions customStyles={styles.menuOptions}>
+
+            </MenuOptions>
+          </Menu>
 
       </View>
       <View style={styles.formContainer}>
@@ -429,6 +462,17 @@ export const ReportConnectedPacUserTriStateFilterList: FC<ReportProps> = ({
   );
 };
 
+const optionStyles = {
+  optionWrapper: {
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  optionText: {
+    color: 'blue',
+  },
+  // Add more styles as needed
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -469,6 +513,14 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: theme.Colors.text,
 
+  },
+  dropdownButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  menuOptions: {
+    // padding: 10,
+    // backgroundColor: 'white',
   },
 });
 

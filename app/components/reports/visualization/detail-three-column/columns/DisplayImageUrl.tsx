@@ -36,11 +36,11 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
     return value;
   };
 
-  const formattedUrl = formatImageUrl(); 
+  const formattedUrl = formatImageUrl();
 
   const handleOpenInBrowser = () => {
     if (formattedUrl) {
-      Linking.openURL(formattedUrl).catch(err => 
+      Linking.openURL(formattedUrl).catch(err =>
         console.error("Failed to open URL:", err)
       );
     }
@@ -51,15 +51,13 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
       <View style={styles.content}>
         <Text style={styles.label} testID={forColumn + '-header'}>{label}</Text>
 
-
-        
         {formattedUrl ? (
           <TouchableOpacity onPress={handleOpenInBrowser}>
             <Image
               source={{uri: formattedUrl  }}
               style={styles.image}
               resizeMode="contain"
-            /> 
+            />
           </TouchableOpacity>
         ) : (
           <Text>No Image Available</Text>
@@ -87,9 +85,9 @@ const styles = StyleSheet.create({
   },
   image: {
     maxHeight: 200,
-    maxWidth: 400, 
-    resizeMode: 'contain', 
-    minWidth: 200,        
-    minHeight: 200,       
+    maxWidth: 400,
+    resizeMode: 'contain',
+    minWidth: 200,
+    minHeight: 200,
   },
 });
