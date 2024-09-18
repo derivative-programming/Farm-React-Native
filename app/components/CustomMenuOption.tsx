@@ -1,4 +1,5 @@
 // CustomMenuOption.tsx
+
 import React, { FC } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { MenuOption } from 'react-native-popup-menu';
@@ -47,7 +48,15 @@ const CustomMenuOption: FC<CustomMenuOptionProps> = ({
       }}
     >
       <View style={styles.optionContent}>
-        <Text style={styles.optionText}>{text}</Text>
+        <Text
+          style={[
+            styles.optionText,
+            isButtonCallToAction && styles.callToActionText,
+            !isEnabled && styles.disabledOptionText,
+          ]}
+        >
+          {text}
+        </Text>
         {isButtonBadgeVisible && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{buttonBadgeValue}</Text>
@@ -60,17 +69,20 @@ const CustomMenuOption: FC<CustomMenuOptionProps> = ({
 
 const styles = StyleSheet.create({
   optionWrapper: {
-    padding: 10,
-    backgroundColor: '#f0f0f0',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#ffffff',
   },
   optionText: {
-    color: 'black',
+    color: '#000000',
+    fontSize: 18,
   },
   callToAction: {
-    backgroundColor: 'blue',
+    backgroundColor: '#007bff',
   },
   callToActionText: {
-    color: 'white',
+    color: '#ffffff',
+    fontWeight: 'bold',
   },
   disabledOption: {
     backgroundColor: '#e0e0e0',

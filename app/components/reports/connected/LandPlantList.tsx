@@ -257,6 +257,10 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
   const isBreadcrumbSectionHidden = false;
+  const calculatedIsOtherButtonAvailable = true;
+  const calculatedIsBackButtonAvailable = true; 
+  const calculatedIsMultiSelectProcessingButtonAvailable = true; 
+  const calculatedIsBreadcrumbButtonAvailable = true;
   //GENTrainingBlock[visualizationTypeFuncs]Start
   //GENLearn[visualizationType=Grid]Start
   const isRefreshButtonHidden = false;
@@ -398,7 +402,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             isVisible={true}
             isEnabled={true} 
           /> 
-          {!isBreadcrumbSectionHidden && (
+          {!isBreadcrumbSectionHidden && calculatedIsBreadcrumbButtonAvailable && (
             <Menu>
               <MenuTrigger> 
                 <Icon
@@ -408,13 +412,17 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                 />
               </MenuTrigger>
               <MenuOptions customStyles={styles.menuOptions}> 
-                <MenuOption value="tacFarmDashboardBreadcrumb"
+                <CustomMenuOption value="tacFarmDashboardBreadcrumb"
                   onSelect={async () => {
                     logClick("ReportConnectedLandPlantList","tacFarmDashboardBreadcrumb","");
                     navigateTo("TacFarmDashboard", "tacCode");
                   }} 
                   text="Farm Dashboard" 
-                  customStyles={optionStyles} />  
+                  isButtonCallToAction={false}
+                  isVisible={true}
+                  isEnabled={true}
+                  isButtonBadgeVisible={false} 
+                />  
               </MenuOptions>
             </Menu> 
           )}
@@ -422,7 +430,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           <View style={styles.titleContainer}>
               <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
           </View>
-
+ 
           <ScreenAddButton name="add-button"
             onPress={ () => {
               logClick("ReportConnectedLandPlantList","add","");
@@ -431,8 +439,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             buttonText="Add A Plant" 
             isVisible={true}
             isEnabled={true}
-          /> 
-          
+          />
+
+          {calculatedIsOtherButtonAvailable && (
           <Menu>
             <MenuTrigger> 
               <Icon
@@ -457,7 +466,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                 //GENIF[calculatedIsButtonBadgePropertyAvailable=true]End
               />  
             </MenuOptions>
-          </Menu> 
+          </Menu>
+          )} 
           
       </View>
       <View style={styles.formContainer}>
