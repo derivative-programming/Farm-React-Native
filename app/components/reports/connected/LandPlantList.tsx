@@ -25,6 +25,7 @@ import { ScreenAddButton } from "../../ScreenAddButton";
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
+import SortControl from '../input-fields/SortControl';
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
 import ReportFilterLandPlantList from "../filters/LandPlantList";
@@ -77,14 +78,12 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
     if (!response.success) {
       return;
-    }
-    console.log('initPageResponse...',response);
+    } 
     setInitPageResponse({ ...response });
   };
 
   const handleQueryResults = (responseFull: LandPlantListReportService.ResponseFull) => {
-    const queryResult: LandPlantListReportService.QueryResult = responseFull.data;
-    console.log('handleQueryResults...');
+    const queryResult: LandPlantListReportService.QueryResult = responseFull.data; 
     if (!queryResult.success) {
       return;
     }
@@ -95,26 +94,20 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       rowKey: uuid.v4().toString(), // Add a UUID to each item
       rowNumber: currentItemCount + index
     }));
-    console.log('currentPage:' + queryResult.pageNumber);
-    if(queryResult.pageNumber == 1) {
-      console.log('set items page 1');
+    
+    if(queryResult.pageNumber == 1) { 
       setItems([...enhancedItems]);
     }
-    else{
-      console.log('set items page ' + queryResult.pageNumber);
+    else{ 
       setItems([...items, ...enhancedItems]); 
     }
   };
 
-  const onNavigateTo = (page: string,targetContextCode:string) => { 
-    console.log('onNavigateTo...');
-    console.log('page...' + page);
-    console.log('targetContextCode...' + targetContextCode);
+  const onNavigateTo = (page: string,targetContextCode:string) => {  
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
-  const onRefreshRequest = () => {
-    console.log('onRefreshRequest...');
+  const onRefreshRequest = () => { 
     logClick("ReportConnectedLandPlantList","refresh","");
 
     const cleanQueryRequest = new LandPlantListReportService.QueryRequestInstance();
@@ -125,24 +118,11 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   };
 
 
-  useEffect(() => { 
-    console.log('useEffect []...');
-    // if (isInitializedRef.current) { 
-    //   return;
-    // } 
-    // console.log('useEffect []...');
-    // isInitializedRef.current = true;
-    // LandPlantListReportService.initPage(contextCode).then((response) =>
-    //   handleInit(response)
-    // );
+  useEffect(() => {  
   }, []); 
 
   useFocusEffect(
-    useCallback(() => {
-      // if (!isInitializedRef.current) { 
-      //   return;
-      // } 
-      console.log('useFocusEffect...');
+    useCallback(() => { 
       LandPlantListReportService.initPage(contextCode).then((response) =>
         handleInit(response)
       );
@@ -152,8 +132,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   useEffect(() => { 
     if(initPageResponse === null){
       return;
-    }
-    console.log('useEffect initPageResponse...');
+    } 
     const loadAsyncData = async () => {
       let queryRequest = LandPlantListReportService.buildQueryRequest(initPageResponse);  
   
@@ -178,8 +157,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if(initialQuery === null){
       return;
     }
-    
-    console.log('useEffect initialQuery...');
+     
     const loadAsyncData = async () => { 
       const pageSize = await AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
@@ -196,10 +174,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   useEffect(() => {  
     if(query === null){
       return;
-    }
-    
-    console.log('report ctrl query...');
-    console.log(query);
+    } 
  
     if(query.pageNumber == 1) {
       setRefreshing(true);
@@ -227,18 +202,14 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     }
     if(queryResult.items === null){
       return;
-    }
-    console.log('useEffect queryResult...');
+    } 
  
     const item = queryResult.items.length > 0 ?  queryResult.items[0] : new LandPlantListReportService.QueryResultItemInstance();
     
     setDisplayItem({...item})
   }, [queryResult]);
   
-  const navigateTo = (page: string, codeName: string) => { 
-    console.log('navigateTo...');
-    console.log('page...' + page);
-    console.log('codeName...' + codeName);
+  const navigateTo = (page: string, codeName: string) => {  
     let targetContextCode = contextCode; 
     if(initPageResponse === null){
       return;
@@ -251,8 +222,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           return;
         }
       }
-    });
-    console.log('targetContextCode...' + targetContextCode);
+    }); 
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode }); 
   };
 
@@ -309,6 +279,21 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
+  const onSortChange = (columnName: string, sortDirection: 'asc' | 'desc') => { 
+    logClick("ReportConnectedLandPlantList","sort",columnName);
+    if(query === null){
+      return;
+    }
+    let orderByDescending = false;
+    if (sortDirection === "desc") {
+      orderByDescending = true;
+    }
+    setQuery({
+      ...query,
+      OrderByColumnName: columnName,
+      OrderByDescending: orderByDescending,
+    });
+  };
   const onSort = (columnName: string) => { 
     logClick("ReportConnectedLandPlantList","sort",columnName);
     if(query === null){
@@ -372,26 +357,74 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     .finally(() => {setIsProcessing(false);});
   }, [exportQuery]); 
   
-  const onRefresh = () => {
-    console.log('onRefresh...');
+  const onRefresh = () => { 
     onPageSelection(1);
   };
 
   const onEndReached = () => {
-    if (queryResult && !loadingMore) {
-      console.log('onEndReached...');
+    if (queryResult && !loadingMore) { 
       onPageSelection(queryResult.pageNumber + 1);
     }
   };
-  //GENLearn[visualizationType=Grid]End
-  //GENTrainingBlock[visualizationTypeFuncs]End
+  const availableColumns = [
+    { label: '', value: 'plantCode', isVisible: true },
+    { label: 'Edit Allowed', value: 'isEditAllowed', isVisible: true },
+    { label: 'Int Val', value: 'someIntVal', isVisible: true },
+    { label: 'Conditional Int Val', value: 'someConditionalIntVal', isVisible: true },
+    { label: 'Big Int Val', value: 'someBigIntVal', isVisible: true },
+    { label: 'Conditional Big Int Val', value: 'someConditionalBigIntVal', isVisible: true },
+    { label: 'Bit Val', value: 'someBitVal', isVisible: true },
+    { label: 'Conditional Bit Val', value: 'someConditionalBitVal', isVisible: true },
+    { label: 'Delete Allowed', value: 'isDeleteAllowed', isVisible: true },
+    { label: 'Float Val', value: 'someFloatVal', isVisible: true },
+    { label: 'Conditional Float Val', value: 'someConditionalFloatVal', isVisible: true },
+    { label: 'Decimal Val', value: 'someDecimalVal', isVisible: true },
+    { label: 'Conditional Decimal Val', value: 'someConditionalDecimalVal', isVisible: true },
+    { label: 'Date Time Val', value: 'someUTCDateTimeVal', isVisible: true },
+    { label: 'Conditional Date Time Val', value: 'someConditionalUTCDateTimeVal', isVisible: true },
+    { label: 'Date Val', value: 'someDateVal', isVisible: true },
+    { label: 'Conditional Date Val', value: 'someConditionalDateVal', isVisible: true },
+    { label: 'Money Val', value: 'someMoneyVal', isVisible: true },
+    { label: 'Conditional Money Val', value: 'someConditionalMoneyVal', isVisible: true },
+    { label: 'N Var Char Val', value: 'someNVarCharVal', isVisible: true },
+    { label: 'Conditional N Var Char Val', value: 'someConditionalNVarCharVal', isVisible: true },
+    { label: 'Var Char Val', value: 'someVarCharVal', isVisible: true },
+    { label: 'Conditional Var Char Val', value: 'someConditionalVarCharVal', isVisible: true },
+    { label: 'Text Val', value: 'someTextVal', isVisible: true },
+    { label: 'Conditional Text Val', value: 'someConditionalTextVal', isVisible: true },
+    { label: 'Phone Number', value: 'somePhoneNumber', isVisible: true },
+    { label: 'Conditional Phone Number', value: 'someConditionalPhoneNumber', isVisible: true },
+    { label: 'Email Address', value: 'someEmailAddress', isVisible: true },
+    { label: 'Conditional Email Address', value: 'someConditionalEmailAddress', isVisible: true },
+    { label: 'Is Image Url Available', value: 'isImageUrlAvailable', isVisible: false },
+    { label: 'Image Url', value: 'someImageUrlVal', isVisible: true },
+    { label: 'Conditional Image Url', value: 'someConditionalImageUrl', isVisible: true },
+    { label: 'Flavor Name', value: 'flavorName', isVisible: true },
+    { label: 'Flavor Code', value: 'flavorCode', isVisible: false },
+    { label: 'Int Conditional', value: 'someIntConditionalOnDeletable', isVisible: true },
+    { label: 'N Var Char As Url', value: 'nVarCharAsUrl', isVisible: true },
+    { label: 'Conditional N Var Char As Url', value: 'nVarCharConditionalAsUrl', isVisible: true },
+    { label: '', value: 'updateLinkPlantCode', isVisible: false },
+    { label: '', value: 'deleteAsyncButtonLinkPlantCode', isVisible: true },
+    { label: '', value: 'detailsLinkPlantCode', isVisible: true },
+    { label: '', value: 'testFileDownloadLinkPacCode', isVisible: true },
+    { label: '', value: 'testConditionalFileDownloadLinkPacCode', isVisible: true },
+    { label: '', value: 'testAsyncFlowReqLinkPacCode', isVisible: true },
+    { label: '', value: 'testConditionalAsyncFlowReqLinkPacCode', isVisible: true },
+    { label: '', value: 'conditionalBtnExampleLinkPlantCode', isVisible: true },
+  ];
 
-  const onBreadcrumbDropdownPress = () => {
-    
-  };
+  //GENLearn[visualizationType=Grid]End
+  //GENTrainingBlock[visualizationTypeFuncs]End 
+
 
   return (
     <View style={styles.container}> 
+      <View style={styles.header}> 
+          <View style={styles.titleContainer}>
+              <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
+          </View> 
+      </View>
       <View style={styles.header}>
           <ScreenBackButton name="back-button"
             onPress={ () => {
@@ -428,20 +461,32 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           )}
 
           <View style={styles.titleContainer}>
-              <Text style={styles.titleText} testID="page-title-text">Plant List</Text>
+              <Text style={styles.titleText}></Text>
           </View>
 
 
-          {/*//GENIF[visualizationType=Grid]Start*/}
+          {/*//GENIF[visualizationType=Grid]Start*/} 
+          {queryResult && (
+            <>
+              <SortControl
+                onSortChange={onSortChange}
+                availableColumns={availableColumns.filter(col => col.isVisible && col.label !== '')}
+                initialSortColumn={queryResult.orderByColumnName}
+                initialSortDirection={queryResult.orderByDescending ? "desc" : "asc"}
+              /> 
+            </>
+          )}
           {initialQuery && (
-            <ReportFilterLandPlantList
-              name="reportConnectedLandPlantList-filter"
-              initialQuery={initialQuery}
-              onSubmit={onSubmit}
-              // onReset={onFilterReset}
-              // isCollapsible={isFilterSectionCollapsable}
-              hidden={isFilterSectionHidden} 
-            />
+            <>  
+              <ReportFilterLandPlantList
+                name="reportConnectedLandPlantList-filter"
+                initialQuery={initialQuery}
+                onSubmit={onSubmit}
+                // onReset={onFilterReset}
+                // isCollapsible={isFilterSectionCollapsable}
+                hidden={isFilterSectionHidden} 
+              />
+            </>
           )}
           {/*//GENIF[visualizationType=Grid]End*/}
  
@@ -560,7 +605,7 @@ const optionStyles = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20, // equivalent to py="5"
+    paddingVertical: 5, // equivalent to py="5"
     alignItems: 'center'
   },
   safeArea: { 

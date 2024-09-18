@@ -106,11 +106,11 @@ export const SortControl: FC<SortControlProps> = ({
             {/* Buttons */}
             <View style={styles.buttonContainer}>
               <TouchableOpacity style={styles.button} onPress={applySort}>
-                <Text style={styles.buttonText}>Apply</Text>
+                <Text style={styles.buttonText}>Sort</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetSort}>
+              {/* <TouchableOpacity style={[styles.button, styles.resetButton]} onPress={resetSort}>
                 <Text style={styles.buttonText}>Reset</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
@@ -121,7 +121,8 @@ export const SortControl: FC<SortControlProps> = ({
 
 const styles = StyleSheet.create({
   iconButton: {
-    marginLeft: 15,
+    // marginLeft: 15,
+    marginRight: 15,
   },
   modalContainer: {
     flex: 1,
