@@ -130,11 +130,22 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
         const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
         setColumns(prevColumns => {
           const updatedColumns = { ...prevColumns };
-          storedHiddenColumns.forEach(colKey => {
-            if (updatedColumns[colKey]) {
-              updatedColumns[colKey].isPreferenceVisible = false;
-            }
+    
+          // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
           });
+    
+          if (storedData) {
+            const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+    
+            storedHiddenColumns.forEach(colKey => {
+              if (updatedColumns[colKey]) {
+                updatedColumns[colKey].isPreferenceVisible = false;
+              }
+            });
+          }
+    
           return updatedColumns;
         });
       }
@@ -152,11 +163,22 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
           setColumns(prevColumns => {
             const updatedColumns = { ...prevColumns };
-            storedHiddenColumns.forEach(colKey => {
-              if (updatedColumns[colKey]) {
-                updatedColumns[colKey].isPreferenceVisible = false;
-              }
-            });
+      
+            // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
+          });
+      
+            if (storedData) {
+              const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+      
+              storedHiddenColumns.forEach(colKey => {
+                if (updatedColumns[colKey]) {
+                  updatedColumns[colKey].isPreferenceVisible = false;
+                }
+              });
+            }
+      
             return updatedColumns;
           });
         }
