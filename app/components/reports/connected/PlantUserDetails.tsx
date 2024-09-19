@@ -25,11 +25,14 @@ import * as theme from '../../../constants/theme'
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import SortControl from '../input-fields/SortControl';
+import { ColumnSettingsPlantUserDetails } from "../visualization/settings";
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=DetailThreeColumn]Start 
 import { ReportDetailThreeColPlantUserDetails } from "../visualization/detail-three-column/PlantUserDetails";
 //GENLearn[visualizationType=DetailThreeColumn]End
 //GENTrainingBlock[visualizationTypeImports]End
+
 
 type ScreenNavigationProp = StackNavigationProp<RootStackParamList>;
 
@@ -43,6 +46,7 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
   const isFilterPersistant  = false;
 
   const [items, setItems] = useState<PlantUserDetailsReportService.EnhancedQueryResultItem[]>([]);
+  const [columns, setColumns] = useState(ColumnSettingsPlantUserDetails);
   const [isProcessing, setIsProcessing] = useState(false);
   const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
 
@@ -83,13 +87,11 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     if (!response.success) {
       return;
     }
-    console.log('initPageResponse...',response);
     setInitPageResponse({ ...response });
   };
 
   const handleQueryResults = (responseFull: PlantUserDetailsReportService.ResponseFull) => {
     const queryResult: PlantUserDetailsReportService.QueryResult = responseFull.data;
-    console.log('handleQueryResults...');
     if (!queryResult.success) {
       return;
     }
@@ -100,26 +102,20 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
       rowKey: uuid.v4().toString(), // Add a UUID to each item
       rowNumber: currentItemCount + index
     }));
-    console.log('currentPage:' + queryResult.pageNumber);
+
     if(queryResult.pageNumber == 1) {
-      console.log('set items page 1');
       setItems([...enhancedItems]);
     }
     else{
-      console.log('set items page ' + queryResult.pageNumber);
       setItems([...items, ...enhancedItems]);
     }
   };
 
   const onNavigateTo = (page: string,targetContextCode:string) => {
-    console.log('onNavigateTo...');
-    console.log('page...' + page);
-    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
   const onRefreshRequest = () => {
-    console.log('onRefreshRequest...');
     logClick("ReportConnectedPlantUserDetails","refresh","");
 
     const cleanQueryRequest = new PlantUserDetailsReportService.QueryRequestInstance();
@@ -130,34 +126,92 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
   };
 
   useEffect(() => {
-    console.log('useEffect []...');
-    // if (isInitializedRef.current) {
-    //   return;
-    // }
-    // console.log('useEffect []...');
-    // isInitializedRef.current = true;
-    // PlantUserDetailsReportService.initPage(contextCode).then((response) =>
-    //   handleInit(response)
-    // );
+
+    const loadReportData = async () => {
+      const storedData = await AsyncStorage.getItem('plantUserDetailsHiddenColumns');
+      if(storedData){
+        const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+        setColumns(prevColumns => {
+          const updatedColumns = { ...prevColumns };
+
+          // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
+          });
+
+          if (storedData) {
+            const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+
+            storedHiddenColumns.forEach(colKey => {
+              if (updatedColumns[colKey]) {
+                updatedColumns[colKey].isPreferenceVisible = false;
+              }
+            });
+          }
+
+          return updatedColumns;
+        });
+      }
+    };
+
+    loadReportData();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      // if (!isInitializedRef.current) {
-      //   return;
-      // }
-      console.log('useFocusEffect...');
+
+      const loadReportData = async () => {
+        const storedData = await AsyncStorage.getItem('plantUserDetailsHiddenColumns');
+        if(storedData){
+          const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+          setColumns(prevColumns => {
+            const updatedColumns = { ...prevColumns };
+
+            // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
+          });
+
+            if (storedData) {
+              const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+
+              storedHiddenColumns.forEach(colKey => {
+                if (updatedColumns[colKey]) {
+                  updatedColumns[colKey].isPreferenceVisible = false;
+                }
+              });
+            }
+
+            return updatedColumns;
+          });
+        }
+      };
+
+      loadReportData();
+
       PlantUserDetailsReportService.initPage(contextCode).then((response) =>
         handleInit(response)
       );
+
     }, [])
   );
+
+  useEffect(() => {
+
+    const saveReportData = async () => {
+      const hiddenColumns =  (Object.keys(columns) as Array<keyof typeof columns>).filter(
+        colKey => !columns[colKey].isPreferenceVisible
+      );
+      await AsyncStorage.setItem('plantUserDetailsHiddenColumns', JSON.stringify(hiddenColumns));
+    };
+
+    saveReportData();
+  }, [columns]);
 
   useEffect(() => {
     if(initPageResponse === null){
       return;
     }
-    console.log('useEffect initPageResponse...');
     const loadAsyncData = async () => {
       let queryRequest = PlantUserDetailsReportService.buildQueryRequest(initPageResponse);
 
@@ -183,7 +237,6 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
       return;
     }
 
-    console.log('useEffect initialQuery...');
     const loadAsyncData = async () => {
       const pageSize = await AsyncStorage.getItem("pageSize");
       if(pageSize !== null)
@@ -201,9 +254,6 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     if(query === null){
       return;
     }
-
-    console.log('report ctrl query...');
-    console.log(query);
 
     if(query.pageNumber == 1) {
       setRefreshing(true);
@@ -231,7 +281,6 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
     if(queryResult.items === null){
       return;
     }
-    console.log('useEffect queryResult...');
 
     const item = queryResult.items.length > 0 ?  queryResult.items[0] : new PlantUserDetailsReportService.QueryResultItemInstance();
 
@@ -239,9 +288,6 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
   }, [queryResult]);
 
   const navigateTo = (page: string, codeName: string) => {
-    console.log('navigateTo...');
-    console.log('page...' + page);
-    console.log('codeName...' + codeName);
     let targetContextCode = contextCode;
     if(initPageResponse === null){
       return;
@@ -255,8 +301,30 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
         }
       }
     });
-    console.log('targetContextCode...' + targetContextCode);
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+
+  const handleColumnVisibility = (colName: keyof typeof columns) => {
+    logClick("ReportConnectedPlantUserDetails","handleColumnVisibility",colName);
+
+    setColumns(prevColumns => ({
+      ...prevColumns,
+      [colName]: {
+        ...prevColumns[colName],
+        isPreferenceVisible: !prevColumns[colName].isPreferenceVisible
+      }
+    }));
+  };
+
+  const handleSetAllColumnsVisibility = (visibility: boolean) => {
+    logClick("ReportConnectedPlantUserDetails","handleSetAllColumnsVisibility",visibility.toString());
+    const updatedColumns = { ...columns };
+    (Object.keys(updatedColumns) as Array<keyof typeof updatedColumns>).forEach(colKey => {
+      if (updatedColumns[colKey].isVisible) {
+        updatedColumns[colKey].isPreferenceVisible = visibility;
+      }
+    });
+    setColumns(updatedColumns);
   };
 
   const isBreadcrumbSectionHidden = false;
@@ -267,12 +335,13 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
 
     //
 
-  const onBreadcrumbDropdownPress = () => {
-
-  };
-
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+          <View style={styles.titleContainer}>
+              <Text style={styles.titleText} testID="page-title-text">Plant Details</Text>
+          </View>
+      </View>
       <View style={styles.header}>
           <ScreenBackButton name="back-button"
             onPress={ () => {
@@ -320,8 +389,15 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
           )}
 
           <View style={styles.titleContainer}>
-              <Text style={styles.titleText} testID="page-title-text">Plant Details</Text>
+              <Text style={styles.titleText}></Text>
           </View>
+
+          <ReportInput.TableSettings<typeof ColumnSettingsPlantUserDetails>
+            name="TableSettingsPlantUserDetails"
+            columns={columns}
+            onToggleColumn={handleColumnVisibility}
+            onSetAllColumnsVisibility={handleSetAllColumnsVisibility}
+          />
 
           {calculatedIsOtherButtonAvailable && (
           <Menu>
@@ -337,7 +413,6 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
             </MenuOptions>
           </Menu>
           )}
-
       </View>
       <View style={styles.formContainer}>
 
@@ -388,7 +463,7 @@ const optionStyles = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20, // equivalent to py="5"
+    paddingVertical: 5, // equivalent to py="5"
     alignItems: 'center'
   },
   safeArea: {
