@@ -5,15 +5,18 @@
         "calculatedIsPage":"true"
     },
     "ignoreDimensionPropertyList": [ 
+        "reportColumn.calculatedIsConditionalSqlLogicAvailable",
+        "reportColumn.calculatedIsSourceObjectAvailable",
+        "reportColumn.isVisible",
+        "reportColumn.isButtonCallToAction",
+        "reportColumn.calculatedIsMaxWidthAvailable",
+        "reportColumn.calculatedIsMinWidthAvailable",
         "reportButton.calculatedIsDestinationContextObjectTheOwnerObject", 
         "reportButton.calculatedIsDestinationContextObjectNameSet", 
-        "reportButton.isButtonCallToAction",  
+        "reportButton.isVisible",
+        "reportButton.isButtonCallToAction",
         "reportButton.isEnabled", 
-        "reportButton.isVisible", 
-        "reportButton.calculatedIsButtonBadgePropertyAvailable", 
-        "reportButton.isButtonBadgeVisible",  
-        "reportButton.calculatedIsDestinationBackBtnDataSet",
-        "reportParam.calculatedIsTargetColumnNameAvailable",
-        "reportParam.calculatedIsTargetObjectAvailable" 
+        "reportColumn.calculatedIsAddedIntoExport", 
+        "reportColumn.isFilterAvailable"
     ]
 }
