@@ -9,7 +9,12 @@ import * as AsyncServices from "../../../services";
 import * as ReportInput from "../../input-fields";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";
 import { ActivityIndicator, FlatList, Text, View, StyleSheet } from "react-native";
-
+import { ColumnSettingsPacUserLandList } from "../settings";
+export interface TableColumn {
+  header: string;
+  isVisible: boolean;
+  isPreferenceVisible: boolean;
+}
 export interface ReportGridPacUserLandListProps {
   name: string;
   contextCode: string;
@@ -26,6 +31,7 @@ export interface ReportGridPacUserLandListProps {
   onRefresh(): void;
   onEndReached(): void;
   refreshing?: boolean;
+  columns?: Record<string, TableColumn>;
 }
 export const ReportGridPacUserLandList: FC<ReportGridPacUserLandListProps> = ({
   name,
@@ -43,6 +49,7 @@ export const ReportGridPacUserLandList: FC<ReportGridPacUserLandListProps> = ({
   onRefresh,
   onEndReached,
   refreshing = true,
+  columns = ColumnSettingsPacUserLandList
 }): ReactElement => {
   const initialCheckedIndexes: string[] = [];
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
@@ -126,42 +133,49 @@ export const ReportGridPacUserLandList: FC<ReportGridPacUserLandListProps> = ({
               value={item.landCode}
               isVisible={true}
               label="land Code"
+              isPreferenceVisible={columns["landCode"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landDescription"
               rowIndex={item.rowNumber}
               value={item.landDescription}
               isVisible={true}
               label="Description"
+              isPreferenceVisible={columns["landDescription"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="landDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.landDisplayOrder}
               isVisible={true}
               label="Display Order"
+              isPreferenceVisible={columns["landDisplayOrder"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="landIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.landIsActive}
               isVisible={true}
               label="Is Active"
+              isPreferenceVisible={columns["landIsActive"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.landLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
+              isPreferenceVisible={columns["landLookupEnumName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landName"
               rowIndex={item.rowNumber}
               value={item.landName}
               isVisible={true}
               label="Name"
+              isPreferenceVisible={columns["landName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="pacName"
               rowIndex={item.rowNumber}
               value={item.pacName}
               isVisible={true}
               label="Pac Name"
+              isPreferenceVisible={columns["pacName"].isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

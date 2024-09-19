@@ -9,7 +9,12 @@ import * as AsyncServices from "../../../services";
 import * as ReportInput from "../../input-fields";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";
 import { ActivityIndicator, FlatList, Text, View, StyleSheet } from "react-native";
-
+import { ColumnSettingsPacUserFlavorList } from "../settings";
+export interface TableColumn {
+  header: string;
+  isVisible: boolean;
+  isPreferenceVisible: boolean;
+}
 export interface ReportGridPacUserFlavorListProps {
   name: string;
   contextCode: string;
@@ -26,6 +31,7 @@ export interface ReportGridPacUserFlavorListProps {
   onRefresh(): void;
   onEndReached(): void;
   refreshing?: boolean;
+  columns?: Record<string, TableColumn>;
 }
 export const ReportGridPacUserFlavorList: FC<ReportGridPacUserFlavorListProps> = ({
   name,
@@ -43,6 +49,7 @@ export const ReportGridPacUserFlavorList: FC<ReportGridPacUserFlavorListProps> =
   onRefresh,
   onEndReached,
   refreshing = true,
+  columns = ColumnSettingsPacUserFlavorList
 }): ReactElement => {
   const initialCheckedIndexes: string[] = [];
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
@@ -126,42 +133,49 @@ export const ReportGridPacUserFlavorList: FC<ReportGridPacUserFlavorListProps> =
               value={item.flavorCode}
               isVisible={true}
               label="flavor Code"
+              isPreferenceVisible={columns["flavorCode"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorDescription"
               rowIndex={item.rowNumber}
               value={item.flavorDescription}
               isVisible={true}
               label="Description"
+              isPreferenceVisible={columns["flavorDescription"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="flavorDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.flavorDisplayOrder}
               isVisible={true}
               label="Display Order"
+              isPreferenceVisible={columns["flavorDisplayOrder"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="flavorIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.flavorIsActive}
               isVisible={true}
               label="Is Active"
+              isPreferenceVisible={columns["flavorIsActive"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.flavorLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
+              isPreferenceVisible={columns["flavorLookupEnumName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
               rowIndex={item.rowNumber}
               value={item.flavorName}
               isVisible={true}
               label="Name"
+              isPreferenceVisible={columns["flavorName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="pacName"
               rowIndex={item.rowNumber}
               value={item.pacName}
               isVisible={true}
               label="Pac Name"
+              isPreferenceVisible={columns["pacName"].isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

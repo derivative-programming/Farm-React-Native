@@ -1,6 +1,6 @@
 
 export const ColumnSettingsLandPlantList = {
-  //endset
+//endset
       plantCode: {
         header: '',
         isVisible: true,
@@ -226,5 +226,5 @@ export const ColumnSettingsLandPlantList = {
         isVisible: true,
         isPreferenceVisible: true,
       },
-  //endset
+//endset
     };

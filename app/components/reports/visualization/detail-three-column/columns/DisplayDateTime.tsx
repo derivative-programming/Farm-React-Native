@@ -12,6 +12,7 @@ export interface ReportColumnDisplayDateTimeProps {
   value: string
   isVisible?:boolean
   conditionallyVisible?:boolean
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> = ({
@@ -21,13 +22,14 @@ export const ReportColumnDisplayDateTime: FC<ReportColumnDisplayDateTimeProps> =
   value,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const labelName = groupName +'-label';
   const valueName = groupName +'-value';
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
 
   const formatDateTime = () => {
     let result:string = "";

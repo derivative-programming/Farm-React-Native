@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import SortControl from '../input-fields/SortControl';
+import { ColumnSettingsPacUserTacList } from "../visualization/settings";
 
 import ReportFilterPacUserTacList from "../filters/PacUserTacList";
 import { ReportGridPacUserTacList } from "../visualization/grid/PacUserTacList";
@@ -42,6 +43,7 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
   const isFilterPersistant  = false;
 
   const [items, setItems] = useState<PacUserTacListReportService.EnhancedQueryResultItem[]>([]);
+  const [columns, setColumns] = useState(ColumnSettingsPacUserTacList);
   const [isProcessing, setIsProcessing] = useState(false);
   const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
 
@@ -109,15 +111,87 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
   };
 
   useEffect(() => {
+
+    const loadReportData = async () => {
+      const storedData = await AsyncStorage.getItem('pacUserTacListHiddenColumns');
+      if(storedData){
+        const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+        setColumns(prevColumns => {
+          const updatedColumns = { ...prevColumns };
+
+          // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
+          });
+
+          if (storedData) {
+            const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+
+            storedHiddenColumns.forEach(colKey => {
+              if (updatedColumns[colKey]) {
+                updatedColumns[colKey].isPreferenceVisible = false;
+              }
+            });
+          }
+
+          return updatedColumns;
+        });
+      }
+    };
+
+    loadReportData();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
+
+      const loadReportData = async () => {
+        const storedData = await AsyncStorage.getItem('pacUserTacListHiddenColumns');
+        if(storedData){
+          const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+          setColumns(prevColumns => {
+            const updatedColumns = { ...prevColumns };
+
+            // Reset isPreferenceVisible to true for all columns
+          (Object.keys(updatedColumns) as Array<keyof typeof columns>).forEach(colKey => {
+            updatedColumns[colKey].isPreferenceVisible = true;
+          });
+
+            if (storedData) {
+              const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+
+              storedHiddenColumns.forEach(colKey => {
+                if (updatedColumns[colKey]) {
+                  updatedColumns[colKey].isPreferenceVisible = false;
+                }
+              });
+            }
+
+            return updatedColumns;
+          });
+        }
+      };
+
+      loadReportData();
+
       PacUserTacListReportService.initPage(contextCode).then((response) =>
         handleInit(response)
       );
+
     }, [])
   );
+
+  useEffect(() => {
+
+    const saveReportData = async () => {
+      const hiddenColumns =  (Object.keys(columns) as Array<keyof typeof columns>).filter(
+        colKey => !columns[colKey].isPreferenceVisible
+      );
+      await AsyncStorage.setItem('pacUserTacListHiddenColumns', JSON.stringify(hiddenColumns));
+    };
+
+    saveReportData();
+  }, [columns]);
 
   useEffect(() => {
     if(initPageResponse === null){
@@ -213,6 +287,29 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
       }
     });
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
+  };
+
+  const handleColumnVisibility = (colName: keyof typeof columns) => {
+    logClick("ReportConnectedPacUserTacList","handleColumnVisibility",colName);
+
+    setColumns(prevColumns => ({
+      ...prevColumns,
+      [colName]: {
+        ...prevColumns[colName],
+        isPreferenceVisible: !prevColumns[colName].isPreferenceVisible
+      }
+    }));
+  };
+
+  const handleSetAllColumnsVisibility = (visibility: boolean) => {
+    logClick("ReportConnectedPacUserTacList","handleSetAllColumnsVisibility",visibility.toString());
+    const updatedColumns = { ...columns };
+    (Object.keys(updatedColumns) as Array<keyof typeof updatedColumns>).forEach(colKey => {
+      if (updatedColumns[colKey].isVisible) {
+        updatedColumns[colKey].isPreferenceVisible = visibility;
+      }
+    });
+    setColumns(updatedColumns);
   };
 
   const isBreadcrumbSectionHidden = false;
@@ -384,6 +481,13 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
               <Text style={styles.titleText}></Text>
           </View>
 
+          <ReportInput.TableSettings<typeof ColumnSettingsPacUserTacList>
+            name="TableSettingsPacUserTacList"
+            columns={columns}
+            onToggleColumn={handleColumnVisibility}
+            onSetAllColumnsVisibility={handleSetAllColumnsVisibility}
+          />
+
           {queryResult && (
             <SortControl
               onSortChange={onSortChange}
@@ -417,7 +521,6 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
             </MenuOptions>
           </Menu>
           )}
-
       </View>
       <View style={styles.formContainer}>
 
@@ -448,6 +551,7 @@ export const ReportConnectedPacUserTacList: FC<ReportProps> = ({
             onRefresh={onRefresh}
             refreshing={refreshing}
             onEndReached={onEndReached}
+            columns={columns}
           />
         )}
         {!queryResult && (

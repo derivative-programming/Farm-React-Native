@@ -11,6 +11,7 @@ export interface ReportColumnDisplayMoneyProps {
   value: number
   isVisible?:boolean
   conditionallyVisible?:boolean
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
@@ -20,13 +21,14 @@ export const ReportColumnDisplayMoney: FC<ReportColumnDisplayMoneyProps> = ({
   value,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const labelName = groupName +'-label';
   const valueName = groupName +'-value';
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
 
   const formatMoney = () => {
     let result:string = "";

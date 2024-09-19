@@ -11,6 +11,7 @@ export interface ReportColumnDisplayCheckboxProps {
   isChecked: boolean
   isVisible?:boolean
   conditionallyVisible?:boolean
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> = ({
@@ -20,13 +21,14 @@ export const ReportColumnDisplayCheckbox: FC<ReportColumnDisplayCheckboxProps> =
   isChecked,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const checkboxName = groupName +'-checkbox';
   const labelName = groupName +'-label';
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
 
   if (!displayValue) return null;
 

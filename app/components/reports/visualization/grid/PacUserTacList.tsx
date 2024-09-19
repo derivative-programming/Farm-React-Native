@@ -9,7 +9,12 @@ import * as AsyncServices from "../../../services";
 import * as ReportInput from "../../input-fields";
 import useAnalyticsDB from "../../../../hooks/useAnalyticsDB";
 import { ActivityIndicator, FlatList, Text, View, StyleSheet } from "react-native";
-
+import { ColumnSettingsPacUserTacList } from "../settings";
+export interface TableColumn {
+  header: string;
+  isVisible: boolean;
+  isPreferenceVisible: boolean;
+}
 export interface ReportGridPacUserTacListProps {
   name: string;
   contextCode: string;
@@ -26,6 +31,7 @@ export interface ReportGridPacUserTacListProps {
   onRefresh(): void;
   onEndReached(): void;
   refreshing?: boolean;
+  columns?: Record<string, TableColumn>;
 }
 export const ReportGridPacUserTacList: FC<ReportGridPacUserTacListProps> = ({
   name,
@@ -43,6 +49,7 @@ export const ReportGridPacUserTacList: FC<ReportGridPacUserTacListProps> = ({
   onRefresh,
   onEndReached,
   refreshing = true,
+  columns = ColumnSettingsPacUserTacList
 }): ReactElement => {
   const initialCheckedIndexes: string[] = [];
   const [checkedIndexes, setCheckedIndexes] = useState(initialCheckedIndexes);
@@ -126,42 +133,49 @@ export const ReportGridPacUserTacList: FC<ReportGridPacUserTacListProps> = ({
               value={item.tacCode}
               isVisible={true}
               label="tac Code"
+              isPreferenceVisible={columns["tacCode"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="tacDescription"
               rowIndex={item.rowNumber}
               value={item.tacDescription}
               isVisible={true}
               label="Description"
+              isPreferenceVisible={columns["tacDescription"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="tacDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.tacDisplayOrder}
               isVisible={true}
               label="Display Order"
+              isPreferenceVisible={columns["tacDisplayOrder"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="tacIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.tacIsActive}
               isVisible={true}
               label="Is Active"
+              isPreferenceVisible={columns["tacIsActive"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="tacLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.tacLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
+              isPreferenceVisible={columns["tacLookupEnumName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="tacName"
               rowIndex={item.rowNumber}
               value={item.tacName}
               isVisible={true}
               label="Name"
+              isPreferenceVisible={columns["tacName"].isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="pacName"
               rowIndex={item.rowNumber}
               value={item.pacName}
               isVisible={true}
               label="Pac Name"
+              isPreferenceVisible={columns["pacName"].isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

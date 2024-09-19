@@ -7,6 +7,7 @@ export interface ReportColumnDisplayImageUrlProps {
   label: string;
   isVisible?: boolean;
   conditionallyVisible?: boolean;
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> = ({
@@ -15,9 +16,10 @@ export const ReportColumnDisplayImageUrl: FC<ReportColumnDisplayImageUrlProps> =
   label,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
   const isComponentVisible = isVisible ;
 
   if (!displayValue) return null;
