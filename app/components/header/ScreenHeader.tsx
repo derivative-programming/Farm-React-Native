@@ -21,6 +21,9 @@ const ScreenHeader: FC<ScreenHeaderProps> = (): ReactElement => {
   const title = "Simple Api";
   const { logClick } = useAnalyticsDB();
 
+  // Extract customer and organization names from authContext
+  const { customerName, organizationName } = authContext;
+
   const onLogout = async () => {
     await logClick("Header","logOut","");
     await AnalyticsService.stop();
@@ -98,6 +101,17 @@ const ScreenHeader: FC<ScreenHeaderProps> = (): ReactElement => {
             <MenuOptions customStyles={menuOptionsStyles}> 
               {authContext && authContext.token ? (  
                 <>
+                  {/* User Info Section */}
+                  <View style={styles.userInfoContainer}>
+                    {customerName && (
+                      <Text style={styles.userNameText}>{customerName}</Text>
+                    )}
+                    {organizationName && (
+                      <Text style={styles.companyNameText}>{organizationName}</Text>
+                    )}
+                  </View>
+                  <View style={styles.separator} />
+                  {/* Menu Options for Authenticated Users */}
                   {authContext.roles.includes('User') && (
                     <>
                       <MenuOption value={1} onSelect={onDashboard} text="Dashboard" customStyles={menuOptionStyles} /> 
@@ -157,6 +171,27 @@ const styles = StyleSheet.create({
   placeholderView: {
     width: 35,
     paddingRight: 10, 
+  },
+  // Styles for User Info Section
+  userInfoContainer: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#f0f0f0', // Light gray background
+    borderRadius: 5,
+  },
+  userNameText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  companyNameText: {
+    fontSize: 14,
+    color: 'gray',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 8,
   },
 });
 

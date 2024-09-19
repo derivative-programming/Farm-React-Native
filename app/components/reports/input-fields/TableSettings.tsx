@@ -50,16 +50,19 @@ export const TableSettings = <T extends Record<string, TableColumn>>({
               {columnKeys.map(colKey => {
                 const column = columns[colKey];
                 return column.isVisible ? (
-                  <View key={String(colKey)} style={styles.checkboxContainer}>
-                    <TouchableOpacity onPress={() => onToggleColumn(colKey)} style={styles.checkbox}>
-                      <Ionicons
-                        name={column.isPreferenceVisible ? 'checkbox-outline' : 'square-outline'}
-                        size={24}
-                        color="black"
-                      />
-                    </TouchableOpacity>
+                  <TouchableOpacity
+                    key={String(colKey)}
+                    style={styles.checkboxContainer}
+                    onPress={() => onToggleColumn(colKey)}
+                  >
+                    <Ionicons
+                      name={column.isPreferenceVisible ? 'checkbox-outline' : 'square-outline'}
+                      size={24}
+                      color="black"
+                      style={styles.checkbox}
+                    />
                     <Text>{column.header}</Text>
-                  </View>
+                  </TouchableOpacity>
                 ) : null;
               })}
             </ScrollView>

@@ -1,21 +1,20 @@
-import React, { FC, ReactElement, useState } from "react";
+import React, { FC, ReactElement, useState } from 'react';
 import { useField } from 'formik';
-import moment from "moment";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { FormLabel } from "./InputLabel";
+import moment from 'moment';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { FormLabel } from './InputLabel';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import * as theme from '../../../constants/theme';
-import { DetailsText } from "./DetailText";
+import { DetailsText } from './DetailText';
 
 export interface FormInputDateTimeProps {
-  name: string
-  label: string
-  placeholder?: string
-  autoFocus?: boolean
-  disabled?: boolean
-  isVisible?: boolean
+  name: string;
+  label: string;
+  placeholder?: string;
+  autoFocus?: boolean;
+  disabled?: boolean;
+  isVisible?: boolean;
   isRequired?: boolean;
-  detailText?: string; 
+  detailText?: string;
 }
 
 export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
@@ -26,75 +25,65 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
   disabled = false,
   isVisible = true,
   isRequired = false,
-  detailText = '', 
+  detailText = '',
 }): ReactElement | null => {
-  const [field, meta, helpers] = useField(name); 
-  const [show, setShow] = useState(false);
+  const [field, meta, helpers] = useField(name);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const getDisplayDateTime = () => {
-    const dt = moment.utc(field.value, moment.ISO_8601);
-    return dt.isValid() ? dt.local() : null;
-  }
-
-  const selectedDateTimeLocal = getDisplayDateTime();
+  const selectedDateTime = field.value ? moment(field.value) : null;
 
   const isInvalid = meta.error && meta.touched;
-  
+
   if (!isVisible) return null;
 
-  // const onChange = (event: any, selectedDate?: Date) => {
-  //   setShow(false);
-  //   if (selectedDate) {
-  //     helpers.setValue(moment(selectedDate).utc().format("YYYY-MM-DDTHH:mm:ss"));
-  //   }
-  // };
-  const onChange = (event: any, selectedDate?: Date) => {
-    console.log('onChange event', event);
-    if (event.type === "dismissed") {
-      console.log('dismissed');
-      console.log('selectedDate', selectedDate);
-      setShow(false);
-      return; // Do nothing if dismissed
-    }
-    
-    setShow(false);
-    if (selectedDate) {
-      helpers.setValue(moment(selectedDate).utc().format("YYYY-MM-DDTHH:mm:ss"));
+  const showDatePicker = () => {
+    if (!disabled) {
+      setDatePickerVisibility(true);
     }
   };
 
-  return ( 
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    helpers.setValue(moment(date).toISOString());
+    hideDatePicker();
+  };
+
+  return (
     <View style={styles.container}>
-      <FormLabel text={label} name={name + '-label'} isRequired={isRequired} />
-      <TouchableOpacity 
-        onPress={() => setShow(true)} 
+      <FormLabel text={label} name={`${name}-label`} isRequired={isRequired} />
+      <TouchableOpacity
+        onPress={showDatePicker}
         style={[styles.button, disabled && styles.disabledButton]}
-        disabled={disabled}
         accessibilityLabel={label}
         testID={`${name}-button`}
       >
         <Text testID={name}>
-          {selectedDateTimeLocal ? selectedDateTimeLocal.format("M/D/YYYY h:mm A") : placeholder}
+          {selectedDateTime
+            ? selectedDateTime.format('M/D/YYYY h:mm A')
+            : placeholder}
         </Text>
       </TouchableOpacity>
 
-      {show && (
-        <DateTimePicker
-          value={selectedDateTimeLocal?.toDate() || new Date()}
-          mode="datetime"
-          display="default"
-          onChange={onChange}
-          disabled={disabled}
-          testID={`${name}-picker`}
-        />
-      )}
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="datetime"
+        date={selectedDateTime?.toDate() || new Date()}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        isDarkModeEnabled={false}
+        // headerTextIOS={label}
+        testID={`${name}-picker`}
+      />
 
       {isInvalid && (
-        <Text style={styles.errorText} testID={`${name}-error`}>{meta.error}</Text>
+        <Text style={styles.errorText} testID={`${name}-error`}>
+          {meta.error}
+        </Text>
       )}
-      {detailText.length > 0 && (
-        <DetailsText content={detailText} />
-      )}
+      {detailText.length > 0 && <DetailsText content={detailText} />}
     </View>
   );
 };
@@ -102,7 +91,7 @@ export const FormInputDateTime: FC<FormInputDateTimeProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-  }, 
+  },
   button: {
     marginBottom: 8,
   },
@@ -111,6 +100,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    marginBottom: 8,    
-  }, 
+    marginBottom: 8,
+  },
 });
