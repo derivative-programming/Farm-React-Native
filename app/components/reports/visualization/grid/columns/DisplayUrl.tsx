@@ -13,6 +13,7 @@ export interface ReportColumnDisplayUrlProps {
   linkText: string
   isVisible?:boolean
   conditionallyVisible?:boolean
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
@@ -23,6 +24,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
   linkText,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
@@ -34,7 +36,7 @@ export const ReportColumnDisplayUrl: FC<ReportColumnDisplayUrlProps> = ({
     url = "https://" + url;
   }
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
 
   if (!displayValue) return null;
 

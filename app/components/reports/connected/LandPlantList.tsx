@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
 import SortControl from '../input-fields/SortControl';
+import { ColumnSettingsLandPlantList } from "../visualization/settings";
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
 import ReportFilterLandPlantList from "../filters/LandPlantList";
@@ -43,8 +44,10 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   landCode = "00000000-0000-0000-0000-000000000000" 
 }): ReactElement => {
   const isFilterPersistant  = false;
+  
 
   const [items, setItems] = useState<LandPlantListReportService.EnhancedQueryResultItem[]>([]);
+  const [columns, setColumns] = useState(ColumnSettingsLandPlantList);
   const [isProcessing, setIsProcessing] = useState(false); 
   const [initPageResponse, setInitPageResponse] = useState<InitReportService.InitResult | null>(null);
  
@@ -59,6 +62,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
   
   const [loadingMore, setLoadingMore] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  
 
   const isInitializedRef = useRef(false);
   const { logClick } = useAnalyticsDB();
@@ -119,15 +123,65 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
 
 
   useEffect(() => {  
+    
+    const loadReportData = async () => {
+      const storedData = await AsyncStorage.getItem('landPlantListHiddenColumns');
+      if(storedData){
+        const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+        setColumns(prevColumns => {
+          const updatedColumns = { ...prevColumns };
+          storedHiddenColumns.forEach(colKey => {
+            if (updatedColumns[colKey]) {
+              updatedColumns[colKey].isPreferenceVisible = false;
+            }
+          });
+          return updatedColumns;
+        });
+      }
+    };
+
+    loadReportData();
   }, []); 
 
   useFocusEffect(
     useCallback(() => { 
+        
+      const loadReportData = async () => {
+        const storedData = await AsyncStorage.getItem('landPlantListHiddenColumns');
+        if(storedData){
+          const storedHiddenColumns: Array<keyof typeof columns> = JSON.parse(storedData) || [];
+          setColumns(prevColumns => {
+            const updatedColumns = { ...prevColumns };
+            storedHiddenColumns.forEach(colKey => {
+              if (updatedColumns[colKey]) {
+                updatedColumns[colKey].isPreferenceVisible = false;
+              }
+            });
+            return updatedColumns;
+          });
+        }
+      };
+
+      loadReportData();
+
       LandPlantListReportService.initPage(contextCode).then((response) =>
         handleInit(response)
       );
+      
     }, [])
   );
+
+  useEffect(() => {
+    
+    const saveReportData = async () => {
+      const hiddenColumns =  (Object.keys(columns) as Array<keyof typeof columns>).filter(
+        colKey => !columns[colKey].isPreferenceVisible
+      );
+      await AsyncStorage.setItem('landPlantListHiddenColumns', JSON.stringify(hiddenColumns));
+    };
+
+    saveReportData();
+  }, [columns]);
 
   useEffect(() => { 
     if(initPageResponse === null){
@@ -224,6 +278,29 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       }
     }); 
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode }); 
+  };
+  
+  const handleColumnVisibility = (colName: keyof typeof columns) => {
+    logClick("ReportConnectedLandPlantList","handleColumnVisibility",colName);
+    
+    setColumns(prevColumns => ({
+      ...prevColumns,
+      [colName]: {
+        ...prevColumns[colName],
+        isPreferenceVisible: !prevColumns[colName].isPreferenceVisible
+      }
+    }));
+  };
+
+  const handleSetAllColumnsVisibility = (visibility: boolean) => {
+    logClick("ReportConnectedLandPlantList","handleSetAllColumnsVisibility",visibility.toString());
+    const updatedColumns = { ...columns };
+    (Object.keys(updatedColumns) as Array<keyof typeof updatedColumns>).forEach(colKey => {
+      if (updatedColumns[colKey].isVisible) {
+        updatedColumns[colKey].isPreferenceVisible = visibility;
+      }
+    });
+    setColumns(updatedColumns);
   };
 
   const isBreadcrumbSectionHidden = false;
@@ -464,6 +541,13 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
               <Text style={styles.titleText}></Text>
           </View>
 
+          
+          <ReportInput.TableSettings<typeof ColumnSettingsLandPlantList>
+            name="TableSettingsLandPlantList"
+            columns={columns}
+            onToggleColumn={handleColumnVisibility} 
+            onSetAllColumnsVisibility={handleSetAllColumnsVisibility}
+          />
 
           {/*//GENIF[visualizationType=Grid]Start*/} 
           {queryResult && ( 
@@ -524,7 +608,6 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             </MenuOptions>
           </Menu>
           )} 
-          
       </View>
       <View style={styles.formContainer}>
        
@@ -558,6 +641,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
             onRefresh={onRefresh}
             refreshing={refreshing}
             onEndReached={onEndReached}
+            columns={columns}
           />  
         )}
         {!queryResult && (

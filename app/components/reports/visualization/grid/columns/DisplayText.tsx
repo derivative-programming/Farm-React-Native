@@ -11,6 +11,7 @@ export interface ReportColumnDisplayTextProps {
   value: string
   isVisible?:boolean
   conditionallyVisible?:boolean
+  isPreferenceVisible?: boolean;
 }
 
 export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
@@ -20,13 +21,14 @@ export const ReportColumnDisplayText: FC<ReportColumnDisplayTextProps> = ({
   value,
   isVisible = true,
   conditionallyVisible = true,
+  isPreferenceVisible = true,
 }): ReactElement | null => {
 
   const groupName = forColumn +'-column-' + rowIndex.toString();
   const labelName = groupName +'-label';
   const valueName = groupName +'-value';
 
-  const displayValue = (isVisible && conditionallyVisible);
+  const displayValue = (isVisible && conditionallyVisible && isPreferenceVisible);
 
   const formatText = () => {
     let result:string = "";
