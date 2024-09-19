@@ -438,6 +438,7 @@ export const ReportConnectedPlantUserDetails: FC<ReportProps> = ({
                     onNavigateTo={onNavigateTo}
                     onRefreshRequest={onRefreshRequest}
                     showProcessing={isProcessing}
+                    columns={columns}
                 />
             </ScrollView>
           )}
