@@ -27,6 +27,7 @@ import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import SortControl from '../input-fields/SortControl';
 import { ColumnSettingsPacUserLandList } from "../visualization/settings";
+import TextCollapsible from "../../TextCollapsible";
 
 import ReportFilterPacUserLandList from "../filters/PacUserLandList";
 import { ReportGridPacUserLandList } from "../visualization/grid/PacUserLandList";
@@ -200,6 +201,9 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
     const loadAsyncData = async () => {
       let queryRequest = PacUserLandListReportService.buildQueryRequest(initPageResponse);
 
+      const savedSortColumnName = await AsyncStorage.getItem("PacUserLandListSortColumnName");
+      const savedSortDirection = await AsyncStorage.getItem("PacUserLandListSortDirection");
+
       // Check if persistence is enabled and if there is a saved filter
       if (isFilterPersistant) {
         const savedFilter = await AsyncStorage.getItem("PacUserLandListFilter");
@@ -210,6 +214,14 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
           queryRequest = { ...queryRequest, ...parsedFilter };
         }
       }
+
+      queryRequest.OrderByColumnName = savedSortColumnName ?? "";
+
+      queryRequest.OrderByDescending = true;
+      if(savedSortDirection === "asc"){
+        queryRequest.OrderByDescending = false;
+      }
+
       setInitialQuery({ ...queryRequest });
     };
 
@@ -363,7 +375,7 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
-  const onSortChange = (columnName: string, sortDirection: 'asc' | 'desc') => {
+  const onSortChange = async (columnName: string, sortDirection: 'asc' | 'desc') => {
     logClick("ReportConnectedPacUserLandList","sort",columnName);
     if(query === null){
       return;
@@ -372,6 +384,16 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
     if (sortDirection === "desc") {
       orderByDescending = true;
     }
+
+    await AsyncStorage.setItem("PacUserLandListSortColumnName", columnName);
+    if(orderByDescending){
+      await AsyncStorage.setItem("PacUserLandListSortDirection", "desc");
+    }
+    else
+    {
+      await AsyncStorage.setItem("PacUserLandListSortDirection", "asc");
+    }
+
     setQuery({
       ...query,
       OrderByColumnName: columnName,
@@ -514,6 +536,7 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
                 name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
                 size={24}
                 color="#000"
+                style={styles.dropdownButton}
               />
             </MenuTrigger>
             <MenuOptions customStyles={styles.menuOptions}>
@@ -524,7 +547,7 @@ export const ReportConnectedPacUserLandList: FC<ReportProps> = ({
       </View>
       <View style={styles.formContainer}>
 
-        <Text style={styles.introText} testID="page-intro-text"></Text>
+        <TextCollapsible text=""  name="page-intro-text" />
 
         {initPageResponse && (
           <HeaderPacUserLandList
@@ -622,18 +645,12 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
-    textAlign: 'center', // Center the text
-
-  },
-  introText: {
-    fontSize: theme.fonts.mediumSize,
-    marginBottom: 8,
-    color: theme.Colors.text,
+    textAlign: 'center',
 
   },
   dropdownButton: {
-    paddingHorizontal: 10,
     paddingVertical: 5,
+    paddingRight: 10,
   },
   menuOptions: {
     // padding: 10,

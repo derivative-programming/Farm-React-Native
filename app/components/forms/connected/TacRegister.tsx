@@ -25,6 +25,7 @@ import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import SpinnerComponent from "../../SpinnerComponent";
+import TextCollapsible from "../../TextCollapsible";
 
 export interface FormProps {
   tacCode:string;
@@ -263,7 +264,7 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
         <Text style={styles.titleText} testID="page-title-text">Create your account </Text>
-        <Text style={styles.introText} testID="page-intro-text">A Couple Details Then We Are Off!</Text>
+        <TextCollapsible text="A Couple Details Then We Are Off!"  name="page-intro-text" />
 
         {initPageResponse && (
           <HeaderTacRegister
@@ -352,7 +353,8 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
             </Formik>
           )}
         </ScrollView>
-        <Text style={styles.introText} testID="page-footer-text"></Text>
+        <TextCollapsible text=""  name="page-footer-text" />
+
       </View>
     </View>
   );
@@ -373,13 +375,14 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
-    textAlign: 'center', // Center the text
+    textAlign: 'center',
 
   },
   introText: {
     fontSize: theme.fonts.mediumSize,
     marginBottom: 8,
     color: theme.Colors.text,
+    textAlign: 'center',
 
   },
 });

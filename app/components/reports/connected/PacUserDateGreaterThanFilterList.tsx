@@ -27,6 +27,7 @@ import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import SortControl from '../input-fields/SortControl';
 import { ColumnSettingsPacUserDateGreaterThanFilterList } from "../visualization/settings";
+import TextCollapsible from "../../TextCollapsible";
 
 import ReportFilterPacUserDateGreaterThanFilterList from "../filters/PacUserDateGreaterThanFilterList";
 import { ReportGridPacUserDateGreaterThanFilterList } from "../visualization/grid/PacUserDateGreaterThanFilterList";
@@ -200,6 +201,9 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     const loadAsyncData = async () => {
       let queryRequest = PacUserDateGreaterThanFilterListReportService.buildQueryRequest(initPageResponse);
 
+      const savedSortColumnName = await AsyncStorage.getItem("PacUserDateGreaterThanFilterListSortColumnName");
+      const savedSortDirection = await AsyncStorage.getItem("PacUserDateGreaterThanFilterListSortDirection");
+
       // Check if persistence is enabled and if there is a saved filter
       if (isFilterPersistant) {
         const savedFilter = await AsyncStorage.getItem("PacUserDateGreaterThanFilterListFilter");
@@ -210,6 +214,14 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
           queryRequest = { ...queryRequest, ...parsedFilter };
         }
       }
+
+      queryRequest.OrderByColumnName = savedSortColumnName ?? "";
+
+      queryRequest.OrderByDescending = true;
+      if(savedSortDirection === "asc"){
+        queryRequest.OrderByDescending = false;
+      }
+
       setInitialQuery({ ...queryRequest });
     };
 
@@ -363,7 +375,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
-  const onSortChange = (columnName: string, sortDirection: 'asc' | 'desc') => {
+  const onSortChange = async (columnName: string, sortDirection: 'asc' | 'desc') => {
     logClick("ReportConnectedPacUserDateGreaterThanFilterList","sort",columnName);
     if(query === null){
       return;
@@ -372,6 +384,16 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
     if (sortDirection === "desc") {
       orderByDescending = true;
     }
+
+    await AsyncStorage.setItem("PacUserDateGreaterThanFilterListSortColumnName", columnName);
+    if(orderByDescending){
+      await AsyncStorage.setItem("PacUserDateGreaterThanFilterListSortDirection", "desc");
+    }
+    else
+    {
+      await AsyncStorage.setItem("PacUserDateGreaterThanFilterListSortDirection", "asc");
+    }
+
     setQuery({
       ...query,
       OrderByColumnName: columnName,
@@ -514,6 +536,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
                 name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
                 size={24}
                 color="#000"
+                style={styles.dropdownButton}
               />
             </MenuTrigger>
             <MenuOptions customStyles={styles.menuOptions}>
@@ -524,7 +547,7 @@ export const ReportConnectedPacUserDateGreaterThanFilterList: FC<ReportProps> = 
       </View>
       <View style={styles.formContainer}>
 
-        <Text style={styles.introText} testID="page-intro-text"></Text>
+        <TextCollapsible text=""  name="page-intro-text" />
 
         {initPageResponse && (
           <HeaderPacUserDateGreaterThanFilterList
@@ -622,18 +645,12 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize,
     marginBottom: 8,
     color: theme.Colors.text,
-    textAlign: 'center', // Center the text
-
-  },
-  introText: {
-    fontSize: theme.fonts.mediumSize,
-    marginBottom: 8,
-    color: theme.Colors.text,
+    textAlign: 'center',
 
   },
   dropdownButton: {
-    paddingHorizontal: 10,
     paddingVertical: 5,
+    paddingRight: 10,
   },
   menuOptions: {
     // padding: 10,

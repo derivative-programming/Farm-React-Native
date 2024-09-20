@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   formRow: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     marginBottom: 10,
   },
   formCol: {
-    width: '50%', // Adjust as needed
+    width: '100%', // Adjust as needed
     padding: 5,
   },
   buttonContainer: {
