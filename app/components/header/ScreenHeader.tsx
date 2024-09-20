@@ -19,10 +19,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = (): ReactElement => {
   const authContext = useContext(AuthContext);
   const navigation = useNavigation<ScreenNavigationProp>();
   const title = "Simple Api";
-  const { logClick } = useAnalyticsDB();
-
-  // Extract customer and organization names from authContext
-  const { customerName, organizationName } = authContext;
+  const { logClick } = useAnalyticsDB(); 
 
   const onLogout = async () => {
     await logClick("Header","logOut","");
@@ -103,11 +100,11 @@ const ScreenHeader: FC<ScreenHeaderProps> = (): ReactElement => {
                 <>
                   {/* User Info Section */}
                   <View style={styles.userInfoContainer}>
-                    {customerName && (
-                      <Text style={styles.userNameText}>{customerName}</Text>
+                    {authContext.customerName && (
+                      <Text style={styles.userNameText}>{authContext.customerName}</Text>
                     )}
-                    {organizationName && (
-                      <Text style={styles.companyNameText}>{organizationName}</Text>
+                    {authContext.organizationName && (
+                      <Text style={styles.companyNameText}>{authContext.organizationName}</Text>
                     )}
                   </View>
                   <View style={styles.separator} />

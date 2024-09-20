@@ -743,13 +743,14 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,    
     color: theme.Colors.text, 
-    textAlign: 'center', // Center the text
+    textAlign: 'center',
     
   },
   introText: {
     fontSize: theme.fonts.mediumSize, 
     marginBottom: 8,    
     color: theme.Colors.text,
+    textAlign: 'center',
     
   }, 
   dropdownButton: {
