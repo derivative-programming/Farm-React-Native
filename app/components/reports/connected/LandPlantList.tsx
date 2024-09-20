@@ -213,8 +213,8 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     const loadAsyncData = async () => {
       let queryRequest = LandPlantListReportService.buildQueryRequest(initPageResponse);  
   
-      const savedSortColumnName = localStorage.getItem("LandPlantListSortColumnName"); 
-      const savedSortDirection = localStorage.getItem("LandPlantListSortDirection"); 
+      const savedSortColumnName = await AsyncStorage.getItem("LandPlantListSortColumnName"); 
+      const savedSortDirection = await AsyncStorage.getItem("LandPlantListSortDirection"); 
 
       // Check if persistence is enabled and if there is a saved filter
       if (isFilterPersistant) {
@@ -390,7 +390,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     setQuery({ ...query, ItemCountPerPage: pageSize, pageNumber: 1 });
   };
 
-  const onSortChange = (columnName: string, sortDirection: 'asc' | 'desc') => { 
+  const onSortChange = async (columnName: string, sortDirection: 'asc' | 'desc') => { 
     logClick("ReportConnectedLandPlantList","sort",columnName);
     if(query === null){
       return;
@@ -399,14 +399,14 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if (sortDirection === "desc") {
       orderByDescending = true;
     }
-    
-    localStorage.setItem("LandPlantListSortColumnName", columnName); 
+
+    await AsyncStorage.setItem("LandPlantListSortColumnName", columnName); 
     if(orderByDescending){
-      localStorage.setItem("LandPlantListSortDirection", "desc"); 
+      await AsyncStorage.setItem("LandPlantListSortDirection", "desc"); 
     }
     else
     {
-      localStorage.setItem("LandPlantListSortDirection", "asc"); 
+      await AsyncStorage.setItem("LandPlantListSortDirection", "asc"); 
     }
 
     setQuery({
@@ -631,6 +631,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
                 name={Platform.OS === 'ios' ? 'ellipsis-horizontal' : 'ellipsis-vertical'}
                 size={24}
                 color="#000"
+                style={styles.dropdownButton}
               />
             </MenuTrigger>
             <MenuOptions customStyles={styles.menuOptions}> 
@@ -768,9 +769,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     
   }, 
-  dropdownButton: {
-    paddingHorizontal: 10,
+  dropdownButton: { 
     paddingVertical: 5,
+    paddingRight: 10,
   },
   menuOptions: {
     // padding: 10,
