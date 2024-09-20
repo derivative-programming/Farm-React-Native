@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   userInfoContainer: {
     paddingVertical: 8,
     paddingHorizontal: 12,
-    backgroundColor: '#f0f0f0', // Light gray background
+    // backgroundColor: '#f0f0f0', // Light gray background
     borderRadius: 5,
   },
   userNameText: {
