@@ -213,6 +213,9 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     const loadAsyncData = async () => {
       let queryRequest = LandPlantListReportService.buildQueryRequest(initPageResponse);  
   
+      const savedSortColumnName = localStorage.getItem("LandPlantListSortColumnName"); 
+      const savedSortDirection = localStorage.getItem("LandPlantListSortDirection"); 
+
       // Check if persistence is enabled and if there is a saved filter
       if (isFilterPersistant) {
         const savedFilter = await AsyncStorage.getItem("LandPlantListFilter"); 
@@ -223,6 +226,14 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
           queryRequest = { ...queryRequest, ...parsedFilter };
         }
       }  
+
+      queryRequest.OrderByColumnName = savedSortColumnName ?? "";
+
+      queryRequest.OrderByDescending = true;
+      if(savedSortDirection === "asc"){
+        queryRequest.OrderByDescending = false;
+      } 
+
       setInitialQuery({ ...queryRequest });
     };
 
@@ -388,6 +399,16 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
     if (sortDirection === "desc") {
       orderByDescending = true;
     }
+    
+    localStorage.setItem("LandPlantListSortColumnName", columnName); 
+    if(orderByDescending){
+      localStorage.setItem("LandPlantListSortDirection", "desc"); 
+    }
+    else
+    {
+      localStorage.setItem("LandPlantListSortDirection", "asc"); 
+    }
+
     setQuery({
       ...query,
       OrderByColumnName: columnName,
