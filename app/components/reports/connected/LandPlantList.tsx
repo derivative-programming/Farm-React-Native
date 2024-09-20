@@ -27,6 +27,7 @@ import CustomMenuOption from "../../CustomMenuOption";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';  
 import SortControl from '../input-fields/SortControl';
 import { ColumnSettingsLandPlantList } from "../visualization/settings";
+import TextCollapsible from "../../TextCollapsible";
 //GENTrainingBlock[visualizationTypeImports]Start
 //GENLearn[visualizationType=Grid]Start
 import ReportFilterLandPlantList from "../filters/LandPlantList";
@@ -633,7 +634,7 @@ export const ReportConnectedLandPlantList: FC<ReportProps> = ({
       </View>
       <View style={styles.formContainer}>
        
-        <Text style={styles.introText} testID="page-intro-text">A list of plants on the land</Text> 
+        <TextCollapsible text="A list of plants on the land"  name="page-intro-text" />
         
 
         {initPageResponse && (
@@ -743,13 +744,6 @@ const styles = StyleSheet.create({
     fontSize: theme.fonts.largeSize, 
     marginBottom: 8,    
     color: theme.Colors.text, 
-    textAlign: 'center',
-    
-  },
-  introText: {
-    fontSize: theme.fonts.mediumSize, 
-    marginBottom: 8,    
-    color: theme.Colors.text,
     textAlign: 'center',
     
   }, 

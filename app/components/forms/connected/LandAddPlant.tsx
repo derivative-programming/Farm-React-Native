@@ -25,6 +25,7 @@ import RootStackParamList from "../../../screens/rootStackParamList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as theme from '../../../constants/theme'
 import SpinnerComponent from "../../SpinnerComponent";
+import TextCollapsible from "../../TextCollapsible";
 
 export interface FormProps {
   landCode:string;
@@ -272,7 +273,7 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
     <View style={styles.container} testID={name}>
       <View style={styles.formContainer}>
         <Text style={styles.titleText} testID="page-title-text">Add Plant Add plant form title text</Text>
-        <Text style={styles.introText} testID="page-intro-text">Add plant intro text.Add plant form intro text</Text>
+        <TextCollapsible text="Add plant intro text.Add plant form intro text"  name="page-intro-text" />
 
         {initPageResponse && (
           <HeaderLandAddPlant
@@ -465,7 +466,8 @@ export const FormConnectedLandAddPlant: FC<FormProps> = ({
             </Formik>
           )}
         </ScrollView>
-        <Text style={styles.introText} testID="page-footer-text">Add plant form footer text</Text> 
+        <TextCollapsible text="Add plant form footer text"  name="page-footer-text" />
+
       </View>
     </View>
   );
