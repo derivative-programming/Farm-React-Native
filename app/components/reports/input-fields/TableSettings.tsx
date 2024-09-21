@@ -47,7 +47,9 @@ export const TableSettings = <T extends Record<string, TableColumn>>({
 
             {/* Scrollable column list */}
             <ScrollView style={styles.scrollView}>
-              {columnKeys.map(colKey => {
+              {columnKeys
+                .filter(colKey => columns[colKey].isVisible && columns[colKey].header)
+                .map(colKey => {
                 const column = columns[colKey];
                 return column.isVisible ? (
                   <TouchableOpacity
