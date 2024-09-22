@@ -7,7 +7,6 @@ import HeaderPlantUserDetails, {
 import '@testing-library/jest-dom';
 
 const TEST_ID = "test-header";
-
 const mockInitData: HeaderPlantUserDetailsProps["initData"] =
   new InitResultInstance();
 
@@ -15,7 +14,7 @@ const renderHeader = (props: HeaderPlantUserDetailsProps) => {
   return render(<HeaderPlantUserDetails {...props} />);
 };
 
-describe("HeaderPlantAddPlant", () => {
+describe("HeaderPlantUserDetails", () => {
   it("should render the component with the correct plant name", () => {
     renderHeader({
       name: TEST_ID,
@@ -26,7 +25,6 @@ describe("HeaderPlantAddPlant", () => {
     const headerElement = screen.getByTestId(TEST_ID);
 
     expect(headerElement).not.toHaveAttribute("hidden");
-
   });
 
   it("should be hidden elements when isHeaderVisible is false", () => {

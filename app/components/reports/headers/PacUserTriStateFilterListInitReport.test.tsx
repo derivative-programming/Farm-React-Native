@@ -7,7 +7,6 @@ import HeaderPacUserTriStateFilterList, {
 import '@testing-library/jest-dom';
 
 const TEST_ID = "test-header";
-
 const mockInitData: HeaderPacUserTriStateFilterListProps["initData"] =
   new InitResultInstance();
 
@@ -15,7 +14,7 @@ const renderHeader = (props: HeaderPacUserTriStateFilterListProps) => {
   return render(<HeaderPacUserTriStateFilterList {...props} />);
 };
 
-describe("HeaderPacAddPlant", () => {
+describe("HeaderPacUserTriStateFilterList", () => {
   it("should render the component with the correct pac name", () => {
     renderHeader({
       name: TEST_ID,
@@ -26,7 +25,6 @@ describe("HeaderPacAddPlant", () => {
     const headerElement = screen.getByTestId(TEST_ID);
 
     expect(headerElement).not.toHaveAttribute("hidden");
-
   });
 
   it("should be hidden elements when isHeaderVisible is false", () => {

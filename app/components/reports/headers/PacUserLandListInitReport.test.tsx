@@ -7,7 +7,6 @@ import HeaderPacUserLandList, {
 import '@testing-library/jest-dom';
 
 const TEST_ID = "test-header";
-
 const mockInitData: HeaderPacUserLandListProps["initData"] =
   new InitResultInstance();
 
@@ -15,7 +14,7 @@ const renderHeader = (props: HeaderPacUserLandListProps) => {
   return render(<HeaderPacUserLandList {...props} />);
 };
 
-describe("HeaderPacAddPlant", () => {
+describe("HeaderPacUserLandList", () => {
   it("should render the component with the correct pac name", () => {
     renderHeader({
       name: TEST_ID,
@@ -26,7 +25,6 @@ describe("HeaderPacAddPlant", () => {
     const headerElement = screen.getByTestId(TEST_ID);
 
     expect(headerElement).not.toHaveAttribute("hidden");
-
   });
 
   it("should be hidden elements when isHeaderVisible is false", () => {
