@@ -32,7 +32,7 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
         <View style={styles.horizontalStack}>
           <Text>Land Name:</Text>
           <Text style={{ marginLeft: 10 }}>{initData.landName}</Text> 
-        </View>)
+        </View>)}
       {currentDateHeaderValHeaderIsVisible && (
         <View style={styles.horizontalStack}>
           <Text>Current Date: </Text> 
@@ -42,8 +42,7 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
         <View style={styles.horizontalStack}>
           <Text>Current Date Time: </Text> 
           <Text>{formatDateTime(initData.currentDateTimeHeaderVal)}</Text>
-        </View>)}
-      }
+        </View>)} 
     </View>
   );
 };
