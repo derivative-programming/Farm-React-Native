@@ -33,6 +33,10 @@ describe('HeaderLandAddPlant', () => {
     requestSomeNVarCharVal: '',
 
     requestSomeVarCharVal: '',
+ 
+    requestSomeLongVarCharVal: '',
+
+    requestSomeLongNVarCharVal: '',
 
     requestSomeTextVal: '',
 
@@ -82,7 +86,9 @@ describe('HeaderLandAddPlant', () => {
 
   it('renders correctly with different initData', () => {
     const alternativeInitData = {
-      landName: 'Alternative Land'
+      landName: 'Alternative Land',
+      currentDateHeaderVal: 'Alternative Land',
+      currentDateTimeHeaderVal: 'Alternative Land'
       // Include other properties as needed
     };
 

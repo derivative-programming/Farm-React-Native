@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { Text, View, StyleSheet } from 'react-native';
 import * as InitReportService from "../services/init/LandPlantListInitReport";
+import {formatDate, formatDateTime} from "../../../common/utilities";
  
 export interface HeaderLandPlantListProps {
   name: string;
@@ -20,6 +21,8 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
 }): ReactElement | null => {
 
   const landNameHeaderIsVisible = true; 
+  const currentDateHeaderValHeaderIsVisible = true; 
+  const currentDateTimeHeaderValHeaderIsVisible = true; 
 
   if(!isHeaderVisible) return null;
 
@@ -30,6 +33,16 @@ const HeaderLandPlantList: FC<HeaderLandPlantListProps> = ({
           <Text>Land Name:</Text>
           <Text style={{ marginLeft: 10 }}>{initData.landName}</Text> 
         </View>)
+      {currentDateHeaderValHeaderIsVisible && (
+        <View style={styles.horizontalStack}>
+          <Text>Current Date: </Text> 
+          <Text>{formatDate(initData.currentDateHeaderVal)}</Text>
+        </View>)}
+      {currentDateTimeHeaderValHeaderIsVisible && (
+        <View style={styles.horizontalStack}>
+          <Text>Current Date Time: </Text> 
+          <Text>{formatDateTime(initData.currentDateTimeHeaderVal)}</Text>
+        </View>)}
       }
     </View>
   );

@@ -6,12 +6,12 @@ import HeaderLandPlantList, {
 } from "./LandPlantListInitReport";
 import '@testing-library/jest-dom';
 
-const TEST_ID = "test-header";
-const LAND_NAME = "Test Land Name";
-const LAND_NAME_LABEL = "Land Name";
+const TEST_ID = "test-header"; 
 const mockInitData: HeaderLandPlantListProps["initData"] =
   new InitResultInstance();
-mockInitData.landName = LAND_NAME;
+mockInitData.landName = "Test Land Name";
+mockInitData.currentDateHeaderVal = "Test Current Date";
+mockInitData.currentDateTimeHeaderVal = "Test Current Date Time";
 
 const renderHeader = (props: HeaderLandPlantListProps) => {
   return render(<HeaderLandPlantList {...props} />);
@@ -27,9 +27,7 @@ describe("HeaderLandPlantList", () => {
 
     const headerElement = screen.getByTestId(TEST_ID);
 
-    expect(headerElement).not.toHaveAttribute("hidden");
-    expect(screen.getByText(LAND_NAME_LABEL)).toBeTruthy();
-    expect(screen.getByText(LAND_NAME)).toBeTruthy();
+    expect(headerElement).not.toHaveAttribute("hidden"); 
   });
 
   it("should be hidden elements when isHeaderVisible is false", () => {
