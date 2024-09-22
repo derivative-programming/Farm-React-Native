@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { StyleSheet, View, Text } from 'react-native';
 import * as InitFormService from "../services/init/LandAddPlantInitObjWF";
+import {formatDate, formatDateTime} from "../../../common/utilities";
 
 export interface HeaderLandAddPlantProps {
   name: string;
@@ -20,6 +21,8 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
 }): ReactElement | null => {
 
   const landNameHeaderIsVisible = true; 
+  const currentDateHeaderValHeaderIsVisible = true; 
+  const currentDateTimeHeaderValHeaderIsVisible = true; 
 
   if(!isHeaderVisible) return null;
 
@@ -29,6 +32,16 @@ const HeaderLandAddPlant: FC<HeaderLandAddPlantProps> = ({
         <View style={styles.horizontalStack}>
           <Text>Land Name: </Text> 
           <Text>{initData.landName}</Text>
+        </View>)}
+      {currentDateHeaderValHeaderIsVisible && (
+        <View style={styles.horizontalStack}>
+          <Text>Current Date: </Text> 
+          <Text>{formatDate(initData.currentDateHeaderVal)}</Text>
+        </View>)}
+      {currentDateTimeHeaderValHeaderIsVisible && (
+        <View style={styles.horizontalStack}>
+          <Text>Current Date Time: </Text> 
+          <Text>{formatDateTime(initData.currentDateTimeHeaderVal)}</Text>
         </View>)}
     </View>
   );

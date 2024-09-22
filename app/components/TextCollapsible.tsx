@@ -18,14 +18,14 @@ const TextCollapsible: React.FC<TextCollapsibleProps> = ({ text, name }) => {
     setIsExpanded(!isExpanded);
   };
 
-  const displayText = text.length <= 50 
-    ? text  // If the text is 50 characters or less, show the full text
+  const displayText = text.length <= 40 
+    ? text  // If the text is 40 characters or less, show the full text
     : isExpanded 
       ? text // If expanded, show the full text
-      : `${text.slice(0, 50)}...`; // Otherwise, show the shortened text with '...'
+      : `${text.slice(0, 40)}...`; // Otherwise, show the shortened text with '...'
 
   return (
-    <TouchableOpacity onPress={toggleText} disabled={text.length <= 50}>
+    <TouchableOpacity onPress={toggleText} disabled={text.length <= 40}>
       <Text 
         style={[styles.introText, { 
           fontSize: theme.fonts.mediumSize, 

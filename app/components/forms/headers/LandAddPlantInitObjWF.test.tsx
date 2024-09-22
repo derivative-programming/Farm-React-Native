@@ -42,6 +42,10 @@ describe('HeaderLandAddPlant', () => {
 
     landName: 'Test Land',
 
+    currentDateHeaderVal: '1753-01-01T00:00:00Z',
+
+    currentDateTimeHeaderVal: '1753-01-01T00:00:00Z',
+
     tacCode: '',
 
     success: false,
