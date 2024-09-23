@@ -133,49 +133,49 @@ export const ReportGridPacUserFlavorList: FC<ReportGridPacUserFlavorListProps> =
               value={item.flavorCode}
               isVisible={true}
               label="flavor Code"
-              isPreferenceVisible={columns["flavorCode"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorCode"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorDescription"
               rowIndex={item.rowNumber}
               value={item.flavorDescription}
               isVisible={true}
               label="Description"
-              isPreferenceVisible={columns["flavorDescription"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorDescription"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="flavorDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.flavorDisplayOrder}
               isVisible={true}
               label="Display Order"
-              isPreferenceVisible={columns["flavorDisplayOrder"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorDisplayOrder"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="flavorIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.flavorIsActive}
               isVisible={true}
               label="Is Active"
-              isPreferenceVisible={columns["flavorIsActive"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorIsActive"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.flavorLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
-              isPreferenceVisible={columns["flavorLookupEnumName"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorLookupEnumName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="flavorName"
               rowIndex={item.rowNumber}
               value={item.flavorName}
               isVisible={true}
               label="Name"
-              isPreferenceVisible={columns["flavorName"].isPreferenceVisible}
+              isPreferenceVisible={columns["flavorName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="pacName"
               rowIndex={item.rowNumber}
               value={item.pacName}
               isVisible={true}
               label="Pac Name"
-              isPreferenceVisible={columns["pacName"].isPreferenceVisible}
+              isPreferenceVisible={columns["pacName"]?.isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

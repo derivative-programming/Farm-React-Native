@@ -133,49 +133,49 @@ export const ReportGridPacUserTriStateFilterList: FC<ReportGridPacUserTriStateFi
               value={item.triStateFilterCode}
               isVisible={true}
               label="triStateFilter Code"
-              isPreferenceVisible={columns["triStateFilterCode"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterCode"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="triStateFilterDescription"
               rowIndex={item.rowNumber}
               value={item.triStateFilterDescription}
               isVisible={true}
               label="Description"
-              isPreferenceVisible={columns["triStateFilterDescription"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterDescription"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="triStateFilterDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.triStateFilterDisplayOrder}
               isVisible={true}
               label="Display Order"
-              isPreferenceVisible={columns["triStateFilterDisplayOrder"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterDisplayOrder"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="triStateFilterIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.triStateFilterIsActive}
               isVisible={true}
               label="Is Active"
-              isPreferenceVisible={columns["triStateFilterIsActive"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterIsActive"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="triStateFilterLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.triStateFilterLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
-              isPreferenceVisible={columns["triStateFilterLookupEnumName"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterLookupEnumName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="triStateFilterName"
               rowIndex={item.rowNumber}
               value={item.triStateFilterName}
               isVisible={true}
               label="Name"
-              isPreferenceVisible={columns["triStateFilterName"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="triStateFilterStateIntValue"
               rowIndex={item.rowNumber}
               value={item.triStateFilterStateIntValue}
               isVisible={true}
               label="State Int Value"
-              isPreferenceVisible={columns["triStateFilterStateIntValue"].isPreferenceVisible}
+              isPreferenceVisible={columns["triStateFilterStateIntValue"]?.isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

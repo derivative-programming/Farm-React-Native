@@ -133,49 +133,49 @@ export const ReportGridPacUserDateGreaterThanFilterList: FC<ReportGridPacUserDat
               value={item.dateGreaterThanFilterCode}
               isVisible={true}
               label="dateGreaterThanFilter Code"
-              isPreferenceVisible={columns["dateGreaterThanFilterCode"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterCode"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="dateGreaterThanFilterDayCount"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDayCount}
               isVisible={true}
               label="Day Count"
-              isPreferenceVisible={columns["dateGreaterThanFilterDayCount"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterDayCount"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterDescription"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDescription}
               isVisible={true}
               label="Description"
-              isPreferenceVisible={columns["dateGreaterThanFilterDescription"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterDescription"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="dateGreaterThanFilterDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterDisplayOrder}
               isVisible={true}
               label="Display Order"
-              isPreferenceVisible={columns["dateGreaterThanFilterDisplayOrder"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterDisplayOrder"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="dateGreaterThanFilterIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.dateGreaterThanFilterIsActive}
               isVisible={true}
               label="Is Active"
-              isPreferenceVisible={columns["dateGreaterThanFilterIsActive"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterIsActive"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
-              isPreferenceVisible={columns["dateGreaterThanFilterLookupEnumName"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterLookupEnumName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="dateGreaterThanFilterName"
               rowIndex={item.rowNumber}
               value={item.dateGreaterThanFilterName}
               isVisible={true}
               label="Name"
-              isPreferenceVisible={columns["dateGreaterThanFilterName"].isPreferenceVisible}
+              isPreferenceVisible={columns["dateGreaterThanFilterName"]?.isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}

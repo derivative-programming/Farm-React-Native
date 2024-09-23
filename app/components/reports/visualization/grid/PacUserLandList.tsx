@@ -133,49 +133,49 @@ export const ReportGridPacUserLandList: FC<ReportGridPacUserLandListProps> = ({
               value={item.landCode}
               isVisible={true}
               label="land Code"
-              isPreferenceVisible={columns["landCode"].isPreferenceVisible}
+              isPreferenceVisible={columns["landCode"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landDescription"
               rowIndex={item.rowNumber}
               value={item.landDescription}
               isVisible={true}
               label="Description"
-              isPreferenceVisible={columns["landDescription"].isPreferenceVisible}
+              isPreferenceVisible={columns["landDescription"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayNumber forColumn="landDisplayOrder"
               rowIndex={item.rowNumber}
               value={item.landDisplayOrder}
               isVisible={true}
               label="Display Order"
-              isPreferenceVisible={columns["landDisplayOrder"].isPreferenceVisible}
+              isPreferenceVisible={columns["landDisplayOrder"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayCheckbox forColumn="landIsActive"
               rowIndex={item.rowNumber}
               isChecked={item.landIsActive}
               isVisible={true}
               label="Is Active"
-              isPreferenceVisible={columns["landIsActive"].isPreferenceVisible}
+              isPreferenceVisible={columns["landIsActive"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landLookupEnumName"
               rowIndex={item.rowNumber}
               value={item.landLookupEnumName}
               isVisible={true}
               label="Lookup Enum Name"
-              isPreferenceVisible={columns["landLookupEnumName"].isPreferenceVisible}
+              isPreferenceVisible={columns["landLookupEnumName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="landName"
               rowIndex={item.rowNumber}
               value={item.landName}
               isVisible={true}
               label="Name"
-              isPreferenceVisible={columns["landName"].isPreferenceVisible}
+              isPreferenceVisible={columns["landName"]?.isPreferenceVisible}
             />
             <ReportColumnDisplay.ReportColumnDisplayText forColumn="pacName"
               rowIndex={item.rowNumber}
               value={item.pacName}
               isVisible={true}
               label="Pac Name"
-              isPreferenceVisible={columns["pacName"].isPreferenceVisible}
+              isPreferenceVisible={columns["pacName"]?.isPreferenceVisible}
             />
 {/* ENDSET */}
           </View>}
