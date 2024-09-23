@@ -259,6 +259,12 @@ export const FormConnectedTacRegister: FC<FormProps> = ({
     navigation.navigate(page as keyof RootStackParamList, { code: targetContextCode });
   };
 
+  if(isAutoSubmit){
+    return (
+      <SpinnerComponent />
+    );
+  }
+
   return (
 
     <View style={styles.container} testID={name}>
