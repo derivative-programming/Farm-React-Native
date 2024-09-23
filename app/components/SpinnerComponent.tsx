@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(108, 117, 125, 0.25)', // bg-secondary with opacity 25%
+    // backgroundColor: 'rgba(108, 117, 125, 0.25)', // bg-secondary with opacity 25%
     height: 100, // Adjust based on your layout
   },
   spinner: {
